@@ -184,54 +184,6 @@ fn empty_arr() -> serde_json::Value { serde_json::Value::Array(vec![]) }
 #[allow(dead_code)] // TODO: Remove this if unused still when we are done.
 fn empty_obj() -> serde_json::Value { serde_json::Value::Object(Default::default()) }
 
-/// Handle default values in the argument list.
-///
-/// Substitute `Value::Null`s with corresponding values from `defaults` table, except when they are
-/// trailing, in which case just skip them altogether in returned list.
-///
-/// Note, that `defaults` corresponds to the last elements of `args`.
-///
-/// ```norust
-/// arg1 arg2 arg3 arg4
-///           def1 def2
-/// ```
-///
-/// Elements of `args` without corresponding `defaults` value, won't be substituted, because they
-/// are required.
-#[allow(dead_code)] // TODO: Remove this if unused still when we are done.
-fn handle_defaults<'a>(
-    args: &'a mut [serde_json::Value],
-    defaults: &[serde_json::Value],
-) -> &'a [serde_json::Value] {
-    assert!(args.len() >= defaults.len());
-
-    // Pass over the optional arguments in backwards order, filling in defaults after the first
-    // non-null optional argument has been observed.
-    let mut first_non_null_optional_idx = None;
-    for i in 0..defaults.len() {
-        let args_i = args.len() - 1 - i;
-        let defaults_i = defaults.len() - 1 - i;
-        if args[args_i] == serde_json::Value::Null {
-            if first_non_null_optional_idx.is_some() {
-                if defaults[defaults_i] == serde_json::Value::Null {
-                    panic!("Missing `default` for argument idx {}", args_i);
-                }
-                args[args_i] = defaults[defaults_i].clone();
-            }
-        } else if first_non_null_optional_idx.is_none() {
-            first_non_null_optional_idx = Some(args_i);
-        }
-    }
-
-    let required_num = args.len() - defaults.len();
-
-    if let Some(i) = first_non_null_optional_idx {
-        &args[..i + 1]
-    } else {
-        &args[..required_num]
-    }
-}
-
 /// Convert a possible-null result into an `Option`.
 #[allow(dead_code)] // TODO: Remove this if unused still when we are done.
 fn opt_result<T: for<'a> serde::de::Deserialize<'a>>(

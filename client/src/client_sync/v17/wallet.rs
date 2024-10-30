@@ -103,8 +103,8 @@ macro_rules! impl_client_v17__sendtoaddress {
                 address: &Address<NetworkChecked>,
                 amount: Amount,
             ) -> Result<SendToAddress> {
-                let mut args = [address.to_string().into(), into_json(amount.to_btc())?];
-                self.call("sendtoaddress", handle_defaults(&mut args, &["".into(), "".into()]))
+                let args = [address.to_string().into(), into_json(amount.to_btc())?];
+                self.call("sendtoaddress", &args)
             }
         }
     };
