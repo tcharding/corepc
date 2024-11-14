@@ -1,25 +1,29 @@
-# `bitcoind` JSON-RPC support
+# Bitcoin Core JSON-RPC support
 
-There are two primary purposes of this repository.
+There are two primary purposes of this repository:
 
-1. Provide the [`bitcoind-json-rpc-types`](https://crates.io/crates/bitcoind-json-rpc-types) crate
-   for use in production software.
-2. Provide tools to the community for integration testing code written in Rust that interacts with
-   the Bitcoin network. Primarily consumers of the [`rust-bitcoin`](https://crates.io/crates/bitcoin)
-   library. And enable doing so against multiple versions of Bitcoin Core.
+1. Provide the [`corepc-types`](https://crates.io/crates/corepc-types) crate for use in production
+   software. 
+   
+2. Provide tools for integration testing Rust code that interacts with the Bitcoin network.
+   Primarily consumers of the [`rust-bitcoin`](https://crates.io/crates/bitcoin) library. And enable
+   doing so against multiple versions of Bitcoin Core.
 
 If you require a JSON RPC client in production software it is expected you write your own and only
-use the `bitcoind-json-rpc-types` crate in your dependency graph. Feel free to copy/steal/plagiarise
-or otherwise enjoy yourself with anything in this repository - no attribution required.
+use the `corepc-types` crate in your dependency graph. Feel free to copy/steal/plagiarise or
+otherwise enjoy yourself with anything in this repository - no attribution required.
 
-**Please do not use `client` in production and raise bugs, issues, or feature requests.**
+**Please do not use `corepc` in production and raise bugs, issues, or feature requests.**
 
-## Crate listing
+## Crate/directory listing
 
-- [`json`](https://crates.io/crates/bitcoind-json-rpc-types): Rust types returned by the JSON-RPC API of Bitcoin Core (`bitcoind-json-rpc-types`).
-- [`regtest`](https://crates.io/crates/bitcoind-json-rpc-regtest): Runs `bitcoind` regtest nodes.
-- [`client`](https://crates.io/crates/bitcoind-json-rpc-client): A blocking JSON-RPC client used to test `bitcoind-json-rpc-types`.
-- `integration_test`: Integration tests that use `client` and `regtest` to test `json`.
+- `types/`: [`corepc-types`](https://crates.io/crates/corepc-types): Rust types returned by the JSON-RPC API of Bitcoin Core.
+- `bitcoind/`: [`corepc-node`](https://crates.io/crates/corepc-node): Runs `bitcoind` regtest nodes.
+- `client/`: [`corepc-client`](https://crates.io/crates/corepc-client): A blocking JSON-RPC client used to test `corepc-types`.
+- `integration_test/`: Integration tests that use `corepc` and `corepc-node` to test `corepc-types`.
+
+
+## `corepc-types` Design
 
 ## Original code
 

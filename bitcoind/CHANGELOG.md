@@ -1,3 +1,9 @@
+# 0.4.0 - 2024-11-14
+
+- Add support for Bitcoin Core v28
+- Re-name the repository from `rust-bitcoind-josn-rpc` to `corepc`.
+- Re-name the crate from `bitcoind-josn-rpc-regtest` to `corepc-node`.
+
 # 0.3.0 - 2024-06-21
 
 - Call `into_model` when creating/loading wallet.

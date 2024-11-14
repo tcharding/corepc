@@ -1,7 +1,7 @@
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
 #![cfg_attr(feature = "doc", cfg_attr(all(), doc = include_str!("../README.md")))]
 
-pub extern crate bitcoind_json_rpc_client as client;
+pub extern crate corepc_client as client;
 
 #[rustfmt::skip]
 mod client_versions;
@@ -15,7 +15,7 @@ use std::time::Duration;
 use std::{env, fmt, fs, thread};
 
 use anyhow::Context;
-use bitcoind_json_rpc_client::client_sync::{self, Auth};
+use corepc_client::client_sync::{self, Auth};
 use log::{debug, error, warn};
 use tempfile::TempDir;
 pub use {anyhow, tempfile, which};
@@ -698,7 +698,7 @@ mod test {
     #[cfg(any(feature = "0_19_1", not(feature = "download")))]
     #[test]
     fn test_multi_wallet() {
-        use bitcoind_json_rpc_client::bitcoin::Amount;
+        use corepc_client::bitcoin::Amount;
 
         let exe = init();
         let bitcoind = BitcoinD::new(exe).unwrap();

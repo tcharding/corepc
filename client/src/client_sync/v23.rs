@@ -9,7 +9,7 @@ use bitcoin::{Amount, Block, BlockHash, Txid};
 use serde::{Deserialize, Serialize};
 
 use crate::client_sync::{handle_defaults, into_json};
-use crate::json::v23::*;
+use crate::types::v23::*;
 
 crate::define_jsonrpc_minreq_client!("v23");
 

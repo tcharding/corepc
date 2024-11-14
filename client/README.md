@@ -1,4 +1,4 @@
-# bitcoind-json-rpc-client
+# corepc-client
 
 Rust client for the Bitcoin Core daemon's JSON-RPC API. Currently this
 is only a blocking client and is intended to be used in integration testing.

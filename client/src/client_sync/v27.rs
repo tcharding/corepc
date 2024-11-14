@@ -8,7 +8,7 @@ use bitcoin::address::{Address, NetworkChecked};
 use bitcoin::{Amount, Block, BlockHash, Txid};
 
 use crate::client_sync::{handle_defaults, into_json};
-use crate::json::v27::*;
+use crate::types::v27::*;
 
 crate::define_jsonrpc_minreq_client!("v27");
 

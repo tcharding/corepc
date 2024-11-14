@@ -1,4 +1,4 @@
-# bitcoind-json-rpc-types
+# corepc-types
 
 Types returned by the JSON-RPC API of Bitcoin Core.
 

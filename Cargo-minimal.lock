@@ -85,28 +85,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bitcoind-json-rpc-client"
-version = "0.3.0"
-dependencies = [
- "bitcoin",
- "bitcoind-json-rpc-types",
- "jsonrpc",
- "log",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "bitcoind-json-rpc-types"
-version = "0.3.0"
-dependencies = [
- "bitcoin",
- "bitcoin-internals",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "byteorder"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -117,6 +95,28 @@ name = "cc"
 version = "1.0.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bb4a8b715cb4597106ea87c7c84b2f1d452c7492033765df7f32651e66fcf749"
+
+[[package]]
+name = "corepc-client"
+version = "0.4.0"
+dependencies = [
+ "bitcoin",
+ "corepc-types",
+ "jsonrpc",
+ "log",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "corepc-types"
+version = "0.4.0"
+dependencies = [
+ "bitcoin",
+ "bitcoin-internals",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "hex-conservative"
@@ -297,3 +297,7 @@ name = "winapi-x86_64-pc-windows-gnu"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
+
+[[patch.unused]]
+name = "corepc-node"
+version = "0.4.0"

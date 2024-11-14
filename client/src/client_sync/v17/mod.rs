@@ -16,7 +16,7 @@ use bitcoin::{Amount, Block, BlockHash, Txid};
 use serde::{Deserialize, Serialize};
 
 use crate::client_sync::{handle_defaults, into_json};
-use crate::json::v17::*;
+use crate::types::v17::*;
 
 crate::define_jsonrpc_minreq_client!("v17");
 crate::impl_client_check_expected_server_version!({ [170100] });

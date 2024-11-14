@@ -70,9 +70,9 @@ main() {
 
         stop)
             pkill bitcoind
-            rm -rf "/tmp/rust-bitcoind-json-rpc-0.17.1/2/regtest/wallets" > /dev/null
-            rm -rf "/tmp/rust-bitcoind-json-rpc-0.18.1/2/regtest/wallets" > /dev/null
-            rm -rf "/tmp/rust-bitcoind-json-rpc-22.1/2/regtest/wallets" > /dev/null
+            rm -rf "/tmp/corepc-0.17.1/2/regtest/wallets" > /dev/null
+            rm -rf "/tmp/corepc-0.18.1/2/regtest/wallets" > /dev/null
+            rm -rf "/tmp/corepc-22.1/2/regtest/wallets" > /dev/null
             ;;
         *)
             usage
@@ -160,7 +160,7 @@ run_bitcoind() {
     local version_number="$2"   # eg, 22.1
     local version_id="$3"       # eg, 221
 
-    local test_dir="/tmp/rust-bitcoind-json-rpc-${version_number}"
+    local test_dir="/tmp/corepc-${version_number}"
     local bitcoind="/opt/bitcoin-${version_number}/bin/bitcoind"
     # RPC port number of the node we hit when testing (xyz49 where xyz is the bitcoind version identifier).
     local rpc_port="${version_id}49"

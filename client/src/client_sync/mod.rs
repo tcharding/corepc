@@ -71,7 +71,7 @@ macro_rules! define_jsonrpc_minreq_client {
             fn fmt(&self, f: &mut fmt::Formatter) -> core::fmt::Result {
                 write!(
                     f,
-                    "bitcoind-json-rpc::client_sync::{}::Client({:?})", $version, self.inner
+                    "corepc_client::client_sync::{}::Client({:?})", $version, self.inner
                 )
             }
         }
@@ -114,7 +114,7 @@ macro_rules! define_jsonrpc_minreq_client {
                 let raw = serde_json::value::to_raw_value(args)?;
                 let req = self.inner.build_request(&method, Some(&*raw));
                 if log::log_enabled!(log::Level::Debug) {
-                    log::debug!(target: "bitcoind-json-rpc", "request: {} {}", method, serde_json::Value::from(args));
+                    log::debug!(target: "corepc", "request: {} {}", method, serde_json::Value::from(args));
                 }
 
                 let resp = self.inner.send_request(req).map_err(Error::from);
@@ -252,18 +252,18 @@ fn log_response(method: &str, resp: &Result<jsonrpc::Response>) {
         match resp {
             Err(ref e) =>
                 if log::log_enabled!(Debug) {
-                    log::debug!(target: "bitcoind-json-rpc", "error: {}: {:?}", method, e);
+                    log::debug!(target: "corepc", "error: {}: {:?}", method, e);
                 },
             Ok(ref resp) =>
                 if let Some(ref e) = resp.error {
                     if log::log_enabled!(Debug) {
-                        log::debug!(target: "bitcoind-json-rpc", "response error for {}: {:?}", method, e);
+                        log::debug!(target: "corepc", "response error for {}: {:?}", method, e);
                     }
                 } else if log::log_enabled!(Trace) {
                     let def =
                         serde_json::value::to_raw_value(&serde_json::value::Value::Null).unwrap();
                     let result = resp.result.as_ref().unwrap_or(&def);
-                    log::trace!(target: "bitcoind-json-rpc", "response for {}: {}", method, result);
+                    log::trace!(target: "corepc", "response for {}: {}", method, result);
                 },
         }
     }
