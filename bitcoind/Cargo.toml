@@ -1,5 +1,5 @@
 [package]
-name = "bitcoind-json-rpc-regtest"
+name = "corepc-node"
 version = "0.3.0"
 authors = ["Riccardo Casatta <riccardo@casatta.it>", "Tobin C. Harding <me@tobin.cc>"]
 license = "MIT"

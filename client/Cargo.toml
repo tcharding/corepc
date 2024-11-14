@@ -1,5 +1,5 @@
 [package]
-name = "bitcoind-json-rpc-client"
+name = "corepc-client"
 version = "0.3.0"
 authors = ["Tobin C. Harding <me@tobin.cc>"]
 license = "CC0-1.0"
