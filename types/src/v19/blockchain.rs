@@ -14,8 +14,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::{model, NumericError};
 
-#[rustfmt::skip]                // Keep public re-exports separate.
-
 /// Result of JSON-RPC method `getblockchaininfo`.
 ///
 /// Method call: `getblockchaininfo`
