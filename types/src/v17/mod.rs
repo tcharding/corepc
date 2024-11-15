@@ -9,6 +9,7 @@
 //!
 //! Key:
 //! - `[ ]` Not yet done.
+//! - `[I]` Implemented _and_ tested.
 //! - `[x]` Implemented _and_ tested.
 //! - `[-]` Intentionally not done, typically because method does not return anything, returns
 //!         a single integer, or is deprecated.
@@ -24,19 +25,19 @@
 //! - [x] `getchaintips`
 //! - [x] `getchaintxstats ( nblocks blockhash )`
 //! - [x] `getdifficulty`
-//! - [x] `getmempoolancestors txid (verbose)`
-//! - [x] `getmempooldescendants txid (verbose)`
-//! - [x] `getmempoolentry txid`
-//! - [x] `getmempoolinfo`
-//! - [x] `getrawmempool ( verbose )`
-//! - [x] `gettxout "txid" n ( include_mempool )`
-//! - [x] `gettxoutproof ["txid",...] ( blockhash )`
-//! - [x] `gettxoutsetinfo`
-//! - [x] `preciousblock "blockhash"`
+//! - [ ] `getmempoolancestors txid (verbose)`
+//! - [ ] `getmempooldescendants txid (verbose)`
+//! - [ ] `getmempoolentry txid`
+//! - [ ] `getmempoolinfo`
+//! - [ ] `getrawmempool ( verbose )`
+//! - [ ] `gettxout "txid" n ( include_mempool )`
+//! - [ ] `gettxoutproof ["txid",...] ( blockhash )`
+//! - [ ] `gettxoutsetinfo`
+//! - [ ] `preciousblock "blockhash"`
 //! - [-] `pruneblockchain`
 //! - [-] `savemempool`
 //! - [-] `scantxoutset <action> ( <scanobjects> )`
-//! - [x] `verifychain ( checklevel nblocks )`
+//! - [ ] `verifychain ( checklevel nblocks )`
 //! - [-] `verifytxoutproof "proof"`
 //!
 //! **== Control ==**
