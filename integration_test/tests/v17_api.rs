@@ -19,6 +19,8 @@ mod blockchain {
     impl_test_v17__getchaintips!();
     impl_test_v17__getchaintxstats!();
     impl_test_v17__getdifficulty!();
+    // impl_test_v17__getmempoolancestors!(); // Contains `todo!()`.
+    // impl_test_v17__gettxout!(); // Contains `todo!()`.
 }
 
 // == Control ==
