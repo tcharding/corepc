@@ -9,7 +9,7 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
-/// Implements bitcoind JSON-RPC API method `getbestblockhash`
+/// Implements Bitcoin Core JSON-RPC API method `getbestblockhash`
 #[macro_export]
 macro_rules! impl_client_v17__getbestblockhash {
     () => {
@@ -27,7 +27,7 @@ macro_rules! impl_client_v17__getbestblockhash {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getblock`
+/// Implements Bitcoin Core JSON-RPC API method `getblock`
 #[macro_export]
 macro_rules! impl_client_v17__getblock {
     () => {
@@ -52,7 +52,7 @@ macro_rules! impl_client_v17__getblock {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getblockchaininfo`
+/// Implements Bitcoin Core JSON-RPC API method `getblockchaininfo`
 #[macro_export]
 macro_rules! impl_client_v17__getblockchaininfo {
     () => {
@@ -64,7 +64,7 @@ macro_rules! impl_client_v17__getblockchaininfo {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getblockcount`
+/// Implements Bitcoin Core JSON-RPC API method `getblockcount`
 #[macro_export]
 macro_rules! impl_client_v17__getblockcount {
     () => {
@@ -76,7 +76,7 @@ macro_rules! impl_client_v17__getblockcount {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getblockhash`
+/// Implements Bitcoin Core JSON-RPC API method `getblockhash`
 #[macro_export]
 macro_rules! impl_client_v17__getblockhash {
     () => {
@@ -88,7 +88,7 @@ macro_rules! impl_client_v17__getblockhash {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getblockheader`
+/// Implements Bitcoin Core JSON-RPC API method `getblockheader`
 #[macro_export]
 macro_rules! impl_client_v17__getblockheader {
     () => {
@@ -108,7 +108,7 @@ macro_rules! impl_client_v17__getblockheader {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getblockstats`
+/// Implements Bitcoin Core JSON-RPC API method `getblockstats`
 #[macro_export]
 macro_rules! impl_client_v17__getblockstats {
     () => {
@@ -124,7 +124,7 @@ macro_rules! impl_client_v17__getblockstats {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getchaintips`
+/// Implements Bitcoin Core JSON-RPC API method `getchaintips`
 #[macro_export]
 macro_rules! impl_client_v17__getchaintips {
     () => {
@@ -134,7 +134,7 @@ macro_rules! impl_client_v17__getchaintips {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getchaintxstats`
+/// Implements Bitcoin Core JSON-RPC API method `getchaintxstats`
 #[macro_export]
 macro_rules! impl_client_v17__getchaintxstats {
     () => {
@@ -146,7 +146,7 @@ macro_rules! impl_client_v17__getchaintxstats {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getdifficulty`
+/// Implements Bitcoin Core JSON-RPC API method `getdifficulty`
 #[macro_export]
 macro_rules! impl_client_v17__getdifficulty {
     () => {
@@ -158,7 +158,7 @@ macro_rules! impl_client_v17__getdifficulty {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getmempoolancestors`
+/// Implements Bitcoin Core JSON-RPC API method `getmempoolancestors`
 #[macro_export]
 macro_rules! impl_client_v17__getmempoolancestors {
     () => {
@@ -170,7 +170,7 @@ macro_rules! impl_client_v17__getmempoolancestors {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `gettxout`
+/// Implements Bitcoin Core JSON-RPC API method `gettxout`
 #[macro_export]
 macro_rules! impl_client_v17__gettxout {
     () => {

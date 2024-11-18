@@ -9,7 +9,7 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
-/// Implements bitcoind JSON-RPC API method `unloadwallet`
+/// Implements Bitcoin Core JSON-RPC API method `unloadwallet`
 #[macro_export]
 macro_rules! impl_client_v22__unloadwallet {
     () => {
@@ -21,7 +21,7 @@ macro_rules! impl_client_v22__unloadwallet {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `loadwallet`
+/// Implements Bitcoin Core JSON-RPC API method `loadwallet`
 #[macro_export]
 macro_rules! impl_client_v22__loadwallet {
     () => {

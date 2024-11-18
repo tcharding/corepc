@@ -29,7 +29,7 @@ pub use self::{
 
 #[derive(Debug)]
 /// Struct representing the bitcoind process with related information
-pub struct BitcoinD {
+pub struct Node {
     /// Process child handle, used to terminate the process when this struct is dropped
     process: Child,
     /// Rpc client linked to this bitcoind process
@@ -105,7 +105,7 @@ pub enum P2P {
     /// the node open a p2p port
     Yes,
     /// The node open a p2p port and also connects to the url given as parameter, it's handy to
-    /// initialize this with [BitcoinD::p2p_connect] of another node. The `bool` parameter indicates
+    /// initialize this with [Node::p2p_connect] of another node. The `bool` parameter indicates
     /// if the node can accept connection too.
     Connect(SocketAddrV4, bool),
 }
@@ -190,7 +190,7 @@ const INVALID_ARGS: [&str; 2] = ["-rpcuser", "-rpcpassword"];
 ///
 /// Default values:
 /// ```
-/// use bitcoind_json_rpc_regtest as bitcoind;
+/// use corepc_node as bitcoind;
 /// let mut conf = bitcoind::Conf::default();
 /// conf.args = vec!["-regtest", "-fallbackfee=0.0001"];
 /// conf.view_stdout = false;
@@ -268,16 +268,16 @@ impl Default for Conf<'_> {
     }
 }
 
-impl BitcoinD {
+impl Node {
     /// Launch the bitcoind process from the given `exe` executable with default args.
     ///
     /// Waits for the node to be ready to accept connections before returning
-    pub fn new<S: AsRef<OsStr>>(exe: S) -> anyhow::Result<BitcoinD> {
-        BitcoinD::with_conf(exe, &Conf::default())
+    pub fn new<S: AsRef<OsStr>>(exe: S) -> anyhow::Result<Node> {
+        Node::with_conf(exe, &Conf::default())
     }
 
     /// Launch the bitcoind process from the given `exe` executable with given [Conf] param and create/load the "default" wallet.
-    pub fn with_conf<S: AsRef<OsStr>>(exe: S, conf: &Conf) -> anyhow::Result<BitcoinD> {
+    pub fn with_conf<S: AsRef<OsStr>>(exe: S, conf: &Conf) -> anyhow::Result<Node> {
         let tmpdir =
             conf.tmpdir.clone().or_else(|| env::var("TEMPDIR_ROOT").map(PathBuf::from).ok());
         let work_dir = match (&tmpdir, &conf.staticdir) {
@@ -425,7 +425,7 @@ impl BitcoinD {
             }
         };
 
-        Ok(BitcoinD {
+        Ok(Node {
             process,
             client,
             work_dir,
@@ -476,17 +476,17 @@ impl BitcoinD {
 }
 
 #[cfg(feature = "download")]
-impl BitcoinD {
-    /// create BitcoinD struct with the downloaded executable.
-    pub fn from_downloaded() -> anyhow::Result<BitcoinD> { BitcoinD::new(downloaded_exe_path()?) }
+impl Node {
+    /// create Node struct with the downloaded executable.
+    pub fn from_downloaded() -> anyhow::Result<Node> { Node::new(downloaded_exe_path()?) }
 
-    /// create BitcoinD struct with the downloaded executable and given Conf.
-    pub fn from_downloaded_with_conf(conf: &Conf) -> anyhow::Result<BitcoinD> {
-        BitcoinD::with_conf(downloaded_exe_path()?, conf)
+    /// create Node struct with the downloaded executable and given Conf.
+    pub fn from_downloaded_with_conf(conf: &Conf) -> anyhow::Result<Node> {
+        Node::with_conf(downloaded_exe_path()?, conf)
     }
 }
 
-impl Drop for BitcoinD {
+impl Drop for Node {
     fn drop(&mut self) {
         if let DataDir::Persistent(_) = self.work_dir {
             let _ = self.stop();
@@ -575,7 +575,7 @@ mod test {
     use tempfile::TempDir;
 
     use super::*;
-    use crate::{exe_path, get_available_port, BitcoinD, Conf, LOCAL_IP, P2P};
+    use crate::{exe_path, get_available_port, Node, Conf, LOCAL_IP, P2P};
 
     #[test]
     fn test_local_ip() {
@@ -586,22 +586,23 @@ mod test {
     }
 
     #[test]
-    fn test_bitcoind_get_blockchain_info() {
+    fn test_node_get_blockchain_info() {
         let exe = init();
-        let bitcoind = BitcoinD::new(exe).unwrap();
-        let info = bitcoind.client.get_blockchain_info().unwrap();
+        let node = Node::new(exe).unwrap();
+        let info = node.client.get_blockchain_info().unwrap();
         assert_eq!(0, info.blocks);
     }
 
     #[test]
-    fn test_bitcoind() {
+    fn test_node() {
         let exe = init();
-        let bitcoind = BitcoinD::new(exe).unwrap();
-        let info = bitcoind.client.get_blockchain_info().unwrap();
+        let node = Node::new(exe).unwrap();
+        let info = node.client.get_blockchain_info().unwrap();
+
         assert_eq!(0, info.blocks);
-        let address = bitcoind.client.new_address().unwrap();
-        let _ = bitcoind.client.generate_to_address(1, &address).unwrap();
-        let info = bitcoind.client.get_blockchain_info().unwrap();
+        let address = node.client.new_address().unwrap();
+        let _ = node.client.generate_to_address(1, &address).unwrap();
+        let info = node.client.get_blockchain_info().unwrap();
         assert_eq!(1, info.blocks);
     }
 
@@ -611,31 +612,30 @@ mod test {
         let exe = init();
         let mut conf = Conf::default();
         conf.args.push("-txindex");
-        let bitcoind = BitcoinD::with_conf(&exe, &conf).unwrap();
+        let node = Node::with_conf(&exe, &conf).unwrap();
         assert!(
-            bitcoind.client.server_version().unwrap() >= 210_000,
+            node.client.server_version().unwrap() >= 210_000,
             "getindexinfo requires bitcoin >0.21"
         );
         let info: std::collections::HashMap<String, serde_json::Value> =
-            bitcoind.client.call("getindexinfo", &[]).unwrap();
+            node.client.call("getindexinfo", &[]).unwrap();
         assert!(info.contains_key("txindex"));
-        assert!(bitcoind.client.server_version().unwrap() >= 210_000);
+        assert!(node.client.server_version().unwrap() >= 210_000);
     }
 
     #[test]
     fn test_p2p() {
         let exe = init();
-        let mut conf = Conf::<'_> { p2p: P2P::Yes, ..Default::default() };
-        conf.p2p = P2P::Yes;
 
-        let bitcoind = BitcoinD::with_conf(&exe, &conf).unwrap();
-        assert_eq!(peers_connected(&bitcoind.client), 0);
-        let mut other_conf = Conf::<'_> { p2p: bitcoind.p2p_connect(false).unwrap(), ..Default::default() };
-        other_conf.p2p = bitcoind.p2p_connect(false).unwrap();
+        let conf = Conf::<'_> { p2p: P2P::Yes, ..Default::default() };
+        let node = Node::with_conf(&exe, &conf).unwrap();
+        assert_eq!(peers_connected(&node.client), 0);
 
-        let other_bitcoind = BitcoinD::with_conf(&exe, &other_conf).unwrap();
-        assert_eq!(peers_connected(&bitcoind.client), 1);
-        assert_eq!(peers_connected(&other_bitcoind.client), 1);
+        let other_conf = Conf::<'_> { p2p: node.p2p_connect(false).unwrap(), ..Default::default() };
+        let other_node = Node::with_conf(&exe, &other_conf).unwrap();
+
+        assert_eq!(peers_connected(&node.client), 1);
+        assert_eq!(peers_connected(&other_node.client), 1);
     }
 
     #[cfg(not(target_os = "windows"))] // TODO: investigate why it doesn't work in windows
@@ -646,22 +646,22 @@ mod test {
         let datadir = TempDir::new().unwrap();
         conf.staticdir = Some(datadir.path().to_path_buf());
 
-        // Start BitcoinD with persistent db config
+        // Start Node with persistent db config
         // Generate 101 blocks
         // Wallet balance should be 50
-        let bitcoind = BitcoinD::with_conf(exe_path().unwrap(), &conf).unwrap();
-        let core_addrs = bitcoind.client.new_address().unwrap();
-        bitcoind.client.generate_to_address(101, &core_addrs).unwrap();
-        let wallet_balance_1 = bitcoind.client.get_balance().unwrap();
-        let best_block_1 = bitcoind.client.get_best_block_hash().unwrap();
+        let node = Node::with_conf(exe_path().unwrap(), &conf).unwrap();
+        let core_addrs = node.client.new_address().unwrap();
+        node.client.generate_to_address(101, &core_addrs).unwrap();
+        let wallet_balance_1 = node.client.get_balance().unwrap();
+        let best_block_1 = node.client.get_best_block_hash().unwrap();
 
-        drop(bitcoind);
+        drop(node);
 
-        // Start a new BitcoinD with the same datadir
-        let bitcoind = BitcoinD::with_conf(exe_path().unwrap(), &conf).unwrap();
+        // Start a new Node with the same datadir
+        let node = Node::with_conf(exe_path().unwrap(), &conf).unwrap();
 
-        let wallet_balance_2 = bitcoind.client.get_balance().unwrap();
-        let best_block_2 = bitcoind.client.get_best_block_hash().unwrap();
+        let wallet_balance_2 = node.client.get_balance().unwrap();
+        let best_block_2 = node.client.get_best_block_hash().unwrap();
 
         // Check node chain data persists
         assert_eq!(best_block_1, best_block_2);
@@ -672,17 +672,19 @@ mod test {
 
     #[test]
     fn test_multi_p2p() {
-        let _ = env_logger::try_init();
+        let exe = init();
+
         let conf_node1 = Conf::<'_> { p2p: P2P::Yes, ..Default::default() };
-        let node1 = BitcoinD::with_conf(exe_path().unwrap(), &conf_node1).unwrap();
+        let node1 = Node::with_conf(&exe, &conf_node1).unwrap();
+        assert_eq!(peers_connected(&node1.client), 0);
 
         // Create Node 2 connected Node 1
         let conf_node2 = Conf::<'_> { p2p: node1.p2p_connect(true).unwrap(), ..Default::default() };
-        let node2 = BitcoinD::with_conf(exe_path().unwrap(), &conf_node2).unwrap();
+        let node2 = Node::with_conf(&exe, &conf_node2).unwrap();
 
         // Create Node 3 Connected To Node
         let conf_node3 = Conf::<'_> { p2p: node2.p2p_connect(false).unwrap(), ..Default::default() };
-        let node3 = BitcoinD::with_conf(exe_path().unwrap(), &conf_node3).unwrap();
+        let node3 = Node::with_conf(exe_path().unwrap(), &conf_node3).unwrap();
 
         // Get each nodes Peers
         let node1_peers = peers_connected(&node1.client);
@@ -701,13 +703,13 @@ mod test {
         use corepc_client::bitcoin::Amount;
 
         let exe = init();
-        let bitcoind = BitcoinD::new(exe).unwrap();
-        let alice = bitcoind.create_wallet("alice").unwrap();
+        let node = Node::new(exe).unwrap();
+        let alice = node.create_wallet("alice").unwrap();
         let alice_address = alice.new_address().unwrap();
-        let bob = bitcoind.create_wallet("bob").unwrap();
+        let bob = node.create_wallet("bob").unwrap();
         let bob_address = bob.new_address().unwrap();
-        bitcoind.client.generate_to_address(1, &alice_address).unwrap();
-        bitcoind.client.generate_to_address(101, &bob_address).unwrap();
+        node.client.generate_to_address(1, &alice_address).unwrap();
+        node.client.generate_to_address(101, &bob_address).unwrap();
 
         let balances = alice.get_balances().unwrap();
         let alice_balances: json::GetBalances = balances;
@@ -756,36 +758,36 @@ mod test {
             Amount::from_btc(1.0).unwrap(),
             Amount::from_btc(bob_balances.mine.untrusted_pending).unwrap()
         );
-        assert!(bitcoind.create_wallet("bob").is_err(), "wallet already exist");
+        assert!(node.create_wallet("bob").is_err(), "wallet already exist");
     }
 
     #[test]
-    fn test_bitcoind_rpcuser_and_rpcpassword() {
+    fn test_node_rpcuser_and_rpcpassword() {
         let exe = init();
 
         let mut conf = Conf::default();
         conf.args.push("-rpcuser=bitcoind");
         conf.args.push("-rpcpassword=bitcoind");
 
-        let bitcoind = BitcoinD::with_conf(exe, &conf);
+        let node = Node::with_conf(exe, &conf);
 
-        assert!(bitcoind.is_err());
+        assert!(node.is_err());
     }
 
     #[test]
-    fn test_bitcoind_rpcauth() {
+    fn test_node_rpcauth() {
         let exe = init();
 
         let mut conf = Conf::default();
         // rpcauth generated with [rpcauth.py](https://github.com/bitcoin/bitcoin/blob/master/share/rpcauth/rpcauth.py)
-        // this could be also added to bitcoind, example: [RpcAuth](https://github.com/testcontainers/testcontainers-rs/blob/dev/testcontainers/src/images/coblox_bitcoincore.rs#L39-L91)
+        // this could be also added to node, example: [RpcAuth](https://github.com/testcontainers/testcontainers-rs/blob/dev/testcontainers/src/images/coblox_bitcoincore.rs#L39-L91)
         conf.args.push("-rpcauth=bitcoind:cccd5d7fd36e55c1b8576b8077dc1b83$60b5676a09f8518dcb4574838fb86f37700cd690d99bd2fdc2ea2bf2ab80ead6");
 
-        let bitcoind = BitcoinD::with_conf(exe, &conf).unwrap();
+        let node = Node::with_conf(exe, &conf).unwrap();
 
         let auth = Auth::UserPass("bitcoind".to_string(), "bitcoind".to_string());
         let client = Client::new_with_auth(
-            format!("{}/wallet/default", bitcoind.rpc_url().as_str()).as_str(),
+            format!("{}/wallet/default", node.rpc_url().as_str()).as_str(),
             auth,
         )
         .unwrap();
@@ -794,21 +796,21 @@ mod test {
 
         let address = client.new_address().unwrap();
         let _ = client.generate_to_address(1, &address).unwrap();
-        let info = bitcoind.client.get_blockchain_info().unwrap();
+        let info = node.client.get_blockchain_info().unwrap();
         assert_eq!(1, info.blocks);
     }
 
     #[test]
     fn test_get_cookie_user_and_pass() {
         let exe = init();
-        let bitcoind = BitcoinD::new(exe).unwrap();
+        let node = Node::new(exe).unwrap();
 
         let user: &str = "bitcoind_user";
         let password: &str = "bitcoind_password";
 
-        std::fs::write(&bitcoind.params.cookie_file, format!("{}:{}", user, password)).unwrap();
+        std::fs::write(&node.params.cookie_file, format!("{}:{}", user, password)).unwrap();
 
-        let result_values = bitcoind.params.get_cookie_values().unwrap().unwrap();
+        let result_values = node.params.get_cookie_values().unwrap().unwrap();
 
         assert_eq!(user, result_values.user);
         assert_eq!(password, result_values.password);
@@ -817,19 +819,19 @@ mod test {
     #[test]
     fn zmq_interface_enabled() {
         let conf = Conf::<'_> { enable_zmq: true, ..Default::default() };
-        let bitcoind = BitcoinD::with_conf(exe_path().unwrap(), &conf).unwrap();
+        let node = Node::with_conf(exe_path().unwrap(), &conf).unwrap();
 
-        assert!(bitcoind.params.zmq_pub_raw_tx_socket.is_some());
-        assert!(bitcoind.params.zmq_pub_raw_block_socket.is_some());
+        assert!(node.params.zmq_pub_raw_tx_socket.is_some());
+        assert!(node.params.zmq_pub_raw_block_socket.is_some());
     }
 
     #[test]
     fn zmq_interface_disabled() {
         let exe = init();
-        let bitcoind = BitcoinD::new(exe).unwrap();
+        let node = Node::new(exe).unwrap();
 
-        assert!(bitcoind.params.zmq_pub_raw_tx_socket.is_none());
-        assert!(bitcoind.params.zmq_pub_raw_block_socket.is_none());
+        assert!(node.params.zmq_pub_raw_tx_socket.is_none());
+        assert!(node.params.zmq_pub_raw_block_socket.is_none());
     }
 
     fn peers_connected(client: &Client) -> usize {

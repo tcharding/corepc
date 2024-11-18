@@ -9,7 +9,7 @@
 //!
 //! See, or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
-/// Implements bitcoind JSON-RPC API method `getaddednodeinfo`
+/// Implements Bitcoin Core JSON-RPC API method `getaddednodeinfo`
 #[macro_export]
 macro_rules! impl_client_v17__getaddednodeinfo {
     () => {
@@ -21,7 +21,7 @@ macro_rules! impl_client_v17__getaddednodeinfo {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getnettotals`
+/// Implements Bitcoin Core JSON-RPC API method `getnettotals`
 #[macro_export]
 macro_rules! impl_client_v17__getnettotals {
     () => {
@@ -31,7 +31,7 @@ macro_rules! impl_client_v17__getnettotals {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getnetworkinfo`
+/// Implements Bitcoin Core JSON-RPC API method `getnetworkinfo`
 #[macro_export]
 macro_rules! impl_client_v17__getnetworkinfo {
     () => {
@@ -49,7 +49,7 @@ macro_rules! impl_client_v17__getnetworkinfo {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getpeerinfo`
+/// Implements Bitcoin Core JSON-RPC API method `getpeerinfo`
 #[macro_export]
 macro_rules! impl_client_v17__getpeerinfo {
     () => {

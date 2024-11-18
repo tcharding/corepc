@@ -50,7 +50,7 @@ macro_rules! impl_test_v17__getnewaddress {
     () => {
         #[test]
         fn get_new_address() {
-            use bitcoind::AddressType;
+            use node::AddressType;
 
             let bitcoind = $crate::bitcoind_with_default_wallet();
 

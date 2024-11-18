@@ -9,7 +9,7 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
-/// Implements bitcoind JSON-RPC API method `createwallet`
+/// Implements Bitcoin Core JSON-RPC API method `createwallet`
 #[macro_export]
 macro_rules! impl_client_v17__createwallet {
     () => {
@@ -21,7 +21,7 @@ macro_rules! impl_client_v17__createwallet {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `unloadwallet`
+/// Implements Bitcoin Core JSON-RPC API method `unloadwallet`
 #[macro_export]
 macro_rules! impl_client_v17__unloadwallet {
     () => {
@@ -33,7 +33,7 @@ macro_rules! impl_client_v17__unloadwallet {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `loadwallet`
+/// Implements Bitcoin Core JSON-RPC API method `loadwallet`
 #[macro_export]
 macro_rules! impl_client_v17__loadwallet {
     () => {
@@ -45,7 +45,7 @@ macro_rules! impl_client_v17__loadwallet {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getbalance`
+/// Implements Bitcoin Core JSON-RPC API method `getbalance`
 #[macro_export]
 macro_rules! impl_client_v17__getbalance {
     () => {
@@ -55,7 +55,7 @@ macro_rules! impl_client_v17__getbalance {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `getnewaddress`
+/// Implements Bitcoin Core JSON-RPC API method `getnewaddress`
 #[macro_export]
 macro_rules! impl_client_v17__getnewaddress {
     () => {
@@ -93,7 +93,7 @@ macro_rules! impl_client_v17__getnewaddress {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `sendtoaddress`
+/// Implements Bitcoin Core JSON-RPC API method `sendtoaddress`
 #[macro_export]
 macro_rules! impl_client_v17__sendtoaddress {
     () => {
@@ -110,7 +110,7 @@ macro_rules! impl_client_v17__sendtoaddress {
     };
 }
 
-/// Implements bitcoind JSON-RPC API method `gettransaction`
+/// Implements Bitcoin Core JSON-RPC API method `gettransaction`
 #[macro_export]
 macro_rules! impl_client_v17__gettransaction {
     () => {
