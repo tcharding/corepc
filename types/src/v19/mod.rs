@@ -169,6 +169,6 @@ pub use self::{
 pub use crate::v17::{
     CreateWallet, GenerateToAddress, GetBalance, GetBestBlockHash, GetBlockVerbosityOne,
     GetBlockVerbosityZero, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork,
-    GetNewAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailCategory, GetTxOut,
-    LoadWallet, SendRawTransaction, SendToAddress,
+    GetNewAddress, GetTransaction, GetTransactionDetail, GetTxOut, LoadWallet, SendRawTransaction,
+    SendToAddress, TransactionCategory,
 };

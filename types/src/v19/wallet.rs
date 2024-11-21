@@ -50,7 +50,7 @@ pub struct GetBalancesWatchOnly {
 }
 
 impl GetBalances {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::GetBalances, ParseAmountError> {
         let mine = self.mine.into_model()?;
         let watch_only = self.watch_only.map(|watch_only| watch_only.into_model()).transpose()?;
@@ -60,7 +60,7 @@ impl GetBalances {
 }
 
 impl GetBalancesMine {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::GetBalancesMine, ParseAmountError> {
         let trusted = Amount::from_btc(self.trusted)?;
         let untrusted_pending = Amount::from_btc(self.untrusted_pending)?;
@@ -72,7 +72,7 @@ impl GetBalancesMine {
 }
 
 impl GetBalancesWatchOnly {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::GetBalancesWatchOnly, ParseAmountError> {
         let trusted = Amount::from_btc(self.trusted)?;
         let untrusted_pending = Amount::from_btc(self.untrusted_pending)?;

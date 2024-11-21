@@ -190,10 +190,10 @@ pub use self::network::GetNetworkInfo;
 #[doc(inline)]
 pub use crate::{
     v17::{
-        GenerateToAddress, GetBalance, GetBestBlockHash, GetBlockVerbosityOne,
+        GenerateToAddress, GetBalance, GetBestBlockHash, GetBlockCount, GetBlockVerbosityOne,
         GetBlockVerbosityZero, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
-        GetNewAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailCategory,
-        GetTxOut, SendRawTransaction,
+        GetNewAddress, GetTransaction, GetTransactionDetail, GetTxOut, SendRawTransaction,
+        TransactionCategory,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,

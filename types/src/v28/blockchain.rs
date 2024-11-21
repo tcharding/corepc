@@ -63,7 +63,7 @@ pub struct GetBlockchainInfo {
 }
 
 impl GetBlockchainInfo {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::GetBlockchainInfo, GetBlockchainInfoError> {
         use GetBlockchainInfoError as E;
 

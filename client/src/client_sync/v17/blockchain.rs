@@ -9,6 +9,18 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
+/// Implements Bitcoin Core JSON-RPC API method `getblockchaininfo`
+#[macro_export]
+macro_rules! impl_client_v17__getblockchaininfo {
+    () => {
+        impl Client {
+            pub fn get_blockchain_info(&self) -> Result<GetBlockchainInfo> {
+                self.call("getblockchaininfo", &[])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `getbestblockhash`
 #[macro_export]
 macro_rules! impl_client_v17__getbestblockhash {
@@ -34,31 +46,18 @@ macro_rules! impl_client_v17__getblock {
         impl Client {
             /// Gets a block by blockhash.
             pub fn get_block(&self, hash: BlockHash) -> Result<Block> {
-                let json = self.get_block_verbosity_zero(hash)?;
+                let json = self.get_block_verbose_zero(hash)?;
                 Ok(json.block()?)
             }
 
-            pub fn get_block_verbosity_zero(
-                &self,
-                hash: BlockHash,
-            ) -> Result<GetBlockVerbosityZero> {
+            /// Gets a block by blockhash with verbose set to 0.
+            pub fn get_block_verbose_zero(&self, hash: BlockHash) -> Result<GetBlockVerbosityZero> {
                 self.call("getblock", &[into_json(hash)?, 0.into()])
             }
 
-            pub fn get_block_verbosity_one(&self, hash: BlockHash) -> Result<GetBlockVerbosityOne> {
+            /// Gets a block by blockhash with verbose set to 1.
+            pub fn get_block_verbose_one(&self, hash: BlockHash) -> Result<GetBlockVerbosityOne> {
                 self.call("getblock", &[into_json(hash)?, 1.into()])
-            }
-        }
-    };
-}
-
-/// Implements Bitcoin Core JSON-RPC API method `getblockchaininfo`
-#[macro_export]
-macro_rules! impl_client_v17__getblockchaininfo {
-    () => {
-        impl Client {
-            pub fn get_blockchain_info(&self) -> Result<GetBlockchainInfo> {
-                self.call("getblockchaininfo", &[])
             }
         }
     };
@@ -164,7 +163,75 @@ macro_rules! impl_client_v17__getmempoolancestors {
     () => {
         impl Client {
             pub fn get_mempool_ancestors(&self, txid: Txid) -> Result<GetMempoolAncestors> {
+                // Equivalent to self.call("getmempoolancestors", &[into_json(txid)?, into_json(false)?])
                 self.call("getmempoolancestors", &[into_json(txid)?])
+            }
+
+            pub fn get_mempool_ancestors_verbose(
+                &self,
+                txid: Txid,
+            ) -> Result<GetMempoolAncestorsVerbose> {
+                self.call("getmempoolancestors", &[into_json(txid)?, into_json(true)?])
+            }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `getmempooldescendants`
+#[macro_export]
+macro_rules! impl_client_v17__getmempooldescendants {
+    () => {
+        impl Client {
+            pub fn get_mempool_descendants(&self, txid: Txid) -> Result<GetMempoolDescendants> {
+                // Equivalent to self.call("getmempooldescendants", &[into_json(txid)?, into_json(false)?])
+                self.call("getmempooldescendants", &[into_json(txid)?])
+            }
+
+            pub fn get_mempool_descendants_verbose(
+                &self,
+                txid: Txid,
+            ) -> Result<GetMempoolDescendantsVerbose> {
+                self.call("getmempooldescendants", &[into_json(txid)?, into_json(true)?])
+            }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `getmempoolentry`
+#[macro_export]
+macro_rules! impl_client_v17__getmempoolentry {
+    () => {
+        impl Client {
+            pub fn get_mempool_entry(&self, txid: Txid) -> Result<GetMempoolEntry> {
+                self.call("getmempoolentry", &[into_json(txid)?])
+            }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `getmempoolinfo`
+#[macro_export]
+macro_rules! impl_client_v17__getmempoolinfo {
+    () => {
+        impl Client {
+            pub fn get_mempool_info(&self) -> Result<GetMempoolInfo> {
+                self.call("getmempoolinfo", &[])
+            }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `getrawmempool`
+#[macro_export]
+macro_rules! impl_client_v17__getrawmempool {
+    () => {
+        impl Client {
+            pub fn get_raw_mempool(&self) -> Result<GetRawMempool> {
+                // Equivalent to self.call("getrawmempool", &[into_json(false)?])
+                self.call("getrawmempool", &[])
+            }
+            pub fn get_raw_mempool_verbose(&self) -> Result<GetRawMempool> {
+                self.call("getrawmempool", &[into_json(true)?])
             }
         }
     };
@@ -177,6 +244,43 @@ macro_rules! impl_client_v17__gettxout {
         impl Client {
             pub fn get_tx_out(&self, txid: Txid, vout: u64) -> Result<GetTxOut> {
                 self.call("gettxout", &[into_json(txid)?, into_json(vout)?])
+            }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `gettxoutproof`
+#[macro_export]
+macro_rules! impl_client_v17__gettxoutproof {
+    () => {
+        impl Client {
+            pub fn get_tx_out_proof(&self, txids: Vec<Txid>) -> Result<GetTxOut> {
+                self.call("gettxoutproof", &[into_json(txids)?])
+            }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `gettxoutsetinfo`
+#[macro_export]
+macro_rules! impl_client_v17__gettxoutsetinfo {
+    () => {
+        impl Client {
+            pub fn get_tx_out_set_info(&self) -> Result<GetTxOut> {
+                self.call("gettxoutsetinfo", &[])
+            }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `verifytxoutproof`
+#[macro_export]
+macro_rules! impl_client_v17__verifytxoutproof {
+    () => {
+        impl Client {
+            // `proof` is the hex-encoded proof generated by `gettxoutproof`.
+            pub fn verify_tx_out_proof(&self, proof: &str) -> Result<GetTxOut> {
+                self.call("verifytxoutproof", &[into_json(proof)?])
             }
         }
     };

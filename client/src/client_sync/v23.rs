@@ -43,13 +43,15 @@ crate::impl_client_v17__sendtoaddress!();
 crate::impl_client_v17__gettransaction!();
 
 /// Argument to the `Client::get_new_address_with_type` function.
+///
+/// For Core v23 and onwards. For earlier versions use `v17::AddressType`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum AddressType {
     Legacy,
     P2shSegwit,
     Bech32,
-    Bech32m,
+    Bech32m, // Field added in Core v23
 }
 
 impl fmt::Display for AddressType {

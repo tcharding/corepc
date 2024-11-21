@@ -35,7 +35,7 @@ crate::impl_client_v17__sendrawtransaction!();
 
 // == Wallet ==
 crate::impl_client_v17__createwallet!();
-crate::impl_client_v17__unloadwallet!();
+//crate::impl_client_v17__unloadwallet!();
 crate::impl_client_v17__loadwallet!();
 crate::impl_client_v17__getnewaddress!();
 crate::impl_client_v17__getbalance!();

@@ -170,8 +170,8 @@ pub use crate::{
     v17::{
         CreateWallet, GenerateToAddress, GetBalance, GetBestBlockHash, GetBlockVerbosityOne,
         GetBlockVerbosityZero, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork,
-        GetNewAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailCategory,
-        GetTxOut, LoadWallet, SendRawTransaction,
+        GetNewAddress, GetTransaction, GetTransactionDetail, GetTxOut, LoadWallet,
+        SendRawTransaction, TransactionCategory,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,

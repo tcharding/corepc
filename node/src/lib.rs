@@ -23,7 +23,7 @@ pub use {anyhow, tempfile, which};
 #[rustfmt::skip]                // Keep pubic re-exports separate.
 #[doc(inline)]
 pub use self::{
-    client_versions::{json, Client, AddressType},
+    client_versions::{types, Client, AddressType},
     versions::VERSION,
 };
 
@@ -534,7 +534,9 @@ pub fn downloaded_exe_path() -> anyhow::Result<String> {
         path.push("bitcoind");
     }
 
-    Ok(format!("{}", path.display()))
+    let path = format!("{}", path.display());
+    debug!("path: {}", path);
+    Ok(path)
 }
 
 /// Returns the daemon `bitcoind` executable with the following precedence:
@@ -575,7 +577,9 @@ mod test {
     use tempfile::TempDir;
 
     use super::*;
-    use crate::{exe_path, get_available_port, Node, Conf, LOCAL_IP, P2P};
+    use crate::{exe_path, get_available_port, Node, Conf, LOCAL_IP};
+    #[cfg(not(feature = "28_0"))]
+    use crate::P2P;
 
     #[test]
     fn test_local_ip() {
@@ -624,6 +628,9 @@ mod test {
     }
 
     #[test]
+    // When this test is run at the same time as `test_multi_p2p` for v28 it fails.
+    // FIXME: Debug this failure - test runs ok on its own.
+    #[cfg(not(feature = "28_0"))]
     fn test_p2p() {
         let exe = init();
 
@@ -671,6 +678,22 @@ mod test {
     }
 
     #[test]
+    // In v28:
+    //
+    // > Bitcoin Core will now fail to start up if any of its P2P binds fail, rather than the
+    // > previous behaviour where it would only abort startup if all P2P binds had failed.
+    //
+    // ref: https://bitcoincore.org/en/releases/28.0/
+    // ref: https://github.com/bitcoin/bitcoin/pull/22729
+    //
+    // I tried various things to stop bitcoind attempting to bind on 18445 but could get nothing to work.
+    //
+    // - Tried using arg `-torcontrol=0`.
+    // - Tried using arg `-listenonion=0`.
+    // - Tried using arg `-bind={available_port}`.
+    // - Tried using arg `-bind={available_port}=onion`.
+    // - Tried using both the two bind args above together.
+    #[cfg(not(feature = "28_0"))]
     fn test_multi_p2p() {
         let exe = init();
 
@@ -712,10 +735,10 @@ mod test {
         node.client.generate_to_address(101, &bob_address).unwrap();
 
         let balances = alice.get_balances().unwrap();
-        let alice_balances: json::GetBalances = balances;
+        let alice_balances: types::GetBalances = balances;
 
         let balances = bob.get_balances().unwrap();
-        let bob_balances: json::GetBalances = balances;
+        let bob_balances: types::GetBalances = balances;
 
         assert_eq!(
             Amount::from_btc(50.0).unwrap(),
@@ -732,7 +755,7 @@ mod test {
         let _txid = alice.send_to_address(&bob_address, Amount::from_btc(1.0).unwrap()).unwrap();
 
         let balances = alice.get_balances().unwrap();
-        let alice_balances: json::GetBalances = balances;
+        let alice_balances: types::GetBalances = balances;
 
         assert!(
             Amount::from_btc(alice_balances.mine.trusted).unwrap()
@@ -744,7 +767,7 @@ mod test {
         // bob wallet may not be immediately updated
         for _ in 0..30 {
             let balances = bob.get_balances().unwrap();
-            let bob_balances: json::GetBalances = balances;
+            let bob_balances: types::GetBalances = balances;
 
             if Amount::from_btc(bob_balances.mine.untrusted_pending).unwrap().to_sat() > 0 {
                 break;
@@ -752,7 +775,7 @@ mod test {
             std::thread::sleep(std::time::Duration::from_millis(100));
         }
         let balances = bob.get_balances().unwrap();
-        let bob_balances: json::GetBalances = balances;
+        let bob_balances: types::GetBalances = balances;
 
         assert_eq!(
             Amount::from_btc(1.0).unwrap(),
@@ -834,6 +857,7 @@ mod test {
         assert!(node.params.zmq_pub_raw_block_socket.is_none());
     }
 
+    #[cfg(not(feature = "28_0"))]
     fn peers_connected(client: &Client) -> usize {
         // FIXME: Once client implements get_peer_info use it.
         // This is kinda cool, it shows we can call any RPC method using the client.

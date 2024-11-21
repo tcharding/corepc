@@ -161,13 +161,18 @@
 //! **== Zmq ==**
 //! - [ ] `getzmqnotifications`
 
+// JSON-RPC types by API section.
+mod wallet;
+
+#[doc(inline)]
+pub use self::wallet::UnloadWallet;
 #[doc(inline)]
 pub use crate::{
     v17::{
         CreateWallet, GenerateToAddress, GetBalance, GetBestBlockHash, GetBlockVerbosityOne,
         GetBlockVerbosityZero, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork,
-        GetNewAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailCategory,
-        GetTxOut, LoadWallet, SendRawTransaction, SendToAddress,
+        GetNewAddress, GetTransaction, GetTransactionDetail, GetTxOut, LoadWallet,
+        SendRawTransaction, SendToAddress, TransactionCategory,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,

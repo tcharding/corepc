@@ -2,17 +2,20 @@
 
 //! JSON-RPC types for `bitcoind v0.17.1`.
 //!
-//! These structs model the JSON data returned by the JSON-RPC API. They use stdlib types (or custom
-//! types) and where necessary implement an `into_model` function to convert the type to a
-//! [`crate::model`] type of the same name. The types in this module are version specific, the types
-//! in the `model` module are version non-specific and are strongly typed using `rust-bitcoin`.
+//! These structs are shaped for the JSON data returned by the JSON-RPC API. They use stdlib types
+//! (or custom types) and where necessary implement an `into_model` function to convert the type to
+//! a [`crate::model`] type of the same name. The types in this module are version specific, the
+//! types in the `model` module are version nonspecific and are strongly typed using `rust-bitcoin`.
 //!
-//! Key:
+//! ## Key:
+//!
 //! - `[ ]` Not yet done.
-//! - `[I]` Implemented _and_ tested.
-//! - `[x]` Implemented _and_ tested.
-//! - `[-]` Intentionally not done, typically because method does not return anything, returns
-//!         a single integer, or is deprecated.
+//! - `[i]` Implemented but not yet tested (includes `into_model`).
+//! - `[x]` Implemented _and_  tested.
+//! - `[-]` Intentionally not done, typically for one of the following reasons:
+//!           - Method does not return anything.
+//!           - Method returns a simple type (e.g. bool or integer).
+//!           - Method is deprecated.
 //!
 //! **== Blockchain ==**
 //! - [x] `getbestblockhash`
@@ -25,20 +28,20 @@
 //! - [x] `getchaintips`
 //! - [x] `getchaintxstats ( nblocks blockhash )`
 //! - [x] `getdifficulty`
-//! - [ ] `getmempoolancestors txid (verbose)`
-//! - [ ] `getmempooldescendants txid (verbose)`
-//! - [ ] `getmempoolentry txid`
-//! - [ ] `getmempoolinfo`
-//! - [ ] `getrawmempool ( verbose )`
-//! - [ ] `gettxout "txid" n ( include_mempool )`
-//! - [ ] `gettxoutproof ["txid",...] ( blockhash )`
-//! - [ ] `gettxoutsetinfo`
-//! - [ ] `preciousblock "blockhash"`
+//! - [i] `getmempoolancestors txid (verbose)`
+//! - [i] `getmempooldescendants txid (verbose)`
+//! - [i] `getmempoolentry txid`
+//! - [i] `getmempoolinfo`
+//! - [i] `getrawmempool ( verbose )`
+//! - [i] `gettxout "txid" n ( include_mempool )`
+//! - [i] `gettxoutproof ["txid",...] ( blockhash )`
+//! - [i] `gettxoutsetinfo`
+//! - [-] `preciousblock "blockhash"`
 //! - [-] `pruneblockchain`
 //! - [-] `savemempool`
 //! - [-] `scantxoutset <action> ( <scanobjects> )`
-//! - [ ] `verifychain ( checklevel nblocks )`
-//! - [-] `verifytxoutproof "proof"`
+//! - [-] `verifychain ( checklevel nblocks )`
+//! - [i] `verifytxoutproof "proof"`
 //!
 //! **== Control ==**
 //! - [x] `getmemoryinfo ("mode")`
@@ -84,7 +87,7 @@
 //! - [ ] `finalizepsbt "psbt" ( extract )`
 //! - [ ] `fundrawtransaction "hexstring" ( options iswitness )`
 //! - [ ] `getrawtransaction "txid" ( verbose "blockhash" )`
-//! - [ ] `sendrawtransaction "hexstring" ( allowhighfees )`
+//! - [i] `sendrawtransaction "hexstring" ( allowhighfees )`
 //! - [ ] `signrawtransaction "hexstring" ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] ["privatekey1",...] sighashtype )`
 //! - [ ] `signrawtransactionwithkey "hexstring" ["privatekey1",...] ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] sighashtype )`
 //! - [ ] `testmempoolaccept ["rawtxs"] ( allowhighfees )`
@@ -97,69 +100,69 @@
 //! - [ ] `verifymessage "address" "signature" "message"`
 //!
 //! **== Wallet ==**
-//! - [ ] `abandontransaction "txid"`
-//! - [ ] `abortrescan`
-//! - [ ] `addmultisigaddress nrequired ["key",...] ( "label" "address_type" )`
-//! - [ ] `backupwallet "destination"`
-//! - [ ] `bumpfee "txid" ( options ) `
+//! - [-] `abandontransaction "txid"`
+//! - [-] `abortrescan`
+//! - [x] `addmultisigaddress nrequired ["key",...] ( "label" "address_type" )`
+//! - [-] `backupwallet "destination"`
+//! - [x] `bumpfee "txid" ( options ) `
 //! - [x] `createwallet "wallet_name" ( disable_private_keys )`
-//! - [ ] `dumpprivkey "address"`
-//! - [ ] `dumpwallet "filename"`
-//! - [ ] `encryptwallet "passphrase"`
-//! - [ ] `getaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `getaccountaddress (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `getaddressbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `getaddressesbylabel "label"`
-//! - [ ] `getaddressinfo "address"`
+//! - [x] `dumpprivkey "address"`
+//! - [x] `dumpwallet "filename"`
+//! - [-] `encryptwallet "passphrase"`
+//! - [-] `getaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
+//! - [-] `getaccountaddress (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
+//! - [-] `getaddressbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
+//! - [x] `getaddressesbylabel "label"`
+//! - [x] `getaddressinfo "address"`
 //! - [x] `getbalance ( "(dummy)" minconf include_watchonly )`
 //! - [x] `getnewaddress ( "label" "address_type" )`
-//! - [ ] `getrawchangeaddress ( "address_type" )`
-//! - [ ] `getreceivedbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `getreceivedbyaddress "address" ( minconf )`
+//! - [x] `getrawchangeaddress ( "address_type" )`
+//! - [-] `getreceivedbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
+//! - [i] `getreceivedbyaddress "address" ( minconf )`
 //! - [x] `gettransaction "txid" ( include_watchonly )`
-//! - [ ] `getunconfirmedbalance`
-//! - [ ] `getwalletinfo`
-//! - [ ] `importaddress "address" ( "label" rescan p2sh )`
-//! - [ ] `importmulti "requests" ( "options" )`
-//! - [ ] `importprivkey "privkey" ( "label" ) ( rescan )`
-//! - [ ] `importprunedfunds`
-//! - [ ] `importpubkey "pubkey" ( "label" rescan )`
-//! - [ ] `importwallet "filename"`
-//! - [ ] `keypoolrefill ( newsize )`
-//! - [ ] `listaccounts (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `listaddressgroupings`
-//! - [ ] `listlabels ( "purpose" )`
-//! - [ ] `listlockunspent`
-//! - [ ] `listreceivedbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `listreceivedbyaddress ( minconf include_empty include_watchonly address_filter )`
-//! - [ ] `listsinceblock ( "blockhash" target_confirmations include_watchonly include_removed )`
-//! - [ ] `listtransactions (label count skip include_watchonly)`
-//! - [ ] `listunspent ( minconf maxconf  ["addresses",...] [include_unsafe] [query_options])`
-//! - [ ] `listwallets`
+//! - [i] `getunconfirmedbalance`
+//! - [i] `getwalletinfo`
+//! - [-] `importaddress "address" ( "label" rescan p2sh )`
+//! - [-] `importmulti "requests" ( "options" )`
+//! - [-] `importprivkey "privkey" ( "label" ) ( rescan )`
+//! - [-] `importprunedfunds`
+//! - [-] `importpubkey "pubkey" ( "label" rescan )`
+//! - [-] `importwallet "filename"`
+//! - [-] `keypoolrefill ( newsize )`
+//! - [-] `listaccounts (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
+//! - [i] `listaddressgroupings`
+//! - [i] `listlabels ( "purpose" )`
+//! - [i] `listlockunspent`
+//! - [-] `listreceivedbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
+//! - [i] `listreceivedbyaddress ( minconf include_empty include_watchonly address_filter )`
+//! - [i] `listsinceblock ( "blockhash" target_confirmations include_watchonly include_removed )`
+//! - [i] `listtransactions (label count skip include_watchonly)`
+//! - [i] `listunspent ( minconf maxconf  ["addresses",...] [include_unsafe] [query_options])`
+//! - [i] `listwallets`
 //! - [x] `loadwallet "filename"`
-//! - [ ] `lockunspent unlock ([{"txid":"txid","vout":n},...])`
-//! - [ ] `move (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `removeprunedfunds "txid"`
-//! - [ ] `rescanblockchain ("start_height") ("stop_height")`
-//! - [ ] `sendfrom (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `sendmany "" {"address":amount,...} ( minconf "comment" ["address",...] replaceable conf_target "estimate_mode")`
+//! - [-] `lockunspent unlock ([{"txid":"txid","vout":n},...])`
+//! - [-] `move (Deprecated, will be removed in V0.18. To use this command, start bitcboind with -deprecatedrpc=accounts)`
+//! - [-] `removeprunedfunds "txid"`
+//! - [x] `rescanblockchain ("start_height") ("stop_height")`
+//! - [-] `sendfrom (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
+//! - [i] `sendmany "" {"address":amount,...} ( minconf "comment" ["address",...] replaceable conf_target "estimate_mode")`
 //! - [x] `sendtoaddress "address" amount ( "comment" "comment_to" subtractfeefromamount replaceable conf_target "estimate_mode")`
-//! - [ ] `setaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
-//! - [ ] `sethdseed ( "newkeypool" "seed" )`
-//! - [ ] `settxfee amount`
-//! - [ ] `signmessage "address" "message"`
-//! - [ ] `signrawtransactionwithwallet "hexstring" ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] sighashtype )`
-//! - [ ] `unloadwallet ( "wallet_name" )`
-//! - [ ] `walletcreatefundedpsbt [{"txid":"id","vout":n},...] [{"address":amount},{"data":"hex"},...] ( locktime ) ( replaceable ) ( options bip32derivs )`
-//! - [ ] `walletlock`
-//! - [ ] `walletpassphrase "passphrase" timeout`
-//! - [ ] `walletpassphrasechange "oldpassphrase" "newpassphrase"`
-//! - [ ] `walletprocesspsbt "psbt" ( sign "sighashtype" bip32derivs )`
+//! - [-] `setaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoind with -deprecatedrpc=accounts)`
+//! - [-] `sethdseed ( "newkeypool" "seed" )`
+//! - [-] `settxfee amount`
+//! - [i] `signmessage "address" "message"`
+//! - [i] `signrawtransactionwithwallet "hexstring" ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] sighashtype )`
+//! - [-] `unloadwallet ( "wallet_name" )`
+//! - [i] `walletcreatefundedpsbt [{"txid":"id","vout":n},...] [{"address":amount},{"data":"hex"},...] ( locktime ) ( replaceable ) ( options bip32derivs )`
+//! - [-] `walletlock`
+//! - [-] `walletpassphrase "passphrase" timeout`
+//! - [-] `walletpassphrasechange "oldpassphrase" "newpassphrase"`
+//! - [i] `walletprocesspsbt "psbt" ( sign "sighashtype" bip32derivs )`
 //!
 //! **== Zmq ==**
-//! - [ ] `getzmqnotifications`
+//! - [i] `getzmqnotifications`
 
-/// JSON-RPC types by API section.
+// JSON-RPC types by API section.
 mod blockchain;
 mod control;
 mod generating;
@@ -176,8 +179,10 @@ pub use self::{
         Bip9Softfork, Bip9SoftforkStatus, ChainTips, ChainTipsStatus, GetBestBlockHash,
         GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderVerbose, GetBlockStats,
         GetBlockVerbosityOne, GetBlockVerbosityZero, GetBlockchainInfo, GetChainTips,
-        GetChainTxStats, GetDifficulty, GetMempoolAncestors, GetMempoolAncestorsVerbose, GetTxOut,
-        ScriptPubkey, Softfork, SoftforkReject,
+        GetChainTxStats, GetDifficulty, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
+        GetRawMempool, GetRawMempoolVerbose, GetTxOut, GetTxOutProof, GetTxOutSetInfo,
+        MempoolEntry, MempoolEntryFees, ScriptPubkey, Softfork, SoftforkReject, VerifyTxOutProof,
     },
     control::{GetMemoryInfoStats, Locked, Logging, Uptime},
     generating::{Generate, GenerateToAddress},
@@ -188,7 +193,15 @@ pub use self::{
     },
     raw_transactions::SendRawTransaction,
     wallet::{
-        CreateWallet, GetBalance, GetNewAddress, GetTransaction, GetTransactionDetail,
-        GetTransactionDetailCategory, LoadWallet, SendToAddress,
+        AddMultisigAddress, AddressInformation, BumpFee, CreateWallet, DumpPrivKey, DumpWallet,
+        GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoLabel, GetAddressesByLabel,
+        GetBalance, GetNewAddress, GetRawChangeAddress, GetReceivedByAddress, GetTransaction,
+        GetTransactionDetail, GetUnconfirmedBalance, GetWalletInfo, ListAddressGroupings,
+        ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
+        ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
+        ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
+        ListUnspentItem, ListWallets, LoadWallet, RescanBlockchain, SendMany, SendToAddress,
+        SignErrorData, SignMessage, SignRawTransactionWithWallet, TransactionCategory,
+        WalletCreateFundedPsbt, WalletProcessPsbt,
     },
 };

@@ -34,7 +34,7 @@ pub struct CreateWallet {
 }
 
 impl CreateWallet {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> model::CreateWallet {
         model::CreateWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
     }
@@ -63,7 +63,7 @@ pub struct LoadWallet {
 }
 
 impl LoadWallet {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> model::LoadWallet {
         model::LoadWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
     }

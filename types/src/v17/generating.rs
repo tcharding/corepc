@@ -17,12 +17,14 @@ use crate::model;
 /// >
 /// > Arguments:
 /// > 1. nblocks      (numeric, required) How many blocks are generated immediately.
-/// > 2. maxtries     (numeric, optional) How many iterations to try (default = 1000000).
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct Generate(Vec<String>);
+pub struct Generate(
+    /// Hashes of blocks generated.
+    pub Vec<String>,
+);
 
 impl Generate {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::Generate, hex::HexToArrayError> {
         let v = self.0.iter().map(|s| s.parse::<BlockHash>()).collect::<Result<Vec<_>, _>>()?;
         Ok(model::Generate(v))
@@ -38,7 +40,6 @@ impl Generate {
 /// > Arguments:
 /// > 1. nblocks     (numeric, required) How many blocks are generated immediately.
 /// > 2. address     (string, required) The address to send the newly generated bitcoin to.
-/// > 3. maxtries    (numeric, optional, default=1000000) How many iterations to try.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GenerateToAddress(
     /// Hashes of blocks generated.
@@ -46,7 +47,7 @@ pub struct GenerateToAddress(
 );
 
 impl GenerateToAddress {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::GenerateToAddress, hex::HexToArrayError> {
         let v = self.0.iter().map(|s| s.parse::<BlockHash>()).collect::<Result<Vec<_>, _>>()?;
         Ok(model::GenerateToAddress(v))

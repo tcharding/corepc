@@ -6,14 +6,15 @@
 //!
 /// These types do not implement `into_model` because apart from fee rate there is no additional
 /// `rust-bitcoin` types needed.
-use core::fmt;
+mod error;
+mod into;
+
 use std::collections::BTreeMap;
 
-use bitcoin::amount::ParseAmountError;
-use internals::write_err;
 use serde::{Deserialize, Serialize};
 
-use crate::model;
+// TODO: Remove wildcard, use explicit types.
+pub use self::error::*;
 
 /// Result of JSON-RPC method `getaddednodeinfo`.
 ///
@@ -154,84 +155,6 @@ pub struct GetNetworkInfoAddress {
     pub port: u16,
     /// Relative score.
     pub score: u32,
-}
-
-impl GetNetworkInfo {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetNetworkInfo, GetNetworkInfoError> {
-        use GetNetworkInfoError as E;
-
-        let relay_fee = crate::btc_per_kb(self.relay_fee).map_err(E::RelayFee)?;
-        let incremental_fee = crate::btc_per_kb(self.incremental_fee).map_err(E::IncrementalFee)?;
-
-        Ok(model::GetNetworkInfo {
-            version: self.version,
-            subversion: self.subversion,
-            protocol_version: self.protocol_version,
-            local_services: self.local_services,
-            local_relay: self.local_relay,
-            time_offset: self.time_offset,
-            connections: self.connections,
-            network_active: self.network_active,
-            networks: self.networks.into_iter().map(|n| n.into_model()).collect(),
-            relay_fee,
-            incremental_fee,
-            local_addresses: self.local_addresses.into_iter().map(|a| a.into_model()).collect(),
-            warnings: vec![self.warnings],
-        })
-    }
-}
-
-/// Error when converting a `GetTransaction` type into the model type.
-#[derive(Debug)]
-pub enum GetNetworkInfoError {
-    /// Conversion of the `relay_fee` field failed.
-    RelayFee(ParseAmountError),
-    /// Conversion of the `incremental_fee` field failed.
-    IncrementalFee(ParseAmountError),
-}
-
-impl fmt::Display for GetNetworkInfoError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetNetworkInfoError as E;
-
-        match *self {
-            E::RelayFee(ref e) => write_err!(f, "conversion of the `relay_fee` field failed"; e),
-            E::IncrementalFee(ref e) =>
-                write_err!(f, "conversion of the `incremental_fee` field failed"; e),
-        }
-    }
-}
-
-impl std::error::Error for GetNetworkInfoError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetNetworkInfoError as E;
-
-        match *self {
-            E::RelayFee(ref e) => Some(e),
-            E::IncrementalFee(ref e) => Some(e),
-        }
-    }
-}
-
-impl GetNetworkInfoNetwork {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
-    pub fn into_model(self) -> model::GetNetworkInfoNetwork {
-        model::GetNetworkInfoNetwork {
-            name: self.name,
-            limited: self.limited,
-            reachable: self.reachable,
-            proxy: self.proxy,
-            proxy_randomize_credentials: self.proxy_randomize_credentials,
-        }
-    }
-}
-
-impl GetNetworkInfoAddress {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
-    pub fn into_model(self) -> model::GetNetworkInfoAddress {
-        model::GetNetworkInfoAddress { address: self.address, port: self.port, score: self.score }
-    }
 }
 
 /// Result of JSON-RPC method `getpeerinfo`.

@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
 
 //! Types returned by the JSON-RPC API of Bitcoin Core.
+//!
+//! Each type has rustdocs copied from Core, bugs and all. Additional docs were only added if things
+//! really didn't make sense. Only required arguments are documented. To see what optional arguments
+//! are available run `bitcoin-cli help <method>` against the version of Core you are interested in.
 
 /// Re-export the `rust-bitcoin` crate.
 pub extern crate bitcoin;

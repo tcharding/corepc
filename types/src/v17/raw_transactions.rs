@@ -19,12 +19,14 @@ use crate::model;
 /// >
 /// > Arguments:
 /// > 1. hexstring        (string, required) The hex string of the raw transaction
-/// > 2. allowhighfees    (boolean, optional, default=false) Allow high fees
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct SendRawTransaction(pub String); // The hex encoded txid.
+pub struct SendRawTransaction(
+    /// The hex encoded txid.
+    pub String,
+);
 
 impl SendRawTransaction {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::SendRawTransaction, hex::HexToArrayError> {
         let txid = self.0.parse::<Txid>()?;
         Ok(model::SendRawTransaction(txid))

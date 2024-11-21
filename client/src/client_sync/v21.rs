@@ -10,13 +10,15 @@ use bitcoin::{Amount, Block, BlockHash, Txid};
 use crate::client_sync::into_json;
 use crate::types::v21::*;
 
+#[rustfmt::skip]                // Keep public re-exports separate.
+pub use crate::client_sync::v17::AddressType;
+
 crate::define_jsonrpc_minreq_client!("v21");
 
 // == Blockchain ==
 crate::impl_client_v17__getblockchaininfo!();
 crate::impl_client_v17__getbestblockhash!();
 crate::impl_client_v17__getblock!();
-crate::impl_client_v17__gettxout!();
 
 // == Control ==
 crate::impl_client_v17__stop!();
@@ -33,12 +35,9 @@ crate::impl_client_v17__sendrawtransaction!();
 
 // == Wallet ==
 crate::impl_client_v17__createwallet!();
-crate::impl_client_v17__unloadwallet!();
 crate::impl_client_v17__loadwallet!();
 crate::impl_client_v17__getnewaddress!();
 crate::impl_client_v17__getbalance!();
 crate::impl_client_v19__getbalances!();
 crate::impl_client_v17__sendtoaddress!();
 crate::impl_client_v17__gettransaction!();
-
-pub use crate::client_sync::v17::AddressType;

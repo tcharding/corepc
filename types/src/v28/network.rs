@@ -52,7 +52,7 @@ pub struct GetNetworkInfo {
 }
 
 impl GetNetworkInfo {
-    /// Converts version specific type to a version in-specific, more strongly typed type.
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::GetNetworkInfo, GetNetworkInfoError> {
         use GetNetworkInfoError as E;
 

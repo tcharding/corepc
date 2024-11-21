@@ -1,43 +1,80 @@
 //! Provides a macro that implements the tests.
 
-pub mod v17;
-pub mod v19;
-pub mod v22;
+use std::path::PathBuf;
 
-/// Requires `RPC_PORT` to be in scope.
-use node::Node;
+use rand::distributions::Alphanumeric;
+use rand::Rng;
+
+#[rustfmt::skip]    // Keep public re-exports separate.
+pub use node::Node; // Re-export this to make test imports more terse.
+
+/// Number of blocks to generate when funding wallet.
+const NBLOCKS: usize = 101;
 
 /// Initialize a logger (configure with `RUST_LOG=trace cargo test`).
 #[allow(dead_code)] // Not all tests use this function.
 pub fn init_logger() { let _ = env_logger::try_init(); }
 
-/// Returns a handle to a `bitcoind` instance with "default" wallet loaded.
-#[allow(dead_code)] // Not all tests use this function.
-pub fn bitcoind_with_default_wallet() -> Node {
-    init_logger();
+pub trait NodeExt {
+    /// Returns a handle to a `bitcoind` instance after leading wallet if present.
+    fn new(conf: node::Conf, wallet: Option<String>) -> Node;
 
-    let exe = node::exe_path().expect("failed to get bitcoind executable");
+    /// Returns a handle to a `bitcoind` instance with "default" wallet loaded.
+    fn new_with_default_wallet() -> Node {
+        let conf = node::Conf::default();
+        Self::new(conf, None)
+    }
 
-    let conf = node::Conf::default();
-    Node::with_conf(exe, &conf).expect("failed to create node")
+    /// Returns a handle to a `bitcoind` instance with `wallet` loaded.
+    fn new_with_wallet(wallet: String) -> Node {
+        let conf = node::Conf::default();
+        Self::new(conf, Some(wallet))
+    }
+
+    /// Returns a handle to a `bitcoind` instance without any wallet loaded.
+    fn new_no_wallet() -> Node {
+        let mut conf = node::Conf::default();
+        conf.wallet = None;
+        Self::new(conf, None)
+    }
+
+    /// Returns a handle to a `bitcoind` instance without any wallet loaded and `-txindex` enabled.
+    fn new_no_wallet_txindex() -> Node {
+        let mut conf = node::Conf::default();
+        conf.args.push("-txindex");
+        Self::new(conf, None)
+    }
+
+    /// Generates [`NBLOCKS`] to an address controlled by the loaded wallet.
+    fn fund_wallet(&self);
 }
 
-/// Returns a handle to a `bitcoind` instance without any wallets.
-#[allow(dead_code)] // Not all tests use this function.
-pub fn bitcoind_with_wallet(wallet: String) -> Node {
-    let exe = node::exe_path().expect("failed to get bitcoind executable");
+impl NodeExt for Node {
+    fn new(mut conf: node::Conf, wallet: Option<String>) -> Node {
+        let exe = node::exe_path().expect("failed to get bitcoind executable");
 
-    let mut conf = node::Conf::default();
-    conf.wallet = Some(wallet);
-    Node::with_conf(exe, &conf).expect("failed to create node")
+        if let Some(wallet) = wallet {
+            conf.wallet = Some(wallet);
+        }
+        
+        Node::with_conf(exe, &conf).expect("failed to create node")
+    }
+
+    fn fund_wallet(&self) {
+        // TODO: Consider returning the error.
+        let address = self.client.new_address().expect("failed to get new address");
+        self.client.generate_to_address(NBLOCKS, &address).expect("failed to generate to address");
+    }
 }
 
-/// Returns a handle to a `bitcoind` instance without any wallet loaded.
-#[allow(dead_code)] // Not all tests use this function.
-pub fn bitcoind_no_wallet() -> Node {
-    let exe = node::exe_path().expect("failed to get bitcoind executable");
-
-    let mut conf = node::Conf::default();
-    conf.wallet = None;
-    Node::with_conf(exe, &conf).expect("failed to create node")
+/// Return a temporary file path.
+pub fn random_tmp_file() -> PathBuf {
+    let file: String = rand::thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(7)
+        .map(char::from)
+        .collect();
+    let mut tmp = std::env::temp_dir();
+    tmp.push(&file);
+    tmp
 }

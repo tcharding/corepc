@@ -10,7 +10,7 @@ use std::collections::BTreeMap;
 use bitcoin::address::NetworkUnchecked;
 use bitcoin::{
     block, Address, Amount, Block, BlockHash, CompactTarget, FeeRate, Network, TxMerkleNode, TxOut,
-    Txid, Weight, Work,
+    Txid, Weight, Work, Wtxid,
 };
 use serde::{Deserialize, Serialize};
 
@@ -282,7 +282,7 @@ pub struct GetBlockStats {
     pub utxo_size_increase: i32,
 }
 
-/// Result of JSON-RPC method `getchaintips`.
+/// Models the result of JSON-RPC method `getchaintips`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetChainTips(pub Vec<ChainTips>);
 
@@ -315,7 +315,7 @@ pub enum ChainTipsStatus {
     Active,
 }
 
-/// Result of JSON-RPC method `getchaintxstats`.
+/// Models the result of JSON-RPC method `getchaintxstats`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetChainTxStats {
     /// The timestamp for the final block in the window in UNIX format.
@@ -334,17 +334,105 @@ pub struct GetChainTxStats {
     pub tx_rate: Option<u32>,
 }
 
-/// Result of JSON-RPC method `getdifficulty`.
+/// Models the result of JSON-RPC method `getdifficulty`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetDifficulty(pub f64);
 
-/// Result of JSON-RPC method `getmempoolancestors` with verbose set to false.
+/// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to false.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolAncestors(pub Vec<Txid>);
 
-/// Result of JSON-RPC method `getmempoolancestors` with verbose set to true.
+/// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to true.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct GetMempoolAncestorsVerbose {}
+pub struct GetMempoolAncestorsVerbose(pub BTreeMap<Txid, MempoolEntry>);
+
+/// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to false.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetMempoolDescendants(pub Vec<Txid>);
+
+/// Models the result of JSON-RPC method `getmempooldescendants` with verbose set to true.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetMempoolDescendantsVerbose(pub BTreeMap<Txid, MempoolEntry>);
+
+/// Models the result of JSON-RPC method `getmempoolentry`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetMempoolEntry(pub MempoolEntry);
+
+/// A relative (ancestor or descendant) transaction of a transaction in the mempool.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct MempoolEntry {
+    /// Virtual transaction size as defined in BIP 141.
+    ///
+    /// This is different from actual serialized size for witness transactions as witness data is discounted.
+    pub size: u32,
+    /// Local time transaction entered pool in seconds since 1 Jan 1970 GMT.
+    pub time: u32,
+    /// Block height when transaction entered pool.
+    pub height: u32,
+    /// Number of in-mempool descendant transactions (including this one).
+    pub descendant_count: u32,
+    /// Virtual transaction size of in-mempool descendants (including this one).
+    pub descendant_size: u32,
+    /// Number of in-mempool ancestor transactions (including this one).
+    pub ancestor_count: u32,
+    /// Virtual transaction size of in-mempool ancestors (including this one).
+    pub ancestor_size: u32,
+    /// Hash of serialized transaction, including witness data.
+    pub wtxid: Wtxid,
+    /// (No docs in Core v17.)
+    pub fees: MempoolEntryFees,
+    /// Unconfirmed transactions used as inputs for this transaction (parent transaction id).
+    pub depends: Vec<Txid>,
+    /// Unconfirmed transactions spending outputs from this transaction (child transaction id).
+    pub spent_by: Vec<Txid>,
+}
+
+/// (No docs in Core v17.)
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct MempoolEntryFees {
+    /// Transaction fee in BTC.
+    pub base: Amount,
+    /// Transaction fee with fee deltas used for mining priority in BTC.
+    pub modified: Amount,
+    /// Modified fees (see above) of in-mempool ancestors (including this one) in BTC
+    pub ancestor: Amount,
+    /// Modified fees (see above) of in-mempool descendants (including this one) in BTC.
+    pub descendant: Amount,
+}
+
+/// Models the result of JSON-RPC method `getmempooldescendants` with verbose set to true.
+/// Result of JSON-RPC method `getmempoolinfo` with verbose set to true
+///
+/// > getmempoolinfo
+/// >
+/// > Returns details on the active state of the TX memory pool.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetMempoolInfo {
+    /// Current transaction count.
+    pub size: u32,
+    /// Sum of all virtual transaction sizes as defined in BIP 141.
+    ///
+    /// Differs from actual serialized size because witness data is discounted.
+    pub bytes: u32,
+    /// Total memory usage for the mempool.
+    pub usage: u32,
+    /// Maximum memory usage for the mempool.
+    pub max_mempool: u32,
+    /// Minimum fee rate in BTC/kB for a transaction to be accepted.
+    ///
+    /// This is the maximum of `minrelaytxfee` and the minimum mempool fee.
+    pub mempool_min_fee: Option<FeeRate>,
+    /// Current minimum relay fee for transactions.
+    pub min_relay_tx_fee: Option<FeeRate>,
+}
+
+/// Models the result of JSON-RPC method `getrawmempool` with verbose set to false.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetRawMempool(pub Vec<Txid>);
+
+/// Models the result of JSON-RPC method `getrawmempool` with verbose set to true.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetRawMempoolVerbose(pub BTreeMap<Txid, MempoolEntry>);
 
 /// Models the result of JSON-RPC method `gettxout`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
@@ -352,11 +440,40 @@ pub struct GetTxOut {
     /// The hash of the block at the tip of the chain.
     pub best_block: BlockHash,
     /// The number of confirmations (signed to match other types with the same field name).
-    pub confirmations: i64,
+    pub confirmations: u32,
     /// The returned `TxOut` (strongly typed).
     pub tx_out: TxOut,
     /// Address that `tx_out` spends to.
-    pub address: Address<NetworkUnchecked>,
+    pub addresses: Vec<Address<NetworkUnchecked>>,
     /// Coinbase or not.
     pub coinbase: bool,
 }
+
+/// Models the result of JSON-RPC method `gettxoutproof`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct GetTxOutProof(pub Vec<u8>); // The proof data.
+
+/// Models the result of JSON-RPC method `gettxoutsetinfo`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetTxOutSetInfo {
+    /// The current block height (index).
+    pub height: u32,
+    /// The hash of the block at the tip of the chain.
+    pub best_block: BlockHash,
+    /// The number of transactions with unspent outputs.
+    pub transactions: u32,
+    /// The number of unspent transaction outputs.
+    pub tx_outs: u32,
+    /// A meaningless metric for UTXO set size.
+    pub bogo_size: u32,
+    /// The serialized hash.
+    pub hash_serialized_2: String, // FIXME: What sort of hash is this?
+    /// The estimated size of the chainstate on disk.
+    pub disk_size: u32,
+    /// The total amount.
+    pub total_amount: Amount,
+}
+
+/// Models the result of JSON-RPC method `verifytxoutproof`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct VerifyTxOutProof(pub Vec<Txid>);

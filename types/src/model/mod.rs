@@ -2,12 +2,12 @@
 
 //! Models of the data returned by the JSON-RPC API of Bitcoin Core.
 //!
-//! The types here model the data returned by Bitcoin Core in a version non-specific way. In other
+//! The types here model the data returned by Bitcoin Core in a version nonspecific way. In other
 //! words one can use a particular `bitcoind` version via the version specific module (e.g.
 //! `crate::v26`) then convert the `json` types to one of the modelled types in this module using
 //! `TryFrom`.
 
-// Separated by the section name in the `bitcoind` JSON-RPC docs.
+// JSON-RPC types by API section.
 mod blockchain;
 mod control;
 mod generating;
@@ -18,11 +18,6 @@ mod util;
 mod wallet;
 mod zmq;
 
-// TODO/QUESTIONS
-//
-// - Should all types here be non_exhaustive (otherwise evertime Core changes them we will need a new major release)?
-// - Should we provide an inherent convertion method because try_from's lack of type inference is annoying to use.
-
 #[doc(inline)]
 pub use self::{
     blockchain::{
@@ -30,14 +25,25 @@ pub use self::{
         GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderVerbose,
         GetBlockStats, GetBlockVerbosityOne, GetBlockVerbosityZero, GetBlockchainInfo,
         GetChainTips, GetChainTxStats, GetDifficulty, GetMempoolAncestors,
-        GetMempoolAncestorsVerbose, GetTxOut, Softfork, SoftforkType,
+        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
+        GetMempoolEntry, GetMempoolInfo, GetRawMempool, GetRawMempoolVerbose, GetTxOut,
+        GetTxOutProof, GetTxOutSetInfo, MempoolEntry, MempoolEntryFees, Softfork, SoftforkType,
+        VerifyTxOutProof,
     },
     generating::{Generate, GenerateToAddress},
     network::{GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork},
     raw_transactions::SendRawTransaction,
     wallet::{
-        CreateWallet, GetBalance, GetBalances, GetBalancesMine, GetBalancesWatchOnly,
-        GetNewAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailCategory,
-        LoadWallet, SendToAddress, UnloadWallet,
+        AddMultisigAddress, AddressInformation, AddressLabel, AddressPurpose, Bip125Replaceable,
+        BumpFee, CreateWallet, DumpPrivKey, DumpWallet, GetAddressInfo, GetAddressInfoEmbedded,
+        GetAddressesByLabel, GetBalance, GetBalances, GetBalancesMine, GetBalancesWatchOnly,
+        GetNewAddress, GetRawChangeAddress, GetReceivedByAddress, GetTransaction,
+        GetTransactionDetail, GetUnconfirmedBalance, GetWalletInfo, ListAddressGroupings,
+        ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
+        ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
+        ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspentItem,
+        ListWallets, LoadWallet, RescanBlockchain, ScriptType, SendMany, SendToAddress,
+        SignErrorData, SignMessage, SignRawTransactionWithWallet, TransactionCategory,
+        UnloadWallet, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
 };

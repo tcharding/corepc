@@ -11,21 +11,54 @@ pub mod network;
 pub mod raw_transactions;
 pub mod wallet;
 
+use std::collections::BTreeMap;
+use std::path::Path;
+
 use bitcoin::address::{Address, NetworkChecked};
-use bitcoin::{Amount, Block, BlockHash, Txid};
+use bitcoin::{Amount, Block, BlockHash, PublicKey, Txid};
 use serde::{Deserialize, Serialize};
 
 use crate::client_sync::into_json;
 use crate::types::v17::*;
 
+/// An element in the `inputs` argument of method `walletcreatefundedpsbt`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct WalletCreateFundedPsbtInput {
+    txid: Txid,
+    vout: u32,
+}
+
+/// Argument to the `Client::get_new_address_with_type` function.
+///
+/// For Core versions 0.17 through to v22. For Core v23 and onwards use `v23::AddressType`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum AddressType {
+    Legacy,
+    P2shSegwit,
+    Bech32,
+}
+
+impl fmt::Display for AddressType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use AddressType::*;
+
+        let s = match *self {
+            Legacy => "legacy",
+            P2shSegwit => "p2sh-segwit",
+            Bech32 => "bech32",
+        };
+        fmt::Display::fmt(s, f)
+    }
+}
+
 crate::define_jsonrpc_minreq_client!("v17");
 crate::impl_client_check_expected_server_version!({ [170100] });
 
 // == Blockchain ==
-crate::impl_client_v17__getblockchaininfo!();
 crate::impl_client_v17__getbestblockhash!();
 crate::impl_client_v17__getblock!();
-crate::impl_client_v17__gettxout!();
+crate::impl_client_v17__getblockchaininfo!();
 crate::impl_client_v17__getblockcount!();
 crate::impl_client_v17__getblockhash!();
 crate::impl_client_v17__getblockheader!();
@@ -34,6 +67,14 @@ crate::impl_client_v17__getchaintips!();
 crate::impl_client_v17__getchaintxstats!();
 crate::impl_client_v17__getdifficulty!();
 crate::impl_client_v17__getmempoolancestors!();
+crate::impl_client_v17__getmempooldescendants!();
+crate::impl_client_v17__getmempoolentry!();
+crate::impl_client_v17__getmempoolinfo!();
+crate::impl_client_v17__getrawmempool!();
+crate::impl_client_v17__gettxout!();
+crate::impl_client_v17__gettxoutproof!();
+crate::impl_client_v17__gettxoutsetinfo!();
+crate::impl_client_v17__verifytxoutproof!();
 
 // == Control ==
 crate::impl_client_v17__getmemoryinfo!();
@@ -55,32 +96,33 @@ crate::impl_client_v17__getpeerinfo!();
 crate::impl_client_v17__sendrawtransaction!();
 
 // == Wallet ==
+crate::impl_client_v17__addmultisigaddress!();
+crate::impl_client_v17__bumpfee!();
 crate::impl_client_v17__createwallet!();
-crate::impl_client_v17__unloadwallet!();
-crate::impl_client_v17__loadwallet!();
-crate::impl_client_v17__getnewaddress!();
+crate::impl_client_v17__dumpprivkey!();
+crate::impl_client_v17__dumpwallet!();
+crate::impl_client_v17__getaddressesbylabel!();
+crate::impl_client_v17__getaddressinfo!();
 crate::impl_client_v17__getbalance!();
-crate::impl_client_v17__sendtoaddress!();
+crate::impl_client_v17__getnewaddress!();
+crate::impl_client_v17__getrawchangeaddress!();
+crate::impl_client_v17__getreceivedbyaddress!();
 crate::impl_client_v17__gettransaction!();
-
-/// Argument to the `Client::get_new_address_with_type` function.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "kebab-case")]
-pub enum AddressType {
-    Legacy,
-    P2shSegwit,
-    Bech32,
-}
-
-impl fmt::Display for AddressType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use AddressType::*;
-
-        let s = match *self {
-            Legacy => "legacy",
-            P2shSegwit => "p2sh-segwit",
-            Bech32 => "bech32",
-        };
-        fmt::Display::fmt(s, f)
-    }
-}
+crate::impl_client_v17__getunconfirmedbalance!();
+crate::impl_client_v17__getwalletinfo!();
+crate::impl_client_v17__listaddressgroupings!();
+crate::impl_client_v17__listlabels!();
+crate::impl_client_v17__listlockunspent!();
+crate::impl_client_v17__listreceivedbyaddress!();
+crate::impl_client_v17__listsinceblock!();
+crate::impl_client_v17__listtransactions!();
+crate::impl_client_v17__listunspent!();
+crate::impl_client_v17__listwallets!();
+crate::impl_client_v17__loadwallet!();
+crate::impl_client_v17__rescanblockchain!();
+crate::impl_client_v17__sendmany!();
+crate::impl_client_v17__sendtoaddress!();
+crate::impl_client_v17__signmessage!();
+crate::impl_client_v17__signrawtransactionwithwallet!();
+crate::impl_client_v17__walletcreatefundedpsbt!();
+crate::impl_client_v17__walletprocesspsbt!();
