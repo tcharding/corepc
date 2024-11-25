@@ -1,3 +1,8 @@
+# Unreleased
+
+- Flesh out v17 and v18.
+- Rename `corepc-node::BitcoinD` to `Node`.
+
 # 0.4.0 - 2024-11-14
 
 - Add support for Bitcoin Core v28
