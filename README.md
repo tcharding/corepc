@@ -13,17 +13,26 @@ If you require a JSON RPC client in production software it is expected you write
 use the `corepc-types` crate in your dependency graph. Feel free to copy/steal/plagiarise or
 otherwise enjoy yourself with anything in this repository - no attribution required.
 
-**Please do not use `corepc` in production and raise bugs, issues, or feature requests.**
+## Contributing
+
+PRs, feature requests, and bug reports against `corepc-types` most welcome and appreciated.
+
+PRs, feature requests, and bug reports against the other crates welcome if you are using them for
+integration testing.
+
+**Please do not use `corepc-client` in production and raise bugs, issues, or feature requests.**
 
 ## Crate/directory listing
 
 - `types/`: [`corepc-types`](https://crates.io/crates/corepc-types): Rust types returned by the JSON-RPC API of Bitcoin Core.
-- `bitcoind/`: [`corepc-node`](https://crates.io/crates/corepc-node): Runs `bitcoind` regtest nodes.
+- `node/`: [`corepc-node`](https://crates.io/crates/corepc-node): Runs `bitcoind` regtest nodes.
 - `client/`: [`corepc-client`](https://crates.io/crates/corepc-client): A blocking JSON-RPC client used to test `corepc-types`.
-- `integration_test/`: Integration tests that use `corepc` and `corepc-node` to test `corepc-types`.
+- `integration_test/`: Integration tests that use `corepc-client` and `corepc-node` to test `corepc-types`.
 
 
-## `corepc-types` Design
+## Design
+
+This repository is a bit oddly designed. It was done so very intentionally.
 
 ## Original code
 
