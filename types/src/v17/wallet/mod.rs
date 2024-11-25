@@ -750,7 +750,7 @@ pub struct ListTransactionsItem {
 
 /// Result of the JSON-RPC method `listunspent`.
 ///
-/// > listunspent ( minconf maxconf  ["addresses",...] [include_unsafe] [query_options])
+/// > listunspent ( minconf maxconf  ["addresses",...] `[include_unsafe]` `[query_options]`)
 /// >
 /// > Returns array of unspent transaction outputs
 /// > with between minconf and maxconf (inclusive) confirmations.
