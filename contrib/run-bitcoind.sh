@@ -15,7 +15,7 @@ usage() {
     cat <<EOF
 Usage:
 
-    ./run_bitcoind.sh [COMMAND]
+    ./run-bitcoind.sh [COMMAND]
 
 COMMAND
    - all                      Start all known bitcoind versions.
@@ -215,7 +215,7 @@ run_bitcoind() {
 }
 
 say() {
-    echo "run_bitcoind: $1"
+    echo "run-bitcoind: $1"
 }
 
 err() {
