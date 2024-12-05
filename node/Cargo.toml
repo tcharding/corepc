@@ -67,5 +67,5 @@ doc = [] # used only for documentation building
 
 
 [package.metadata.docs.rs]
-features = ["download", "doc", "26_2"]
+features = ["download", "doc", "28_0"]
 rustdoc-args = ["--cfg", "docsrs"]
