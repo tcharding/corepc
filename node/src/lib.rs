@@ -18,7 +18,7 @@ use anyhow::Context;
 use corepc_client::client_sync::{self, Auth};
 use log::{debug, error, warn};
 use tempfile::TempDir;
-pub use {anyhow, tempfile, which};
+pub use {anyhow, serde_json, tempfile, which};
 
 #[rustfmt::skip]                // Keep pubic re-exports separate.
 #[doc(inline)]
