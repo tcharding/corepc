@@ -76,21 +76,24 @@ fn get_block_header_verbose() { // verbose = true
 // optional as suggested in the docs but to no avail.
 #[test]
 #[cfg(feature = "0_17_1")]
+fn get_block_stats() {
+    get_block_stats_by_height();
+    get_block_stats_by_hash();
+}
+
 fn get_block_stats_by_height() {
     let node = Node::new_no_wallet();
     let json = node.client.get_block_stats_by_height(0).expect("getblockstats");
     assert!(json.into_model().is_ok());
 }
 
-// FIXME: Same as get_block_stats_by_height above.
-#[test]
-#[cfg(feature = "0_17_1")]
 fn get_block_stats_by_hash() { // verbose = true
     let node = Node::new_no_wallet();
     let block_hash = best_block_hash();
     let json = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
     assert!(json.into_model().is_ok());
 }
+
 
 #[test]
 fn get_block_stats_by_height_txindex() {
@@ -130,37 +133,37 @@ fn get_difficulty() {
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_mempool_ancestors() {}
+fn get_mempool_ancestors() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_mempool_descendants() {}
+fn get_mempool_descendants() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_mempool_entry() {}
+fn get_mempool_entry() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_mempool_info() {}
+fn get_mempool_info() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_raw_mempool() {}
+fn get_raw_mempool() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_tx_out() {}
+fn get_tx_out() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_tx_out_proof() {}
+fn get_tx_out_proof() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_tx_out_set_info() {}
+fn get_tx_out_set_info() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn verify_tx_out_proof() {}
+fn verify_tx_out_proof() { todo!() }
 

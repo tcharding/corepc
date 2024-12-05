@@ -184,7 +184,7 @@
 //! | lockunspent                        | omitted         |
 //! | move                               | omitted         |
 //! | removeprunedfunds                  | omitted         |
-//! | rescanblockchain                   | done            |
+//! | rescanblockchain                   | done (untested) |
 //! | sendfrom                           | omitted         |
 //! | sendmany                           | done (untested) |
 //! | sendtoaddress                      | done            |
@@ -207,7 +207,7 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | getzmqnotifications`               | done (untested) |
+//! | getzmqnotifications                | done (untested) |
 //!
 //! </details>
 //!
@@ -260,4 +260,5 @@ pub use self::{
         SignErrorData, SignMessage, SignRawTransactionWithWallet, TransactionCategory,
         WalletCreateFundedPsbt, WalletProcessPsbt,
     },
+    zmq::GetZmqNotifications,
 };

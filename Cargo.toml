@@ -1,5 +1,5 @@
 [workspace]
-members = ["client", "types", "jsonrpc"]
+members = ["client", "types", "jsonrpc", "verify"]
 exclude = ["integration_test", "node"]
 resolver = "2"
 

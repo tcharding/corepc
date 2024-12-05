@@ -1,6 +1,6 @@
 == Blockchain ==
 getbestblockhash
-getblock "blockhash" ( verbosity ) 
+getblock "blockhash" ( verbosity )
 getblockchaininfo
 getblockcount
 getblockhash height
