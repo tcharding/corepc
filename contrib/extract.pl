@@ -11,7 +11,7 @@ use Getopt::Long qw(:config no_auto_abbrev);
 my $SCRIPT = $0;
 
 # The Bitcoin Core version we are working with.
-my $CORE_VERSION = "0.17.1";
+my $CORE_VERSION = "0.17";
 # The file holding output of `bitcoin-cli --help`.
 my $RPC_HELP_FILE = "types/src/v17/rpc-api.txt";
 

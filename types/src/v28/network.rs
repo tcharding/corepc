@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core v28.0 - network.
+//! The JSON-RPC API for Bitcoin Core `v28` - network.
 //!
 //! Types for methods found under the `== Network ==` section of the API docs.
 use serde::{Deserialize, Serialize};

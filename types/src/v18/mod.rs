@@ -8,7 +8,7 @@
 // differences.
 // - Double check that nothing marked `x` has a feature gated test (i.e. ensure tested).
 
-//! # JSON-RPC types for Bitcoin Core `v0.18.1`
+//! # JSON-RPC types for Bitcoin Core `v0.18`
 //!
 //! These structs are shaped for the JSON data returned by the JSON-RPC API. They use stdlib types
 //! (or custom types) and where necessary implement an `into_model` function to convert the type to

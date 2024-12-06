@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! # JSON-RPC types for Bitcoin Core `v0.17.1`
+//! # JSON-RPC types for Bitcoin Core `v0.17`.
 //!
 //! These structs are shaped for the JSON data returned by the JSON-RPC API. They use stdlib types
 //! (or custom types) and where necessary implement an `into_model` function to convert the type to

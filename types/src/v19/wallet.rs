@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core v0.19.1 - wallet.
+//! The JSON-RPC API for Bitcoin Core `v0.19` - wallet.
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
