@@ -24,7 +24,7 @@ mod download {
 
     #[cfg(all(target_os = "macos", any(target_arch = "x86_64", target_arch = "aarch64"),))]
     fn download_filename() -> String {
-        if cfg!(not(feature = "23_1")) {
+        if cfg!(not(feature = "23_2")) {
             format!("bitcoin-{}-osx64.tar.gz", &VERSION)
         } else {
             format!("bitcoin-{}-x86_64-apple-darwin.tar.gz", &VERSION)
@@ -43,7 +43,7 @@ mod download {
     #[allow(clippy::lines_filter_map_ok)] // clippy doesn't like the `lines` call below and the suggested fix is incorrect.
     fn get_expected_sha256(filename: &str) -> anyhow::Result<sha256::Hash> {
         let sha256sums_filename = format!("sha256/bitcoin-core-{}-SHA256SUMS", &VERSION);
-        #[cfg(not(feature = "22_0"))]
+        #[cfg(not(feature = "22_1"))]
         let sha256sums_filename = format!("{}.asc", sha256sums_filename);
         let file = File::open(&sha256sums_filename)
             .with_context(|| format!("cannot find {:?}", sha256sums_filename))?;

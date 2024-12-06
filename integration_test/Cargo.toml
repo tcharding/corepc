@@ -12,7 +12,7 @@ edition = "2021"
 # - `cargo test --no-default-features` skips all tests.
 [features]
 # Enable the same feature in `node` and the version feature here.
-# All minor releases (but only the latest patch release).
+# All minor releases of the latest three versions.
 28_0 = ["v28", "node/28_0"]
 27_2 = ["v27", "node/27_2"]
 27_1 = ["v27", "node/27_1"]
@@ -20,18 +20,11 @@ edition = "2021"
 26_2 = ["v26", "node/26_2"]
 26_1 = ["v26", "node/26_1"]
 26_0 = ["v26", "node/26_0"]
+# Only the latest minor version for older versions.
 25_2 = ["v25", "node/25_2"]
-25_1 = ["v25", "node/25_1"]
-25_0 = ["v25", "node/25_0"]
 24_2 = ["v24", "node/24_2"]
-24_1 = ["v24", "node/24_1"]
-24_0_1 = ["v24", "node/24_0_1"]
 23_2 = ["v23", "node/23_2"]
-23_1 = ["v23", "node/23_1"]
-23_0 = ["v23", "node/23_0"]
 22_1 = ["v22", "node/22_1"]
-22_0 = ["v22", "node/22_0"]
-# Only the latest minor version for these.
 0_21_2 = ["v21", "node/0_21_2"]
 0_20_2 = ["v20", "node/0_20_2"]
 0_19_1 = ["v19", "node/0_19_1"]
