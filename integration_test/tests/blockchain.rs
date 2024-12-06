@@ -81,12 +81,14 @@ fn get_block_stats() {
     get_block_stats_by_hash();
 }
 
+#[cfg(feature = "0_17_1")]
 fn get_block_stats_by_height() {
     let node = Node::new_no_wallet();
     let json = node.client.get_block_stats_by_height(0).expect("getblockstats");
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(feature = "0_17_1")]
 fn get_block_stats_by_hash() { // verbose = true
     let node = Node::new_no_wallet();
     let block_hash = best_block_hash();
