@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core v0.17.1 - control.
+//! The JSON-RPC API for Bitcoin Core `v0.17` - control.
 //!
 //! Types for methods found under the `== Control ==` section of the API docs.
 
@@ -20,7 +20,7 @@ use serde::{Deserialize, Serialize};
 /// > 1. "mode" determines what kind of information is returned. This argument is optional, the default mode is "stats".
 /// >   - "stats" returns general statistics about memory usage in the daemon.
 /// >   - "mallocinfo" returns an XML string describing low-level heap state (only available if compiled with glibc 2.10+).
-// This just mimics the map returned by my instance of Core v0.17.1, I don't know how
+// This just mimics the map returned by my instance of Core `v0.17`, I don't know how
 // to handle other map values or if they exist?
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMemoryInfoStats(pub HashMap<String, Locked>);

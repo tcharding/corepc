@@ -3,7 +3,7 @@
 //! Macros for implementing JSON-RPC methods on a client.
 //!
 //! Specifically this is methods found under the `== Wallet ==` section of the
-//! API docs of `bitcoind v22.1`.
+//! API docs of Bitcoin Core `v22`.
 //!
 //! All macros require `Client` to be in scope.
 //!

@@ -3,7 +3,7 @@
 //! Structs with standard types.
 //!
 //! These structs model the types returned by the JSON-RPC API and use stdlib types (or custom
-//! types) and are specific to a specific to Bitcoin Core `v0.20.2`.
+//! types) and are specific to a specific to Bitcoin Core `v0.20`.
 //!
 //! **== Blockchain ==**
 //! - [x] `getbestblockhash`

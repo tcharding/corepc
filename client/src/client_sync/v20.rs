@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! A JSON-RPC client for testing against Bitcoin Core `v0.20.2`.
+//! A JSON-RPC client for testing against Bitcoin Core `v0.20`.
 //!
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
