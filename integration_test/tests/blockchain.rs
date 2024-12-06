@@ -96,7 +96,6 @@ fn get_block_stats_by_hash() { // verbose = true
     assert!(json.into_model().is_ok());
 }
 
-
 #[test]
 fn get_block_stats_by_height_txindex() {
     let node = Node::new_no_wallet_txindex();
