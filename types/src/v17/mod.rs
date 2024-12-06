@@ -159,7 +159,7 @@
 //! | getnewaddress                      | done            |
 //! | getrawchangeaddress                | done            |
 //! | getreceivedbyaccount               | omitted         |
-//! | getreceivedbyaddress               | done (untested) |
+//! | getreceivedbyaddress               | done            |
 //! | gettransaction                     | done            |
 //! | getunconfirmedbalance              | done (untested) |
 //! | getwalletinfo                      | done (untested) |

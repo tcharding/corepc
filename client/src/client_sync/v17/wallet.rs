@@ -191,8 +191,11 @@ macro_rules! impl_client_v17__getrawchangeaddress {
 macro_rules! impl_client_v17__getreceivedbyaddress {
     () => {
         impl Client {
-            pub fn get_received_by_address(&self) -> Result<GetReceivedByAddress> {
-                self.call("getreceivedbyaddress", &[])
+            pub fn get_received_by_address(
+                &self,
+                address: &Address<NetworkChecked>,
+            ) -> Result<GetReceivedByAddress> {
+                self.call("getreceivedbyaddress", &[address.to_string().into()])
             }
         }
     };
@@ -406,7 +409,7 @@ macro_rules! impl_client_v17__sendtoaddress {
 macro_rules! impl_client_v17__signmessage {
     () => {
         impl Client {
-            pub fn sign_message(&self, address: Address, message: &str) -> Result<SignMessage> {
+            pub fn sign_message(&self, address: &Address, message: &str) -> Result<SignMessage> {
                 self.call("signmessage", &[into_json(address)?, into_json(message)?])
             }
         }

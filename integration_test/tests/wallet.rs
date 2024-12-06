@@ -136,11 +136,24 @@ fn get_raw_change_address() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
 fn get_received_by_address() {
+    let amount = Amount::from_sat(10_000);
+
     let node = Node::new_with_default_wallet();
-    let json = node.client.get_received_by_address().expect("getreceivedbyaddress");
-    assert!(json.into_model().is_ok());
+    node.fund_wallet();
+    let address = node.client.new_address().expect("failed to create new address");
+
+    let _txid = node
+        .client
+        .send_to_address(&address, amount)
+        .expect("sendtoaddress")
+        .txid()
+        .unwrap();
+    node.mine_a_block();
+
+    let json = node.client.get_received_by_address(&address).expect("getreceivedbyaddress");
+    let model = json.into_model().expect("into_model failed");
+    assert_eq!(model.0, amount);
 }
 
 #[test]
