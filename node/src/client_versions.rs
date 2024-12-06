@@ -1,10 +1,8 @@
-// All features uses 26_2
-/// The version specific client and json types.
-///
-/// **THIS IS AVAILABLE FOR ALL VERSION NUMBER FEATURES** (eg `25_0`, `24_2` etc). This crate is
-/// unusual in that it expects exactly one version number feature to be selected, docs.rs is not set
-/// up to handle such oddity.
-///
+// The version specific client and json types.
+//
+// **THIS IS AVAILABLE FOR ALL VERSION NUMBER FEATURES** (eg `25_0`, `24_2` etc). This crate is
+// unusual in that it expects exactly one version number feature to be selected, docs.rs is not set
+// up to handle such oddity.
 
 #[cfg(feature = "28_0")]
 #[allow(unused_imports)] // Not all users need the json types.
