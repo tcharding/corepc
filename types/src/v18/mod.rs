@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: CC0-1.0
 
-// This module is currently just copy of v17. As such it introduces the following TODOs:
+// TODO: Work out how to solve the problem that the docs on the re-exported types are for v17.
 //
-// - Check all items marked with `-` still should be omitted (currently just copied from v17).
-// - Work out how to solve the problem that the docs on the re-exported types are for v17. We
-// probably have to write a script to pull the v18 docs and check them against the v17 docs for
-// differences.
-// - Double check that nothing marked `x` has a feature gated test (i.e. ensure tested).
+// We probably need to write a script to pull the v18 docs from Core (code base or RPC call) and
+// check them against the v17 docs for differences.
 
 //! # JSON-RPC types for Bitcoin Core `v0.18.1`
 //!
