@@ -2,6 +2,7 @@
 
 //! Tests for methods found under the `== Rawtransactions ==` section of the API docs.
 
+#[cfg(feature = "v28")]
 use integration_test::{Node, NodeExt as _};
 
 #[test]
