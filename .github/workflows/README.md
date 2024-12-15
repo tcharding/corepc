@@ -22,6 +22,7 @@ Run from `rust.yml` unless stated otherwise. Total 11 jobs.
 8.  `Docs`
 9.  `Docsrs`
 10. `Format`
+11. `Verify`
 
 +15 jobs - 1 for each supported version of Core.
 
