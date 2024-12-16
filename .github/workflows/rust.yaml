@@ -188,6 +188,20 @@ jobs:
       - name: "Check formatting"
         run: cargo fmt --all -- --check
 
+  Verify:                       #  1 job, run `verify` directly.
+    name: Verify - stable toolchain
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+      - name: "Select toolchain"
+        uses: dtolnay/rust-toolchain@stable
+      - name: "Run the verify program"
+        # Verify all versions (known to the verify program)
+        run: cd verify && cargo run all
+
   Integration:                  # 1 job for each bitcoind version we support.
     name: Integration tests - stable toolchain
     runs-on: ubuntu-latest

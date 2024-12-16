@@ -9,36 +9,59 @@
 //! - That there is a `model` type if required.
 //! - That the method has an integration test.
 
-use std::env;
+use std::process;
 
 use anyhow::Result;
+use clap::{arg, Command};
 use verify::method::{Method, Return};
 use verify::versioned::{self, Status};
 use verify::{method, model, ssot, Version};
 
-/// The default version of Core if no command line argument is provided.
-const DEFAULT_VERSION: Version = Version::V17;
+// TODO: Enable running from any directory, currently errors if run from `src/`.
+// TODO: Add a --quiet option.
 
-// FIXME: Enable running from any directory, currently errors if run from `src/`.
+const VERSIONS: [Version; 2] = [Version::V17, Version::V18];
 
 fn main() -> Result<()> {
-    let args: Vec<String> = env::args().collect();
+    let cmd = Command::new("verify")
+        .args([
+            arg!([version] "Verify specific version of Core (use \"all\" for all versions)").required(true),
+        ]);
 
-    let version = if args.len() < 2 {
-        DEFAULT_VERSION
+    let matches = cmd.clone().get_matches();
+    let version = matches.get_one::<String>("version").unwrap();
+
+    if version == "all" {
+        verify_all_versions()?;
+    } else if let Ok(v) = version.parse::<Version>() {
+        verify_version(v)?;
     } else {
-        let v = &args[1];
-        v.parse::<Version>()?
-    };
-    println!("\nVerifying support for Bitcoin Core {}\n", version);
+        eprint!("Unrecognised version: {} (supported versions:", version);
+        for version in VERSIONS {
+            eprint!(" {}", version);
+        }
+        eprintln!(")");
+        process::exit(1);
+    }
+    Ok(())
+}
 
+fn verify_all_versions() -> Result<()> {
+    for version in VERSIONS {
+        println!("Verifying for Bitcoin Core version {} ...\n", version);
+        verify_version(version)?;
+    }
+    Ok(())
+}
+
+fn verify_version(version: Version) -> Result<()> {
     let s = format!("{}::METHOD data", version);
     let msg = format!("Checking that the {} list is correct", s);
     check(&msg);
     let correct = verify_correct_methods(version, method::all_methods(version), &s)?;
     close(correct);
     if !correct {
-        std::process::exit(1);
+        process::exit(1);
     }
 
     let s = "rustdoc version specific rustdocs";
@@ -47,7 +70,7 @@ fn main() -> Result<()> {
     let correct = verify_correct_methods(version, method::all_methods(version), s)?;
     close(correct);
     if !correct {
-        std::process::exit(1);
+        process::exit(1);
     }
 
     let msg = "Checking that the status claimed in the version specific rustdocs is correct";
