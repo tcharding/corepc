@@ -157,8 +157,17 @@ fn get_mempool_entry() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_mempool_info() { todo!() }
+fn get_mempool_info() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, _txid) = node.create_mempool_transaction();
+
+    // Test the type and into model conversion code.
+    let json = node.client.get_mempool_info().expect("getmempoolinfo");
+    let info = json.into_model().expect("into_model");
+    // Sanity check.
+    assert_eq!(info.size, 1);
+}
 
 #[test]
 #[cfg(feature = "TODO")]
