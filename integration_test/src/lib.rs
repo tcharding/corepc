@@ -48,12 +48,12 @@ pub trait NodeExt {
     /// Generates [`NBLOCKS`] to an address controlled by the loaded wallet.
     fn fund_wallet(&self);
 
-    /// Mine a block.
+    /// Mines a block.
     ///
     /// Should send mining reward to a new address for the loaded wallet.
     fn mine_a_block(&self);
 
-    /// Create a transaction and mine it.
+    /// Creates a transaction and mines a block that includes it in the chain.
     ///
     /// # Returns
     ///
