@@ -77,6 +77,12 @@ impl NodeExt for Node {
         self.client.generate_to_address(NBLOCKS, &address).expect("failed to generate to address");
     }
 
+    fn mine_a_block(&self) {
+        // TODO: Consider returning the error.
+        let address = self.client.new_address().expect("failed to get new address");
+        self.client.generate_to_address(1, &address).expect("failed to generate to address");
+    }
+
     fn create_mined_transaction(&self) -> (bitcoin::Address, bitcoin::Transaction) {
         const MILLION_SATS: bitcoin::Amount = bitcoin::Amount::from_sat(1000000);
 
@@ -90,12 +96,6 @@ impl NodeExt for Node {
         let tx = best_block.txdata[1].clone();
 
         (address, tx)
-    }
-
-    fn mine_a_block(&self) {
-        // TODO: Consider returning the error.
-        let address = self.client.new_address().expect("failed to get new address");
-        self.client.generate_to_address(1, &address).expect("failed to generate to address");
     }
 }
 
