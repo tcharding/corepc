@@ -62,7 +62,7 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | generate                           | done            |
+//! | generate                           | done (untested) |
 //! | generatetoaddress                  | done            |
 //!
 //! </details>
@@ -143,7 +143,7 @@
 //! |:-----------------------------------|:---------------:|
 //! | abandontransaction                 | omitted         |
 //! | abortrescan                        | omitted         |
-//! | addmultisigaddress                 | done            |
+//! | addmultisigaddress                 | done (untested) |
 //! | backupwallet                       | omitted         |
 //! | bumpfee                            | done            |
 //! | createwallet                       | done            |
@@ -154,7 +154,7 @@
 //! | getaccountaddress                  | omitted         |
 //! | getaddressbyaccount                | omitted         |
 //! | getaddressesbylabel                | done            |
-//! | getaddressinfo                     | done            |
+//! | getaddressinfo                     | done (untested) |
 //! | getbalance                         | done            |
 //! | getnewaddress                      | done            |
 //! | getrawchangeaddress                | done            |
