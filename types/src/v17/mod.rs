@@ -29,7 +29,7 @@
 //! | getdifficulty                      | done            |
 //! | getmempoolancestors                | done (untested) |
 //! | getmempooldescendants              | done (untested) |
-//! | getmempoolentry                    | done (untested) |
+//! | getmempoolentry                    | done            |
 //! | getmempoolinfo                     | done (untested) |
 //! | getrawmempool                      | done (untested) |
 //! | gettxout                           | done (untested) |

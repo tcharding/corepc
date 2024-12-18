@@ -141,8 +141,14 @@ fn get_mempool_ancestors() { todo!() }
 fn get_mempool_descendants() { todo!() }
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_mempool_entry() { todo!() }
+fn get_mempool_entry() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, txid) = node.create_mempool_transaction();
+
+    let json = node.client.get_mempool_entry(txid).expect("getmempoolentry");
+    assert!(json.into_model().is_ok());
+}
 
 #[test]
 #[cfg(feature = "TODO")]
