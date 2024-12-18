@@ -134,11 +134,17 @@ fn get_difficulty() {
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_mempool_ancestors() { todo!() }
+fn get_mempool_ancestors() {
+    // We can probably get away with not testing this because it returns the
+    // same type as `getmempoolentry` which is tested below.
+}
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_mempool_descendants() { todo!() }
+fn get_mempool_descendants() {
+    // We can probably get away with not testing this because it returns the
+    // same type as `getmempoolentry` which is tested below.
+}
 
 #[test]
 fn get_mempool_entry() {
