@@ -183,6 +183,21 @@ fn get_raw_mempool() {
 }
 
 #[test]
+// FIXME: Fails with getrawmempool verbose: JsonRpc(Json(Error("invalid type: map, expected a sequence", line: 1, column: 0)))
+#[cfg(feature = "TODO")]
+fn get_raw_mempool_verbose() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, _txid) = node.create_mempool_transaction();
+
+    // Test the type and into model conversion code.
+    let json = node.client.get_raw_mempool_verbose().expect("getrawmempool verbose");
+    let mempool = json.into_model().expect("into_model");
+    // Sanity check.
+    assert_eq!(mempool.0.len(), 1);
+}
+
+#[test]
 #[cfg(feature = "TODO")]
 fn get_tx_out() { todo!() }
 
