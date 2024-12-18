@@ -28,7 +28,7 @@
 //! | getblockcount                      | done            |
 //! | getblockhash                       | done            |
 //! | getblockheader                     | done            |
-//! | getblockstats                      | done            |
+//! | getblockstats                      | done (untested) |
 //! | getchaintips                       | done            |
 //! | getchaintxstats                    | done            |
 //! | getdifficulty                      | done            |
@@ -68,7 +68,7 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | generate                           | done            |
+//! | generate                           | done (untested) |
 //! | generatetoaddress                  | done            |
 //!
 //! </details>
@@ -126,7 +126,7 @@
 //! | fundrawtransaction                 | todo            |
 //! | getrawtransaction                  | todo            |
 //! | joinpsbts                          | todo            |
-//! | sendrawtransaction                 | done            |
+//! | sendrawtransaction                 | done (untested) |
 //! | signrawtransactionwithkey          | todo            |
 //! | testmempoolaccept                  | todo            |
 //! | utxoupdatepsbt                     | todo            |
@@ -155,7 +155,7 @@
 //! |:-----------------------------------|:---------------:|
 //! | abandontransaction                 | omitted         |
 //! | abortrescan                        | omitted         |
-//! | addmultisigaddress                 | done            |
+//! | addmultisigaddress                 | done (untested) |
 //! | backupwallet                       | omitted         |
 //! | bumpfee                            | done            |
 //! | createwallet                       | done            |
@@ -163,7 +163,7 @@
 //! | dumpwallet                         | done            |
 //! | encryptwallet                      | omitted         |
 //! | getaddressesbylabel                | done            |
-//! | getaddressinfo                     | done            |
+//! | getaddressinfo                     | done (untested) |
 //! | getbalance                         | done            |
 //! | getnewaddress                      | done            |
 //! | getrawchangeaddress                | done            |
