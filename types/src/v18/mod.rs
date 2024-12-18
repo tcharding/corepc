@@ -36,7 +36,7 @@
 //! | getmempooldescendants              | done (untested) |
 //! | getmempoolentry                    | done            |
 //! | getmempoolinfo                     | done            |
-//! | getrawmempool                      | done (untested) |
+//! | getrawmempool                      | done            |
 //! | gettxout                           | done (untested) |
 //! | gettxoutproof                      | done (untested) |
 //! | gettxoutsetinfo                    | done (untested) |
