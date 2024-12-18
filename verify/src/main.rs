@@ -26,15 +26,17 @@ fn main() -> Result<()> {
     let cmd = Command::new("verify")
         .args([
             arg!([version] "Verify specific version of Core (use \"all\" for all versions)").required(true),
+            arg!(-t --tests <TEST_OUTPUT> "Optionally check claimed status of tests").required(false),
         ]);
 
     let matches = cmd.clone().get_matches();
     let version = matches.get_one::<String>("version").unwrap();
+    let test_output = matches.get_one::<String>("tests");
 
     if version == "all" {
-        verify_all_versions()?;
+        verify_all_versions(test_output)?;
     } else if let Ok(v) = version.parse::<Version>() {
-        verify_version(v)?;
+        verify_version(v, test_output)?;
     } else {
         eprint!("Unrecognised version: {} (supported versions:", version);
         for version in VERSIONS {
@@ -46,15 +48,15 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn verify_all_versions() -> Result<()> {
+fn verify_all_versions(test_output: Option<&String>) -> Result<()> {
     for version in VERSIONS {
         println!("Verifying for Bitcoin Core version {} ...\n", version);
-        verify_version(version)?;
+        verify_version(version, test_output)?;
     }
     Ok(())
 }
 
-fn verify_version(version: Version) -> Result<()> {
+fn verify_version(version: Version, test_output: Option<&String>) -> Result<()> {
     let s = format!("{}::METHOD data", version);
     let msg = format!("Checking that the {} list is correct", s);
     check(&msg);
@@ -75,7 +77,7 @@ fn verify_version(version: Version) -> Result<()> {
 
     let msg = "Checking that the status claimed in the version specific rustdocs is correct";
     check(msg);
-    verify_status(version)?;
+    verify_status(version, test_output)?;
     close(correct);
 
     Ok(())
@@ -100,7 +102,7 @@ fn verify_correct_methods(version: Version, methods: Vec<String>, msg: &str) -> 
 }
 
 /// Verifies that the status we claim is correct.
-fn verify_status(version: Version) -> Result<()> {
+fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
     let methods = versioned::methods_and_status(version)?;
     for method in methods {
         let out =
@@ -113,8 +115,10 @@ fn verify_status(version: Version) -> Result<()> {
                 if !model::type_exists(version, &method.name)? {
                     eprintln!("missing model type: {}", output_method(out));
                 }
-                if !check_integration_test_crate::test_exists(version, &method.name)? {
-                    eprintln!("missing integration test: {}", method.name);
+                if let Some(test_output) = test_output {
+                    if !check_integration_test_crate::test_exists(version, &method.name, test_output)? {
+                        eprintln!("missing integration test: {}", method.name);
+                    }
                 }
             }
             Status::Untested => {
@@ -125,8 +129,10 @@ fn verify_status(version: Version) -> Result<()> {
                     eprintln!("missing model type: {}", output_method(out));
                 }
                 // Make sure we didn't forget to mark as tested after implementing integration test.
-                if check_integration_test_crate::test_exists(version, &method.name)? {
-                    eprintln!("found integration test for untested method: {}", method.name);
+                if let Some(test_output) = test_output {
+                    if check_integration_test_crate::test_exists(version, &method.name, test_output)? {
+                        eprintln!("found integration test for untested method: {}", method.name);
+                    }
                 }
             }
             Status::Omitted | Status::Todo => { /* Nothing to verify */ }
@@ -158,49 +164,30 @@ mod check_integration_test_crate {
 
     use crate::Version;
 
-    /// Path to the model module file.
-    fn paths() -> Vec<PathBuf> {
-        // TODO: "mining", "util", "zmq"
-        let sections =
-            ["blockchain", "control", "generating", "network", "raw_transactions", "wallet"];
-        let mut paths = vec![];
-        for section in sections {
-            paths.push(PathBuf::from(format!("../integration_test/tests/{}.rs", section)));
-        }
-        paths
-    }
-
-    fn all_test_functions() -> Result<Vec<String>> {
+    fn all_test_functions(test_output: &str) -> Result<Vec<String>> {
         let mut functions = vec![];
 
-        for path in paths() {
-            let file = File::open(&path).with_context(|| {
-                format!("Failed to grep for test functions in {}", path.display())
-            })?;
-            let reader = io::BufReader::new(file);
+        let path = PathBuf::from(test_output);
+        let file = File::open(&path).with_context(|| {
+            format!("Failed to open test output file {}", path.display())
+        })?;
+        let reader = io::BufReader::new(file);
+        let test_re = Regex::new(r"test ([a-z_]+) ... ok")?;
 
-            // let re = Regex::new(&regex::escape(r"fn ([a-z_]+)\(\) \{"))?;
-            let fn_re = Regex::new(r"fn ([a-z_]+)")?;
-            let todo_re = Regex::new(r"todo")?;
+        for line in reader.lines() {
+            let line = line?;
 
-            for line in reader.lines() {
-                let line = line?;
-
-                if todo_re.is_match(&line) {
-                    continue;
-                }
-
-                if let Some(caps) = fn_re.captures(&line) {
-                    let function = caps.get(1).unwrap().as_str();
-                    functions.push(function.to_string());
-                }
+            if let Some(caps) = test_re.captures(&line) {
+                let function = caps.get(1).unwrap().as_str();
+                functions.push(function.to_string());
             }
         }
+
         Ok(functions)
     }
 
     /// Checks that a type exists in `model` module.
-    pub fn test_exists(version: Version, method_name: &str) -> Result<bool> {
+    pub fn test_exists(version: Version, method_name: &str, test_output: &str) -> Result<bool> {
         let method = match method::Method::from_name(version, method_name) {
             Some(m) => m,
             None =>
@@ -210,7 +197,7 @@ mod check_integration_test_crate {
                 ))),
         };
 
-        let tests = all_test_functions()?;
+        let tests = all_test_functions(test_output)?;
         if !tests.contains(&method.function.to_string()) {
             Ok(false)
         } else {
