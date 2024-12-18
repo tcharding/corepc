@@ -78,7 +78,6 @@ impl NodeExt for Node {
     }
 
     fn mine_a_block(&self) {
-        // TODO: Consider returning the error.
         let address = self.client.new_address().expect("failed to get new address");
         self.client.generate_to_address(1, &address).expect("failed to generate to address");
     }
