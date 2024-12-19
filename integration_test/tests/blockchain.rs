@@ -134,37 +134,103 @@ fn get_difficulty() {
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_mempool_ancestors() { todo!() }
+fn get_mempool_ancestors() {
+    // We can probably get away with not testing this because it returns the
+    // same type as `getmempoolentry` which is tested below.
+}
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_mempool_descendants() { todo!() }
+fn get_mempool_descendants() {
+    // We can probably get away with not testing this because it returns the
+    // same type as `getmempoolentry` which is tested below.
+}
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_mempool_entry() { todo!() }
+fn get_mempool_entry() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, txid) = node.create_mempool_transaction();
+
+    let json = node.client.get_mempool_entry(txid).expect("getmempoolentry");
+    assert!(json.into_model().is_ok());
+}
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_mempool_info() { todo!() }
+fn get_mempool_info() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, _txid) = node.create_mempool_transaction();
+
+    // Test the type and into model conversion code.
+    let json = node.client.get_mempool_info().expect("getmempoolinfo");
+    let info = json.into_model().expect("into_model");
+    // Sanity check.
+    assert_eq!(info.size, 1);
+}
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_raw_mempool() { todo!() }
+fn get_raw_mempool() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, _txid) = node.create_mempool_transaction();
+
+    // Test the type and into model conversion code.
+    let json = node.client.get_raw_mempool().expect("getrawmempool");
+    let mempool = json.into_model().expect("into_model");
+    // Sanity check.
+    assert_eq!(mempool.0.len(), 1);
+}
 
 #[test]
+// FIXME: Fails with getrawmempool verbose: JsonRpc(Json(Error("invalid type: map, expected a sequence", line: 1, column: 0)))
 #[cfg(feature = "TODO")]
-fn get_tx_out() { todo!() }
+fn get_raw_mempool_verbose() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, _txid) = node.create_mempool_transaction();
+
+    // Test the type and into model conversion code.
+    let json = node.client.get_raw_mempool_verbose().expect("getrawmempool verbose");
+    let mempool = json.into_model().expect("into_model");
+    // Sanity check.
+    assert_eq!(mempool.0.len(), 1);
+}
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_tx_out_proof() { todo!() }
+fn get_tx_out() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, tx) = node.create_mined_transaction();
+    let txid = tx.compute_txid();
+
+    // Test the type and into model conversion code.
+    let json = node.client.get_tx_out(txid, 1).expect("gettxout");
+    let _ = json.into_model().expect("into_model");
+}
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_tx_out_set_info() { todo!() }
+fn get_tx_out_set_info() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, _tx) = node.create_mined_transaction();
 
+    // Test the type and into model conversion code.
+    let json = node.client.get_tx_out_set_info().expect("gettxoutsetinfo");
+    let _ = json.into_model().expect("into_model");
+
+}
+
+// Implicitly tests the omitted method `gettxoutproof` as well.
 #[test]
-#[cfg(feature = "TODO")]
-fn verify_tx_out_proof() { todo!() }
+fn verify_tx_out_proof() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, tx) = node.create_mined_transaction();
+    let txid = tx.compute_txid();
 
+    let proof = node.client.get_tx_out_proof(&[txid]).expect("gettxoutproof");
+
+    let txids = node.client.verify_tx_out_proof(&proof).expect("verifytxoutproof");
+    assert_eq!(txids.0.len(), 1);
+}

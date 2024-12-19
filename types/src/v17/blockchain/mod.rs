@@ -599,7 +599,7 @@ pub struct GetTxOut {
     /// The transaction value in BTC.
     pub value: f64,
     /// The script pubkey.
-    #[serde(rename = "scriptPubkey")]
+    #[serde(rename = "scriptPubKey")]
     pub script_pubkey: ScriptPubkey,
     /// Coinbase or not.
     pub coinbase: bool,
@@ -620,28 +620,6 @@ pub struct ScriptPubkey {
     /// Array of bitcoin address.
     pub addresses: Vec<String>,
 }
-
-/// Result of JSON-RPC method `gettxoutproof`.
-///
-/// > gettxoutproof ["txid",...] ( blockhash )
-/// >
-/// > Returns a hex-encoded proof that "txid" was included in a block.
-/// >
-/// > NOTE: By default this function only works sometimes. This is when there is an
-/// > unspent output in the utxo for this transaction. To make it always work,
-/// > you need to maintain a transaction index, using the -txindex command line option or
-/// > specify the block in which the transaction is included manually (by blockhash).
-/// >
-/// > Arguments:
-/// > 1. "txids"       (string) A json array of txids to filter
-/// >     [
-/// >       "txid"     (string) A transaction hash
-/// >       ,...
-/// >     ]
-///
-/// Inner field is a string that is a serialized, hex-encoded data for the proof.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct GetTxOutProof(pub String);
 
 /// Result of JSON-RPC method `gettxoutsetinfo`.
 ///

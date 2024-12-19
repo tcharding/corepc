@@ -401,9 +401,9 @@ impl Node {
                         match client_base.create_wallet(wallet) {
                             Ok(json) => {
                                 debug!("created wallet: {}", json.name());
-                            },
+                            }
                             Err(e) => {
-                                debug!("initial create_wallet unsuccessful, try loading instead: {:?}", e);
+                                debug!("initial create_wallet failed, try load instead: {:?}", e);
                                 let wallet = client_base.load_wallet(wallet)?.name();
                                 debug!("loaded wallet: {}", wallet);
                             }
@@ -577,9 +577,9 @@ mod test {
     use tempfile::TempDir;
 
     use super::*;
-    use crate::{exe_path, get_available_port, Node, Conf, LOCAL_IP};
     #[cfg(not(feature = "28_0"))]
     use crate::P2P;
+    use crate::{exe_path, get_available_port, Conf, Node, LOCAL_IP};
 
     #[test]
     fn test_local_ip() {
@@ -706,7 +706,8 @@ mod test {
         let node2 = Node::with_conf(&exe, &conf_node2).unwrap();
 
         // Create Node 3 Connected To Node
-        let conf_node3 = Conf::<'_> { p2p: node2.p2p_connect(false).unwrap(), ..Default::default() };
+        let conf_node3 =
+            Conf::<'_> { p2p: node2.p2p_connect(false).unwrap(), ..Default::default() };
         let node3 = Node::with_conf(exe_path().unwrap(), &conf_node3).unwrap();
 
         // Get each nodes Peers
