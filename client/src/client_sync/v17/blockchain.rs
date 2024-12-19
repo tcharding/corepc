@@ -266,7 +266,7 @@ macro_rules! impl_client_v17__gettxoutproof {
 macro_rules! impl_client_v17__gettxoutsetinfo {
     () => {
         impl Client {
-            pub fn get_tx_out_set_info(&self) -> Result<GetTxOut> {
+            pub fn get_tx_out_set_info(&self) -> Result<GetTxOutSetInfo> {
                 self.call("gettxoutsetinfo", &[])
             }
         }

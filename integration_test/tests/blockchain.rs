@@ -210,8 +210,16 @@ fn get_tx_out() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_tx_out_set_info() { todo!() }
+fn get_tx_out_set_info() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, _tx) = node.create_mined_transaction();
+
+    // Test the type and into model conversion code.
+    let json = node.client.get_tx_out_set_info().expect("gettxoutsetinfo");
+    let _ = json.into_model().expect("into_model");
+
+}
 
 // Implicitly tests the omitted method `gettxoutproof` as well.
 #[test]
