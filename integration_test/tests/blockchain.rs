@@ -203,13 +203,18 @@ fn get_tx_out() { todo!() }
 
 #[test]
 #[cfg(feature = "TODO")]
-fn get_tx_out_proof() { todo!() }
-
-#[test]
-#[cfg(feature = "TODO")]
 fn get_tx_out_set_info() { todo!() }
 
+// Implicitly tests the omitted method `gettxoutproof` as well.
 #[test]
-#[cfg(feature = "TODO")]
-fn verify_tx_out_proof() { todo!() }
+fn verify_tx_out_proof() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, tx) = node.create_mined_transaction();
+    let txid = tx.compute_txid();
 
+    let proof = node.client.get_tx_out_proof(&[txid]).expect("gettxoutproof");
+
+    let txids = node.client.verify_tx_out_proof(&proof).expect("verifytxoutproof");
+    assert_eq!(txids.0.len(), 1);
+}

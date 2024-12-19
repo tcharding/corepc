@@ -502,14 +502,6 @@ impl GetTxOut {
     }
 }
 
-impl GetTxOutProof {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetTxOutProof, hex::HexToBytesError> {
-        let data = Vec::from_hex(&self.0)?;
-        Ok(model::GetTxOutProof(data))
-    }
-}
-
 impl GetTxOutSetInfo {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::GetTxOutSetInfo, GetTxOutSetInfoError> {

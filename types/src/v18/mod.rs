@@ -38,14 +38,14 @@
 //! | getmempoolinfo                     | done            |
 //! | getrawmempool                      | done            |
 //! | gettxout                           | done (untested) |
-//! | gettxoutproof                      | done (untested) |
+//! | gettxoutproof                      | omitted         |
 //! | gettxoutsetinfo                    | done (untested) |
 //! | preciousblock                      | omitted         |
 //! | pruneblockchain                    | omitted         |
 //! | savemempool                        | omitted         |
 //! | scantxoutset                       | omitted         |
 //! | verifychain                        | omitted         |
-//! | verifytxoutproof                   | done (untested) |
+//! | verifytxoutproof                   | done            |
 //!
 //! </details>
 //!
@@ -237,13 +237,13 @@ pub use crate::v17::{
     GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo, GetNetTotals, GetNetworkInfo,
     GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo,
     GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetReceivedByAddress, GetTransaction,
-    GetTransactionDetail, GetTxOut, GetTxOutProof, GetTxOutSetInfo, GetUnconfirmedBalance,
-    GetWalletInfo, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsItem, ListBanned,
-    ListLabels, ListLockUnspent, ListLockUnspentItem, ListReceivedByAddress,
-    ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockTransaction, ListTransactions,
-    ListTransactionsItem, ListUnspent, ListUnspentItem, ListWallets, LoadWallet, Locked, Logging,
-    MempoolEntry, MempoolEntryFees, PeerInfo, RescanBlockchain, ScriptPubkey, SendMany,
-    SendRawTransaction, SendToAddress, SignErrorData, SignMessage, SignRawTransactionWithWallet,
-    Softfork, SoftforkReject, TransactionCategory, UploadTarget, Uptime, VerifyTxOutProof,
-    WalletCreateFundedPsbt, WalletProcessPsbt,
+    GetTransactionDetail, GetTxOut, GetTxOutSetInfo, GetUnconfirmedBalance, GetWalletInfo,
+    GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsItem, ListBanned, ListLabels,
+    ListLockUnspent, ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem,
+    ListSinceBlock, ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
+    ListUnspentItem, ListWallets, LoadWallet, Locked, Logging, MempoolEntry, MempoolEntryFees,
+    PeerInfo, RescanBlockchain, ScriptPubkey, SendMany, SendRawTransaction, SendToAddress,
+    SignErrorData, SignMessage, SignRawTransactionWithWallet, Softfork, SoftforkReject,
+    TransactionCategory, UploadTarget, Uptime, VerifyTxOutProof, WalletCreateFundedPsbt,
+    WalletProcessPsbt,
 };

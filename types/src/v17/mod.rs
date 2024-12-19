@@ -33,14 +33,14 @@
 //! | getmempoolinfo                     | done            |
 //! | getrawmempool                      | done            |
 //! | gettxout                           | done (untested) |
-//! | gettxoutproof                      | done (untested) |
+//! | gettxoutproof                      | omitted         |
 //! | gettxoutsetinfo                    | done (untested) |
 //! | preciousblock                      | omitted         |
 //! | pruneblockchain                    | omitted         |
 //! | savemempool                        | omitted         |
 //! | scantxoutset                       | omitted         |
 //! | verifychain                        | omitted         |
-//! | verifytxoutproof                   | done (untested) |
+//! | verifytxoutproof                   | done            |
 //!
 //! </details>
 //!
@@ -237,8 +237,8 @@ pub use self::{
         GetBlockVerbosityOne, GetBlockVerbosityZero, GetBlockchainInfo, GetChainTips,
         GetChainTxStats, GetDifficulty, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
-        GetRawMempool, GetRawMempoolVerbose, GetTxOut, GetTxOutProof, GetTxOutSetInfo,
-        MempoolEntry, MempoolEntryFees, ScriptPubkey, Softfork, SoftforkReject, VerifyTxOutProof,
+        GetRawMempool, GetRawMempoolVerbose, GetTxOut, GetTxOutSetInfo, MempoolEntry,
+        MempoolEntryFees, ScriptPubkey, Softfork, SoftforkReject, VerifyTxOutProof,
     },
     control::{GetMemoryInfoStats, Locked, Logging, Uptime},
     generating::{Generate, GenerateToAddress},
