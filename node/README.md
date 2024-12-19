@@ -9,7 +9,7 @@ for bitcoin core 25.1, starting a regtest node is as simple as that:
 // the download feature is enabled whenever a specific version is enabled, for example `25_1` or `24_0_1`
 #[cfg(feature = "download")]
 {
-  let bitcoind = bitcoind::BitcoinD::from_downloaded().unwrap();
+  let bitcoind = node::Node::from_downloaded().unwrap();
   assert_eq!(0, bitcoind.client.get_blockchain_info().unwrap().blocks);
 }
 ```
@@ -24,18 +24,18 @@ When you don't use the auto-download feature you have the following options:
 
 ```rust
 if let Ok(exe_path) = bitcoind::exe_path() {
-  let bitcoind = bitcoind::BitcoinD::new(exe_path).unwrap();
+  let bitcoind = node::Node::new(exe_path).unwrap();
   assert_eq!(0, bitcoind.client.get_blockchain_info().unwrap().blocks);
 }
 ```
 
-Startup options could be configured via the [`Conf`] struct using [`BitcoinD::with_conf`] or 
-[`BitcoinD::from_downloaded_with_conf`]
+Startup options could be configured via the [`Conf`] struct using [`Node::with_conf`] or 
+[`Node::from_downloaded_with_conf`]
 
 ## Features
 
   * Waits until bitcoind daemon becomes ready to accept RPC commands
-  * `bitcoind` uses a temporary directory as datadir. You can specify the root of your temp
+  * `node` uses a temporary directory as datadir. You can specify the root of your temp
     directories so that you have the node's datadir in a RAM disk (eg `/dev/shm`)
   * Free ports are requested from the OS. Since you can't reserve the given port, a low probability
     race condition is still possible, for this reason the process attempts spawning 3 times with
