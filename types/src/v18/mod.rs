@@ -37,7 +37,7 @@
 //! | getmempoolentry                    | done            |
 //! | getmempoolinfo                     | done            |
 //! | getrawmempool                      | done            |
-//! | gettxout                           | done (untested) |
+//! | gettxout                           | done            |
 //! | gettxoutproof                      | omitted         |
 //! | gettxoutsetinfo                    | done (untested) |
 //! | preciousblock                      | omitted         |

@@ -34,6 +34,7 @@ crate::impl_client_v17__getmempooldescendants!();
 crate::impl_client_v17__getmempoolentry!();
 crate::impl_client_v17__getmempoolinfo!();
 crate::impl_client_v17__getrawmempool!();
+crate::impl_client_v17__gettxout!();
 crate::impl_client_v17__gettxoutproof!();
 crate::impl_client_v17__verifytxoutproof!();
 

@@ -599,7 +599,7 @@ pub struct GetTxOut {
     /// The transaction value in BTC.
     pub value: f64,
     /// The script pubkey.
-    #[serde(rename = "scriptPubkey")]
+    #[serde(rename = "scriptPubKey")]
     pub script_pubkey: ScriptPubkey,
     /// Coinbase or not.
     pub coinbase: bool,

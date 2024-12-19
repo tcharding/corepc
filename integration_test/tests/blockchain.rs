@@ -198,8 +198,16 @@ fn get_raw_mempool_verbose() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
-fn get_tx_out() { todo!() }
+fn get_tx_out() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, tx) = node.create_mined_transaction();
+    let txid = tx.compute_txid();
+
+    // Test the type and into model conversion code.
+    let json = node.client.get_tx_out(txid, 1).expect("gettxout");
+    let _ = json.into_model().expect("into_model");
+}
 
 #[test]
 #[cfg(feature = "TODO")]
