@@ -577,7 +577,6 @@ mod test {
     use tempfile::TempDir;
 
     use super::*;
-    #[cfg(not(feature = "28_0"))]
     use crate::P2P;
     use crate::{exe_path, get_available_port, Conf, Node, LOCAL_IP};
 
@@ -628,9 +627,6 @@ mod test {
     }
 
     #[test]
-    // When this test is run at the same time as `test_multi_p2p` for v28 it fails.
-    // FIXME: Debug this failure - test runs ok on its own.
-    #[cfg(not(feature = "28_0"))]
     fn test_p2p() {
         let exe = init();
 
@@ -858,7 +854,6 @@ mod test {
         assert!(node.params.zmq_pub_raw_block_socket.is_none());
     }
 
-    #[cfg(not(feature = "28_0"))]
     fn peers_connected(client: &Client) -> usize {
         // FIXME: Once client implements get_peer_info use it.
         // This is kinda cool, it shows we can call any RPC method using the client.
