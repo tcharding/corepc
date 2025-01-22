@@ -3,7 +3,8 @@
 use core::fmt;
 
 use bitcoin::amount::ParseAmountError;
-use internals::write_err;
+
+use crate::error::write_err;
 
 /// Error when converting a `GetTransaction` type into the model type.
 #[derive(Debug)]

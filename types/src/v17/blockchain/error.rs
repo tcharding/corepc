@@ -6,8 +6,8 @@ use bitcoin::amount::{self, ParseAmountError};
 use bitcoin::consensus::encode;
 use bitcoin::error::UnprefixedHexError;
 use bitcoin::{address, hex, network};
-use internals::write_err;
 
+use crate::error::write_err;
 use crate::NumericError;
 
 /// Error when converting a `GetBlockVerbosityOne` type into the model type.

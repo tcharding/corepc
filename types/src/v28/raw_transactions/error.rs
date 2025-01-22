@@ -4,8 +4,8 @@ use core::fmt;
 
 use bitcoin::amount::ParseAmountError;
 use bitcoin::hex::HexToArrayError;
-use internals::write_err;
 
+use crate::error::write_err;
 use crate::NumericError;
 
 /// Error when converting a `SubmitPackage` type into the model type.

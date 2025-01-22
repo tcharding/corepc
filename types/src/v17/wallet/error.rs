@@ -6,8 +6,8 @@ use bitcoin::amount::ParseAmountError;
 use bitcoin::consensus::encode;
 use bitcoin::psbt::PsbtParseError;
 use bitcoin::{address, bip32, hex, key, witness_program, witness_version};
-use internals::write_err;
 
+use crate::error::write_err;
 use crate::NumericError;
 
 /// Error when converting a `AddMultisigAddress` type into the model type.
