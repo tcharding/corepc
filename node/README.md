@@ -32,6 +32,10 @@ if let Ok(exe_path) = bitcoind::exe_path() {
 Startup options could be configured via the [`Conf`] struct using [`Node::with_conf`] or
 [`Node::from_downloaded_with_conf`]
 
+*WARNING* In order to get `--no-default-features` to work we hack-ishly default to the latest
+supported version of Core. This means that the `bitcoind` binary _must_ be the latest version or
+units test will/may fail.
+
 ## Features
 
   * Waits until bitcoind daemon becomes ready to accept RPC commands
