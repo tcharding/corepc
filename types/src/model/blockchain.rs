@@ -5,7 +5,7 @@
 //! These structs model the types returned by the JSON-RPC API but have concrete types
 //! and are not specific to a specific version of Bitcoin Core.
 
-use std::collections::BTreeMap;
+use alloc::collections::BTreeMap;
 
 use bitcoin::address::NetworkUnchecked;
 use bitcoin::{

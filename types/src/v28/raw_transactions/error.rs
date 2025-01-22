@@ -34,6 +34,7 @@ impl fmt::Display for SubmitPackageError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for SubmitPackageError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use SubmitPackageError as E;
@@ -73,6 +74,7 @@ impl fmt::Display for SubmitPackageTxResultError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for SubmitPackageTxResultError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use SubmitPackageTxResultError as E;
@@ -114,6 +116,7 @@ impl fmt::Display for SubmitPackageTxResultFeesError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for SubmitPackageTxResultFeesError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use SubmitPackageTxResultFeesError as E;

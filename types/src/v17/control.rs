@@ -4,7 +4,7 @@
 //!
 //! Types for methods found under the `== Control ==` section of the API docs.
 
-use std::collections::BTreeMap;
+use alloc::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 

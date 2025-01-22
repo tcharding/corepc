@@ -4,8 +4,8 @@
 //!
 //! Types for methods found under the `== Blockchain ==` section of the API docs.
 
+use alloc::collections::BTreeMap;
 use core::fmt;
-use std::collections::BTreeMap;
 
 use bitcoin::error::UnprefixedHexError;
 use bitcoin::{hex, network, BlockHash, Network, Work};
@@ -202,6 +202,7 @@ impl fmt::Display for GetBlockchainInfoError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetBlockchainInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetBlockchainInfoError::*;

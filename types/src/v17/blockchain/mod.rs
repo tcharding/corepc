@@ -7,7 +7,7 @@
 mod error;
 mod into;
 
-use std::collections::BTreeMap;
+use alloc::collections::BTreeMap;
 
 use bitcoin::hex::FromHex;
 use bitcoin::{Address, Amount, FeeRate, Network, ScriptBuf, TxMerkleNode, TxOut, Wtxid};

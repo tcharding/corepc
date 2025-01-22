@@ -4,7 +4,7 @@
 //!
 //! Types for methods found under the `== Blockchain ==` section of the API docs.
 
-use std::collections::BTreeMap;
+use alloc::collections::BTreeMap;
 
 use bitcoin::{BlockHash, Network, Work};
 use serde::{Deserialize, Serialize};

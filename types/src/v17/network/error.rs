@@ -26,6 +26,7 @@ impl fmt::Display for GetNetworkInfoError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetNetworkInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetNetworkInfoError as E;
