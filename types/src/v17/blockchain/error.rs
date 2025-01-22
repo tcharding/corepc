@@ -6,8 +6,8 @@ use bitcoin::amount::{self, ParseAmountError};
 use bitcoin::consensus::encode;
 use bitcoin::error::UnprefixedHexError;
 use bitcoin::{address, hex, network};
-use internals::write_err;
 
+use crate::error::write_err;
 use crate::NumericError;
 
 /// Error when converting a `GetBlockVerbosityOne` type into the model type.
@@ -47,6 +47,7 @@ impl fmt::Display for GetBlockVerbosityOneError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetBlockVerbosityOneError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetBlockVerbosityOneError::*;
@@ -94,6 +95,7 @@ impl fmt::Display for GetBlockchainInfoError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetBlockchainInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetBlockchainInfoError::*;
@@ -131,6 +133,7 @@ impl fmt::Display for GetBlockHeaderError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetBlockHeaderError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetBlockHeaderError::*;
@@ -179,6 +182,7 @@ impl fmt::Display for GetBlockHeaderVerboseError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetBlockHeaderVerboseError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetBlockHeaderVerboseError::*;
@@ -219,6 +223,7 @@ impl fmt::Display for GetBlockStatsError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetBlockStatsError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetBlockStatsError::*;
@@ -254,6 +259,7 @@ impl fmt::Display for ChainTipsError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ChainTipsError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use ChainTipsError::*;
@@ -290,6 +296,7 @@ impl fmt::Display for GetChainTxStatsError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetChainTxStatsError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetChainTxStatsError::*;
@@ -325,6 +332,7 @@ impl fmt::Display for MapMempoolEntryError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for MapMempoolEntryError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use MapMempoolEntryError as E;
@@ -369,6 +377,7 @@ impl fmt::Display for MempoolEntryError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for MempoolEntryError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use MempoolEntryError as E;
@@ -409,6 +418,7 @@ impl fmt::Display for MempoolEntryFeesError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for MempoolEntryFeesError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use MempoolEntryFeesError as E;
@@ -442,6 +452,7 @@ impl fmt::Display for GetMempoolInfoError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetMempoolInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetMempoolInfoError as E;
@@ -491,6 +502,7 @@ impl fmt::Display for GetTxOutError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetTxOutError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetTxOutError::*;
@@ -532,6 +544,7 @@ impl fmt::Display for GetTxOutSetInfoError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetTxOutSetInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetTxOutSetInfoError::*;

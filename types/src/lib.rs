@@ -9,6 +9,8 @@
 /// Re-export the `rust-bitcoin` crate.
 pub extern crate bitcoin;
 
+extern crate alloc;
+
 // TODO: Consider updating https://en.bitcoin.it/wiki/API_reference_%28JSON-RPC%29 when this is complete.
 
 // JSON types, for each specific version of `bitcoind`.
@@ -25,10 +27,11 @@ pub mod v26;
 pub mod v27;
 pub mod v28;
 
+mod error;
 // JSON types that model _all_ `bitcoind` versions.
 pub mod model;
 
-use std::fmt;
+use core::fmt;
 
 use bitcoin::amount::ParseAmountError;
 use bitcoin::{Amount, FeeRate};
@@ -75,6 +78,7 @@ impl fmt::Display for NumericError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for NumericError {}
 
 /// Converts `fee_rate` in BTC/kB to `FeeRate`.

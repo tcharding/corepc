@@ -7,7 +7,7 @@
 mod error;
 mod into;
 
-use std::collections::BTreeMap;
+use alloc::collections::BTreeMap;
 
 use bitcoin::amount::ParseAmountError;
 use bitcoin::key::{self, PrivateKey};

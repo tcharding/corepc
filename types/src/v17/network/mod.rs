@@ -9,7 +9,7 @@
 mod error;
 mod into;
 
-use std::collections::BTreeMap;
+use alloc::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 

@@ -6,8 +6,8 @@ use bitcoin::amount::ParseAmountError;
 use bitcoin::consensus::encode;
 use bitcoin::psbt::PsbtParseError;
 use bitcoin::{address, bip32, hex, key, witness_program, witness_version};
-use internals::write_err;
 
+use crate::error::write_err;
 use crate::NumericError;
 
 /// Error when converting a `AddMultisigAddress` type into the model type.
@@ -31,6 +31,7 @@ impl fmt::Display for AddMultisigAddressError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for AddMultisigAddressError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use AddMultisigAddressError::*;
@@ -66,6 +67,7 @@ impl fmt::Display for BumpFeeError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for BumpFeeError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use BumpFeeError as E;
@@ -135,6 +137,7 @@ impl fmt::Display for GetAddressInfoError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetAddressInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetAddressInfoError as E;
@@ -209,6 +212,7 @@ impl fmt::Display for GetAddressInfoEmbeddedError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetAddressInfoEmbeddedError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetAddressInfoEmbeddedError as E;
@@ -267,6 +271,7 @@ impl fmt::Display for GetTransactionError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetTransactionError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetTransactionError as E;
@@ -310,6 +315,7 @@ impl fmt::Display for GetTransactionDetailError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetTransactionDetailError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetTransactionDetailError as E;
@@ -356,6 +362,7 @@ impl fmt::Display for GetWalletInfoError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for GetWalletInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use GetWalletInfoError::*;
@@ -395,6 +402,7 @@ impl fmt::Display for ListAddressGroupingsError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ListAddressGroupingsError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use ListAddressGroupingsError::*;
@@ -426,6 +434,7 @@ impl fmt::Display for ListLockUnspentItemError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ListLockUnspentItemError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use ListLockUnspentItemError::*;
@@ -465,6 +474,7 @@ impl fmt::Display for ListReceivedByAddressError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ListReceivedByAddressError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use ListReceivedByAddressError::*;
@@ -501,6 +511,7 @@ impl fmt::Display for ListSinceBlockError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ListSinceBlockError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use ListSinceBlockError::*;
@@ -545,6 +556,7 @@ impl fmt::Display for ListSinceBlockTransactionError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ListSinceBlockTransactionError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use ListSinceBlockTransactionError as E;
@@ -596,6 +608,7 @@ impl fmt::Display for ListTransactionsItemError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ListTransactionsItemError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use ListTransactionsItemError as E;
@@ -652,6 +665,7 @@ impl fmt::Display for ListUnspentItemError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for ListUnspentItemError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use ListUnspentItemError as E;
@@ -693,6 +707,7 @@ impl fmt::Display for SignRawTransactionWithWalletError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for SignRawTransactionWithWalletError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use SignRawTransactionWithWalletError as E;
@@ -727,6 +742,7 @@ impl fmt::Display for SignErrorDataError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for SignErrorDataError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use SignErrorDataError as E;
@@ -766,6 +782,7 @@ impl fmt::Display for WalletCreateFundedPsbtError {
     }
 }
 
+#[cfg(feature = "std")]
 impl std::error::Error for WalletCreateFundedPsbtError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         use WalletCreateFundedPsbtError as E;
