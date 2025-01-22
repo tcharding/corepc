@@ -39,8 +39,6 @@ anyhow = "1.0.66"
 # - To use --no-default-features you must configure the bitcoind binary to be version 28 either by having `bitcoind` in your path or using `BITCOIND_EXE=/path/to/bitcoind`.
 # - `cargo test --no-default-features` uses `v28_0` also.
 [features]
-default = ["28_0"]
-
 # download is not supposed to be used directly only through selecting one of the version feature
 download = ["bitcoin_hashes", "flate2", "tar", "minreq", "zip"]
 
