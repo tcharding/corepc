@@ -4,7 +4,7 @@
 //!
 //! Types for methods found under the `== Control ==` section of the API docs.
 
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 // This just mimics the map returned by my instance of Core `v0.17`, I don't know how
 // to handle other map values or if they exist?
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct GetMemoryInfoStats(pub HashMap<String, Locked>);
+pub struct GetMemoryInfoStats(pub BTreeMap<String, Locked>);
 
 /// Information about locked memory manager.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
