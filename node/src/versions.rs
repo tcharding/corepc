@@ -46,9 +46,11 @@ pub const VERSION: &str = "0.18.1";
 #[cfg(all(feature = "0_17_1", not(feature = "0_18_1")))]
 pub const VERSION: &str = "0.17.1";
 
-// To make --no-default-features work we have to enable some feature, use most recent version same as for default.
+// To make --no-default-features work we have to export _some_ VERSION;
+// This must be in sync with `./client_versions.rs` re-exports.
 #[cfg(all(
     not(feature = "28_0"),
+    not(feature = "27_2"),
     not(feature = "27_1"),
     not(feature = "27_0"),
     not(feature = "26_2"),
