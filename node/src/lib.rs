@@ -307,16 +307,16 @@ impl Node {
             P2P::Yes => {
                 let p2p_port = get_available_port()?;
                 let p2p_socket = SocketAddrV4::new(LOCAL_IP, p2p_port);
-                let p2p_arg = format!("-port={}", p2p_port);
-                let args = vec![p2p_arg];
+                let bind_arg = format!("-bind={}", p2p_socket);
+                let args = vec![bind_arg];
                 (args, Some(p2p_socket))
             }
             P2P::Connect(other_node_url, listen) => {
                 let p2p_port = get_available_port()?;
                 let p2p_socket = SocketAddrV4::new(LOCAL_IP, p2p_port);
-                let p2p_arg = format!("-port={}", p2p_port);
+                let bind_arg = format!("-bind={}", p2p_socket);
                 let connect = format!("-connect={}", other_node_url);
-                let mut args = vec![p2p_arg, connect];
+                let mut args = vec![bind_arg, connect];
                 if listen {
                     args.push("-listen=1".to_string())
                 }
@@ -674,22 +674,6 @@ mod test {
     }
 
     #[test]
-    // In v28:
-    //
-    // > Bitcoin Core will now fail to start up if any of its P2P binds fail, rather than the
-    // > previous behaviour where it would only abort startup if all P2P binds had failed.
-    //
-    // ref: https://bitcoincore.org/en/releases/28.0/
-    // ref: https://github.com/bitcoin/bitcoin/pull/22729
-    //
-    // I tried various things to stop bitcoind attempting to bind on 18445 but could get nothing to work.
-    //
-    // - Tried using arg `-torcontrol=0`.
-    // - Tried using arg `-listenonion=0`.
-    // - Tried using arg `-bind={available_port}`.
-    // - Tried using arg `-bind={available_port}=onion`.
-    // - Tried using both the two bind args above together.
-    #[cfg(not(feature = "28_0"))]
     fn test_multi_p2p() {
         let exe = init();
 
