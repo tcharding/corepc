@@ -36,7 +36,7 @@ This repository is a bit oddly designed. It was done so very intentionally.
 
 ## Original code
 
-I don't know who is using `bitcoind` and/or `rust-bitocincore-rpc` in the wild and I do not want to
+I don't know who is using `bitcoind` and/or `rust-bitcoincore-rpc` in the wild and I do not want to
 disrupt them. As such `bitcoind` was pulled in here with permission of the original author.
 
 Some code shamelessly stolen from `rust-bitcoincore-rpc` (credit to Steven).
