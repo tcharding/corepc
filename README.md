@@ -28,7 +28,7 @@ integration testing.
 - `node/`: [`corepc-node`](https://crates.io/crates/corepc-node): Runs `bitcoind` regtest nodes.
 - `client/`: [`corepc-client`](https://crates.io/crates/corepc-client): A blocking JSON-RPC client used to test `corepc-types`.
 - `integration_test/`: Integration tests that use `corepc-client` and `corepc-node` to test `corepc-types`.
-
+- `jsonrpc`: [`jsonrpc`](https://crates.io/crates/jsonrpc): Rudimentary support for sending JSONRPC 2.0 requests and receiving responses.
 
 ## Design
 
