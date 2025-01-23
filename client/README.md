@@ -5,7 +5,7 @@ is only a blocking client and is intended to be used in integration testing.
 
 ## Minimum Supported Rust Version (MSRV)
 
-This library should always compile with any combination of features on **Rust 1.56.1**.
+This library should always compile with any combination of features on **Rust 1.63.0**.
 
 ## Licensing
 
