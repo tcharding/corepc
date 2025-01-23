@@ -4,7 +4,7 @@ Types returned by the JSON-RPC API of Bitcoin Core.
 
 ## Minimum Supported Rust Version (MSRV)
 
-This library should always compile with any combination of features on **Rust 1.56.1**.
+This library should always compile with any combination of features on **Rust 1.63.0**.
 
 ## Licensing
 

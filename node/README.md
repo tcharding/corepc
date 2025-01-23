@@ -56,20 +56,9 @@ To build docs:
 RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --features download,doc --open
 ```
 
-## MSRV
+## Minimum Supported Rust Version (MSRV)
 
-The MSRV is 1.56.1 for version 0.35.*
-
-Note: to respect 1.56.1 MSRV you need to use and older version of some dependencies, in CI the below
-dependency versions are pinned:
-
-```sh
-cargo update
-cargo update -p tempfile --precise 3.3.0
-cargo update -p log --precise 0.4.18
-```
-
-Pinning in `Cargo.toml` is avoided because it could cause compilation issues downstream.
+This library should always compile with any combination of features on **Rust 1.63.0**.
 
 ## Nix
 
