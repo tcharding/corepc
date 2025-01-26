@@ -28,11 +28,19 @@ integration testing.
 - `node/`: [`corepc-node`](https://crates.io/crates/corepc-node): Runs `bitcoind` regtest nodes.
 - `client/`: [`corepc-client`](https://crates.io/crates/corepc-client): A blocking JSON-RPC client used to test `corepc-types`.
 - `integration_test/`: Integration tests that use `corepc-client` and `corepc-node` to test `corepc-types`.
-
+- `jsonrpc`: [`jsonrpc`](https://crates.io/crates/jsonrpc): Rudimentary support for sending JSONRPC 2.0 requests and receiving responses.
 
 ## Design
 
-This repository is a bit oddly designed. It was done so very intentionally.
+This repository is a bit oddly designed. It was done so very intentionally. The aim is to provide
+data types for every single JSON RPC method provided by Core for many versions going back to v17.
+Furthermore we want to explicitly test every method call using every data structure to ensure we got
+it correct.
+
+Fundamentally when you make an arbitrary RPC call against a miscellaneous Bitcoin Core instance you
+do not know which version of Core you are talking to. No crate in this repository makes any effort
+to solve this problem - it is left to the application. If however you want to run a specific RPC
+call against a specific version of Core this repository is your friend.
 
 ## Original code
 
