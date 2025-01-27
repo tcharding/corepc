@@ -147,9 +147,9 @@ impl<T: Transport> From<T> for Client {
 #[derive(Clone, PartialEq, Debug)]
 struct HashableValue<'a>(pub Cow<'a, Value>);
 
-impl<'a> Eq for HashableValue<'a> {}
+impl Eq for HashableValue<'_> {}
 
-impl<'a> Hash for HashableValue<'a> {
+impl Hash for HashableValue<'_> {
     fn hash<H: Hasher>(&self, state: &mut H) {
         match *self.0.as_ref() {
             Value::Null => "null".hash(state),
