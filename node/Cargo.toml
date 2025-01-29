@@ -35,36 +35,37 @@ anyhow = "1.0.66"
 
 # Please note, in this crate the version features are mutally exclusive.
 #
-# - `cargo test --all-features` is the same as `cargo test --features=v28_0`
-# - To use --no-default-features you must configure the bitcoind binary to be version 28 either by having `bitcoind` in your path or using `BITCOIND_EXE=/path/to/bitcoind`.
-# - `cargo test --no-default-features` uses `v28_0` also.
+# - `cargo test --features=27_2,download` to download Bitcoin Core binary v27.
+# - `cargo test --all-features` is the same as `cargo test --features=download,v28_0`
+# - `cargo test --features=28_0` to use `bitcoind`.
+#
+# If you do not enable `download` then you must configure the bitcoind binary by `bitcoind` in your
+# path or using `BITCOIND_EXE=/path/to/bitcoind`. Note also that the feature enabled should match
+# the version from `bitcoind --version`.
 [features]
-default = ["28_0"]
-
-# download is not supposed to be used directly only through selecting one of the version feature
 download = ["bitcoin_hashes", "flate2", "tar", "minreq", "zip"]
 
 # We support all minor releases of the latest three versions.
-28_0 = ["download", "27_2"]
-27_2 = ["download", "27_1"]
-27_1 = ["download", "27_0"]
-27_0 = ["download", "26_2"]
-26_2 = ["download", "26_1"]
-26_1 = ["download", "26_0"]
-26_0 = ["download", "25_2"]
+28_0 = ["27_2"]
+27_2 = ["27_1"]
+27_1 = ["27_0"]
+27_0 = ["26_2"]
+26_2 = ["26_1"]
+26_1 = ["26_0"]
+26_0 = ["25_2"]
+
 # We only support the latest minor version for older versions.
-25_2 = ["download", "24_2"]
-24_2 = ["download", "23_2"]
-23_2 = ["download", "22_1"]
-22_1 = ["download", "0_21_2"]
-0_21_2 = ["download", "0_20_2"]
-0_20_2 = ["download", "0_19_1"]
-0_19_1 = ["download", "0_18_1"]
-0_18_1 = ["download", "0_17_1"]
-0_17_1 = ["download"]
+25_2 = ["24_2"]
+24_2 = ["23_2"]
+23_2 = ["22_1"]
+22_1 = ["0_21_2"]
+0_21_2 = ["0_20_2"]
+0_20_2 = ["0_19_1"]
+0_19_1 = ["0_18_1"]
+0_18_1 = ["0_17_1"]
+0_17_1 = []
 
-doc = [] # used only for documentation building
-
+doc = [] # Used only for documentation building.
 
 [package.metadata.docs.rs]
 features = ["download", "doc", "28_0"]
