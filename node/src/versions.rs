@@ -1,3 +1,25 @@
+// An explicit version of Bitcoin Core must be selected by enabling some feature.
+// We check this here instead of in `lib.rs` because this file is included in `build.rs`.
+#[cfg(all(
+    not(feature = "28_0"),
+    not(feature = "27_2"),
+    not(feature = "27_1"),
+    not(feature = "27_0"),
+    not(feature = "26_2"),
+    not(feature = "26_1"),
+    not(feature = "26_0"),
+    not(feature = "25_2"),
+    not(feature = "24_2"),
+    not(feature = "23_2"),
+    not(feature = "22_1"),
+    not(feature = "0_21_2"),
+    not(feature = "0_20_2"),
+    not(feature = "0_19_1"),
+    not(feature = "0_18_1"),
+    not(feature = "0_17_1")
+))]
+compile_error!("enable a feature in order to select the version of Bitcoin Core to use");
+
 #[cfg(feature = "28_0")]
 pub const VERSION: &str = "28.0";
 
@@ -45,24 +67,3 @@ pub const VERSION: &str = "0.18.1";
 
 #[cfg(all(feature = "0_17_1", not(feature = "0_18_1")))]
 pub const VERSION: &str = "0.17.1";
-
-// To make --no-default-features work we have to enable some feature, use most recent version same as for default.
-#[cfg(all(
-    not(feature = "28_0"),
-    not(feature = "27_1"),
-    not(feature = "27_0"),
-    not(feature = "26_2"),
-    not(feature = "26_1"),
-    not(feature = "26_0"),
-    not(feature = "25_2"),
-    not(feature = "24_2"),
-    not(feature = "23_2"),
-    not(feature = "22_1"),
-    not(feature = "0_21_2"),
-    not(feature = "0_20_2"),
-    not(feature = "0_19_1"),
-    not(feature = "0_18_1"),
-    not(feature = "0_17_1")
-))]
-#[allow(dead_code)] // for --no-default-features
-pub const VERSION: &str = "28.0";
