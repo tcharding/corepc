@@ -94,8 +94,7 @@ fn get_balance() {
 #[cfg(feature = "v19")]
 fn get_balances() {
     let node = Node::new_with_default_wallet();
-    let address = node.client.new_address().expect("failed to get new address");
-    let _ = node.client.generate_to_address(101, &address).expect("generatetoaddress");
+    node.fund_wallet();
     let json = node.client.get_balances().expect("getbalances");
     let model = json.into_model().expect("into_model");
     // TODO: Do more fine grained testing.
@@ -104,8 +103,6 @@ fn get_balances() {
 
 #[test]
 fn get_new_address() {
-
-
     let node = Node::new_with_default_wallet();
 
     let _ = node.client.new_address().expect("getnewaddress");
@@ -159,8 +156,8 @@ fn get_received_by_address() {
 #[test]
 fn get_transaction() {
     let node = Node::new_with_default_wallet();
+    node.fund_wallet();
     let address = node.client.new_address().expect("failed to create new address");
-    let _ = node.client.generate_to_address(101, &address).expect("generatetoaddress");
 
     let txid = node
         .client
@@ -193,8 +190,8 @@ fn unload_wallet() {
 #[test]
 fn send_to_address() {
     let node = Node::new_with_default_wallet();
+    node.fund_wallet();
     let address = node.client.new_address().expect("failed to create new address");
-    let _ = node.client.generate_to_address(101, &address).expect("generatetoaddress");
 
     let json = node
         .client
