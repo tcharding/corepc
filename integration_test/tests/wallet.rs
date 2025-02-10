@@ -87,7 +87,11 @@ pub fn get_address_info() {
 fn get_balance() {
     let node = Node::new_with_default_wallet();
     let json = node.client.get_balance().expect("getbalance");
-    assert!(json.into_model().is_ok())
+    assert!(json.into_model().is_ok());
+
+    node.fund_wallet();
+    let json = node.client.get_balance().expect("getbalance");
+    assert!(json.into_model().is_ok());
 }
 
 #[test]
