@@ -1,5 +1,5 @@
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
-#![cfg_attr(feature = "doc", cfg_attr(all(), doc = include_str!("../README.md")))]
+#![cfg_attr(docsrs, cfg_attr(all(), doc = include_str!("../README.md")))]
 
 pub extern crate corepc_client as client;
 
