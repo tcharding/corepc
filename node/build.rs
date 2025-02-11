@@ -1,15 +1,13 @@
-#[cfg(not(feature = "download"))]
-mod download {}
-
-#[cfg(any(not(feature = "download"), feature = "doc"))]
-fn main() {}
-
-#[cfg(all(feature = "download", not(feature = "doc")))]
 fn main() { download::start().unwrap(); }
 
-#[cfg(all(feature = "download", not(feature = "doc")))]
+#[cfg(not(feature = "download"))]
 mod download {
+    pub(crate) fn start() -> Result<(), ()> { Ok(()) }
+}
 
+#[cfg(feature = "download")]
+#[cfg(not(docsrs))]
+mod download {
     use std::fs::File;
     use std::io::{self, BufRead, BufReader, Cursor, Read};
     use std::path::Path;

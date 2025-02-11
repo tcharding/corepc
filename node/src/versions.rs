@@ -21,6 +21,7 @@
 compile_error!("enable a feature in order to select the version of Bitcoin Core to use");
 
 #[cfg(feature = "28_0")]
+#[allow(dead_code)] // Triggers in --all-features builds.
 pub const VERSION: &str = "28.0";
 
 #[cfg(all(feature = "27_2", not(feature = "28_0")))]
@@ -67,3 +68,25 @@ pub const VERSION: &str = "0.18.1";
 
 #[cfg(all(feature = "0_17_1", not(feature = "0_18_1")))]
 pub const VERSION: &str = "0.17.1";
+
+/// This is meaningless but we need it otherwise we can't get far enough into
+/// the build process to trigger the `compile_error!` in `./versions.rs`.
+#[cfg(all(
+    not(feature = "28_0"),
+    not(feature = "27_2"),
+    not(feature = "27_1"),
+    not(feature = "27_0"),
+    not(feature = "26_2"),
+    not(feature = "26_1"),
+    not(feature = "26_0"),
+    not(feature = "25_2"),
+    not(feature = "24_2"),
+    not(feature = "23_2"),
+    not(feature = "22_1"),
+    not(feature = "0_21_2"),
+    not(feature = "0_20_2"),
+    not(feature = "0_19_1"),
+    not(feature = "0_18_1"),
+    not(feature = "0_17_1")
+))]
+pub const VERSION: &str = "never-used";
