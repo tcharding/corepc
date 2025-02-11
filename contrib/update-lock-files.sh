@@ -6,6 +6,6 @@ set -euo pipefail
 
 for file in Cargo-minimal.lock Cargo-recent.lock; do
     cp --force "$file" Cargo.lock
-    cargo check
+    cargo check --all-features
     cp --force Cargo.lock "$file"
 done
