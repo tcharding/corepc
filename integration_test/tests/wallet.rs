@@ -44,6 +44,9 @@ pub fn bump_fee() {
 pub fn create_wallet() {
     // Implicitly tests `createwallet` because we create the default wallet.
     let _ = Node::new_with_default_wallet();
+
+    // TODO: We are not currently testing the `warnings` field. This field was changed from an
+    // optional `String` to an optional vector of strings in v25. Needs testing.
 }
 
 #[test]
