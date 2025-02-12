@@ -11,6 +11,9 @@ pub mod v22;
 pub mod v23;
 pub mod v24;
 pub mod v25;
+pub mod v26;
+pub mod v27;
+pub mod v28;
 
 use crate::Version;
 
@@ -28,6 +31,9 @@ pub fn all_methods(version: Version) -> Vec<String> {
         V23 => v23::METHODS,
         V24 => v24::METHODS,
         V25 => v25::METHODS,
+        V26 => v26::METHODS,
+        V27 => v27::METHODS,
+        V28 => v28::METHODS,
     };
 
     list.iter().map(|m| m.name.to_string()).collect()
@@ -66,6 +72,9 @@ impl Method {
             V23 => v23::METHODS,
             V24 => v24::METHODS,
             V25 => v25::METHODS,
+            V26 => v26::METHODS,
+            V27 => v27::METHODS,
+            V28 => v28::METHODS,
         };
 
         list.iter().find(|&method| method.name == name)
