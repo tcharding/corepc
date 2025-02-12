@@ -20,7 +20,10 @@ use verify::{method, model, ssot, Version};
 // TODO: Enable running from any directory, currently errors if run from `src/`.
 // TODO: Add a --quiet option.
 
-const VERSIONS: [Version; 5] = [Version::V17, Version::V18, Version::V19, Version::V20, Version::V21];
+const VERSIONS: [Version; 10] = [
+    Version::V17, Version::V18, Version::V19, Version::V20, Version::V21, Version::V22,
+    Version::V23, Version::V24, Version::V25, Version::V26
+];
 
 fn main() -> Result<()> {
     let cmd = Command::new("verify")
