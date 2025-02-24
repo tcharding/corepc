@@ -36,9 +36,12 @@ zip = { version = "0.6", optional = true }
 #
 # - `cargo test --features=27_2,download` to download Bitcoin Core binary `v27.2`.
 # - `cargo test --features=28_0` to use `bitcoind` from the host environment.
-# - `cargo test --all-features`: Same as using latest version e.g., `cargo test --features=20_0,download`
-# - `cargo test`: Does not work, you MUST enable a version feature.
+# - `cargo test` is equivalent to `cargo test --features=0_17_1`.
+# - `cargo test --all-features`: Same as using latest version.
+# - `cargo test --no-default-features` does not work, you MUST enable a version feature.
 [features]
+default = ["0_17_1"]
+
 download = ["anyhow", "bitcoin_hashes", "flate2", "tar", "minreq", "zip"]
 
 # We support all minor releases of the latest three versions.
