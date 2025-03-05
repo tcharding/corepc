@@ -48,6 +48,7 @@ crate::impl_client_v17__uptime!();
 // == Generating ==
 crate::impl_client_v17__generatetoaddress!();
 crate::impl_client_v17__generate!();
+crate::impl_client_v17__invalidateblock!();
 
 // == Network ==
 crate::impl_client_v17__getaddednodeinfo!();

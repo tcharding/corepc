@@ -14,6 +14,23 @@ fn generate_to_address() {
     json.into_model().unwrap();
 }
 
+#[test]
+fn invalidate_block() {
+    const NBLOCKS: usize = 1;
+
+    let node = Node::new_with_default_wallet();
+    let address = node.client.new_address().expect("failed to get new address");
+    let old_best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
+    node.client.generate_to_address(NBLOCKS, &address).expect("generatetoaddress").into_model().unwrap();
+
+    let new_best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
+    assert_ne!(old_best_block, new_best_block);
+
+    node.client.invalidate_block(new_best_block).expect("invalidateblock");
+    let best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
+    assert_eq!(old_best_block, best_block);
+}
+
 // #[test]
 // #[cfg(not(feature = "v19"))]
 // fn generate() {
