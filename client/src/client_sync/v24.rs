@@ -25,6 +25,7 @@ crate::impl_client_v17__getblockheader!();
 crate::impl_client_v17__getblockstats!();
 crate::impl_client_v17__getchaintips!();
 crate::impl_client_v17__getchaintxstats!();
+crate::impl_client_v17__getdifficulty!();
 crate::impl_client_v22__gettxout!();
 
 // == Control ==

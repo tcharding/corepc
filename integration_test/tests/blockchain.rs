@@ -138,7 +138,6 @@ fn get_chain_tx_stats() {
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_difficulty() {
     let node = Node::new_no_wallet();
