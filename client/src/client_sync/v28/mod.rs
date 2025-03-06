@@ -28,6 +28,11 @@ crate::impl_client_v17__getblockstats!();
 crate::impl_client_v17__getchaintips!();
 crate::impl_client_v17__getchaintxstats!();
 crate::impl_client_v17__getdifficulty!();
+crate::impl_client_v19__getmempoolancestors!();
+crate::impl_client_v19__getmempooldescendants!();
+crate::impl_client_v19__getmempoolentry!();
+crate::impl_client_v17__getmempoolinfo!();
+crate::impl_client_v17__getrawmempool!();
 crate::impl_client_v22__gettxout!();
 
 // == Control ==

@@ -159,7 +159,6 @@ fn get_mempool_descendants() {
     // same type as `getmempoolentry` which is tested below.
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_mempool_entry() {
     let node = Node::new_with_default_wallet();
@@ -170,7 +169,6 @@ fn get_mempool_entry() {
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_mempool_info() {
     let node = Node::new_with_default_wallet();
@@ -184,7 +182,6 @@ fn get_mempool_info() {
     assert_eq!(info.size, 1);
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_raw_mempool() {
     let node = Node::new_with_default_wallet();

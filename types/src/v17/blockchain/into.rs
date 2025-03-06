@@ -377,7 +377,8 @@ impl MempoolEntry {
     pub fn into_model(self) -> Result<model::MempoolEntry, MempoolEntryError> {
         use MempoolEntryError as E;
 
-        let size = crate::to_u32(self.size, "size")?;
+        let size = Some(crate::to_u32(self.size, "size")?);
+        let weight = None;
         let time = crate::to_u32(self.time, "time")?;
         let height = crate::to_u32(self.height, "height")?;
         let descendant_count = crate::to_u32(self.descendant_count, "descendant_count")?;
@@ -401,6 +402,7 @@ impl MempoolEntry {
 
         Ok(model::MempoolEntry {
             size,
+            weight,
             time,
             height,
             descendant_count,
