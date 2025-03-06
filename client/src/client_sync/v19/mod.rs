@@ -15,9 +15,10 @@ use crate::types::v19::*;
 crate::define_jsonrpc_minreq_client!("v19");
 
 // == Blockchain ==
-crate::impl_client_v17__getblockchaininfo!();
 crate::impl_client_v17__getbestblockhash!();
 crate::impl_client_v17__getblock!();
+crate::impl_client_v17__getblockchaininfo!();
+crate::impl_client_v17__getblockcount!();
 crate::impl_client_v17__gettxout!();
 
 // == Control ==

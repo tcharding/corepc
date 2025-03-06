@@ -16,9 +16,10 @@ pub use crate::client_sync::v17::AddressType;
 crate::define_jsonrpc_minreq_client!("v20");
 
 // == Blockchain ==
-crate::impl_client_v17__getblockchaininfo!();
 crate::impl_client_v17__getbestblockhash!();
 crate::impl_client_v17__getblock!();
+crate::impl_client_v17__getblockchaininfo!();
+crate::impl_client_v17__getblockcount!();
 crate::impl_client_v17__gettxout!();
 
 // == Control ==
