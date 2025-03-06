@@ -124,7 +124,6 @@ fn get_block_stats_by_hash_txindex() { // verbose = true
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_chain_tips() {
     let node = Node::new_no_wallet();
