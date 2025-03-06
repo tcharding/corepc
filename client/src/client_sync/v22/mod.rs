@@ -4,6 +4,7 @@
 //!
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
+mod blockchain;
 mod wallet;
 
 use bitcoin::address::{Address, NetworkChecked};

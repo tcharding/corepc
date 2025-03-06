@@ -2,8 +2,6 @@
 
 //! Tests for methods found under the `== Blockchain ==` section of the API docs.
 
-#![cfg(any(feature = "0_17_1", feature = "0_18_1"))]
-
 use integration_test::{Node, NodeExt as _};
 
 // FIXME: Do we need this?
@@ -42,6 +40,7 @@ fn get_block() {
     // assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_block_count() {
     let node = Node::new_no_wallet();
@@ -49,6 +48,7 @@ fn get_block_count() {
     let _ = json.into_model();
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_block_hash() {
     let node = Node::new_no_wallet();
@@ -56,6 +56,7 @@ fn get_block_hash() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_block_header() { // verbose = false
     let node = Node::new_no_wallet();
@@ -64,6 +65,7 @@ fn get_block_header() { // verbose = false
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_block_header_verbose() { // verbose = true
     let node = Node::new_no_wallet();
@@ -96,6 +98,7 @@ fn get_block_stats_by_hash() { // verbose = true
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_block_stats_by_height_txindex() {
     let node = Node::new_no_wallet_txindex();
@@ -103,6 +106,7 @@ fn get_block_stats_by_height_txindex() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_block_stats_by_hash_txindex() { // verbose = true
     let node = Node::new_no_wallet_txindex();
@@ -111,6 +115,7 @@ fn get_block_stats_by_hash_txindex() { // verbose = true
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_chain_tips() {
     let node = Node::new_no_wallet();
@@ -118,6 +123,7 @@ fn get_chain_tips() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_chain_tx_stats() {
     let node = Node::new_no_wallet();
@@ -125,6 +131,7 @@ fn get_chain_tx_stats() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_difficulty() {
     let node = Node::new_no_wallet();
@@ -146,6 +153,7 @@ fn get_mempool_descendants() {
     // same type as `getmempoolentry` which is tested below.
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_mempool_entry() {
     let node = Node::new_with_default_wallet();
@@ -156,6 +164,7 @@ fn get_mempool_entry() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_mempool_info() {
     let node = Node::new_with_default_wallet();
@@ -169,6 +178,7 @@ fn get_mempool_info() {
     assert_eq!(info.size, 1);
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_raw_mempool() {
     let node = Node::new_with_default_wallet();
@@ -209,6 +219,7 @@ fn get_tx_out() {
     let _ = json.into_model().expect("into_model");
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_tx_out_set_info() {
     let node = Node::new_with_default_wallet();
@@ -221,6 +232,7 @@ fn get_tx_out_set_info() {
 
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 // Implicitly tests the omitted method `gettxoutproof` as well.
 #[test]
 fn verify_tx_out_proof() {

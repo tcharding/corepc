@@ -240,6 +240,10 @@
 //! - Method returns a simple type (e.g. bool or integer).
 //! - Method is deprecated.
 
+mod blockchain;
+
+#[doc(inline)]
+pub use self::blockchain::{GetTxOut, ScriptPubkey};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -253,16 +257,15 @@ pub use crate::{
         GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo, GetNetTotals,
         GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
         GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
-        GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTxOut, GetTxOutSetInfo,
+        GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTxOutSetInfo,
         GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications, ListAddressGroupings,
         ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem,
         ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
         ListUnspentItem, ListWallets, LoadWallet, Locked, Logging, MempoolEntry, MempoolEntryFees,
-        PeerInfo, RescanBlockchain, ScriptPubkey, SendMany, SendRawTransaction, SendToAddress,
-        SignErrorData, SignMessage, SignRawTransactionWithWallet, SoftforkReject,
-        TransactionCategory, UploadTarget, Uptime, VerifyTxOutProof, WalletCreateFundedPsbt,
-        WalletProcessPsbt,
+        PeerInfo, RescanBlockchain, SendMany, SendRawTransaction, SendToAddress, SignErrorData,
+        SignMessage, SignRawTransactionWithWallet, SoftforkReject, TransactionCategory,
+        UploadTarget, Uptime, VerifyTxOutProof, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
