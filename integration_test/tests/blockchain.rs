@@ -54,7 +54,6 @@ fn get_block_hash() {
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_block_header() { // verbose = false
     let node = Node::new_no_wallet();
@@ -63,7 +62,6 @@ fn get_block_header() { // verbose = false
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_block_header_verbose() { // verbose = true
     let node = Node::new_no_wallet();
