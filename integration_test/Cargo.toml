@@ -8,7 +8,7 @@ edition = "2021"
 
 # Please note, in this crate the version features are mutally exclusive.
 #
-# - `cargo test --all-features` is the same as `cargo test --features=v26_2`
+# - `cargo test --all-features` does not work - select a single version.
 # - `cargo test --no-default-features` skips all tests.
 [features]
 # Enable the same feature in `node` and the version feature here.
