@@ -13,6 +13,9 @@ use std::{error, fmt};
 use crate::client::Transport;
 use crate::{Request, Response};
 
+use base64::engine::general_purpose::STANDARD as BASE64;
+use base64::Engine;
+
 const DEFAULT_URL: &str = "http://localhost";
 const DEFAULT_PORT: u16 = 8332; // the default RPC port for bitcoind.
 #[cfg(not(jsonrpc_fuzz))]
@@ -123,7 +126,7 @@ impl Builder {
         if let Some(ref pass) = pass {
             s.push_str(pass.as_ref());
         }
-        self.tp.basic_auth = Some(format!("Basic {}", &base64::encode(s.as_bytes())));
+        self.tp.basic_auth = Some(format!("Basic {}", &BASE64.encode(s.as_bytes())));
         self
     }
 
@@ -144,7 +147,7 @@ impl Builder {
     /// let client = MinreqHttpTransport::builder().cookie_auth(cookie);
     /// ```
     pub fn cookie_auth<S: AsRef<str>>(mut self, cookie: S) -> Self {
-        self.tp.basic_auth = Some(format!("Basic {}", &base64::encode(cookie.as_ref().as_bytes())));
+        self.tp.basic_auth = Some(format!("Basic {}", &BASE64.encode(cookie.as_ref().as_bytes())));
         self
     }
 

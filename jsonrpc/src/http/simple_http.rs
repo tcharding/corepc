@@ -14,6 +14,9 @@ use std::sync::{Arc, Mutex, MutexGuard};
 use std::time::Duration;
 use std::{error, fmt, io, net, num};
 
+use base64::engine::general_purpose::STANDARD as BASE64;
+use base64::Engine;
+
 #[cfg(feature = "proxy")]
 use socks::Socks5Stream;
 
@@ -377,13 +380,13 @@ impl Builder {
         if let Some(ref pass) = pass {
             auth.push_str(pass.as_ref());
         }
-        self.tp.basic_auth = Some(format!("Basic {}", &base64::encode(auth.as_bytes())));
+        self.tp.basic_auth = Some(format!("Basic {}", &BASE64.encode(auth.as_bytes())));
         self
     }
 
     /// Adds authentication information to the transport using a cookie string ('user:pass').
     pub fn cookie_auth<S: AsRef<str>>(mut self, cookie: S) -> Self {
-        self.tp.basic_auth = Some(format!("Basic {}", &base64::encode(cookie.as_ref().as_bytes())));
+        self.tp.basic_auth = Some(format!("Basic {}", &BASE64.encode(cookie.as_ref().as_bytes())));
         self
     }
 
