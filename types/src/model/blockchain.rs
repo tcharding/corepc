@@ -474,7 +474,9 @@ pub struct GetTxOutSetInfo {
     /// A meaningless metric for UTXO set size.
     pub bogo_size: u32,
     /// The serialized hash.
-    pub hash_serialized_2: String, // FIXME: What sort of hash is this?
+    ///
+    /// This was removed in Bitcoin Core v26, and hence will be `None` for v26 and later.
+    pub hash_serialized_2: Option<String>, // FIXME: What sort of hash is this?
     /// The estimated size of the chainstate on disk.
     pub disk_size: u32,
     /// The total amount.

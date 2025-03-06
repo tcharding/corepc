@@ -246,6 +246,10 @@
 //! - Method returns a simple type (e.g. bool or integer).
 //! - Method is deprecated.
 
+mod blockchain;
+
+#[doc(inline)]
+pub use self::blockchain::GetTxOutSetInfo;
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -258,9 +262,9 @@ pub use crate::{
         GetMempoolInfo, GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
         GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
         GetRawMempoolVerbose, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-        GetTxOutSetInfo, GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications,
-        ListAddressGroupings, ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent,
-        ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
+        GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications, ListAddressGroupings,
+        ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem,
+        ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
         ListUnspentItem, ListWallets, Locked, Logging, PeerInfo, RescanBlockchain, SendMany,
         SendRawTransaction, SendToAddress, SignErrorData, SignMessage,

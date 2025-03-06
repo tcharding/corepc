@@ -514,7 +514,7 @@ impl GetTxOutSetInfo {
         let transactions = crate::to_u32(self.transactions, "transactions")?;
         let tx_outs = crate::to_u32(self.tx_outs, "tx_outs")?;
         let bogo_size = crate::to_u32(self.bogo_size, "bogo_size")?;
-        let hash_serialized_2 = self.hash_serialized_2; // TODO: Convert this to a hash type.
+        let hash_serialized_2 = Some(self.hash_serialized_2); // TODO: Convert this to a hash type.
         let disk_size = crate::to_u32(self.disk_size, "disk_size")?;
         let total_amount = Amount::from_btc(self.total_amount).map_err(E::TotalAmount)?;
 

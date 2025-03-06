@@ -222,7 +222,6 @@ fn get_tx_out() {
     let _ = json.into_model().expect("into_model");
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_tx_out_set_info() {
     let node = Node::new_with_default_wallet();
@@ -235,7 +234,6 @@ fn get_tx_out_set_info() {
 
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 // Implicitly tests the omitted method `gettxoutproof` as well.
 #[test]
 fn verify_tx_out_proof() {

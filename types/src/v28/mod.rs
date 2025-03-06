@@ -270,9 +270,9 @@ pub use crate::{
         GetMempoolInfo, GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError,
         GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
         GetRawMempoolVerbose, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-        GetTxOutSetInfo, GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications,
-        ListAddressGroupings, ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent,
-        ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
+        GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications, ListAddressGroupings,
+        ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem,
+        ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
         ListUnspentItem, ListWallets, Locked, Logging, PeerInfo, RescanBlockchain, SendMany,
         SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
@@ -288,4 +288,5 @@ pub use crate::{
     v21::UnloadWallet,
     v22::{GetTxOut, ScriptPubkey},
     v25::{CreateWallet, LoadWallet},
+    v26::GetTxOutSetInfo,
 };
