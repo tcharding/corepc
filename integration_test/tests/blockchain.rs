@@ -70,23 +70,30 @@ fn get_block_header_verbose() { // verbose = true
     assert!(json.into_model().is_ok());
 }
 
-// FIXME: I don't know why this passes for v17 and not v18. I tried making stats
-// optional as suggested in the docs but to no avail.
+#[cfg(not(any(feature = "v18", feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
+// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
+// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
+// allowing to.
 #[test]
-#[cfg(feature = "0_17_1")]
 fn get_block_stats() {
     get_block_stats_by_height();
     get_block_stats_by_hash();
 }
 
-#[cfg(feature = "0_17_1")]
+#[cfg(not(any(feature = "v18", feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
+// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
+// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
+// allowing to.
 fn get_block_stats_by_height() {
     let node = Node::new_no_wallet();
     let json = node.client.get_block_stats_by_height(0).expect("getblockstats");
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(feature = "0_17_1")]
+#[cfg(not(any(feature = "v18", feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
+// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
+// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
+// allowing to.
 fn get_block_stats_by_hash() { // verbose = true
     let node = Node::new_no_wallet();
     let block_hash = best_block_hash();
@@ -94,7 +101,10 @@ fn get_block_stats_by_hash() { // verbose = true
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
+#[cfg(not(any(feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
+// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
+// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
+// allowing to.
 #[test]
 fn get_block_stats_by_height_txindex() {
     let node = Node::new_no_wallet_txindex();
@@ -102,7 +112,10 @@ fn get_block_stats_by_height_txindex() {
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
+#[cfg(not(any(feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
+// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
+// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
+// allowing to.
 #[test]
 fn get_block_stats_by_hash_txindex() { // verbose = true
     let node = Node::new_no_wallet_txindex();
