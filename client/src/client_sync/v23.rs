@@ -18,7 +18,8 @@ crate::impl_client_v17__getbestblockhash!();
 crate::impl_client_v17__getblock!();
 crate::impl_client_v17__getblockchaininfo!();
 crate::impl_client_v17__getblockcount!();
-crate::impl_client_v17__gettxout!();
+crate::impl_client_v17__getblockhash!();
+crate::impl_client_v22__gettxout!();
 
 // == Control ==
 crate::impl_client_v17__stop!();
