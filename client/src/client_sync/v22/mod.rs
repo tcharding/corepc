@@ -4,6 +4,7 @@
 //!
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
+mod blockchain;
 mod wallet;
 
 use bitcoin::address::{Address, NetworkChecked};
@@ -15,10 +16,25 @@ use crate::types::v22::*;
 crate::define_jsonrpc_minreq_client!("v22");
 
 // == Blockchain ==
-crate::impl_client_v17__getblockchaininfo!();
 crate::impl_client_v17__getbestblockhash!();
 crate::impl_client_v17__getblock!();
-crate::impl_client_v17__gettxout!();
+crate::impl_client_v17__getblockchaininfo!();
+crate::impl_client_v17__getblockcount!();
+crate::impl_client_v17__getblockhash!();
+crate::impl_client_v17__getblockheader!();
+crate::impl_client_v17__getblockstats!();
+crate::impl_client_v17__getchaintips!();
+crate::impl_client_v17__getchaintxstats!();
+crate::impl_client_v17__getdifficulty!();
+crate::impl_client_v19__getmempoolancestors!();
+crate::impl_client_v19__getmempooldescendants!();
+crate::impl_client_v19__getmempoolentry!();
+crate::impl_client_v17__getmempoolinfo!();
+crate::impl_client_v17__getrawmempool!();
+crate::impl_client_v22__gettxout!();
+crate::impl_client_v17__gettxoutproof!();
+crate::impl_client_v17__gettxoutsetinfo!();
+crate::impl_client_v17__verifytxoutproof!();
 
 // == Control ==
 crate::impl_client_v17__stop!();
