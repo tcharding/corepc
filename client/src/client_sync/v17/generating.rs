@@ -36,3 +36,15 @@ macro_rules! impl_client_v17__generate {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `invalidateblock`
+#[macro_export]
+macro_rules! impl_client_v17__invalidateblock {
+    () => {
+        impl Client {
+            pub fn invalidate_block(&self, hash: BlockHash) -> Result<()> {
+                self.call("invalidateblock", &[into_json(hash)?])
+            }
+        }
+    };
+}
