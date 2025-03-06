@@ -4,7 +4,7 @@ use core::fmt;
 
 use bitcoin::amount::{self, ParseAmountError};
 use bitcoin::consensus::encode;
-use bitcoin::error::UnprefixedHexError;
+use bitcoin::parse::UnprefixedHexError;
 use bitcoin::{address, hex, network};
 
 use crate::error::write_err;
@@ -119,7 +119,7 @@ pub enum GetBlockHeaderError {
     /// Conversion of hex data to bytes failed.
     Hex(hex::HexToBytesError),
     /// Consensus decoding of bytes to header failed.
-    Consensus(encode::Error),
+    Consensus(encode::DeserializeError),
 }
 
 impl fmt::Display for GetBlockHeaderError {

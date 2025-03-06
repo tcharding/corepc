@@ -11,3 +11,21 @@ pub extern crate types;
 #[cfg(feature = "client-sync")]
 #[macro_use]
 pub mod client_sync;
+
+use serde::{Deserialize, Serialize};
+
+/// Wrap an amount and serialize it as BTC.
+#[repr(transparent)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct AmountSerBtc(
+    #[serde(with = "bitcoin::amount::serde::as_btc")]
+    bitcoin::Amount
+);
+
+/// Wrap an amount and serialize it as sats.
+#[repr(transparent)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct AmountSerSat(
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
+    bitcoin::Amount
+);

@@ -7,6 +7,7 @@ use bitcoin::hashes::hash160;
 use bitcoin::hex::FromHex;
 use bitcoin::key::{self, PrivateKey, PublicKey};
 use bitcoin::psbt::PsbtParseError;
+use bitcoin::script::ScriptBufExt;
 use bitcoin::{
     address, bip32, ecdsa, Address, Amount, BlockHash, Psbt, ScriptBuf, Sequence, SignedAmount,
     Transaction, Txid, WitnessProgram, WitnessVersion,
@@ -691,7 +692,7 @@ impl SendToAddress {
 
 impl SignMessage {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::SignMessage, ecdsa::Error> {
+    pub fn into_model(self) -> Result<model::SignMessage, ecdsa::ParseSignatureError> {
         let sig = self.0.parse::<ecdsa::Signature>()?;
         Ok(model::SignMessage(sig))
     }

@@ -30,8 +30,10 @@ pub struct GetNetworkInfo {
     /// Information per network.
     pub networks: Vec<GetNetworkInfoNetwork>,
     /// Minimum relay fee rate for transactions.
+    #[serde(with = "bitcoin::fee_rate::serde::as_sat_per_kwu::opt")]
     pub relay_fee: Option<FeeRate>, // `Some` if parsing succeeds.
     /// Minimum fee rate increment for mempool limiting or replacement.
+    #[serde(with = "bitcoin::fee_rate::serde::as_sat_per_kwu::opt")]
     pub incremental_fee: Option<FeeRate>, // `Some` if parsing succeeds.
     /// List of local addresses.
     pub local_addresses: Vec<GetNetworkInfoAddress>,

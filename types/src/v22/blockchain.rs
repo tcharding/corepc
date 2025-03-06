@@ -6,6 +6,7 @@
 
 use core::fmt;
 
+use bitcoin::script::ScriptBufExt;
 use bitcoin::{address, amount, hex, Address, Amount, BlockHash, ScriptBuf, TxOut};
 use serde::{Deserialize, Serialize};
 

@@ -8,7 +8,7 @@ use alloc::collections::BTreeMap;
 use core::fmt;
 
 use bitcoin::amount::ParseAmountError;
-use bitcoin::error::UnprefixedHexError;
+use bitcoin::parse::UnprefixedHexError;
 use bitcoin::{hex, network, Amount, BlockHash, Network, Txid, Work, Wtxid};
 use serde::{Deserialize, Serialize};
 

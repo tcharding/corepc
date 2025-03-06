@@ -398,12 +398,16 @@ pub struct MempoolEntry {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct MempoolEntryFees {
     /// Transaction fee in BTC.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub base: Amount,
     /// Transaction fee with fee deltas used for mining priority in BTC.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub modified: Amount,
     /// Modified fees (see above) of in-mempool ancestors (including this one) in BTC
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub ancestor: Amount,
     /// Modified fees (see above) of in-mempool descendants (including this one) in BTC.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub descendant: Amount,
 }
 
@@ -428,8 +432,10 @@ pub struct GetMempoolInfo {
     /// Minimum fee rate in BTC/kB for a transaction to be accepted.
     ///
     /// This is the maximum of `minrelaytxfee` and the minimum mempool fee.
+    #[serde(with = "bitcoin::fee_rate::serde::as_sat_per_kwu::opt")]
     pub mempool_min_fee: Option<FeeRate>,
     /// Current minimum relay fee for transactions.
+    #[serde(with = "bitcoin::fee_rate::serde::as_sat_per_kwu::opt")]
     pub min_relay_tx_fee: Option<FeeRate>,
 }
 
@@ -480,6 +486,7 @@ pub struct GetTxOutSetInfo {
     /// The estimated size of the chainstate on disk.
     pub disk_size: u32,
     /// The total amount.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub total_amount: Amount,
 }
 

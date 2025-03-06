@@ -46,11 +46,13 @@ pub struct SubmitPackageTxResult {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct SubmitPackageTxResultFees {
     /// Transaction fee.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub base_fee: Amount,
     /// The effective feerate.
     ///
     /// Will be `None` if the transaction was already in the mempool. For example, the package
     /// feerate and/or feerate with modified fees from the `prioritisetransaction` JSON-RPC method.
+    #[serde(with = "bitcoin::fee_rate::serde::as_sat_per_kwu::opt")]
     pub effective_fee_rate: Option<FeeRate>,
     /// If [`Self::effective_fee_rate`] is provided, this holds the [`Wtxid`]s of the transactions
     /// whose fees and vsizes are included in effective-feerate.

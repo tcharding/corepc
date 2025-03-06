@@ -59,8 +59,10 @@ pub struct BumpFee {
     /// The id of the new transaction.
     pub txid: Txid,
     /// Fee of the replaced transaction.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub original_fee: Amount,
     /// Fee of the new transaction.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub fee: Amount,
     /// Errors encountered during processing (may be empty).
     pub errors: Vec<String>,
@@ -223,7 +225,10 @@ pub struct GetAddressInfoEmbedded {
 
 /// Models the result of JSON-RPC method `getbalance`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct GetBalance(pub Amount);
+pub struct GetBalance(
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
+    pub Amount
+);
 
 /// Models the result of JSON-RPC method `getbalances`.
 ///
@@ -239,14 +244,18 @@ pub struct GetBalances {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetBalancesMine {
     /// Trusted balance (outputs created by the wallet or confirmed outputs).
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub trusted: Amount,
     /// Untrusted pending balance (outputs created by others that are in the mempool).
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub untrusted_pending: Amount,
     /// Balance from immature coinbase outputs.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub immature: Amount,
     /// Balance from coins sent to addresses that were previously spent from (potentially privacy violating).
     ///
     /// Only present if `avoid_reuse` is set.
+    #[serde(with = "bitcoin::amount::serde::as_sat::opt")]
     pub used: Option<Amount>,
 }
 
@@ -254,10 +263,13 @@ pub struct GetBalancesMine {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetBalancesWatchOnly {
     /// Trusted balance (outputs created by the wallet or confirmed outputs).
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub trusted: Amount,
     /// Untrusted pending balance (outputs created by others that are in the mempool).
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub untrusted_pending: Amount,
     /// Balance from immature coinbase outputs.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub immature: Amount,
 }
 
@@ -270,18 +282,22 @@ pub struct GetNewAddress(pub Address<NetworkUnchecked>);
 pub struct GetRawChangeAddress(pub Address<NetworkUnchecked>);
 
 /// Models the result of JSON-RPC method `getreceivedbyaddress`.
-pub struct GetReceivedByAddress(pub Amount);
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetReceivedByAddress(
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
+    pub Amount
+);
 
 /// Models the result of JSON-RPC method `gettransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetTransaction {
     /// The transaction amount.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub amount: Amount,
     /// The amount of the fee.
     ///
     /// This is negative and only available for the 'send' category of transactions.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc::opt")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat::opt")]
     pub fee: Option<SignedAmount>,
     /// The number of confirmations.
     pub confirmations: i64, // Docs do not indicate what negative value means?
@@ -314,7 +330,7 @@ pub struct GetTransactionDetail {
     /// The category, either 'send' or 'receive'.
     pub category: TransactionCategory,
     ///  The amount.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub amount: SignedAmount,
     /// A comment for the address/transaction, if any.
     pub label: Option<String>,
@@ -323,7 +339,7 @@ pub struct GetTransactionDetail {
     /// The amount of the fee.
     ///
     /// This is negative and only available for the 'send' category of transactions.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc::opt")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat::opt")]
     pub fee: Option<SignedAmount>,
     /// If the transaction has been abandoned (inputs are respendable).
     ///
@@ -332,7 +348,11 @@ pub struct GetTransactionDetail {
 }
 
 /// Models the result of JSON-RPC method `getunconfirmedbalance`.
-pub struct GetUnconfirmedBalance(pub Amount);
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetUnconfirmedBalance(
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
+    pub Amount
+);
 
 /// Models the result of JSON-RPC method `getwalletinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -342,10 +362,13 @@ pub struct GetWalletInfo {
     /// The wallet version.
     pub wallet_version: u32,
     /// The total confirmed balance of the wallet in BTC.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub balance: Amount,
     /// The total unconfirmed balance of the wallet in BTC.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub unconfirmed_balance: Amount,
     /// The total immature balance of the wallet in BTC.
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub immature_balance: Amount,
     /// The total number of transactions in the wallet
     pub tx_count: u32,
@@ -360,6 +383,7 @@ pub struct GetWalletInfo {
     /// for transfers, or 0 if the wallet is locked.
     pub unlocked_until: u32,
     /// The transaction fee configuration.
+    #[serde(with = "bitcoin::fee_rate::serde::as_sat_per_kwu::opt")]
     pub pay_tx_fee: Option<FeeRate>,
     /// The Hash160 of the HD seed (only present when HD is enabled).
     pub hd_seed_id: Option<hash160::Hash>,
@@ -378,6 +402,7 @@ pub struct ListAddressGroupingsItem {
     /// The bitcoin address.
     pub address: Address<NetworkUnchecked>,
     /// The amount.
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub amount: Amount,
     /// The label.
     pub label: Option<String>,
@@ -412,6 +437,7 @@ pub struct ListReceivedByAddressItem {
     /// The receiving address.
     pub address: Address<NetworkUnchecked>,
     /// The total amount received by the address.
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub amount: Amount,
     /// The number of confirmations of the most recent transaction included.
     pub confirmations: i64, // Docs do not indicate what negative value means?
@@ -452,14 +478,14 @@ pub struct ListSinceBlockTransaction {
     ///
     /// This is negative for the 'send' category, and for the 'move' category for moves outbound. It
     /// is positive for the 'receive' category, and for the 'move' category for inbound funds.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub amount: SignedAmount,
     /// The vout value.
     pub vout: u32,
     /// The amount of the fee in BTC.
     ///
     /// This is negative and only available for the 'send' category of transactions.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub fee: SignedAmount,
     /// The number of confirmations for the transaction.
     ///
@@ -515,7 +541,7 @@ pub struct ListTransactionsItem {
     /// The amount.
     ///
     /// This is negative for the 'send' category, and is positive for the 'receive' category.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub amount: SignedAmount,
     /// A comment for the address/transaction, if any.
     pub label: Option<String>,
@@ -524,7 +550,7 @@ pub struct ListTransactionsItem {
     /// The amount of the fee in BTC.
     ///
     /// This is negative and only available for the 'send' category of transactions.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub fee: SignedAmount,
     /// The number of confirmations for the transaction.
     ///
@@ -573,7 +599,7 @@ pub struct ListUnspentItem {
     /// The script key.
     pub script_pubkey: ScriptBuf,
     /// The transaction amount.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub amount: SignedAmount,
     /// The number of confirmations.
     pub confirmations: u32, // Docs do not indicate what negative value means?
@@ -665,7 +691,7 @@ pub struct WalletCreateFundedPsbt {
     /// The resulting PSBT.
     pub psbt: Psbt,
     /// Fee the resulting transaction pays.
-    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    #[serde(default, with = "bitcoin::amount::serde::as_sat")]
     pub fee: SignedAmount,
     /// The position of the added change output, or -1.
     pub change_pos: u32,

@@ -356,7 +356,7 @@ macro_rules! impl_client_v17__rescanblockchain {
 macro_rules! impl_client_v17__sendmany {
     () => {
         impl Client {
-            pub fn send_many(&self, amounts: BTreeMap<Address, Amount>) -> Result<SendMany> {
+            pub fn send_many(&self, amounts: BTreeMap<Address, crate::AmountSerBtc>) -> Result<SendMany> {
                 let dummy = ""; // Must be set to "" for backwards compatibility.
                 self.call("sendmany", &[into_json(dummy)?, into_json(amounts)?])
             }
@@ -440,7 +440,7 @@ macro_rules! impl_client_v17__walletcreatefundedpsbt {
             pub fn wallet_create_funded_psbt(
                 &self,
                 inputs: Vec<WalletCreateFundedPsbtInput>,
-                outputs: Vec<BTreeMap<Address, Amount>>,
+                outputs: Vec<BTreeMap<Address, crate::AmountSerBtc>>,
             ) -> Result<WalletCreateFundedPsbt> {
                 self.call("walletcreatefundedpsbt", &[into_json(inputs)?, into_json(outputs)?])
             }

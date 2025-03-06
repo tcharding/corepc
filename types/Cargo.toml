@@ -1,6 +1,6 @@
 [package]
 name = "corepc-types"
-version = "0.6.0"
+version = "0.7.0"
 authors = ["Tobin C. Harding <me@tobin.cc>"]
 license = "CC0-1.0"
 repository = "https://github.com/rust-bitcoin/corepc"
@@ -17,7 +17,7 @@ default = ["std"]
 std = ["bitcoin/std"]
 
 [dependencies]
-bitcoin = { version = "0.32.0", default-features = false, features = ["serde", "base64"] }
+bitcoin = { version = "0.33.0-alpha.0", default-features = false, features = ["base64", "std", "serde"] }
 serde = { version = "1.0.103", default-features = false, features = [ "derive", "alloc" ] }
 serde_json = { version = "1.0.117" }
 
