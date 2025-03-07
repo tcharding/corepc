@@ -293,7 +293,7 @@ pub struct GetReceivedByAddress(
 pub struct GetTransaction {
     /// The transaction amount.
     #[serde(default, with = "bitcoin::amount::serde::as_sat")]
-    pub amount: Amount,
+    pub amount: SignedAmount,   // Core returns -1 at times for some reason.
     /// The amount of the fee.
     ///
     /// This is negative and only available for the 'send' category of transactions.
