@@ -16,7 +16,6 @@ use std::{error, fmt, io, net, num};
 
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
-
 #[cfg(feature = "proxy")]
 use socks::Socks5Stream;
 
