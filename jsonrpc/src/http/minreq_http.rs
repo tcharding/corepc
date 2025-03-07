@@ -10,11 +10,11 @@ use std::sync::Mutex;
 use std::time::Duration;
 use std::{error, fmt};
 
-use crate::client::Transport;
-use crate::{Request, Response};
-
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
+
+use crate::client::Transport;
+use crate::{Request, Response};
 
 const DEFAULT_URL: &str = "http://localhost";
 const DEFAULT_PORT: u16 = 8332; // the default RPC port for bitcoind.
