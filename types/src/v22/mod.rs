@@ -240,6 +240,10 @@
 //! - Method returns a simple type (e.g. bool or integer).
 //! - Method is deprecated.
 
+mod blockchain;
+
+#[doc(inline)]
+pub use self::blockchain::{GetTxOut, ScriptPubkey};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -249,24 +253,23 @@ pub use crate::{
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
         GetBlockHash, GetBlockHeader, GetBlockHeaderVerbose, GetBlockStats, GetBlockVerbosityOne,
         GetBlockVerbosityZero, GetChainTips, GetChainTxStats, GetDifficulty, GetMemoryInfoStats,
-        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo, GetNetTotals,
-        GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
-        GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
-        GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTxOut, GetTxOutSetInfo,
-        GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications, ListAddressGroupings,
-        ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem,
-        ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
+        GetMempoolInfo, GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
+        GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
+        GetRawMempoolVerbose, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
+        GetTxOutSetInfo, GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications,
+        ListAddressGroupings, ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent,
+        ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
-        ListUnspentItem, ListWallets, LoadWallet, Locked, Logging, MempoolEntry, MempoolEntryFees,
-        PeerInfo, RescanBlockchain, ScriptPubkey, SendMany, SendRawTransaction, SendToAddress,
-        SignErrorData, SignMessage, SignRawTransactionWithWallet, SoftforkReject,
-        TransactionCategory, UploadTarget, Uptime, VerifyTxOutProof, WalletCreateFundedPsbt,
-        WalletProcessPsbt,
+        ListUnspentItem, ListWallets, LoadWallet, Locked, Logging, PeerInfo, RescanBlockchain,
+        SendMany, SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
+        SignRawTransactionWithWallet, SoftforkReject, TransactionCategory, UploadTarget, Uptime,
+        VerifyTxOutProof, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockchainInfo, Softfork, SoftforkType,
+        GetBalancesWatchOnly, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MempoolEntry,
+        MempoolEntryFees, Softfork, SoftforkType,
     },
     v21::UnloadWallet,
 };

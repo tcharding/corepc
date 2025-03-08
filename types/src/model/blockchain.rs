@@ -364,7 +364,14 @@ pub struct MempoolEntry {
     /// Virtual transaction size as defined in BIP 141.
     ///
     /// This is different from actual serialized size for witness transactions as witness data is discounted.
-    pub size: u32,
+    ///
+    /// This was deprecated with Bitcoin Core v0.19 and hence will be `None` for v0.19 and later.
+    pub size: Option<u32>,
+    /// Transaction weight as defined in BIP 141
+    ///
+    /// This  was introduced with Bitcoin Core v0.19 and will hence be `None` for previous
+    /// versions.
+    pub weight: Option<u32>,
     /// Local time transaction entered pool in seconds since 1 Jan 1970 GMT.
     pub time: u32,
     /// Block height when transaction entered pool.
@@ -467,7 +474,9 @@ pub struct GetTxOutSetInfo {
     /// A meaningless metric for UTXO set size.
     pub bogo_size: u32,
     /// The serialized hash.
-    pub hash_serialized_2: String, // FIXME: What sort of hash is this?
+    ///
+    /// This was removed in Bitcoin Core v26, and hence will be `None` for v26 and later.
+    pub hash_serialized_2: Option<String>, // FIXME: What sort of hash is this?
     /// The estimated size of the chainstate on disk.
     pub disk_size: u32,
     /// The total amount.
