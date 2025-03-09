@@ -70,55 +70,41 @@ fn get_block_header_verbose() { // verbose = true
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(not(any(feature = "v18", feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
+#[cfg(not(any(feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
 // `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
 // (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
 // allowing to.
 #[test]
 fn get_block_stats() {
-    get_block_stats_by_height();
-    get_block_stats_by_hash();
+    // Version 18 cannot getblockstats if -txindex is not enabled.
+    #[cfg(not(feature = "v18"))]
+    getblockstats();
+
+    // All non-feature gated versions including 18 can getblockstats if -txindex is enabled.
+    getblockstats_txindex();
 }
 
 #[cfg(not(any(feature = "v18", feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
-// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
-// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
-// allowing to.
-fn get_block_stats_by_height() {
-    let node = Node::new_no_wallet();
-    let json = node.client.get_block_stats_by_height(0).expect("getblockstats");
+fn getblockstats() {
+    let node = Node::new_with_default_wallet();
+    node.mine_a_block();
+
+    let json = node.client.get_block_stats_by_height(1).expect("getblockstats");
     assert!(json.into_model().is_ok());
-}
 
-#[cfg(not(any(feature = "v18", feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
-// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
-// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
-// allowing to.
-fn get_block_stats_by_hash() { // verbose = true
-    let node = Node::new_no_wallet();
     let block_hash = best_block_hash();
     let json = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
     assert!(json.into_model().is_ok());
 }
 
 #[cfg(not(any(feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
-// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
-// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
-// allowing to.
-#[test]
-fn get_block_stats_by_height_txindex() {
-    let node = Node::new_no_wallet_txindex();
-    let json = node.client.get_block_stats_by_height(0).expect("getblockstats");
-    assert!(json.into_model().is_ok());
-}
+fn getblockstats_txindex() {
+    let node = Node::new_with_default_wallet_txindex();
+    node.mine_a_block();
 
-#[cfg(not(any(feature = "v19", feature = "v20", feature = "v21", feature = "v22", feature = "v23", feature = "v24")))]
-// `getblockstats` used to not work on the genesis block as it doesn't have undo data saved to disk
-// (see https://github.com/bitcoin/bitcoin/pull/19888). We therefore only run tests for versions
-// allowing to.
-#[test]
-fn get_block_stats_by_hash_txindex() { // verbose = true
-    let node = Node::new_no_wallet_txindex();
+    let json = node.client.get_block_stats_by_height(1).expect("getblockstats");
+    assert!(json.into_model().is_ok());
+
     let block_hash = best_block_hash();
     let json = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
     assert!(json.into_model().is_ok());
