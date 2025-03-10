@@ -106,16 +106,10 @@ fn verify_correct_methods(version: Version, methods: Vec<String>, msg: &str) -> 
 fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
     let methods = versioned::methods_and_status(version)?;
     for method in methods {
-        let out =
-            Method::from_name(version, &method.name).expect("guaranteed by methods_and_status()");
         match method.status {
             Status::Done => {
-                if !versioned::return_type_exists(version, &method.name)? {
-                    eprintln!("missing return type: {}", output_method(out));
-                }
-                if !model::type_exists(version, &method.name)? {
-                    eprintln!("missing model type: {}", output_method(out));
-                }
+                check_types_exist_if_required(version, &method.name)?;
+
                 if let Some(test_output) = test_output {
                     if !check_integration_test_crate::test_exists(version, &method.name, test_output)? {
                         eprintln!("missing integration test: {}", method.name);
@@ -123,12 +117,8 @@ fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
                 }
             }
             Status::Untested => {
-                if !versioned::return_type_exists(version, &method.name)? {
-                    eprintln!("missing return type: {}", output_method(out));
-                }
-                if !model::type_exists(version, &method.name)? {
-                    eprintln!("missing model type: {}", output_method(out));
-                }
+                check_types_exist_if_required(version, &method.name)?;
+
                 // Make sure we didn't forget to mark as tested after implementing integration test.
                 if let Some(test_output) = test_output {
                     if check_integration_test_crate::test_exists(version, &method.name, test_output)? {
@@ -137,13 +127,40 @@ fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
                 }
             }
             Status::Omitted | Status::Todo => {
-                if versioned::return_type_exists(version, &method.name)? {
-                    eprintln!("return type found but method is omitted or TODO: {}", output_method(out));
+                let out =
+                    Method::from_name(version, &method.name).expect("guaranteed by methods_and_status()");
+
+                if !versioned::requires_type(version, &method.name)? {
+                    if versioned::type_exists(version, &method.name)? {
+                        eprintln!("return type found but method is omitted or TODO: {}", output_method(out));
+                    }
                 }
+                if !model::requires_type(version, &method.name)? {
+                    if model::type_exists(version, &method.name)? {
+                        eprintln!("model type found but method is omitted or TODO: {}", output_method(out));
+                    }
+                }
+
             }
         }
     }
 
+    Ok(())
+}
+
+fn check_types_exist_if_required(version: Version, method_name: &str) -> Result<()> {
+    let out = Method::from_name(version, method_name).expect("guaranteed by methods_and_status()");
+
+    if versioned::requires_type(version, method_name)? {
+        if !versioned::type_exists(version, method_name)? {
+            eprintln!("missing return type: {}", output_method(out));
+        }
+    }
+    if model::requires_type(version, method_name)? {
+        if !model::type_exists(version, method_name)? {
+            eprintln!("missing model type: {}", output_method(out));
+        }
+    }
     Ok(())
 }
 

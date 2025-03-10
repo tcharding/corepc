@@ -51,7 +51,7 @@
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
 //! | getmemoryinfo                      | done            |
-//! | getrpcinfo                         | todo            |
+//! | getrpcinfo                         | done            |
 //! | help                               | omitted         |
 //! | logging                            | done            |
 //! | stop                               | omitted         |
@@ -203,7 +203,7 @@
 //! | setwalletflag                      | todo            |
 //! | signmessage                        | done (untested) |
 //! | signrawtransactionwithwallet       | done (untested) |
-//! | unloadwallet                       | omitted         |
+//! | unloadwallet                       | done            |
 //! | upgradewallet                      | todo            |
 //! | walletcreatefundedpsbt             | done (untested) |
 //! | walletlock                         | omitted         |
@@ -250,15 +250,17 @@ pub use crate::{
         ListAddressGroupings, ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent,
         ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
-        ListUnspentItem, ListWallets, LoadWallet, Locked, Logging, PeerInfo, RescanBlockchain,
-        ScriptPubkey, SendMany, SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
-        SignRawTransactionWithWallet, SoftforkReject, TransactionCategory, UploadTarget, Uptime,
+        ListUnspentItem, ListWallets, LoadWallet, Locked, PeerInfo, RescanBlockchain, ScriptPubkey,
+        SendMany, SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
+        SignRawTransactionWithWallet, SoftforkReject, TransactionCategory, UploadTarget,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
+    v18::{ActiveCommand, GetRpcInfo},
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MempoolEntry,
         MempoolEntryFees, Softfork, SoftforkType,
     },
+    v20::Logging,
 };

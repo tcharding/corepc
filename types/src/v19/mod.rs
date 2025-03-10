@@ -51,7 +51,7 @@
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
 //! | getmemoryinfo                      | done            |
-//! | getrpcinfo                         | todo            |
+//! | getrpcinfo                         | done            |
 //! | help                               | omitted         |
 //! | logging                            | done            |
 //! | stop                               | omitted         |
@@ -222,6 +222,7 @@
 //! - Method returns a simple type (e.g. bool or integer).
 //! - Method is deprecated.
 
+// JSON-RPC types by API section.
 mod blockchain;
 mod wallet;
 
@@ -252,6 +253,7 @@ pub use crate::v17::{
     ListTransactions, ListTransactionsItem, ListUnspent, ListUnspentItem, ListWallets, LoadWallet,
     Locked, Logging, PeerInfo, RescanBlockchain, ScriptPubkey, SendMany, SendRawTransaction,
     SendToAddress, SignErrorData, SignMessage, SignRawTransactionWithWallet, SoftforkReject,
-    TransactionCategory, UploadTarget, Uptime, VerifyTxOutProof, WalletCreateFundedPsbt,
-    WalletProcessPsbt,
+    TransactionCategory, UploadTarget, VerifyTxOutProof, WalletCreateFundedPsbt, WalletProcessPsbt,
 };
+#[doc(inline)]
+pub use crate::v18::{ActiveCommand, GetRpcInfo};

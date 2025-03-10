@@ -78,6 +78,7 @@ crate::impl_client_v17__verifytxoutproof!();
 
 // == Control ==
 crate::impl_client_v17__getmemoryinfo!();
+crate::impl_client_v17__help!();
 crate::impl_client_v17__logging!();
 crate::impl_client_v17__stop!();
 crate::impl_client_v17__uptime!();

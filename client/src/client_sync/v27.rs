@@ -37,7 +37,12 @@ crate::impl_client_v26__gettxoutsetinfo!();
 crate::impl_client_v17__verifytxoutproof!();
 
 // == Control ==
+crate::impl_client_v17__getmemoryinfo!();
+crate::impl_client_v18__getrpcinfo!();
+crate::impl_client_v17__help!();
+crate::impl_client_v17__logging!();
 crate::impl_client_v17__stop!();
+crate::impl_client_v17__uptime!();
 
 // == Generating ==
 crate::impl_client_v17__generatetoaddress!();

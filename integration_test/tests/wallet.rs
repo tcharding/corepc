@@ -184,14 +184,13 @@ fn load_wallet() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
+#[cfg(not(any(feature = "v17", feature = "v18", feature = "v19", feature = "v20")))]
 fn unload_wallet() {
     let node = Node::new_no_wallet();
     let wallet = format!("wallet-{}", rand::random::<u32>()).to_string();
     node.client.create_wallet(&wallet).expect("failed to create wallet");
-    // let json = node.client.unload_wallet(&wallet).expect("unloadwallet");
-    // assert!(json.into_model().is_ok())
-    todo!()
+    let json = node.client.unload_wallet(&wallet).expect("unloadwallet");
+    assert!(json.into_model().is_ok())
 }
 
 #[test]

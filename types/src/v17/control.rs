@@ -74,14 +74,3 @@ pub struct Logging {
     pub qt: bool,
     pub leveldb: bool,
 }
-
-/// Result of JSON-RPC method `uptime`.
-///
-/// > uptime
-/// >
-/// > Returns the total uptime of the server.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct Uptime {
-    /// The number of seconds that the server has been running.
-    ttt: u32,
-}

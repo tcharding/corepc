@@ -4,6 +4,8 @@
 //!
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
+pub mod control;
+
 use std::path::Path;
 
 use bitcoin::address::{Address, NetworkChecked};
@@ -41,6 +43,8 @@ crate::impl_client_v17__verifytxoutproof!();
 
 // == Control ==
 crate::impl_client_v17__getmemoryinfo!();
+crate::impl_client_v18__getrpcinfo!();
+crate::impl_client_v17__help!();
 crate::impl_client_v17__logging!();
 crate::impl_client_v17__stop!();
 crate::impl_client_v17__uptime!();

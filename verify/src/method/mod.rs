@@ -93,23 +93,19 @@ impl Method {
     }
 
     const fn new_nothing(name: &'static str, function: &'static str) -> Method {
-        Method { name, ret: Some(Return::Nothing), function, requires_model: false }
+        Method { name, ret: Some(Return::Nothing), requires_model: false, function }
     }
 
     const fn new_numeric(name: &'static str, function: &'static str) -> Method {
-        Method { name, ret: Some(Return::Numeric), function, requires_model: false }
+        Method { name, ret: Some(Return::Numeric), requires_model: false, function }
     }
 
     const fn new_bool(name: &'static str, function: &'static str) -> Method {
-        Method { name, ret: Some(Return::Bool), function, requires_model: false }
+        Method { name, ret: Some(Return::Bool), requires_model: false, function }
     }
 
     const fn new_string(name: &'static str, function: &'static str) -> Method {
-        Method { name, ret: Some(Return::String), function, requires_model: false }
-    }
-
-    const fn new_none(name: &'static str, function: &'static str) -> Method {
-        Method { name, ret: None, function, requires_model: false }
+        Method { name, ret: Some(Return::String), requires_model: false, function }
     }
 }
 

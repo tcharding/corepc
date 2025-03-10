@@ -50,10 +50,10 @@
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
 //! | getmemoryinfo                      | done            |
-//! | help                               | omitted         |
+//! | help                               | done            |
 //! | logging                            | done            |
-//! | stop                               | omitted         |
-//! | uptime                             | omitted         |
+//! | stop                               | done            |
+//! | uptime                             | done            |
 //!
 //! </details>
 //!
@@ -210,13 +210,6 @@
 //! | getzmqnotifications                | done (untested) |
 //!
 //! </details>
-//!
-//!
-//! **Items marked omitted were omitted because:**
-//!
-//! - Method does not return anything.
-//! - Method returns a simple type (e.g. bool or integer).
-//! - Method is deprecated.
 
 // JSON-RPC types by API section.
 mod blockchain;
@@ -240,7 +233,7 @@ pub use self::{
         GetRawMempool, GetRawMempoolVerbose, GetTxOut, GetTxOutSetInfo, MempoolEntry,
         MempoolEntryFees, ScriptPubkey, Softfork, SoftforkReject, VerifyTxOutProof,
     },
-    control::{GetMemoryInfoStats, Locked, Logging, Uptime},
+    control::{GetMemoryInfoStats, Locked, Logging},
     generating::{Generate, GenerateToAddress},
     network::{
         AddedNode, AddedNodeAddress, Banned, GetAddedNodeInfo, GetNetTotals, GetNetworkInfo,
