@@ -1,12 +1,11 @@
 fn main() { download::start().unwrap(); }
 
-#[cfg(not(feature = "download"))]
+#[cfg(any(docsrs, not(feature = "download")))]
 mod download {
     pub(crate) fn start() -> Result<(), ()> { Ok(()) }
 }
 
 #[cfg(feature = "download")]
-#[cfg(not(docsrs))]
 mod download {
     use std::fs::File;
     use std::io::{self, BufRead, BufReader, Cursor, Read};
