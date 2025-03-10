@@ -30,7 +30,7 @@ if let Ok(exe_path) = corepc_node::exe_path() {
 ```
 
 Startup options could be configured via the [`Conf`] struct using [`Node::with_conf`] or
-[`Node::from_downloaded_with_conf`]
+`Node::from_downloaded_with_conf`
 
 ## Features
 
