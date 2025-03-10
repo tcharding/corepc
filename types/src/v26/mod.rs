@@ -38,12 +38,12 @@
 //! | getmempoolinfo                     | done            |
 //! | getrawmempool                      | done            |
 //! | gettxout                           | done            |
-//! | gettxoutproof                      | omitted         |
+//! | gettxoutproof                      | done            |
 //! | gettxoutsetinfo                    | done            |
 //! | gettxspendingprevout               | todo            |
 //! | importmempool                      | todo            |
 //! | loadtxoutset                       | todo            |
-//! | preciousblock                      | omitted         |
+//! | preciousblock                      | done            |
 //! | pruneblockchain                    | omitted         |
 //! | savemempool                        | omitted         |
 //! | scanblocks                         | todo            |

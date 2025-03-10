@@ -36,10 +36,10 @@
 //! | getmempoolinfo                     | done            |
 //! | getrawmempool                      | done            |
 //! | gettxout                           | done            |
-//! | gettxoutproof                      | omitted         |
+//! | gettxoutproof                      | done            |
 //! | gettxoutsetinfo                    | done            |
 //! | gettxspendingprevout               | todo            |
-//! | preciousblock                      | omitted         |
+//! | preciousblock                      | done            |
 //! | pruneblockchain                    | omitted         |
 //! | savemempool                        | omitted         |
 //! | scantxoutset                       | omitted         |

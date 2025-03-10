@@ -209,6 +209,16 @@ fn get_tx_out() {
 }
 
 #[test]
+fn get_tx_out_proof() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, tx) = node.create_mined_transaction();
+    let txid = tx.compute_txid();
+
+    let _ = node.client.get_tx_out_proof(&[txid]).expect("gettxoutproof");
+}
+
+#[test]
 fn get_tx_out_set_info() {
     let node = Node::new_with_default_wallet();
     node.fund_wallet();
@@ -218,6 +228,16 @@ fn get_tx_out_set_info() {
     let json = node.client.get_tx_out_set_info().expect("gettxoutsetinfo");
     let _ = json.into_model().expect("into_model");
 
+}
+
+#[test]
+fn precious_block() {
+    let node = Node::new_with_default_wallet();
+    node.mine_a_block();
+    let hash = node.client.best_block_hash().expect("bestblockhash");
+    node.mine_a_block();
+
+    let _ = node.client.precious_block(hash).expect("preciousblock");
 }
 
 // Implicitly tests the omitted method `gettxoutproof` as well.

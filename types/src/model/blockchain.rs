@@ -456,10 +456,6 @@ pub struct GetTxOut {
     pub coinbase: bool,
 }
 
-/// Models the result of JSON-RPC method `gettxoutproof`.
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
-pub struct GetTxOutProof(pub Vec<u8>); // The proof data.
-
 /// Models the result of JSON-RPC method `gettxoutsetinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetTxOutSetInfo {
