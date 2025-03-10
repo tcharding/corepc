@@ -179,7 +179,7 @@ pub fn grep_for_re_export(path: &Path, s: &str) -> Result<bool> {
         .with_context(|| format!("Failed to grep for string in {}", path.display()))?;
     let reader = io::BufReader::new(file);
 
-    let s = format!("{}[,}}]", &s);
+    let s = format!("{}[,}};]", &s);
     let re = Regex::new(&s)?;
 
     for line in reader.lines() {
