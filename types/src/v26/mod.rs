@@ -43,7 +43,7 @@
 //! | gettxspendingprevout               | todo            |
 //! | importmempool                      | todo            |
 //! | loadtxoutset                       | todo            |
-//! | preciousblock                      | omitted         |
+//! | preciousblock                      | done            |
 //! | pruneblockchain                    | omitted         |
 //! | savemempool                        | omitted         |
 //! | scanblocks                         | todo            |

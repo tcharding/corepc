@@ -35,7 +35,7 @@
 //! | gettxout                           | done            |
 //! | gettxoutproof                      | done            |
 //! | gettxoutsetinfo                    | done            |
-//! | preciousblock                      | omitted         |
+//! | preciousblock                      | done            |
 //! | pruneblockchain                    | omitted         |
 //! | savemempool                        | omitted         |
 //! | scantxoutset                       | omitted         |

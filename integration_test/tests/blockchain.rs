@@ -230,6 +230,16 @@ fn get_tx_out_set_info() {
 
 }
 
+#[test]
+fn precious_block() {
+    let node = Node::new_with_default_wallet();
+    node.mine_a_block();
+    let hash = node.client.best_block_hash().expect("bestblockhash");
+    node.mine_a_block();
+
+    let _ = node.client.precious_block(hash).expect("preciousblock");
+}
+
 // Implicitly tests the omitted method `gettxoutproof` as well.
 #[test]
 fn verify_tx_out_proof() {

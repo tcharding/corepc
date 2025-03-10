@@ -273,6 +273,18 @@ macro_rules! impl_client_v17__gettxoutsetinfo {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `preciousblock`
+#[macro_export]
+macro_rules! impl_client_v17__preciousblock {
+    () => {
+        impl Client {
+            pub fn precious_block(&self, hash: BlockHash) -> Result<()> {
+                self.call("preciousblock", &[into_json(hash)?])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `verifytxoutproof`
 #[macro_export]
 macro_rules! impl_client_v17__verifytxoutproof {

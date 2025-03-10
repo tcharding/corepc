@@ -39,7 +39,7 @@
 //! | gettxoutproof                      | done            |
 //! | gettxoutsetinfo                    | done            |
 //! | gettxspendingprevout               | todo            |
-//! | preciousblock                      | omitted         |
+//! | preciousblock                      | done            |
 //! | pruneblockchain                    | omitted         |
 //! | savemempool                        | omitted         |
 //! | scanblocks                         | todo            |
