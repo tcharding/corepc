@@ -1,3 +1,7 @@
+# 0.6.1 - 2025-03-11
+
+- Add missing transaction categories [#91](https://github.com/rust-bitcoin/corepc/pull/91)
+
 # 0.6.0 - 2025-03-07
 
 - Add `std` feature [#44](https://github.com/rust-bitcoin/corepc/pull/44)
