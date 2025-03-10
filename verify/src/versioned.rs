@@ -52,8 +52,26 @@ pub fn methods_and_status(version: Version) -> Result<Vec<Method>> {
     Ok(methods)
 }
 
+/// Returns `true` if this method requires a type to exist.
+pub fn requires_type(version: Version, method_name: &str) -> Result<bool> {
+    let method = match method::Method::from_name(version, method_name) {
+        Some(m) => m,
+        None =>
+            return Err(anyhow::Error::msg(format!(
+                "return type for method not found: {}",
+                method_name
+            ))),
+    };
+
+    let requires = match method.ret {
+        Some(Return::Type(_)) => true,
+        _ => false,
+    };
+    Ok(requires)
+}
+
 /// Checks that a type exists in version specific module.
-pub fn return_type_exists(version: Version, method_name: &str) -> Result<bool> {
+pub fn type_exists(version: Version, method_name: &str) -> Result<bool> {
     let path = path(version);
     let method = match method::Method::from_name(version, method_name) {
         Some(m) => m,
@@ -63,6 +81,7 @@ pub fn return_type_exists(version: Version, method_name: &str) -> Result<bool> {
                 method_name
             ))),
     };
+
     if let Some(Return::Type(s)) = method.ret {
         return crate::grep_for_re_export(&path, s);
     }
@@ -90,7 +109,7 @@ impl fmt::Display for Method {
 pub enum Status {
     /// Done - implemented and tested.
     Done,
-    /// Intentionally omitted.
+    /// Intentionally omitted (likely because deprecated).
     Omitted,
     /// Implemented but not yet tested.
     Untested,

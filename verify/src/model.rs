@@ -14,6 +14,20 @@ use crate::Version;
 /// Path to the model module file.
 fn path() -> PathBuf { PathBuf::from("../types/src/model/mod.rs") }
 
+/// Returns `true` if this method requires a type to exist.
+pub fn requires_type(version: Version, method_name: &str) -> Result<bool> {
+    let method = match method::Method::from_name(version, method_name) {
+        Some(m) => m,
+        None =>
+            return Err(anyhow::Error::msg(format!(
+                "model type for method not found: {}",
+                method_name
+            ))),
+    };
+
+    Ok(method.requires_model)
+}
+
 /// Checks that a type exists in `model` module.
 pub fn type_exists(version: Version, method_name: &str) -> Result<bool> {
     let method = match method::Method::from_name(version, method_name) {
@@ -28,8 +42,6 @@ pub fn type_exists(version: Version, method_name: &str) -> Result<bool> {
     if let Some(Return::Type(s)) = method.ret {
         if method.requires_model {
             return crate::grep_for_string(&path(), s);
-        } else {
-            return Ok(true);
         }
     }
     Ok(false)

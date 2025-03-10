@@ -55,7 +55,7 @@
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
 //! | getmemoryinfo                      | done            |
-//! | getrpcinfo                         | todo            |
+//! | getrpcinfo                         | done            |
 //! | help                               | omitted         |
 //! | logging                            | done            |
 //! | stop                               | omitted         |
@@ -258,11 +258,12 @@ pub use crate::{
         ListAddressGroupings, ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent,
         ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
-        ListUnspentItem, ListWallets, Locked, Logging, PeerInfo, RescanBlockchain, SendMany,
+        ListUnspentItem, ListWallets, Locked, PeerInfo, RescanBlockchain, SendMany,
         SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
-        SignRawTransactionWithWallet, SoftforkReject, TransactionCategory, UploadTarget, Uptime,
+        SignRawTransactionWithWallet, SoftforkReject, TransactionCategory, UploadTarget,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
+    v18::{ActiveCommand, GetRpcInfo},
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
@@ -270,5 +271,5 @@ pub use crate::{
         MempoolEntryFees, Softfork, SoftforkType,
     },
     v21::UnloadWallet,
-    v22::{GetTxOut, ScriptPubkey},
+    v22::{GetTxOut, Logging, ScriptPubkey},
 };

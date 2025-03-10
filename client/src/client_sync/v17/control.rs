@@ -9,7 +9,7 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
-/// Implements Bitcoin Core JSON-RPC API method `getmemory`
+/// Implements Bitcoin Core JSON-RPC API method `getmemoryinfo`.
 #[macro_export]
 macro_rules! impl_client_v17__getmemoryinfo {
     () => {
@@ -21,7 +21,17 @@ macro_rules! impl_client_v17__getmemoryinfo {
     };
 }
 
-/// Implements Bitcoin Core JSON-RPC API method `logging`
+/// Implements Bitcoin Core JSON-RPC API method `help`.
+#[macro_export]
+macro_rules! impl_client_v17__help {
+    () => {
+        impl Client {
+            pub fn help(&self) -> Result<String> { self.call("help", &[]) }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `logging`.
 #[macro_export]
 macro_rules! impl_client_v17__logging {
     () => {
@@ -31,7 +41,7 @@ macro_rules! impl_client_v17__logging {
     };
 }
 
-/// Implements Bitcoin Core JSON-RPC API method `stop`
+/// Implements Bitcoin Core JSON-RPC API method `stop`.
 #[macro_export]
 macro_rules! impl_client_v17__stop {
     () => {
@@ -41,7 +51,7 @@ macro_rules! impl_client_v17__stop {
     };
 }
 
-/// Implements Bitcoin Core JSON-RPC API method `uptime`
+/// Implements Bitcoin Core JSON-RPC API method `uptime`.
 #[macro_export]
 macro_rules! impl_client_v17__uptime {
     () => {

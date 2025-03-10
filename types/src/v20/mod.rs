@@ -51,7 +51,7 @@
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
 //! | getmemoryinfo                      | done            |
-//! | getrpcinfo                         | todo            |
+//! | getrpcinfo                         | done            |
 //! | help                               | omitted         |
 //! | logging                            | done            |
 //! | stop                               | omitted         |
@@ -223,6 +223,11 @@
 //! - Method returns a simple type (e.g. bool or integer).
 //! - Method is deprecated.
 
+// JSON-RPC types by API section.
+mod control;
+
+#[doc(inline)]
+pub use self::control::Logging;
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -239,11 +244,12 @@ pub use crate::{
         ListAddressGroupings, ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent,
         ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
-        ListUnspentItem, ListWallets, LoadWallet, Locked, Logging, PeerInfo, RescanBlockchain,
-        ScriptPubkey, SendMany, SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
-        SignRawTransactionWithWallet, SoftforkReject, TransactionCategory, UploadTarget, Uptime,
+        ListUnspentItem, ListWallets, LoadWallet, Locked, PeerInfo, RescanBlockchain, ScriptPubkey,
+        SendMany, SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
+        SignRawTransactionWithWallet, SoftforkReject, TransactionCategory, UploadTarget,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
+    v18::{ActiveCommand, GetRpcInfo},
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
