@@ -34,7 +34,7 @@
 //! | getmempoolinfo                     | done            |
 //! | getrawmempool                      | done            |
 //! | gettxout                           | done            |
-//! | gettxoutproof                      | omitted         |
+//! | gettxoutproof                      | done            |
 //! | gettxoutsetinfo                    | done            |
 //! | preciousblock                      | omitted         |
 //! | pruneblockchain                    | omitted         |

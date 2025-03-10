@@ -27,7 +27,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modeled("getmempoolinfo", "GetMempoolInfo", "get_mempool_info"),
     Method::new_modeled("getrawmempool", "GetRawMempool", "get_raw_mempool"),
     Method::new_modeled("gettxout", "GetTxOut", "get_tx_out"),
-    Method::new_modeled("gettxoutproof", "GetTxOutProof", "get_tx_out_proof"),
+    Method::new_string("gettxoutproof", "get_tx_out_proof"),
     Method::new_modeled("gettxoutsetinfo", "GetTxOutSetInfo", "get_tx_out_set_info"),
     Method::new_nothing("preciousblock", "precious_block"),
     Method::new_numeric("pruneblockchain", "prune_blockchain"),

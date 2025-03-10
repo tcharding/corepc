@@ -209,6 +209,16 @@ fn get_tx_out() {
 }
 
 #[test]
+fn get_tx_out_proof() {
+    let node = Node::new_with_default_wallet();
+    node.fund_wallet();
+    let (_address, tx) = node.create_mined_transaction();
+    let txid = tx.compute_txid();
+
+    let _ = node.client.get_tx_out_proof(&[txid]).expect("gettxoutproof");
+}
+
+#[test]
 fn get_tx_out_set_info() {
     let node = Node::new_with_default_wallet();
     node.fund_wallet();

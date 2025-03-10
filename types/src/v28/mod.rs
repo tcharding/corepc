@@ -38,7 +38,7 @@
 //! | getmempoolinfo                     | done            |
 //! | getrawmempool                      | done            |
 //! | gettxout                           | done            |
-//! | gettxoutproof                      | omitted         |
+//! | gettxoutproof                      | done            |
 //! | gettxoutsetinfo                    | done            |
 //! | gettxspendingprevout               | todo            |
 //! | importmempool                      | todo            |
