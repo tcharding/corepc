@@ -30,16 +30,18 @@ fn main() -> Result<()> {
         .args([
             arg!([version] "Verify specific version of Core (use \"all\" for all versions)").required(true),
             arg!(-t --tests <TEST_OUTPUT> "Optionally check claimed status of tests").required(false),
+            arg!(-q --quiet ... "Run tests in quiet mode").required(false),
         ]);
 
     let matches = cmd.clone().get_matches();
     let version = matches.get_one::<String>("version").unwrap();
     let test_output = matches.get_one::<String>("tests");
+    let quiet = matches.get_one::<u8>("quiet") == Some(&1);
 
     if version == "all" {
-        verify_all_versions(test_output)?;
+        verify_all_versions(test_output, quiet)?;
     } else if let Ok(v) = version.parse::<Version>() {
-        verify_version(v, test_output)?;
+        verify_version(v, test_output, quiet)?;
     } else {
         eprint!("Unrecognised version: {} (supported versions:", version);
         for version in VERSIONS {
@@ -51,45 +53,49 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn verify_all_versions(test_output: Option<&String>) -> Result<()> {
+fn verify_all_versions(test_output: Option<&String>, quiet: bool) -> Result<()> {
     for version in VERSIONS {
-        println!("Verifying for Bitcoin Core version {} ...\n", version);
-        verify_version(version, test_output)?;
+        println!("\nVerifying for Bitcoin Core version {} ...", version);
+        verify_version(version, test_output, quiet)?;
     }
     Ok(())
 }
 
-fn verify_version(version: Version, test_output: Option<&String>) -> Result<()> {
+fn verify_version(version: Version, test_output: Option<&String>, quiet: bool) -> Result<()> {
     let s = format!("{}::METHOD data", version);
     let msg = format!("Checking that the {} list is correct", s);
-    check(&msg);
+    check(&msg, quiet);
     let correct = verify_correct_methods(version, method::all_methods(version), &s)?;
-    close(correct);
+    close(correct, quiet);
     if !correct {
         process::exit(1);
     }
 
     let s = "rustdoc version specific rustdocs";
     let msg = format!("Checking that the {} list is correct", s);
-    check(&msg);
+    check(&msg, quiet);
     let correct = verify_correct_methods(version, versioned::all_methods(version)?, s)?;
-    close(correct);
+    close(correct, quiet);
     if !correct {
         process::exit(1);
     }
 
     let msg = "Checking that the status claimed in the version specific rustdocs is correct";
-    check(msg);
+    check(msg, quiet);
     verify_status(version, test_output)?;
-    close(correct);
+    close(correct, quiet);
 
     Ok(())
 }
 
-fn check(msg: &str) { println!("{} ... ", msg) }
+fn check(msg: &str, quiet: bool) {
+    if !quiet {
+        println!("{} ... ", msg);
+    }
+}
 
-fn close(correct: bool) {
-    if correct {
+fn close(correct: bool, quiet: bool) {
+    if correct && !quiet {
         println!("Correct \u{2713} \n");
     }
 }
