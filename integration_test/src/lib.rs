@@ -25,6 +25,13 @@ pub trait NodeExt {
         Self::new(conf, None)
     }
 
+    /// Returns a handle to a `bitcoind` instance with "default" wallet loaded and `-txindex` enabled.
+    fn new_with_default_wallet_txindex() -> Node {
+        let mut conf = node::Conf::default();
+        conf.args.push("-txindex");
+        Self::new(conf, None)
+    }
+
     /// Returns a handle to a `bitcoind` instance with `wallet` loaded.
     fn new_with_wallet(wallet: String) -> Node {
         let conf = node::Conf::default();
