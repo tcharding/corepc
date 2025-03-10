@@ -65,5 +65,5 @@ download = ["anyhow", "bitcoin_hashes", "flate2", "tar", "minreq", "zip"]
 0_17_1 = []
 
 [package.metadata.docs.rs]
-all-features = true
+features = ["28_0"]
 rustdoc-args = ["--cfg", "docsrs"]
