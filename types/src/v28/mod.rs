@@ -257,7 +257,10 @@ pub use self::blockchain::GetBlockchainInfo;
 #[doc(inline)]
 pub use self::network::GetNetworkInfo;
 #[doc(inline)]
-pub use self::raw_transactions::{SubmitPackage, SubmitPackageTxResult, SubmitPackageTxResultFees};
+pub use self::raw_transactions::{
+    SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
+    SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
+};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -284,10 +287,11 @@ pub use crate::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockchainInfoError, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetMempoolEntry, MempoolEntry, MempoolEntryFees, Softfork, SoftforkType,
+        GetMempoolEntry, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
+        MempoolEntryFeesError, Softfork, SoftforkType,
     },
     v21::UnloadWallet,
-    v22::{GetTxOut, Logging, ScriptPubkey},
+    v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
     v25::{CreateWallet, LoadWallet},
-    v26::GetTxOutSetInfo,
+    v26::{GetTxOutSetInfo, GetTxOutSetInfoError},
 };

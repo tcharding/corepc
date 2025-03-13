@@ -249,7 +249,7 @@
 mod blockchain;
 
 #[doc(inline)]
-pub use self::blockchain::GetTxOutSetInfo;
+pub use self::blockchain::{GetTxOutSetInfo, GetTxOutSetInfoError};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -274,11 +274,12 @@ pub use crate::{
     v18::{ActiveCommand, GetRpcInfo},
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MempoolEntry,
-        MempoolEntryFees, Softfork, SoftforkType,
+        GetBalancesWatchOnly, GetBlockchainInfo, GetBlockchainInfoError, GetMempoolAncestors,
+        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
+        GetMempoolEntry, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
+        MempoolEntryFeesError, Softfork, SoftforkType,
     },
     v21::UnloadWallet,
-    v22::{GetTxOut, Logging, ScriptPubkey},
+    v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
     v25::{CreateWallet, LoadWallet},
 };

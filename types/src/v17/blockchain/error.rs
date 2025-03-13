@@ -317,7 +317,7 @@ impl From<NumericError> for GetChainTxStatsError {
 pub enum MapMempoolEntryError {
     /// Conversion of a `txid` failed.
     Txid(hex::HexToArrayError),
-    /// Conversion of a [`MempoolEntry`] failed.
+    /// Conversion of a `MempoolEntry` value inside a map failed.
     MempoolEntry(MempoolEntryError),
 }
 

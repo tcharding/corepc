@@ -252,8 +252,9 @@ pub use crate::{
     v18::{ActiveCommand, GetRpcInfo},
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MempoolEntry,
-        MempoolEntryFees, Softfork, SoftforkType,
+        GetBalancesWatchOnly, GetBlockchainInfo, GetBlockchainInfoError, GetMempoolAncestors,
+        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
+        GetMempoolEntry, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
+        MempoolEntryFeesError, Softfork, SoftforkType,
     },
 };
