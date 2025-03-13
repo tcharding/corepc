@@ -24,7 +24,7 @@
 //! | getblockfilter                     | todo            |
 //! | getblockhash                       | done            |
 //! | getblockheader                     | done            |
-//! | getblockstats                      | done (untested) |
+//! | getblockstats                      | done            |
 //! | getchaintips                       | done            |
 //! | getchaintxstats                    | done            |
 //! | getdifficulty                      | done            |
