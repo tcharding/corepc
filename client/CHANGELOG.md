@@ -1,3 +1,7 @@
+# 0.6.1 - 2025-13-13
+
+- Enable `std` feature in `types` crate [#98](https://github.com/rust-bitcoin/corepc/pull/98)
+
 # 0.6.0 - 2025-03-07
 
 - Expose all methods from `blockchain` section [#79](https://github.com/rust-bitcoin/corepc/pull/79)
