@@ -4,12 +4,6 @@
 
 use integration_test::{Node, NodeExt as _};
 
-// FIXME: Do we need this?
-fn best_block_hash() -> bitcoin::BlockHash {
-    let node = Node::new_no_wallet();
-    node.client.best_block_hash().expect("best_block_hash failed")
-}
-
 #[test]
 fn get_blockchain_info() {
     let node = Node::new_no_wallet();
@@ -27,7 +21,7 @@ fn get_best_block_hash() {
 #[test]
 fn get_block() {
     let node = Node::new_no_wallet();
-    let block_hash = best_block_hash();
+    let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
 
     let json = node.client.get_block_verbose_zero(block_hash).expect("getblock verbose=0");
     assert!(json.into_model().is_ok());
@@ -57,7 +51,7 @@ fn get_block_hash() {
 #[test]
 fn get_block_header() { // verbose = false
     let node = Node::new_no_wallet();
-    let block_hash = best_block_hash();
+    let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
     let json = node.client.get_block_header(&block_hash).expect("getblockheader");
     assert!(json.into_model().is_ok());
 }
@@ -65,7 +59,7 @@ fn get_block_header() { // verbose = false
 #[test]
 fn get_block_header_verbose() { // verbose = true
     let node = Node::new_no_wallet();
-    let block_hash = best_block_hash();
+    let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
     let json = node.client.get_block_header_verbose(&block_hash).expect("getblockheader");
     assert!(json.into_model().is_ok());
 }
@@ -92,7 +86,7 @@ fn getblockstats() {
     let json = node.client.get_block_stats_by_height(1).expect("getblockstats");
     assert!(json.into_model().is_ok());
 
-    let block_hash = best_block_hash();
+    let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
     let json = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
     assert!(json.into_model().is_ok());
 }
@@ -105,7 +99,7 @@ fn getblockstats_txindex() {
     let json = node.client.get_block_stats_by_height(1).expect("getblockstats");
     assert!(json.into_model().is_ok());
 
-    let block_hash = best_block_hash();
+    let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
     let json = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
     assert!(json.into_model().is_ok());
 }
@@ -234,7 +228,7 @@ fn get_tx_out_set_info() {
 fn precious_block() {
     let node = Node::new_with_default_wallet();
     node.mine_a_block();
-    let hash = node.client.best_block_hash().expect("bestblockhash");
+    let hash = node.client.best_block_hash().expect("best_block_hash failed");
     node.mine_a_block();
 
     let _ = node.client.precious_block(hash).expect("preciousblock");
