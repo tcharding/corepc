@@ -242,7 +242,7 @@ impl GetMempoolAncestors {
 
 /// Result of JSON-RPC method `getmempoolancestors` with verbose set to true.
 ///
-/// Map of txid to [`MempoolEntry`] i.e., an ancestor.
+/// Map of txid to `MempoolEntry` i.e., an ancestor.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolAncestorsVerbose(pub BTreeMap<String, MempoolEntry>);
 
