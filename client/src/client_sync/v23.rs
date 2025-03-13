@@ -18,6 +18,7 @@ crate::impl_client_v17__getbestblockhash!();
 crate::impl_client_v17__getblock!();
 crate::impl_client_v17__getblockchaininfo!();
 crate::impl_client_v17__getblockcount!();
+crate::impl_client_v19__getblockfilter!();
 crate::impl_client_v17__getblockhash!();
 crate::impl_client_v17__getblockheader!();
 crate::impl_client_v17__getblockstats!();

@@ -21,7 +21,7 @@
 //! | getblock                           | done            |
 //! | getblockchaininfo                  | done            |
 //! | getblockcount                      | done            |
-//! | getblockfilter                     | todo            |
+//! | getblockfilter                     | done            |
 //! | getblockhash                       | done            |
 //! | getblockheader                     | done            |
 //! | getblockstats                      | done            |
@@ -229,11 +229,11 @@ mod wallet;
 #[doc(inline)]
 pub use self::{
     blockchain::{
-        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBlockchainInfo,
-        GetBlockchainInfoError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
-        SoftforkType,
+        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBlockFilter,
+        GetBlockFilterError, GetBlockchainInfo, GetBlockchainInfoError, GetMempoolAncestors,
+        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
+        GetMempoolEntry, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
+        MempoolEntryFeesError, Softfork, SoftforkType,
     },
     wallet::{GetBalances, GetBalancesMine, GetBalancesWatchOnly},
 };

@@ -21,7 +21,7 @@
 //! | getblock                           | done            |
 //! | getblockchaininfo                  | done            |
 //! | getblockcount                      | done            |
-//! | getblockfilter                     | todo            |
+//! | getblockfilter                     | done            |
 //! | getblockhash                       | done            |
 //! | getblockheader                     | done            |
 //! | getblockstats                      | done            |
@@ -252,9 +252,10 @@ pub use crate::{
     v18::{ActiveCommand, GetRpcInfo},
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockchainInfo, GetBlockchainInfoError, GetMempoolAncestors,
-        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetMempoolEntry, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
-        MempoolEntryFeesError, Softfork, SoftforkType,
+        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
+        GetBlockchainInfoError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
+        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
+        SoftforkType,
     },
 };

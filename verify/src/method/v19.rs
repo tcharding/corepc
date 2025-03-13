@@ -10,7 +10,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modeled("getblock", "GetBlockVerbosityZero", "get_block"), // We only check one of the types.
     Method::new_modeled("getblockchaininfo", "GetBlockchainInfo", "get_blockchain_info"),
     Method::new_modeled("getblockcount", "GetBlockCount", "get_block_count"),
-    Method::new_modeled("getblockfilter", "GetBlockFilter", "get_block_filter"),
+    Method::new_no_model("getblockfilter", "GetBlockFilter", "get_block_filter"), // TODO: Use modeled.
     Method::new_modeled("getblockhash", "GetBlockHash", "get_block_hash"),
     Method::new_modeled("getblockheader", "GetBlockHeader", "get_block_header"),
     Method::new_modeled("getblockstats", "GetBlockStats", "get_block_stats"),

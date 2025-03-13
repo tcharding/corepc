@@ -2,13 +2,14 @@
 
 //! Tests for methods found under the `== Generating ==` section of the API docs.
 
-use integration_test::{Node, NodeExt as _};
+use integration_test::{Node, NodeExt as _, Wallet};
 
 #[test]
 fn generate_to_address() {
     const NBLOCKS: usize = 1;
 
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
     let address = node.client.new_address().expect("failed to get new address");
     let json = node.client.generate_to_address(NBLOCKS, &address).expect("generatetoaddress");
     json.into_model().unwrap();
@@ -18,7 +19,8 @@ fn generate_to_address() {
 fn invalidate_block() {
     const NBLOCKS: usize = 1;
 
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
     let address = node.client.new_address().expect("failed to get new address");
     let old_best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
     node.client.generate_to_address(NBLOCKS, &address).expect("generatetoaddress").into_model().unwrap();
@@ -36,7 +38,7 @@ fn invalidate_block() {
 // fn generate() {
 //     const NBLOCKS: usize = 100;
 
-//     let node = Node::new_with_default_wallet();
+//     let node = Node::with_wallet_with_default_wallet();
 //     let json = node.client.generate(NBLOCKS).expect("generate");
 //     let model = json.into_model().unwrap();
 //     assert_eq!(model.len(), NBLOCKS);

@@ -2,25 +2,25 @@
 
 //! Tests for methods found under the `== Blockchain ==` section of the API docs.
 
-use integration_test::{Node, NodeExt as _};
+use integration_test::{Node, NodeExt as _, Wallet};
 
 #[test]
 fn get_blockchain_info() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let json = node.client.get_blockchain_info().expect("getblockchaininfo");
     assert!(json.into_model().is_ok());
 }
 
 #[test]
 fn get_best_block_hash() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let json = node.client.get_best_block_hash().expect("getbestblockhash");
     assert!(json.into_model().is_ok());
 }
 
 #[test]
 fn get_block() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
 
     let json = node.client.get_block_verbose_zero(block_hash).expect("getblock verbose=0");
@@ -36,21 +36,33 @@ fn get_block() {
 
 #[test]
 fn get_block_count() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let json = node.client.get_block_count().expect("getblockcount");
     let _ = json.into_model();
 }
 
 #[test]
+#[cfg(not(feature = "v17"))]
+#[cfg(not(feature = "v18"))]
+fn get_block_filter() {
+    let node = Node::with_wallet(Wallet::Default, &["-blockfilterindex"]);
+    node.mine_a_block();
+    let hash = node.client.best_block_hash().expect("best_block_hash failed");
+
+    let json = node.client.get_block_filter(hash).expect("getblockfilter");
+    let _ = json.into_model();
+}
+
+#[test]
 fn get_block_hash() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let json = node.client.get_block_hash(0).expect("getblockhash");
     assert!(json.into_model().is_ok());
 }
 
 #[test]
 fn get_block_header() { // verbose = false
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
     let json = node.client.get_block_header(&block_hash).expect("getblockheader");
     assert!(json.into_model().is_ok());
@@ -58,7 +70,7 @@ fn get_block_header() { // verbose = false
 
 #[test]
 fn get_block_header_verbose() { // verbose = true
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
     let json = node.client.get_block_header_verbose(&block_hash).expect("getblockheader");
     assert!(json.into_model().is_ok());
@@ -75,7 +87,7 @@ fn get_block_stats() {
 }
 
 fn getblockstats() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
 
     let json = node.client.get_block_stats_by_height(1).expect("getblockstats");
@@ -87,7 +99,7 @@ fn getblockstats() {
 }
 
 fn getblockstats_txindex() {
-    let node = Node::new_with_default_wallet_txindex();
+    let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
     node.fund_wallet();
 
     let json = node.client.get_block_stats_by_height(101).expect("getblockstats");
@@ -100,21 +112,21 @@ fn getblockstats_txindex() {
 
 #[test]
 fn get_chain_tips() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let json = node.client.get_chain_tips().expect("getchaintips");
     assert!(json.into_model().is_ok());
 }
 
 #[test]
 fn get_chain_tx_stats() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let json = node.client.get_chain_tx_stats().expect("getchaintxstats");
     assert!(json.into_model().is_ok());
 }
 
 #[test]
 fn get_difficulty() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let json = node.client.get_difficulty().expect("getdifficulty");
     let _ = json.into_model();
 }
@@ -135,7 +147,7 @@ fn get_mempool_descendants() {
 
 #[test]
 fn get_mempool_entry() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let (_address, txid) = node.create_mempool_transaction();
 
@@ -145,7 +157,7 @@ fn get_mempool_entry() {
 
 #[test]
 fn get_mempool_info() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let (_address, _txid) = node.create_mempool_transaction();
 
@@ -158,7 +170,7 @@ fn get_mempool_info() {
 
 #[test]
 fn get_raw_mempool() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let (_address, _txid) = node.create_mempool_transaction();
 
@@ -173,7 +185,7 @@ fn get_raw_mempool() {
 // FIXME: Fails with getrawmempool verbose: JsonRpc(Json(Error("invalid type: map, expected a sequence", line: 1, column: 0)))
 #[cfg(feature = "TODO")]
 fn get_raw_mempool_verbose() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let (_address, _txid) = node.create_mempool_transaction();
 
@@ -186,7 +198,7 @@ fn get_raw_mempool_verbose() {
 
 #[test]
 fn get_tx_out() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let (_address, tx) = node.create_mined_transaction();
     let txid = tx.compute_txid();
@@ -198,7 +210,7 @@ fn get_tx_out() {
 
 #[test]
 fn get_tx_out_proof() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let (_address, tx) = node.create_mined_transaction();
     let txid = tx.compute_txid();
@@ -208,19 +220,18 @@ fn get_tx_out_proof() {
 
 #[test]
 fn get_tx_out_set_info() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let (_address, _tx) = node.create_mined_transaction();
 
     // Test the type and into model conversion code.
     let json = node.client.get_tx_out_set_info().expect("gettxoutsetinfo");
     let _ = json.into_model().expect("into_model");
-
 }
 
 #[test]
 fn precious_block() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.mine_a_block();
     let hash = node.client.best_block_hash().expect("best_block_hash failed");
     node.mine_a_block();
@@ -231,7 +242,7 @@ fn precious_block() {
 // Implicitly tests the omitted method `gettxoutproof` as well.
 #[test]
 fn verify_tx_out_proof() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let (_address, tx) = node.create_mined_transaction();
     let txid = tx.compute_txid();

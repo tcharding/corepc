@@ -179,6 +179,15 @@ pub struct Bip9SoftforkStatistics {
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct GetBlockCount(pub u64);
 
+/// Models the result of JSON-RPC method `getblockfilter`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct GetBlockFilter {
+    /// The filter data.
+    pub filter: Vec<u8>,
+    /// The hex-encoded filter header.
+    pub header: bitcoin::bip158::FilterHash,
+}
+
 /// Models the result of JSON-RPC method `getblockhash`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct GetBlockHash(pub BlockHash);

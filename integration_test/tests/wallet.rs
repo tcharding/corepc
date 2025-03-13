@@ -7,7 +7,7 @@
 #[cfg(feature = "TODO")]
 use bitcoin::address::{Address, NetworkChecked};
 use bitcoin::Amount;
-use integration_test::{Node, NodeExt as _};
+use integration_test::{Node, NodeExt as _, Wallet};
 use node::AddressType;
 
 #[test]
@@ -18,14 +18,14 @@ pub fn add_multisig_address() {
     let add1: Address<NetworkChecked> = "32iVBEu4dxkUQk9dJbZUiBiQdmypcEyJRf".parse::<Address<_>>().unwrap().assume_checked();
     let add2: Address<NetworkChecked> = "132F25rTsvBdp9JzLLBHP5mvGY66i1xdiM".parse::<Address<_>>().unwrap().assume_checked();
 
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     let json = node.client.add_multisig_address_with_addresses(nrequired, vec![add1, add2]).expect("addmultisigaddress");
     assert!(json.into_model().is_ok());
 }
 
 #[test]
 pub fn bump_fee() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     let address = node.client.new_address().expect("failed to create new address");
     let _ = node.client.generate_to_address(101, &address).expect("generatetoaddress");
 
@@ -43,7 +43,7 @@ pub fn bump_fee() {
 #[test]
 pub fn create_wallet() {
     // Implicitly tests `createwallet` because we create the default wallet.
-    let _ = Node::new_with_default_wallet();
+    let _ = Node::with_wallet(Wallet::Default, &[]);
 
     // TODO: We are not currently testing the `warnings` field. This field was changed from an
     // optional `String` to an optional vector of strings in v25. Needs testing.
@@ -51,7 +51,7 @@ pub fn create_wallet() {
 
 #[test]
 pub fn dump_priv_key() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     let address = node.client.new_address().expect("failed to create new address");
     let json = node.client.dump_priv_key(&address).expect("dumpprivkey");
     assert!(json.into_model().is_ok());
@@ -59,7 +59,7 @@ pub fn dump_priv_key() {
 
 #[test]
 pub fn dump_wallet() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     let out = integration_test::random_tmp_file();
     let json = node.client.dump_wallet(&out).expect("dumpwallet");
     let _ = json.into_model();
@@ -67,7 +67,7 @@ pub fn dump_wallet() {
 
 #[test]
 pub fn get_addresses_by_label() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     let label = "some-label";
     let addr = node.client.new_address_with_label(label).expect("failed to get new address");
     let json = node.client.get_addresses_by_label(label).expect("getaddressesbylabel");
@@ -80,7 +80,7 @@ pub fn get_addresses_by_label() {
 // TODO: Consider testing a few different address types.
 #[cfg(feature = "TODO")]
 pub fn get_address_info() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     let address = node.client.new_address().expect("failed to create new address");
     let json = node.client.get_address_info(&address).expect("getaddressinfo");
     assert!(json.into_model().is_ok());
@@ -88,7 +88,7 @@ pub fn get_address_info() {
 
 #[test]
 fn get_balance() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     let json = node.client.get_balance().expect("getbalance");
     assert!(json.into_model().is_ok());
 
@@ -100,7 +100,7 @@ fn get_balance() {
 #[test]
 #[cfg(feature = "v19")]
 fn get_balances() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let json = node.client.get_balances().expect("getbalances");
     let model = json.into_model().expect("into_model");
@@ -110,7 +110,7 @@ fn get_balances() {
 
 #[test]
 fn get_new_address() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
 
     let _ = node.client.new_address().expect("getnewaddress");
 
@@ -134,7 +134,7 @@ fn get_new_address() {
 
 #[test]
 fn get_raw_change_address() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     let json = node.client.get_raw_change_address().expect("getrawchangeaddress");
     assert!(json.into_model().is_ok());
 }
@@ -143,7 +143,7 @@ fn get_raw_change_address() {
 fn get_received_by_address() {
     let amount = Amount::from_sat(10_000);
 
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let address = node.client.new_address().expect("failed to create new address");
 
@@ -162,7 +162,7 @@ fn get_received_by_address() {
 
 #[test]
 fn get_transaction() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let address = node.client.new_address().expect("failed to create new address");
 
@@ -180,13 +180,13 @@ fn get_transaction() {
 #[test]
 fn load_wallet() {
     // Implicitly test loadwalled because we load the default wallet.
-    let _ = Node::new_with_default_wallet();
+    let _ = Node::with_wallet(Wallet::Default, &[]);
 }
 
 #[test]
 #[cfg(not(any(feature = "v17", feature = "v18", feature = "v19", feature = "v20")))]
 fn unload_wallet() {
-    let node = Node::new_no_wallet();
+    let node = Node::with_wallet(Wallet::None, &[]);
     let wallet = format!("wallet-{}", rand::random::<u32>()).to_string();
     node.client.create_wallet(&wallet).expect("failed to create wallet");
     let json = node.client.unload_wallet(&wallet).expect("unloadwallet");
@@ -195,7 +195,7 @@ fn unload_wallet() {
 
 #[test]
 fn send_to_address() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
     let address = node.client.new_address().expect("failed to create new address");
 
