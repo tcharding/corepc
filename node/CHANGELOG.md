@@ -1,3 +1,7 @@
+# 0.6.1 - 2025-03-11
+
+- Fix the docs.rs build [#92](https://github.com/rust-bitcoin/corepc/pull/92)
+
 # 0.6.0 - 2025-03-07
 
 - Remove `default` feature [#45](https://github.com/rust-bitcoin/corepc/pull/45)
