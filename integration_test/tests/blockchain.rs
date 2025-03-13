@@ -42,6 +42,18 @@ fn get_block_count() {
 }
 
 #[test]
+#[cfg(not(feature = "v17"))]
+#[cfg(not(feature = "v18"))]
+fn get_block_filter() {
+    let node = Node::with_wallet(Wallet::Default, &["-blockfilterindex"]);
+    node.mine_a_block();
+    let hash = node.client.best_block_hash().expect("best_block_hash failed");
+
+    let json = node.client.get_block_filter(hash).expect("getblockfilter");
+    let _ = json.into_model();
+}
+
+#[test]
 fn get_block_hash() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let json = node.client.get_block_hash(0).expect("getblockhash");

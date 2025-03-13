@@ -23,6 +23,7 @@ pub enum Wallet {
     None,
 }
 
+
 pub trait NodeExt {
     /// Returns a handle to a `bitcoind` instance after leading wallet if present.
     fn with_wallet(wallet: Wallet, args: &[&str]) -> Node;

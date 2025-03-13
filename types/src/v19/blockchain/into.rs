@@ -2,14 +2,15 @@
 
 use std::collections::BTreeMap;
 
-use bitcoin::{hex, Amount, BlockHash, Network, Txid, Work, Wtxid};
+use bitcoin::hex::{self, FromHex as _};
+use bitcoin::{bip158, Amount, BlockHash, Network, Txid, Work, Wtxid};
 
 use super::error::{
-    GetBlockchainInfoError, MapMempoolEntryError, MempoolEntryError,
+    GetBlockFilterError, GetBlockchainInfoError, MapMempoolEntryError, MempoolEntryError,
     MempoolEntryFeesError,
 };
 use super::{
-    GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+    GetBlockFilter, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
     GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MempoolEntry,
     MempoolEntryFees,
 };
@@ -48,6 +49,17 @@ impl GetBlockchainInfo {
             softforks,
             warnings: vec![self.warnings],
         })
+    }
+}
+
+impl GetBlockFilter {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetBlockFilter, GetBlockFilterError> {
+        use GetBlockFilterError as E;
+
+        let filter = Vec::from_hex(&self.filter).map_err(E::Filter)?;
+        let header = self.header.parse::<bip158::FilterHash>().map_err(E::Header)?;
+        Ok(model::GetBlockFilter { filter, header })
     }
 }
 

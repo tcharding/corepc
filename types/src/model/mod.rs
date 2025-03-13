@@ -22,9 +22,9 @@ mod zmq;
 pub use self::{
     blockchain::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, ChainTips, ChainTipsStatus,
-        GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderVerbose,
-        GetBlockStats, GetBlockVerbosityOne, GetBlockVerbosityZero, GetBlockchainInfo,
-        GetChainTips, GetChainTxStats, GetDifficulty, GetMempoolAncestors,
+        GetBestBlockHash, GetBlockCount, GetBlockFilter, GetBlockHash, GetBlockHeader,
+        GetBlockHeaderVerbose, GetBlockStats, GetBlockVerbosityOne, GetBlockVerbosityZero,
+        GetBlockchainInfo, GetChainTips, GetChainTxStats, GetDifficulty, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
         GetMempoolEntry, GetMempoolInfo, GetRawMempool, GetRawMempoolVerbose, GetTxOut,
         GetTxOutSetInfo, MempoolEntry, MempoolEntryFees, Softfork, SoftforkType, VerifyTxOutProof,

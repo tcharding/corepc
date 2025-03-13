@@ -55,6 +55,38 @@ impl From<NumericError> for GetBlockchainInfoError {
     fn from(e: NumericError) -> Self { Self::Numeric(e) }
 }
 
+/// Error when converting a `GetBlockFilter` into the model type.
+#[derive(Debug)]
+pub enum GetBlockFilterError {
+    /// Conversion of the `filter` field failed.
+    Filter(hex::HexToBytesError),
+    /// Conversion of the `header` field failed.
+    Header(hex::HexToArrayError),
+}
+
+impl fmt::Display for GetBlockFilterError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use GetBlockFilterError as E;
+
+        match *self {
+            E::Filter(ref e) => write_err!(f, "conversion of the `filter` field failed"; e),
+            E::Header(ref e) => write_err!(f, "conversion of the `header` field failed"; e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for GetBlockFilterError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        use GetBlockFilterError as E;
+
+        match *self {
+            E::Filter(ref e) => Some(e),
+            E::Header(ref e) => Some(e),
+        }
+    }
+}
+
 /// Error when converting a `MapMempoolEntry` into the model type.
 #[derive(Debug)]
 pub enum MapMempoolEntryError {

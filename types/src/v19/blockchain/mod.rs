@@ -138,6 +138,23 @@ pub struct Bip9SoftforkStatistics {
     pub possible: Option<bool>,
 }
 
+/// Result of JSON-RPC method `getblockfilter`.
+///
+/// > getblockfilter "blockhash" ( "filtertype" )
+/// >
+/// > Retrieve a BIP 157 content filter for a particular block.
+/// >
+/// > Arguments:
+/// > 1. blockhash     (string, required) The hash of the block
+/// > 2. filtertype    (string, optional, default=basic) The type name of the filter
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct GetBlockFilter {
+    /// The hex-encoded filter data.
+    pub filter: String,
+    /// The hex-encoded filter header.
+    pub header: String,
+}
+
 /// Result of JSON-RPC method `getmempoolancestors` with verbose set to `false`.
 ///
 /// > getmempoolancestors txid (verbose)
