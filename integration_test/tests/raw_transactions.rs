@@ -3,7 +3,7 @@
 //! Tests for methods found under the `== Rawtransactions ==` section of the API docs.
 
 #[cfg(feature = "v28")]
-use integration_test::{Node, NodeExt as _};
+use integration_test::{Node, NodeExt as _, Wallet};
 
 #[test]
 #[cfg(feature = "TODO")]
@@ -12,7 +12,7 @@ fn send_raw_transaction() { todo!() }
 #[test]
 #[cfg(feature = "v28")]
 fn submitpackage() {
-    let node = Node::new_with_default_wallet();
+    let node = Node::with_wallet(Wallet::Default, &[]);
 
     // Submitting the empty package should simply fail.
     assert!(node.client.submit_package(&[], None, None).is_err());
