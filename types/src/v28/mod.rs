@@ -26,7 +26,7 @@
 //! | getblockfrompeer                   | todo            |
 //! | getblockhash                       | done            |
 //! | getblockheader                     | done            |
-//! | getblockstats                      | done (untested) |
+//! | getblockstats                      | done            |
 //! | getchainstates                     | todo            |
 //! | getchaintips                       | done            |
 //! | getchaintxstats                    | done            |

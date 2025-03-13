@@ -15,42 +15,37 @@ const NBLOCKS: usize = 101;
 #[allow(dead_code)] // Not all tests use this function.
 pub fn init_logger() { let _ = env_logger::try_init(); }
 
+/// Controls the loaded wallet.
+pub enum Wallet {
+    /// Load the default wallet.
+    Default,
+    /// Load a wallet with custom name.
+    Load(String),
+    /// Do not load a wallet.
+    None,
+}
+
 pub trait NodeExt {
     /// Returns a handle to a `bitcoind` instance after leading wallet if present.
-    fn new(conf: node::Conf, wallet: Option<String>) -> Node;
+    fn _new(wallet: Wallet, txindex: bool) -> Node;
 
     /// Returns a handle to a `bitcoind` instance with "default" wallet loaded.
-    fn new_with_default_wallet() -> Node {
-        let conf = node::Conf::default();
-        Self::new(conf, None)
-    }
+    fn new_with_default_wallet() -> Node { Self::_new(Wallet::Default, false) }
 
     /// Returns a handle to a `bitcoind` instance with "default" wallet loaded and `-txindex` enabled.
-    fn new_with_default_wallet_txindex() -> Node {
-        let mut conf = node::Conf::default();
-        conf.args.push("-txindex");
-        Self::new(conf, None)
-    }
+    fn new_with_default_wallet_txindex() -> Node { Self::_new(Wallet::Default, true) }
 
     /// Returns a handle to a `bitcoind` instance with `wallet` loaded.
-    fn new_with_wallet(wallet: String) -> Node {
-        let conf = node::Conf::default();
-        Self::new(conf, Some(wallet))
-    }
+    fn new_with_wallet(wallet: String) -> Node { Self::_new(Wallet::Load(wallet), false) }
+
+    /// Returns a handle to a `bitcoind` instance with `wallet` loaded and `-txindex` enabled.
+    fn new_with_wallet_txindex(wallet: String) -> Node { Self::_new(Wallet::Load(wallet), true) }
 
     /// Returns a handle to a `bitcoind` instance without any wallet loaded.
-    fn new_no_wallet() -> Node {
-        let mut conf = node::Conf::default();
-        conf.wallet = None;
-        Self::new(conf, None)
-    }
+    fn new_no_wallet() -> Node { Self::_new(Wallet::None, false) }
 
     /// Returns a handle to a `bitcoind` instance without any wallet loaded and `-txindex` enabled.
-    fn new_no_wallet_txindex() -> Node {
-        let mut conf = node::Conf::default();
-        conf.args.push("-txindex");
-        Self::new(conf, None)
-    }
+    fn new_no_wallet_txindex() -> Node { Self::_new(Wallet::None, true) }
 
     /// Generates [`NBLOCKS`] to an address controlled by the loaded wallet.
     fn fund_wallet(&self);
@@ -76,11 +71,18 @@ pub trait NodeExt {
 }
 
 impl NodeExt for Node {
-    fn new(mut conf: node::Conf, wallet: Option<String>) -> Node {
+    fn _new(wallet: Wallet, txindex: bool) -> Node {
         let exe = node::exe_path().expect("failed to get bitcoind executable");
 
-        if let Some(wallet) = wallet {
-            conf.wallet = Some(wallet);
+        let mut conf = node::Conf::default();
+        match wallet {
+            Wallet::Default => {}, // conf.wallet = Some("default")
+            Wallet::Load(w) => conf.wallet = Some(w),
+            Wallet::None => conf.wallet = None,
+        }
+
+        if txindex {
+            conf.args.push("-txindex");
         }
 
         Node::with_conf(exe, &conf).expect("failed to create node")
