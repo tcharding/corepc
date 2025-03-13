@@ -4,16 +4,15 @@
 //!
 //! Types for methods found under the `== Blockchain ==` section of the API docs.
 
-use alloc::collections::BTreeMap;
-use core::fmt;
+mod error;
+mod into;
 
-use bitcoin::amount::ParseAmountError;
-use bitcoin::error::UnprefixedHexError;
-use bitcoin::{hex, network, Amount, BlockHash, Network, Txid, Work, Wtxid};
+use alloc::collections::BTreeMap;
+
 use serde::{Deserialize, Serialize};
 
-use crate::error::write_err;
-use crate::{model, NumericError};
+// TODO: Remove wildcard, use explicit types.
+pub use self::error::*;
 
 /// Result of JSON-RPC method `getblockchaininfo`.
 ///
@@ -139,88 +138,6 @@ pub struct Bip9SoftforkStatistics {
     pub possible: Option<bool>,
 }
 
-impl GetBlockchainInfo {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetBlockchainInfo, GetBlockchainInfoError> {
-        use GetBlockchainInfoError as E;
-
-        let chain = Network::from_core_arg(&self.chain).map_err(E::Chain)?;
-        let best_block_hash =
-            self.best_block_hash.parse::<BlockHash>().map_err(E::BestBlockHash)?;
-        let chain_work = Work::from_unprefixed_hex(&self.chain_work).map_err(E::ChainWork)?;
-        let prune_height =
-            self.prune_height.map(|h| crate::to_u32(h, "prune_height")).transpose()?;
-        let prune_target_size =
-            self.prune_target_size.map(|h| crate::to_u32(h, "prune_target_size")).transpose()?;
-        let softforks = BTreeMap::new(); // TODO: Handle softforks stuff.
-
-        Ok(model::GetBlockchainInfo {
-            chain,
-            blocks: crate::to_u32(self.blocks, "blocks")?,
-            headers: crate::to_u32(self.headers, "headers")?,
-            best_block_hash,
-            difficulty: self.difficulty,
-            median_time: crate::to_u32(self.median_time, "median_time")?,
-            verification_progress: self.verification_progress,
-            initial_block_download: self.initial_block_download,
-            chain_work,
-            size_on_disk: self.size_on_disk,
-            pruned: self.pruned,
-            prune_height,
-            automatic_pruning: self.automatic_pruning,
-            prune_target_size,
-            softforks,
-            warnings: vec![self.warnings],
-        })
-    }
-}
-
-/// Error when converting a `GetBlockchainInfo` type into the model type.
-#[derive(Debug)]
-pub enum GetBlockchainInfoError {
-    /// Conversion of numeric type to expected type failed.
-    Numeric(NumericError),
-    /// Conversion of the `chain` field failed.
-    Chain(network::ParseNetworkError),
-    /// Conversion of the `best_block_hash` field failed.
-    BestBlockHash(hex::HexToArrayError),
-    /// Conversion of the `chain_work` field failed.
-    ChainWork(UnprefixedHexError),
-}
-
-impl fmt::Display for GetBlockchainInfoError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBlockchainInfoError::*;
-
-        match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            Chain(ref e) => write_err!(f, "conversion of the `chain` field failed"; e),
-            BestBlockHash(ref e) => {
-                write_err!(f, "conversion of the `best_block_hash` field failed"; e)
-            }
-            ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
-        }
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::error::Error for GetBlockchainInfoError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBlockchainInfoError::*;
-
-        match *self {
-            Numeric(ref e) => Some(e),
-            Chain(ref e) => Some(e),
-            BestBlockHash(ref e) => Some(e),
-            ChainWork(ref e) => Some(e),
-        }
-    }
-}
-
-impl From<NumericError> for GetBlockchainInfoError {
-    fn from(e: NumericError) -> Self { Self::Numeric(e) }
-}
-
 /// Result of JSON-RPC method `getmempoolancestors` with verbose set to `false`.
 ///
 /// > getmempoolancestors txid (verbose)
@@ -232,34 +149,11 @@ impl From<NumericError> for GetBlockchainInfoError {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolAncestors(pub Vec<String>);
 
-impl GetMempoolAncestors {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetMempoolAncestors, hex::HexToArrayError> {
-        let v = self.0.iter().map(|t| t.parse::<Txid>()).collect::<Result<Vec<_>, _>>()?;
-        Ok(model::GetMempoolAncestors(v))
-    }
-}
-
 /// Result of JSON-RPC method `getmempoolancestors` with verbose set to true.
 ///
 /// Map of txid to `MempoolEntry` i.e., an ancestor.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolAncestorsVerbose(pub BTreeMap<String, MempoolEntry>);
-
-impl GetMempoolAncestorsVerbose {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetMempoolAncestorsVerbose, MapMempoolEntryError> {
-        use MapMempoolEntryError as E;
-
-        let mut map = BTreeMap::new();
-        for (k, v) in self.0.into_iter() {
-            let txid = k.parse::<Txid>().map_err(E::Txid)?;
-            let relative = v.into_model().map_err(E::MempoolEntry)?;
-            map.insert(txid, relative);
-        }
-        Ok(model::GetMempoolAncestorsVerbose(map))
-    }
-}
 
 /// Result of JSON-RPC method `getmempooldescendants` with verbose set to `false`.
 ///
@@ -272,34 +166,11 @@ impl GetMempoolAncestorsVerbose {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolDescendants(pub Vec<String>);
 
-impl GetMempoolDescendants {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetMempoolDescendants, hex::HexToArrayError> {
-        let v = self.0.iter().map(|t| t.parse::<Txid>()).collect::<Result<Vec<_>, _>>()?;
-        Ok(model::GetMempoolDescendants(v))
-    }
-}
-
 /// Result of JSON-RPC method `getmempooldescendants` with verbose set to true.
 ///
 /// Map of txid to [`MempoolEntry`] i.e., a descendant.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
-
-impl GetMempoolDescendantsVerbose {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetMempoolDescendantsVerbose, MapMempoolEntryError> {
-        use MapMempoolEntryError as E;
-
-        let mut map = BTreeMap::new();
-        for (k, v) in self.0.into_iter() {
-            let txid = k.parse::<Txid>().map_err(E::Txid)?;
-            let relative = v.into_model().map_err(E::MempoolEntry)?;
-            map.insert(txid, relative);
-        }
-        Ok(model::GetMempoolDescendantsVerbose(map))
-    }
-}
 
 /// Result of JSON-RPC method `getmempoolentry`.
 ///
@@ -311,13 +182,6 @@ impl GetMempoolDescendantsVerbose {
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolEntry(pub MempoolEntry);
-
-impl GetMempoolEntry {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetMempoolEntry, MempoolEntryError> {
-        Ok(model::GetMempoolEntry(self.0.into_model()?))
-    }
-}
 
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -353,51 +217,6 @@ pub struct MempoolEntry {
     pub spent_by: Vec<String>,
 }
 
-impl MempoolEntry {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::MempoolEntry, MempoolEntryError> {
-        use MempoolEntryError as E;
-
-        let size = None;
-        let weight = Some(crate::to_u32(self.weight, "weight")?);
-        let time = crate::to_u32(self.time, "time")?;
-        let height = crate::to_u32(self.height, "height")?;
-        let descendant_count = crate::to_u32(self.descendant_count, "descendant_count")?;
-        let descendant_size = crate::to_u32(self.descendant_size, "descendant_size")?;
-        let ancestor_count = crate::to_u32(self.ancestor_count, "ancestor_count")?;
-        let ancestor_size = crate::to_u32(self.ancestor_size, "ancestor_size")?;
-        let wtxid = self.wtxid.parse::<Wtxid>().map_err(E::Wtxid)?;
-        let fees = self.fees.into_model().map_err(E::Fees)?;
-        let depends = self
-            .depends
-            .iter()
-            .map(|txid| txid.parse::<Txid>())
-            .collect::<Result<Vec<_>, _>>()
-            .map_err(E::Depends)?;
-        let spent_by = self
-            .spent_by
-            .iter()
-            .map(|txid| txid.parse::<Txid>())
-            .collect::<Result<Vec<_>, _>>()
-            .map_err(E::SpentBy)?;
-
-        Ok(model::MempoolEntry {
-            size,
-            weight,
-            time,
-            height,
-            descendant_count,
-            descendant_size,
-            ancestor_count,
-            ancestor_size,
-            wtxid,
-            fees,
-            depends,
-            spent_by,
-        })
-    }
-}
-
 /// (No docs in Core v19.)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct MempoolEntryFees {
@@ -409,138 +228,4 @@ pub struct MempoolEntryFees {
     pub ancestor: f64,
     /// Modified fees (see above) of in-mempool descendants (including this one) in BTC.
     pub descendant: f64,
-}
-
-impl MempoolEntryFees {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::MempoolEntryFees, MempoolEntryFeesError> {
-        use MempoolEntryFeesError as E;
-
-        Ok(model::MempoolEntryFees {
-            base: Amount::from_btc(self.base).map_err(E::Base)?,
-            modified: Amount::from_btc(self.modified).map_err(E::Modified)?,
-            ancestor: Amount::from_btc(self.ancestor).map_err(E::MempoolEntry)?,
-            descendant: Amount::from_btc(self.descendant).map_err(E::Descendant)?,
-        })
-    }
-}
-
-/// Error when converting a `MapMempoolEntry` into the model type.
-#[derive(Debug)]
-pub enum MapMempoolEntryError {
-    /// Conversion of a `txid` failed.
-    Txid(hex::HexToArrayError),
-    /// Conversion of a [`MempoolEntry`] failed.
-    MempoolEntry(MempoolEntryError),
-}
-
-impl fmt::Display for MapMempoolEntryError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use MapMempoolEntryError as E;
-
-        match *self {
-            E::Txid(ref e) => write_err!(f, "conversion of a `txid` failed"; e),
-            E::MempoolEntry(ref e) => write_err!(f, "conversion of an `MempoolEntry` failed"; e),
-        }
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::error::Error for MapMempoolEntryError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use MapMempoolEntryError as E;
-
-        match *self {
-            E::Txid(ref e) => Some(e),
-            E::MempoolEntry(ref e) => Some(e),
-        }
-    }
-}
-
-/// Error when converting a `Mem` type into the model type.
-#[derive(Debug)]
-pub enum MempoolEntryError {
-    /// Conversion of numeric type to expected type failed.
-    Numeric(NumericError),
-    /// Conversion of the `wtxid` field failed.
-    Wtxid(hex::HexToArrayError),
-    /// Conversion of the `MempoolEntryFees` type failed.
-    Fees(MempoolEntryFeesError),
-    /// Conversion of the `depends` field failed.
-    Depends(hex::HexToArrayError),
-    /// Conversion of the `spent_by` field failed.
-    SpentBy(hex::HexToArrayError),
-}
-
-impl From<NumericError> for MempoolEntryError {
-    fn from(e: NumericError) -> Self { Self::Numeric(e) }
-}
-
-impl fmt::Display for MempoolEntryError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use MempoolEntryError as E;
-
-        match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
-            E::Fees(ref e) => write_err!(f, "conversion of the `fees` field failed"; e),
-            E::Depends(ref e) => write_err!(f, "conversion of the `depends` field failed"; e),
-            E::SpentBy(ref e) => write_err!(f, "conversion of the `spent_by` field failed"; e),
-        }
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::error::Error for MempoolEntryError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use MempoolEntryError as E;
-
-        match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Wtxid(ref e) => Some(e),
-            E::Fees(ref e) => Some(e),
-            E::Depends(ref e) => Some(e),
-            E::SpentBy(ref e) => Some(e),
-        }
-    }
-}
-
-/// Error when converting a `MempoolEntryFeesError` type into the model type.
-#[derive(Debug)]
-pub enum MempoolEntryFeesError {
-    /// Conversion of the `base` field failed.
-    Base(ParseAmountError),
-    /// Conversion of the `modified` field failed.
-    Modified(ParseAmountError),
-    /// Conversion of the `ancestor` field failed.
-    MempoolEntry(ParseAmountError),
-    /// Conversion of the `descendant` field failed.
-    Descendant(ParseAmountError),
-}
-
-impl fmt::Display for MempoolEntryFeesError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use MempoolEntryFeesError as E;
-
-        match *self {
-            E::Base(ref e) => write_err!(f, "conversion of the `base` field failed"; e),
-            E::Modified(ref e) => write_err!(f, "conversion of the `modified` field failed"; e),
-            E::MempoolEntry(ref e) => write_err!(f, "conversion of the `ancestor` field failed"; e),
-            E::Descendant(ref e) => write_err!(f, "conversion of the `descendant` field failed"; e),
-        }
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::error::Error for MempoolEntryFeesError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use MempoolEntryFeesError as E;
-
-        match *self {
-            E::Base(ref e) => Some(e),
-            E::Modified(ref e) => Some(e),
-            E::MempoolEntry(ref e) => Some(e),
-            E::Descendant(ref e) => Some(e),
-        }
-    }
 }
