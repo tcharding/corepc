@@ -113,15 +113,15 @@
 //! | combinerawtransaction              | todo            |
 //! | converttopsbt                      | todo            |
 //! | createpsbt                         | todo            |
-//! | createrawtransaction               | todo            |
+//! | createrawtransaction               | done            |
 //! | decodepsbt                         | todo            |
 //! | decoderawtransaction               | todo            |
 //! | decodescript                       | todo            |
 //! | finalizepsbt                       | todo            |
-//! | fundrawtransaction                 | todo            |
+//! | fundrawtransaction                 | done (untested) |
 //! | getrawtransaction                  | todo            |
 //! | joinpsbts                          | todo            |
-//! | sendrawtransaction                 | done (untested) |
+//! | sendrawtransaction                 | done            |
 //! | signrawtransactionwithkey          | todo            |
 //! | testmempoolaccept                  | todo            |
 //! | utxoupdatepsbt                     | todo            |
@@ -240,8 +240,9 @@ pub use self::{
 #[doc(inline)]
 pub use crate::v17::{
     AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
-    Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CreateWallet,
-    DumpPrivKey, DumpWallet, Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo,
+    Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
+    CreateRawTransaction, CreateWallet, DumpPrivKey, DumpWallet, FundRawTransaction,
+    FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo,
     GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel,
     GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
     GetBlockHeaderError, GetBlockHeaderVerbose, GetBlockHeaderVerboseError, GetBlockStats,

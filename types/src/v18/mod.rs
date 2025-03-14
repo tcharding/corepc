@@ -118,15 +118,15 @@
 //! | combinerawtransaction              | todo            |
 //! | converttopsbt                      | todo            |
 //! | createpsbt                         | todo            |
-//! | createrawtransaction               | todo            |
+//! | createrawtransaction               | done            |
 //! | decodepsbt                         | todo            |
 //! | decoderawtransaction               | todo            |
 //! | decodescript                       | todo            |
 //! | finalizepsbt                       | todo            |
-//! | fundrawtransaction                 | todo            |
+//! | fundrawtransaction                 | done (untested) |
 //! | getrawtransaction                  | todo            |
 //! | joinpsbts                          | todo            |
-//! | sendrawtransaction                 | done (untested) |
+//! | sendrawtransaction                 | done            |
 //! | signrawtransactionwithkey          | todo            |
 //! | testmempoolaccept                  | todo            |
 //! | utxoupdatepsbt                     | todo            |
@@ -234,10 +234,11 @@ pub use self::control::{ActiveCommand, GetRpcInfo};
 pub use crate::v17::{
     AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
     Banned, Bip9Softfork, Bip9SoftforkStatus, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
-    ChainTipsStatus, CreateWallet, DumpPrivKey, DumpWallet, Generate, GenerateToAddress,
-    GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError,
-    GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash,
-    GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
+    ChainTipsStatus, CreateRawTransaction, CreateWallet, DumpPrivKey, DumpWallet,
+    FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
+    GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
+    GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
+    GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
     GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockVerbosityOne,
     GetBlockVerbosityOneError, GetBlockVerbosityZero, GetBlockchainInfo, GetBlockchainInfoError,
     GetChainTips, GetChainTxStats, GetChainTxStatsError, GetDifficulty, GetMemoryInfoStats,

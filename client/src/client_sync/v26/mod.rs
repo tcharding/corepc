@@ -6,14 +6,17 @@
 
 pub mod blockchain;
 
+use std::collections::BTreeMap;
+use std::path::Path;
+
 use bitcoin::address::{Address, NetworkChecked};
-use bitcoin::{Amount, Block, BlockHash, Txid};
+use bitcoin::{Amount, Block, BlockHash, PublicKey, Txid};
 
 use crate::client_sync::into_json;
 use crate::types::v26::*;
 
 #[rustfmt::skip]                // Keep public re-exports separate.
-pub use crate::client_sync::v23::AddressType;
+pub use crate::client_sync::{v23::AddressType, WalletCreateFundedPsbtInput};
 
 crate::define_jsonrpc_minreq_client!("v26");
 
@@ -57,14 +60,40 @@ crate::impl_client_v17__getnetworkinfo!();
 crate::impl_client_check_expected_server_version!({ [260000, 260100, 260200] });
 
 // == Rawtransactions ==
+crate::impl_client_v17__createrawtransaction!();
+crate::impl_client_v17__fundrawtransaction!();
 crate::impl_client_v17__sendrawtransaction!();
 
 // == Wallet ==
+crate::impl_client_v17__addmultisigaddress!();
+crate::impl_client_v17__bumpfee!();
 crate::impl_client_v17__createwallet!();
-crate::impl_client_v22__unloadwallet!();
-crate::impl_client_v22__loadwallet!();
+crate::impl_client_v17__dumpprivkey!();
+crate::impl_client_v17__dumpwallet!();
+crate::impl_client_v17__getaddressesbylabel!();
+crate::impl_client_v17__getaddressinfo!();
 crate::impl_client_v17__getbalance!();
 crate::impl_client_v19__getbalances!();
 crate::impl_client_v17__getnewaddress!();
-crate::impl_client_v17__sendtoaddress!();
+crate::impl_client_v17__getrawchangeaddress!();
+crate::impl_client_v17__getreceivedbyaddress!();
 crate::impl_client_v17__gettransaction!();
+crate::impl_client_v17__getunconfirmedbalance!();
+crate::impl_client_v17__getwalletinfo!();
+crate::impl_client_v17__listaddressgroupings!();
+crate::impl_client_v17__listlabels!();
+crate::impl_client_v17__listlockunspent!();
+crate::impl_client_v17__listreceivedbyaddress!();
+crate::impl_client_v17__listsinceblock!();
+crate::impl_client_v17__listtransactions!();
+crate::impl_client_v17__listunspent!();
+crate::impl_client_v17__listwallets!();
+crate::impl_client_v22__loadwallet!();
+crate::impl_client_v17__rescanblockchain!();
+crate::impl_client_v17__sendmany!();
+crate::impl_client_v17__sendtoaddress!();
+crate::impl_client_v17__signmessage!();
+crate::impl_client_v17__signrawtransactionwithwallet!();
+crate::impl_client_v22__unloadwallet!();
+crate::impl_client_v17__walletcreatefundedpsbt!();
+crate::impl_client_v17__walletprocesspsbt!();

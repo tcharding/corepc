@@ -313,6 +313,12 @@ impl GetRawChangeAddress {
         let address = self.0.parse::<Address<_>>()?;
         Ok(model::GetRawChangeAddress(address))
     }
+
+    /// Converts json straight to a `bitcoin::Address`.
+    pub fn address(self) -> Result<Address<NetworkUnchecked>, address::ParseError> {
+        let model = self.into_model()?;
+        Ok(model.0)
+    }
 }
 
 impl GetReceivedByAddress {
@@ -708,17 +714,19 @@ impl SignRawTransactionWithWallet {
         use SignRawTransactionWithWalletError as E;
 
         let tx = encode::deserialize_hex::<Transaction>(&self.hex).map_err(E::Tx)?;
-        let errors = self
-            .errors
-            .into_iter()
-            .map(|e| e.into_model())
-            .collect::<Result<Vec<_>, _>>()
-            .map_err(E::Errors)?;
+        let errors = match self.errors {
+            None => Ok(vec![]),
+            Some(errors) => errors
+                .into_iter()
+                .map(|e| e.into_model())
+                .collect::<Result<Vec<_>, _>>()
+                .map_err(E::Errors),
+        };
 
         Ok(model::SignRawTransactionWithWallet {
             raw_transaction: tx,
             complete: self.complete,
-            errors,
+            errors: errors?,
         })
     }
 }

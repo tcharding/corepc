@@ -109,14 +109,14 @@
 //! | combinerawtransaction              | todo            |
 //! | converttopsbt                      | todo            |
 //! | createpsbt                         | todo            |
-//! | createrawtransaction               | todo            |
+//! | createrawtransaction               | done            |
 //! | decodepsbt                         | todo            |
 //! | decoderawtransaction               | todo            |
 //! | decodescript                       | todo            |
 //! | finalizepsbt                       | todo            |
-//! | fundrawtransaction                 | todo            |
+//! | fundrawtransaction                 | done (untested) |
 //! | getrawtransaction                  | todo            |
-//! | sendrawtransaction                 | done (untested) |
+//! | sendrawtransaction                 | done            |
 //! | signrawtransaction                 | todo            |
 //! | signrawtransactionwithkey          | todo            |
 //! | testmempoolaccept                  | todo            |
@@ -244,7 +244,9 @@ pub use self::{
         GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork, GetPeerInfo, ListBanned,
         PeerInfo, UploadTarget,
     },
-    raw_transactions::SendRawTransaction,
+    raw_transactions::{
+        CreateRawTransaction, FundRawTransaction, FundRawTransactionError, SendRawTransaction,
+    },
     wallet::{
         AddMultisigAddress, AddMultisigAddressError, AddressInformation, BumpFee, BumpFeeError,
         CreateWallet, DumpPrivKey, DumpWallet, GetAddressInfo, GetAddressInfoEmbedded,

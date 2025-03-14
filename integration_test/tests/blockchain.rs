@@ -86,6 +86,7 @@ fn get_block_stats() {
     getblockstats_txindex();
 }
 
+#[cfg(not(feature = "v18"))]
 fn getblockstats() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();

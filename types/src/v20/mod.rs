@@ -114,15 +114,15 @@
 //! | combinerawtransaction              | todo            |
 //! | converttopsbt                      | todo            |
 //! | createpsbt                         | todo            |
-//! | createrawtransaction               | todo            |
+//! | createrawtransaction               | done            |
 //! | decodepsbt                         | todo            |
 //! | decoderawtransaction               | todo            |
 //! | decodescript                       | todo            |
 //! | finalizepsbt                       | todo            |
-//! | fundrawtransaction                 | todo            |
+//! | fundrawtransaction                 | done (untested) |
 //! | getrawtransaction                  | todo            |
 //! | joinpsbts                          | todo            |
-//! | sendrawtransaction                 | done (untested) |
+//! | sendrawtransaction                 | done            |
 //! | signrawtransactionwithkey          | todo            |
 //! | testmempoolaccept                  | todo            |
 //! | utxoupdatepsbt                     | todo            |
@@ -232,12 +232,13 @@ pub use self::control::Logging;
 pub use crate::{
     v17::{
         AddMultisigAddress, AddedNode, AddedNodeAddress, AddressInformation, Banned, BumpFee,
-        ChainTips, ChainTipsStatus, CreateWallet, DumpPrivKey, DumpWallet, Generate,
-        GenerateToAddress, GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded,
-        GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
-        GetBlockHash, GetBlockHeader, GetBlockHeaderVerbose, GetBlockStats, GetBlockVerbosityOne,
-        GetBlockVerbosityZero, GetChainTips, GetChainTxStats, GetDifficulty, GetMemoryInfoStats,
-        GetMempoolInfo, GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
+        ChainTips, ChainTipsStatus, CreateRawTransaction, CreateWallet, DumpPrivKey, DumpWallet,
+        FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
+        GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoLabel, GetAddressesByLabel,
+        GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
+        GetBlockHeaderVerbose, GetBlockStats, GetBlockVerbosityOne, GetBlockVerbosityZero,
+        GetChainTips, GetChainTxStats, GetDifficulty, GetMemoryInfoStats, GetMempoolInfo,
+        GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
         GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
         GetRawMempoolVerbose, GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTxOut,
         GetTxOutSetInfo, GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications,

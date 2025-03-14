@@ -439,7 +439,7 @@ macro_rules! impl_client_v17__walletcreatefundedpsbt {
         impl Client {
             pub fn wallet_create_funded_psbt(
                 &self,
-                inputs: Vec<WalletCreateFundedPsbtInput>,
+                inputs: Vec<$crate::client_sync::WalletCreateFundedPsbtInput>,
                 outputs: Vec<BTreeMap<Address, Amount>>,
             ) -> Result<WalletCreateFundedPsbt> {
                 self.call("walletcreatefundedpsbt", &[into_json(inputs)?, into_json(outputs)?])
