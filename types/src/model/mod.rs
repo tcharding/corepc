@@ -32,7 +32,8 @@ pub use self::{
     generating::{Generate, GenerateToAddress},
     network::{GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork},
     raw_transactions::{
-        SendRawTransaction, SubmitPackage, SubmitPackageTxResult, SubmitPackageTxResultFees,
+        CreateRawTransaction, FundRawTransaction, SendRawTransaction, SubmitPackage,
+        SubmitPackageTxResult, SubmitPackageTxResultFees,
     },
     wallet::{
         AddMultisigAddress, AddressInformation, AddressLabel, AddressPurpose, Bip125Replaceable,

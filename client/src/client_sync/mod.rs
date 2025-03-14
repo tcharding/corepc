@@ -20,6 +20,9 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::PathBuf;
 
+use bitcoin::Txid;
+use serde::{Deserialize, Serialize};
+
 pub use crate::client_sync::error::Error;
 
 /// Crate-specific Result type.
@@ -219,4 +222,22 @@ fn log_response(method: &str, resp: &Result<jsonrpc::Response>) {
                 },
         }
     }
+}
+
+/// Input used as parameter to `create_raw_transaction`.
+#[derive(Debug, Serialize)]
+pub struct Input {
+    /// The txid of the transaction that contains the UTXO.
+    pub txid: bitcoin::Txid,
+    /// The vout for the UTXO.
+    pub vout: u64,
+    /// Sequence number if needed.
+    pub sequence: Option<bitcoin::Sequence>,
+}
+
+/// An element in the `inputs` argument of method `walletcreatefundedpsbt`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct WalletCreateFundedPsbtInput {
+    txid: Txid,
+    vout: u32,
 }

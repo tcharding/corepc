@@ -7,8 +7,23 @@
 
 use alloc::collections::BTreeMap;
 
-use bitcoin::{Amount, FeeRate, Txid, Wtxid};
+use bitcoin::{Amount, FeeRate, Transaction, Txid, Wtxid};
 use serde::{Deserialize, Serialize};
+
+/// Models the result of JSON-RPC method `createrawtransaction`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct CreateRawTransaction(pub Transaction);
+
+/// Models the result of JSON-RPC method `fundrawtransaction`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct FundRawTransaction {
+    /// The resulting raw transaction.
+    pub tx: Transaction,
+    /// Fee the resulting transaction pays.
+    pub fee: Amount,
+    /// The position of the added change output, or -1.
+    pub change_position: i64,
+}
 
 /// Models the result of JSON-RPC method `sendrawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]

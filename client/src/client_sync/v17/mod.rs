@@ -21,36 +21,8 @@ use serde::{Deserialize, Serialize};
 use crate::client_sync::into_json;
 use crate::types::v17::*;
 
-/// An element in the `inputs` argument of method `walletcreatefundedpsbt`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct WalletCreateFundedPsbtInput {
-    txid: Txid,
-    vout: u32,
-}
-
-/// Argument to the `Client::get_new_address_with_type` function.
-///
-/// For Core versions 0.17 through to v22. For Core v23 and onwards use `v23::AddressType`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "kebab-case")]
-pub enum AddressType {
-    Legacy,
-    P2shSegwit,
-    Bech32,
-}
-
-impl fmt::Display for AddressType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use AddressType::*;
-
-        let s = match *self {
-            Legacy => "legacy",
-            P2shSegwit => "p2sh-segwit",
-            Bech32 => "bech32",
-        };
-        fmt::Display::fmt(s, f)
-    }
-}
+#[rustfmt::skip]                // Keep public re-exports separate.
+pub use crate::client_sync::WalletCreateFundedPsbtInput;
 
 crate::define_jsonrpc_minreq_client!("v17");
 crate::impl_client_check_expected_server_version!({ [170100] });
@@ -96,6 +68,8 @@ crate::impl_client_v17__getnetworkinfo!();
 crate::impl_client_v17__getpeerinfo!();
 
 // == Rawtransactions ==
+crate::impl_client_v17__createrawtransaction!();
+crate::impl_client_v17__fundrawtransaction!();
 crate::impl_client_v17__sendrawtransaction!();
 
 // == Wallet ==
@@ -129,3 +103,27 @@ crate::impl_client_v17__signmessage!();
 crate::impl_client_v17__signrawtransactionwithwallet!();
 crate::impl_client_v17__walletcreatefundedpsbt!();
 crate::impl_client_v17__walletprocesspsbt!();
+
+/// Argument to the `Client::get_new_address_with_type` function.
+///
+/// For Core versions 0.17 through to v22. For Core v23 and onwards use `v23::AddressType`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum AddressType {
+    Legacy,
+    P2shSegwit,
+    Bech32,
+}
+
+impl fmt::Display for AddressType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use AddressType::*;
+
+        let s = match *self {
+            Legacy => "legacy",
+            P2shSegwit => "p2sh-segwit",
+            Bech32 => "bech32",
+        };
+        fmt::Display::fmt(s, f)
+    }
+}

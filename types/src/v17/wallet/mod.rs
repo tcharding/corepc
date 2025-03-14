@@ -915,7 +915,7 @@ pub struct SignRawTransactionWithWallet {
     /// If the transaction has a complete set of signatures.
     pub complete: bool,
     /// Script verification errors (if there are any).
-    pub errors: Vec<SignErrorData>, // 'Data' suffix to differentiate this from a normal error type.
+    pub errors: Option<Vec<SignErrorData>>, // 'Data' suffix to differentiate this from a normal error type.
 }
 
 /// Returned as part of `signrawtransactionwithwallet`.
