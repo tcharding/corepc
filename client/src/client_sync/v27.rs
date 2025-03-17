@@ -53,9 +53,18 @@ crate::impl_client_v17__uptime!();
 crate::impl_client_v17__generatetoaddress!();
 crate::impl_client_v17__invalidateblock!();
 
+// == Mining ==
+crate::impl_client_v17__getblocktemplate!();
+crate::impl_client_v17__getmininginfo!();
+crate::impl_client_v17__getnetworkhashps!();
+crate::impl_client_v26__get_prioritised_transactions!();
+crate::impl_client_v17__prioritisetransaction!();
+crate::impl_client_v17__submitblock!();
+
 // == Network ==
 crate::impl_client_v17__getnetworkinfo!();
 crate::impl_client_check_expected_server_version!({ [270000, 270100] });
+crate::impl_client_v17__getpeerinfo!();
 
 // == Rawtransactions ==
 crate::impl_client_v17__createrawtransaction!();

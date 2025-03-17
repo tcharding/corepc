@@ -66,11 +66,11 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | getblocktemplate                   | todo            |
-//! | getmininginfo                      | todo            |
-//! | getnetworkhashps                   | todo            |
-//! | prioritisetransaction              | todo            |
-//! | submitblock                        | todo            |
+//! | getblocktemplate                   | done            |
+//! | getmininginfo                      | done            |
+//! | getnetworkhashps                   | done            |
+//! | prioritisetransaction              | done            |
+//! | submitblock                        | done (untested) |
 //! | submitheader                       | todo            |
 //!
 //! </details>
@@ -241,14 +241,15 @@ pub use crate::{
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoLabel, GetAddressesByLabel,
         GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
-        GetBlockHeaderVerbose, GetBlockStats, GetBlockVerbosityOne, GetBlockVerbosityZero,
-        GetChainTips, GetChainTxStats, GetDifficulty, GetMemoryInfoStats, GetMempoolInfo,
-        GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
-        GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
-        GetRawMempoolVerbose, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-        GetTxOutSetInfo, GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications,
-        ListAddressGroupings, ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent,
-        ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
+        GetBlockHeaderVerbose, GetBlockStats, GetBlockTemplate, GetBlockTemplateError,
+        GetBlockVerbosityOne, GetBlockVerbosityZero, GetChainTips, GetChainTxStats, GetDifficulty,
+        GetMemoryInfoStats, GetMempoolInfo, GetMiningInfo, GetNetTotals, GetNetworkInfo,
+        GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress,
+        GetPeerInfo, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
+        GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTxOutSetInfo,
+        GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications, ListAddressGroupings,
+        ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem,
+        ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
         ListUnspentItem, ListWallets, LoadWallet, Locked, PeerInfo, RescanBlockchain, SendMany,
         SendRawTransaction, SendToAddress, SignErrorData, SignMessage,

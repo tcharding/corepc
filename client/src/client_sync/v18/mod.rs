@@ -56,6 +56,13 @@ crate::impl_client_v17__generatetoaddress!();
 crate::impl_client_v17__generate!();
 crate::impl_client_v17__invalidateblock!();
 
+// == Mining ==
+crate::impl_client_v17__getblocktemplate!();
+crate::impl_client_v17__getmininginfo!();
+crate::impl_client_v17__getnetworkhashps!();
+crate::impl_client_v17__prioritisetransaction!();
+crate::impl_client_v17__submitblock!();
+
 // == Network ==
 crate::impl_client_v17__getaddednodeinfo!();
 crate::impl_client_v17__getnettotals!();
