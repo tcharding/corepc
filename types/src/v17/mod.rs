@@ -62,7 +62,7 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | generate                           | done (untested) |
+//! | generate                           | done            |
 //! | generatetoaddress                  | done            |
 //!
 //! </details>

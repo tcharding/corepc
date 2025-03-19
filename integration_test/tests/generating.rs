@@ -5,6 +5,16 @@
 use integration_test::{Node, NodeExt as _, Wallet};
 
 #[test]
+// The `generate` method deprecated in Core v18 and was removed in v19.
+#[cfg(feature = "v17")]
+fn generate() {
+    const NBLOCKS: usize = 10;
+
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    let _ = node.client.generate(NBLOCKS).expect("generate");
+}
+
+#[test]
 fn generate_to_address() {
     const NBLOCKS: usize = 1;
 
