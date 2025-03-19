@@ -432,6 +432,22 @@ macro_rules! impl_client_v17__signrawtransactionwithwallet {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `unloadwallet`.
+#[macro_export]
+macro_rules! impl_client_v17__unloadwallet {
+    () => {
+        impl Client {
+            pub fn unload_wallet(&self, wallet_name: &str) -> Result<()> {
+                match self.call("unloadwallet", &[into_json(wallet_name)?]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `walletcreatefundedpsbt`.
 #[macro_export]
 macro_rules! impl_client_v17__walletcreatefundedpsbt {

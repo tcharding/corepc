@@ -200,7 +200,7 @@
 //! | settxfee                           | omitted         |
 //! | signmessage                        | done (untested) |
 //! | signrawtransactionwithwallet       | done (untested) |
-//! | unloadwallet                       | omitted         |
+//! | unloadwallet                       | done            |
 //! | walletcreatefundedpsbt             | done (untested) |
 //! | walletlock                         | omitted         |
 //! | walletpassphrase                   | omitted         |

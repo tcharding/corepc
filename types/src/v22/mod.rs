@@ -213,7 +213,7 @@
 //! | setwalletflag                      | todo            |
 //! | signmessage                        | done (untested) |
 //! | signrawtransactionwithwallet       | done (untested) |
-//! | unloadwallet                       | omitted         |
+//! | unloadwallet                       | done            |
 //! | upgradewallet                      | todo            |
 //! | walletcreatefundedpsbt             | done (untested) |
 //! | walletdisplayaddress               | todo            |

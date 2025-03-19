@@ -210,7 +210,7 @@
 //! | signmessage                        | done (untested) |
 //! | signrawtransactionwithwallet       | done (untested) |
 //! | simulaterawtransaction             | todo            |
-//! | unloadwallet                       | omitted         |
+//! | unloadwallet                       | done            |
 //! | upgradewallet                      | todo            |
 //! | walletcreatefundedpsbt             | done (untested) |
 //! | walletdisplayaddress               | todo            |

@@ -3,19 +3,19 @@
 //! Macros for implementing JSON-RPC methods on a client.
 //!
 //! Specifically this is methods found under the `== Wallet ==` section of the
-//! API docs of Bitcoin Core `v22`.
+//! API docs of Bitcoin Core `v21`.
 //!
 //! All macros require `Client` to be in scope.
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
-/// Implements Bitcoin Core JSON-RPC API method `loadwallet`
+/// Implements Bitcoin Core JSON-RPC API method `unloadwallet`
 #[macro_export]
-macro_rules! impl_client_v22__loadwallet {
+macro_rules! impl_client_v21__unloadwallet {
     () => {
         impl Client {
-            pub fn load_wallet(&self, wallet: &str) -> Result<LoadWallet> {
-                self.call("loadwallet", &[wallet.into()])
+            pub fn unload_wallet(&self, wallet: &str) -> Result<UnloadWallet> {
+                self.call("unloadwallet", &[wallet.into()])
             }
         }
     };
