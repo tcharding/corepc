@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core `v25` - wallet.
+//! The JSON-RPC API for Bitcoin Core `v26` - wallet.
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
@@ -29,11 +29,6 @@ pub struct CreateWallet {
     ///
     /// If the wallet was created using a full path, the wallet_name will be the full path.
     pub name: String,
-    /// Warning messages, if any, related to creating the wallet. Multiple messages will be delimited by newlines.
-    ///
-    /// DEPRECATED, returned only if config option -deprecatedrpc=walletwarningfield is passed. As
-    /// the content would still be the same as `warnings`, we simply ignore the field.
-    pub warning: Option<String>,
     /// Warning messages, if any, related to creating and loading the wallet.
     pub warnings: Option<Vec<String>>,
 }
@@ -41,8 +36,6 @@ pub struct CreateWallet {
 impl CreateWallet {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> model::CreateWallet {
-        // As the content of the deprecated `warning` field would be the same as `warnings`, we
-        // simply ignore the field, even in case it's set.
         model::CreateWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
     }
 
@@ -65,11 +58,6 @@ impl CreateWallet {
 pub struct LoadWallet {
     /// The wallet name if loaded successfully.
     pub name: String,
-    /// Warning messages, if any, related to creating the wallet. Multiple messages will be delimited by newlines.
-    ///
-    /// DEPRECATED, returned only if config option -deprecatedrpc=walletwarningfield is passed. As
-    /// the content would still be the same as `warnings`, we simply ignore the field.
-    pub warning: Option<String>,
     /// Warning messages, if any, related to loading the wallet.
     pub warnings: Option<Vec<String>>,
 }
@@ -77,8 +65,6 @@ pub struct LoadWallet {
 impl LoadWallet {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> model::LoadWallet {
-        // As the content of the deprecated `warning` field would be the same as `warnings`, we
-        // simply ignore the field, even in case it's set.
         model::LoadWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
     }
 

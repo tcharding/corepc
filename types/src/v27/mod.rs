@@ -279,6 +279,5 @@ pub use crate::{
     },
     v21::UnloadWallet,
     v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
-    v25::{CreateWallet, LoadWallet},
-    v26::{GetTxOutSetInfo, GetTxOutSetInfoError},
+    v26::{CreateWallet, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet},
 };

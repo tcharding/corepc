@@ -247,9 +247,11 @@
 //! - Method is deprecated.
 
 mod blockchain;
+mod wallet;
 
 #[doc(inline)]
 pub use self::blockchain::{GetTxOutSetInfo, GetTxOutSetInfoError};
+pub use self::wallet::{CreateWallet, LoadWallet};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -283,5 +285,4 @@ pub use crate::{
     },
     v21::UnloadWallet,
     v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
-    v25::{CreateWallet, LoadWallet},
 };
