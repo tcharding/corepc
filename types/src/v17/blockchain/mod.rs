@@ -27,10 +27,21 @@ pub struct GetBestBlockHash(pub String);
 
 /// Result of JSON-RPC method `getblock` with verbosity set to 0.
 ///
-/// A string that is serialized, hex-encoded data for block 'hash'.
+/// > getblock "blockhash" ( verbosity )
+/// >
+/// > If verbosity is 0, returns a string that is serialized, hex-encoded data for block 'hash'.
+/// > If verbosity is 1, returns an Object with information about block `<hash>`.
+/// > If verbosity is 2, returns an Object with information about block `<hash>` and information about each transaction.
+/// >
+/// > Arguments:
+/// > 1. "blockhash"          (string, required) The block hash
+/// > 2. verbosity              (numeric, optional, default=1) 0 for hex encoded data, 1 for a json object, and 2 for json object with transaction data
 #[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 // TODO: Consider renaming this to `GetBlcokVerboseZero`.
-pub struct GetBlockVerbosityZero(pub String);
+pub struct GetBlockVerbosityZero(
+    /// A string that is serialized, hex-encoded data for block 'hash'.
+    pub String,
+);
 
 /// Result of JSON-RPC method `getblock` with verbosity set to 1.
 #[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
@@ -85,8 +96,8 @@ pub struct GetBlockVerbosityOne {
 
 /// Result of JSON-RPC method `getblockchaininfo`.
 ///
-/// Method call: `getblockchaininfo`
-///
+/// > getblockchaininfo
+/// >
 /// > Returns an object containing various state info regarding blockchain processing.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetBlockchainInfo {
@@ -136,18 +147,18 @@ pub struct GetBlockchainInfo {
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct Softfork {
     /// Name of softfork.
-    id: String,
+    pub id: String,
     /// Block version.
-    version: i64,
+    pub version: i64,
     /// Progress toward rejecting pre-softfork blocks.
-    reject: SoftforkReject,
+    pub reject: SoftforkReject,
 }
 
 /// Progress toward rejecting pre-softfork blocks.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct SoftforkReject {
     /// `true` if threshold reached.
-    status: bool,
+    pub status: bool,
 }
 
 /// Status of BIP-9 softforksin progress.
@@ -185,7 +196,7 @@ pub enum Bip9SoftforkStatus {
 /// Result of JSON-RPC method `getblockcount`.
 ///
 /// > getblockcount
-///
+/// >
 /// > Returns the number of blocks in the longest blockchain.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetBlockCount(pub u64);
@@ -193,7 +204,7 @@ pub struct GetBlockCount(pub u64);
 /// Result of JSON-RPC method `getblockhash`.
 ///
 /// > Returns hash of block in best-block-chain at height provided.
-///
+/// >
 /// > Arguments:
 /// > 1. height         (numeric, required) The height index
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -471,13 +482,6 @@ pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolEntry(pub MempoolEntry);
-
-impl GetMempoolEntry {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetMempoolEntry, MempoolEntryError> {
-        Ok(model::GetMempoolEntry(self.0.into_model()?))
-    }
-}
 
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]

@@ -16,8 +16,8 @@ pub use self::error::*;
 
 /// Result of JSON-RPC method `getblockchaininfo`.
 ///
-/// Method call: `getblockchaininfo`
-///
+/// > getblockchaininfo
+/// >
 /// > Returns an object containing various state info regarding blockchain processing.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetBlockchainInfo {
