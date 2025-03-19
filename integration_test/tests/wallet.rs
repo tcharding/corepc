@@ -39,7 +39,6 @@ pub fn bump_fee() {
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 pub fn create_wallet() {
     // Implicitly tests `createwallet` because we create the default wallet.
@@ -187,7 +186,6 @@ fn get_transaction() {
     assert!(json.into_model().is_ok());
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn load_wallet() {
     // Implicitly test loadwalled because we load the default wallet.
