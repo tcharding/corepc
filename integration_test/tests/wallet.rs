@@ -2,8 +2,6 @@
 
 //! Tests for methods found under the `== Wallet ==` section of the API docs.
 
-#![cfg(any(feature = "0_17_1", feature = "0_18_1"))]
-
 #[cfg(feature = "TODO")]
 use bitcoin::address::{Address, NetworkChecked};
 use bitcoin::Amount;
@@ -23,6 +21,7 @@ pub fn add_multisig_address() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 pub fn bump_fee() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -40,6 +39,7 @@ pub fn bump_fee() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 pub fn create_wallet() {
     // Implicitly tests `createwallet` because we create the default wallet.
@@ -49,6 +49,7 @@ pub fn create_wallet() {
     // optional `String` to an optional vector of strings in v25. Needs testing.
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 pub fn dump_priv_key() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -57,6 +58,7 @@ pub fn dump_priv_key() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 pub fn dump_wallet() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -65,6 +67,7 @@ pub fn dump_wallet() {
     let _ = json.into_model();
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 pub fn get_addresses_by_label() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -76,6 +79,7 @@ pub fn get_addresses_by_label() {
     assert!(map.get(&addr).is_some());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 // TODO: Consider testing a few different address types.
 #[cfg(feature = "TODO")]
@@ -86,6 +90,7 @@ pub fn get_address_info() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_balance() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -97,6 +102,7 @@ fn get_balance() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 #[cfg(feature = "v19")]
 fn get_balances() {
@@ -108,6 +114,7 @@ fn get_balances() {
     assert!(model.mine.trusted > Amount::ZERO); 
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_new_address() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -132,6 +139,7 @@ fn get_new_address() {
         .unwrap();
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_raw_change_address() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -139,6 +147,7 @@ fn get_raw_change_address() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_received_by_address() {
     let amount = Amount::from_sat(10_000);
@@ -160,6 +169,7 @@ fn get_received_by_address() {
     assert_eq!(model.0, amount);
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn get_transaction() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -177,12 +187,14 @@ fn get_transaction() {
     assert!(json.into_model().is_ok());
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn load_wallet() {
     // Implicitly test loadwalled because we load the default wallet.
     let _ = Node::with_wallet(Wallet::Default, &[]);
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 #[cfg(not(any(feature = "v17", feature = "v18", feature = "v19", feature = "v20")))]
 fn unload_wallet() {
@@ -193,6 +205,7 @@ fn unload_wallet() {
     assert!(json.into_model().is_ok())
 }
 
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
 fn send_to_address() {
     let node = Node::with_wallet(Wallet::Default, &[]);
