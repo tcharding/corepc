@@ -54,10 +54,10 @@
 //! |:-----------------------------------|:---------------:|
 //! | getmemoryinfo                      | done            |
 //! | getrpcinfo                         | done            |
-//! | help                               | omitted         |
+//! | help                               | done            |
 //! | logging                            | done            |
-//! | stop                               | omitted         |
-//! | uptime                             | omitted         |
+//! | stop                               | done            |
+//! | uptime                             | done            |
 //!
 //! </details>
 //!

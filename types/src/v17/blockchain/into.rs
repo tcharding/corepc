@@ -372,6 +372,13 @@ impl GetMempoolDescendantsVerbose {
     }
 }
 
+impl GetMempoolEntry {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetMempoolEntry, MempoolEntryError> {
+        Ok(model::GetMempoolEntry(self.0.into_model()?))
+    }
+}
+
 impl MempoolEntry {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::MempoolEntry, MempoolEntryError> {
@@ -425,7 +432,7 @@ impl MempoolEntryFees {
         Ok(model::MempoolEntryFees {
             base: Amount::from_btc(self.base).map_err(E::Base)?,
             modified: Amount::from_btc(self.modified).map_err(E::Modified)?,
-            ancestor: Amount::from_btc(self.ancestor).map_err(E::MempoolEntry)?,
+            ancestor: Amount::from_btc(self.ancestor).map_err(E::Ancestor)?,
             descendant: Amount::from_btc(self.descendant).map_err(E::Descendant)?,
         })
     }

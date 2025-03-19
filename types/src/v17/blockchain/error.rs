@@ -38,7 +38,7 @@ impl fmt::Display for GetBlockVerbosityOneError {
             Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
             Tx(ref e) => write_err!(f, "conversion of the `tx` field failed"; e),
             Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            ChainWork(ref e) => write_err!(f, "conversion of the `chain_ork` field failed"; e),
+            ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
             PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
             NextBlockHash(ref e) =>
@@ -172,7 +172,7 @@ impl fmt::Display for GetBlockHeaderVerboseError {
             Numeric(ref e) => write_err!(f, "numeric"; e),
             Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
             MerkleRoot(ref e) => write_err!(f, "conversion of the `merkle_root` field failed"; e),
-            Bits(ref e) => write_err!(f, "conversion of the `bit` field failed"; e),
+            Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
             ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
             PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_bock_hash` field failed"; e),
@@ -344,7 +344,7 @@ impl std::error::Error for MapMempoolEntryError {
     }
 }
 
-/// Error when converting a `Mem` type into the model type.
+/// Error when converting a `MempoolEntry` type into the model type.
 #[derive(Debug)]
 pub enum MempoolEntryError {
     /// Conversion of numeric type to expected type failed.
@@ -392,7 +392,7 @@ impl std::error::Error for MempoolEntryError {
     }
 }
 
-/// Error when converting a `MempoolEntryFeesError` type into the model type.
+/// Error when converting a `MempoolEntryFees` type into the model type.
 #[derive(Debug)]
 pub enum MempoolEntryFeesError {
     /// Conversion of the `base` field failed.
@@ -400,7 +400,7 @@ pub enum MempoolEntryFeesError {
     /// Conversion of the `modified` field failed.
     Modified(ParseAmountError),
     /// Conversion of the `ancestor` field failed.
-    MempoolEntry(ParseAmountError),
+    Ancestor(ParseAmountError),
     /// Conversion of the `descendant` field failed.
     Descendant(ParseAmountError),
 }
@@ -412,7 +412,7 @@ impl fmt::Display for MempoolEntryFeesError {
         match *self {
             E::Base(ref e) => write_err!(f, "conversion of the `base` field failed"; e),
             E::Modified(ref e) => write_err!(f, "conversion of the `modified` field failed"; e),
-            E::MempoolEntry(ref e) => write_err!(f, "conversion of the `ancestor` field failed"; e),
+            E::Ancestor(ref e) => write_err!(f, "conversion of the `ancestor` field failed"; e),
             E::Descendant(ref e) => write_err!(f, "conversion of the `descendant` field failed"; e),
         }
     }
@@ -426,7 +426,7 @@ impl std::error::Error for MempoolEntryFeesError {
         match *self {
             E::Base(ref e) => Some(e),
             E::Modified(ref e) => Some(e),
-            E::MempoolEntry(ref e) => Some(e),
+            E::Ancestor(ref e) => Some(e),
             E::Descendant(ref e) => Some(e),
         }
     }
@@ -521,7 +521,7 @@ impl From<NumericError> for GetTxOutError {
     fn from(e: NumericError) -> Self { Self::Numeric(e) }
 }
 
-/// Error when converting a `GetTxOut` type into the model type.
+/// Error when converting a `GetTxOutSetInfo` type into the model type.
 #[derive(Debug)]
 pub enum GetTxOutSetInfoError {
     /// Conversion of numeric type to expected type failed.
@@ -538,7 +538,7 @@ impl fmt::Display for GetTxOutSetInfoError {
 
         match *self {
             Numeric(ref e) => write_err!(f, "numeric"; e),
-            BestBlock(ref e) => write_err!(f, "conversion of the `beast_block` field failed"; e),
+            BestBlock(ref e) => write_err!(f, "conversion of the `best_block` field failed"; e),
             TotalAmount(ref e) => write_err!(f, "conversion of the `total_amount` field failed"; e),
         }
     }

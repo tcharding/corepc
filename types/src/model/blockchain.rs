@@ -408,20 +408,15 @@ pub struct MempoolEntry {
 pub struct MempoolEntryFees {
     /// Transaction fee in BTC.
     pub base: Amount,
-    /// Transaction fee with fee deltas used for mining priority in BTC.
+    /// Transaction fee with fee deltas used for mining priority.
     pub modified: Amount,
-    /// Modified fees (see above) of in-mempool ancestors (including this one) in BTC
+    /// Modified fees (see above) of in-mempool ancestors (including this one).
     pub ancestor: Amount,
-    /// Modified fees (see above) of in-mempool descendants (including this one) in BTC.
+    /// Modified fees (see above) of in-mempool descendants (including this one).
     pub descendant: Amount,
 }
 
-/// Models the result of JSON-RPC method `getmempooldescendants` with verbose set to true.
-/// Result of JSON-RPC method `getmempoolinfo` with verbose set to true
-///
-/// > getmempoolinfo
-/// >
-/// > Returns details on the active state of the TX memory pool.
+/// Models the result of JSON-RPC method `getmempoolinfo` with verbose set to true.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolInfo {
     /// Current transaction count.
