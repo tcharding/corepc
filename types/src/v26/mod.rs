@@ -219,7 +219,7 @@
 //! | signmessage                        | done (untested) |
 //! | signrawtransactionwithwallet       | done (untested) |
 //! | simulaterawtransaction             | todo            |
-//! | unloadwallet                       | omitted         |
+//! | unloadwallet                       | done            |
 //! | upgradewallet                      | todo            |
 //! | walletcreatefundedpsbt             | done (untested) |
 //! | walletdisplayaddress               | todo            |
@@ -251,7 +251,7 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::blockchain::{GetTxOutSetInfo, GetTxOutSetInfoError};
-pub use self::wallet::{CreateWallet, LoadWallet};
+pub use self::wallet::{CreateWallet, LoadWallet, UnloadWallet};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -283,6 +283,5 @@ pub use crate::{
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
         SoftforkType,
     },
-    v21::UnloadWallet,
     v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
 };

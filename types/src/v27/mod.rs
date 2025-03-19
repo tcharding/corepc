@@ -219,7 +219,7 @@
 //! | signmessage                        | done (untested) |
 //! | signrawtransactionwithwallet       | done (untested) |
 //! | simulaterawtransaction             | todo            |
-//! | unloadwallet                       | omitted         |
+//! | unloadwallet                       | done            |
 //! | upgradewallet                      | todo            |
 //! | walletcreatefundedpsbt             | done (untested) |
 //! | walletdisplayaddress               | todo            |
@@ -277,7 +277,6 @@ pub use crate::{
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
         SoftforkType,
     },
-    v21::UnloadWallet,
     v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
-    v26::{CreateWallet, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet},
+    v26::{CreateWallet, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet, UnloadWallet},
 };

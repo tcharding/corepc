@@ -4,8 +4,10 @@
 
 #[cfg(feature = "TODO")]
 use bitcoin::address::{Address, NetworkChecked};
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 use bitcoin::Amount;
 use integration_test::{Node, NodeExt as _, Wallet};
+#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 use node::AddressType;
 
 #[test]
@@ -43,9 +45,6 @@ pub fn bump_fee() {
 pub fn create_wallet() {
     // Implicitly tests `createwallet` because we create the default wallet.
     let _ = Node::with_wallet(Wallet::Default, &[]);
-
-    // TODO: We are not currently testing the `warnings` field. This field was changed from an
-    // optional `String` to an optional vector of strings in v25. Needs testing.
 }
 
 #[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
@@ -188,19 +187,33 @@ fn get_transaction() {
 
 #[test]
 fn load_wallet() {
-    // Implicitly test loadwalled because we load the default wallet.
-    let _ = Node::with_wallet(Wallet::Default, &[]);
+    create_load_unload_wallet();
 }
 
-#[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
 #[test]
-#[cfg(not(any(feature = "v17", feature = "v18", feature = "v19", feature = "v20")))]
 fn unload_wallet() {
+    create_load_unload_wallet();
+}
+
+fn create_load_unload_wallet() {
     let node = Node::with_wallet(Wallet::None, &[]);
+
     let wallet = format!("wallet-{}", rand::random::<u32>()).to_string();
     node.client.create_wallet(&wallet).expect("failed to create wallet");
-    let json = node.client.unload_wallet(&wallet).expect("unloadwallet");
-    assert!(json.into_model().is_ok())
+
+    // Upto version 20 Core returns null for `unloadwallet`.
+    #[cfg(any(feature = "v17", feature = "v18", feature = "v19", feature = "v20"))]
+    let _ = node.client.unload_wallet(&wallet).expect("unloadwallet");
+
+    // From version 21 Core returns warnings for `unloadwallet`.
+    #[cfg(all(not(feature = "v17"), not(feature = "v18"), not(feature = "v19"), not(feature = "v20")))]
+    {
+        let json = node.client.unload_wallet(&wallet).expect("unloadwallet");
+        let _ = json.into_model();
+    }
+
+    let json = node.client.load_wallet(&wallet).expect("loadwallet");
+    let _ = json.into_model();
 }
 
 #[cfg(any(feature = "0_17_1", feature = "0_18_1"))]

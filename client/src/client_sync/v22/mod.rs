@@ -95,5 +95,6 @@ crate::impl_client_v17__sendmany!();
 crate::impl_client_v17__sendtoaddress!();
 crate::impl_client_v17__signmessage!();
 crate::impl_client_v17__signrawtransactionwithwallet!();
+crate::impl_client_v21__unloadwallet!();
 crate::impl_client_v17__walletcreatefundedpsbt!();
 crate::impl_client_v17__walletprocesspsbt!();
