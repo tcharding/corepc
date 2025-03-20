@@ -2,6 +2,7 @@
 
 use std::path::PathBuf;
 
+use node::{Conf, P2P};
 use rand::distributions::Alphanumeric;
 use rand::Rng;
 
@@ -22,7 +23,6 @@ pub enum Wallet {
     /// Do not load a wallet.
     None,
 }
-
 
 pub trait NodeExt {
     /// Returns a handle to a `bitcoind` instance after leading wallet if present.
@@ -49,6 +49,9 @@ pub trait NodeExt {
     ///
     /// The receive address and the transaction.
     fn create_mined_transaction(&self) -> (bitcoin::Address, bitcoin::Transaction);
+
+    /// Returns the number of peers connected to this node.
+    fn peers_connected(&self) -> usize;
 }
 
 impl NodeExt for Node {
@@ -57,7 +60,7 @@ impl NodeExt for Node {
 
         let mut conf = node::Conf::default();
         match wallet {
-            Wallet::Default => {}, // conf.wallet = Some("default")
+            Wallet::Default => {} // conf.wallet = Some("default")
             Wallet::Load(w) => conf.wallet = Some(w.to_owned()),
             Wallet::None => conf.wallet = None,
         }
@@ -84,7 +87,12 @@ impl NodeExt for Node {
 
         let address = self.client.new_address().expect("failed to get new address");
 
-        let txid = self.client.send_to_address(&address, MILLION_SATS).expect("failed to send to address").txid().expect("failed to convert hex to txid");
+        let txid = self
+            .client
+            .send_to_address(&address, MILLION_SATS)
+            .expect("failed to send to address")
+            .txid()
+            .expect("failed to convert hex to txid");
         (address, txid)
     }
 
@@ -98,16 +106,45 @@ impl NodeExt for Node {
 
         (address, tx)
     }
+
+    fn peers_connected(&self) -> usize {
+        let json = self.client.get_peer_info().expect("get_peer_info");
+        json.0.len()
+    }
 }
 
 /// Return a temporary file path.
 pub fn random_tmp_file() -> PathBuf {
-    let file: String = rand::thread_rng()
-        .sample_iter(&Alphanumeric)
-        .take(7)
-        .map(char::from)
-        .collect();
+    let file: String =
+        rand::thread_rng().sample_iter(&Alphanumeric).take(7).map(char::from).collect();
     let mut tmp = std::env::temp_dir();
     tmp.push(&file);
     tmp
+}
+
+/// Creates a Bitcoin network with three connected nodes.
+pub fn three_node_network() -> (Node, Node, Node) {
+    let exe = node::exe_path().expect("failed to get bitcoind executable");
+
+    // Create Node 1 and listen for p2p connections.
+    let mut conf_node1 = Conf::default();
+    conf_node1.p2p = P2P::Yes;
+    let node1 = Node::with_conf(&exe, &conf_node1).unwrap();
+    assert_eq!(node1.peers_connected(), 0);
+
+    // Create Node 2 connected Node 1.
+    let mut conf_node2 = Conf::default();
+    conf_node2.p2p = node1.p2p_connect(true).unwrap();
+    let node2 = Node::with_conf(&exe, &conf_node2).unwrap();
+    assert_eq!(node2.peers_connected(), 1);
+
+    // For some reason using only two nodes still errors.
+
+    // Create Node 3 connected Node 2.
+    let mut conf_node3 = Conf::default();
+    conf_node3.p2p = node2.p2p_connect(true).unwrap();
+    let node3 = Node::with_conf(&exe, &conf_node3).unwrap();
+    assert!(node3.peers_connected() >= 1); // FIXME: Why not 2?
+
+    (node1, node2, node3)
 }

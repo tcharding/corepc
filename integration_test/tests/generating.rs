@@ -32,14 +32,21 @@ fn invalidate_block() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
     let address = node.client.new_address().expect("failed to get new address");
-    let old_best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
-    node.client.generate_to_address(NBLOCKS, &address).expect("generatetoaddress").into_model().unwrap();
+    let old_best_block =
+        node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
+    node.client
+        .generate_to_address(NBLOCKS, &address)
+        .expect("generatetoaddress")
+        .into_model()
+        .unwrap();
 
-    let new_best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
+    let new_best_block =
+        node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
     assert_ne!(old_best_block, new_best_block);
 
     node.client.invalidate_block(new_best_block).expect("invalidateblock");
-    let best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
+    let best_block =
+        node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
     assert_eq!(old_best_block, best_block);
 }
 

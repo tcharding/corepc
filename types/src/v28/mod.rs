@@ -72,12 +72,12 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | getblocktemplate                   | todo            |
-//! | getmininginfo                      | todo            |
-//! | getnetworkhashps                   | todo            |
-//! | getprioritisedtransactions         | todo            |
-//! | prioritisetransaction              | todo            |
-//! | submitblock                        | todo            |
+//! | getblocktemplate                   | done            |
+//! | getmininginfo                      | done            |
+//! | getnetworkhashps                   | done            |
+//! | getprioritisedtransactions         | done            |
+//! | prioritisetransaction              | done            |
+//! | submitblock                        | done (untested) |
 //! | submitheader                       | todo            |
 //!
 //! </details>
@@ -249,18 +249,17 @@
 //! - Method is deprecated.
 
 mod blockchain;
+mod mining;
 mod network;
 mod raw_transactions;
 
-#[doc(inline)]
-pub use self::blockchain::GetBlockchainInfo;
-#[doc(inline)]
-pub use self::network::GetNetworkInfo;
 #[doc(inline)]
 pub use self::raw_transactions::{
     SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
     SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
 };
+#[doc(inline)]
+pub use self::{blockchain::GetBlockchainInfo, mining::GetMiningInfo, network::GetNetworkInfo};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -269,13 +268,14 @@ pub use crate::{
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoLabel, GetAddressesByLabel,
         GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
-        GetBlockHeaderVerbose, GetBlockStats, GetBlockVerbosityOne, GetBlockVerbosityZero,
-        GetChainTips, GetChainTxStats, GetDifficulty, GetMemoryInfoStats, GetMempoolInfo,
-        GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
-        GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
-        GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetUnconfirmedBalance,
-        GetWalletInfo, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsItem,
-        ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListReceivedByAddress,
+        GetBlockHeaderVerbose, GetBlockStats, GetBlockTemplate, GetBlockTemplateError,
+        GetBlockVerbosityOne, GetBlockVerbosityZero, GetChainTips, GetChainTxStats, GetDifficulty,
+        GetMemoryInfoStats, GetMempoolInfo, GetNetTotals, GetNetworkInfoAddress,
+        GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo,
+        GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetReceivedByAddress,
+        GetTransaction, GetTransactionDetail, GetUnconfirmedBalance, GetWalletInfo,
+        GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsItem, ListBanned,
+        ListLabels, ListLockUnspent, ListLockUnspentItem, ListReceivedByAddress,
         ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockTransaction, ListTransactions,
         ListTransactionsItem, ListUnspent, ListUnspentItem, ListWallets, Locked, PeerInfo,
         RescanBlockchain, SendMany, SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
@@ -291,5 +291,8 @@ pub use crate::{
         MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork, SoftforkType,
     },
     v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
-    v26::{CreateWallet, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet, UnloadWallet},
+    v26::{
+        CreateWallet, GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError,
+        LoadWallet, PrioritisedTransaction, UnloadWallet,
+    },
 };

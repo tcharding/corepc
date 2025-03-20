@@ -7,6 +7,7 @@
 pub mod blockchain;
 pub mod control;
 pub mod generating;
+pub mod mining;
 pub mod network;
 pub mod raw_transactions;
 pub mod wallet;
@@ -60,6 +61,13 @@ crate::impl_client_v17__uptime!();
 crate::impl_client_v17__generatetoaddress!();
 crate::impl_client_v17__generate!();
 crate::impl_client_v17__invalidateblock!();
+
+// == Mining ==
+crate::impl_client_v17__getblocktemplate!();
+crate::impl_client_v17__getmininginfo!();
+crate::impl_client_v17__getnetworkhashps!();
+crate::impl_client_v17__prioritisetransaction!();
+crate::impl_client_v17__submitblock!();
 
 // == Network ==
 crate::impl_client_v17__getaddednodeinfo!();

@@ -30,6 +30,10 @@ pub use self::{
         GetTxOutSetInfo, MempoolEntry, MempoolEntryFees, Softfork, SoftforkType, VerifyTxOutProof,
     },
     generating::{Generate, GenerateToAddress},
+    mining::{
+        BlockTemplateTransaction, GetBlockTemplate, GetPrioritisedTransactions,
+        PrioritisedTransaction,
+    },
     network::{GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork},
     raw_transactions::{
         CreateRawTransaction, FundRawTransaction, SendRawTransaction, SubmitPackage,

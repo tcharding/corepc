@@ -13,13 +13,18 @@ use node::AddressType;
 #[test]
 #[cfg(feature = "TODO")]
 pub fn add_multisig_address() {
-    let nrequired = 1;  // 1-of-2 multisig.
+    let nrequired = 1; // 1-of-2 multisig.
 
-    let add1: Address<NetworkChecked> = "32iVBEu4dxkUQk9dJbZUiBiQdmypcEyJRf".parse::<Address<_>>().unwrap().assume_checked();
-    let add2: Address<NetworkChecked> = "132F25rTsvBdp9JzLLBHP5mvGY66i1xdiM".parse::<Address<_>>().unwrap().assume_checked();
+    let add1: Address<NetworkChecked> =
+        "32iVBEu4dxkUQk9dJbZUiBiQdmypcEyJRf".parse::<Address<_>>().unwrap().assume_checked();
+    let add2: Address<NetworkChecked> =
+        "132F25rTsvBdp9JzLLBHP5mvGY66i1xdiM".parse::<Address<_>>().unwrap().assume_checked();
 
     let node = Node::with_wallet(Wallet::Default, &[]);
-    let json = node.client.add_multisig_address_with_addresses(nrequired, vec![add1, add2]).expect("addmultisigaddress");
+    let json = node
+        .client
+        .add_multisig_address_with_addresses(nrequired, vec![add1, add2])
+        .expect("addmultisigaddress");
     assert!(json.into_model().is_ok());
 }
 
@@ -109,7 +114,7 @@ fn get_balances() {
     let json = node.client.get_balances().expect("getbalances");
     let model = json.into_model().expect("into_model");
     // TODO: Do more fine grained testing.
-    assert!(model.mine.trusted > Amount::ZERO); 
+    assert!(model.mine.trusted > Amount::ZERO);
 }
 
 #[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
@@ -123,18 +128,9 @@ fn get_new_address() {
     let _ = node.client.new_address().unwrap();
 
     // Exhaustively test address types with helper.
-    let _ = node
-        .client
-        .new_address_with_type(AddressType::Legacy)
-        .unwrap();
-    let _ = node
-        .client
-        .new_address_with_type(AddressType::P2shSegwit)
-        .unwrap();
-    let _ = node
-        .client
-        .new_address_with_type(AddressType::Bech32)
-        .unwrap();
+    let _ = node.client.new_address_with_type(AddressType::Legacy).unwrap();
+    let _ = node.client.new_address_with_type(AddressType::P2shSegwit).unwrap();
+    let _ = node.client.new_address_with_type(AddressType::Bech32).unwrap();
 }
 
 #[cfg(any(feature = "0_17_1", feature = "0_18_1"))]
@@ -154,12 +150,8 @@ fn get_received_by_address() {
     node.fund_wallet();
     let address = node.client.new_address().expect("failed to create new address");
 
-    let _txid = node
-        .client
-        .send_to_address(&address, amount)
-        .expect("sendtoaddress")
-        .txid()
-        .unwrap();
+    let _txid =
+        node.client.send_to_address(&address, amount).expect("sendtoaddress").txid().unwrap();
     node.mine_a_block();
 
     let json = node.client.get_received_by_address(&address).expect("getreceivedbyaddress");
@@ -223,9 +215,7 @@ fn send_to_address() {
     node.fund_wallet();
     let address = node.client.new_address().expect("failed to create new address");
 
-    let json = node
-        .client
-        .send_to_address(&address, Amount::from_sat(10_000))
-        .expect("sendtddress");
+    let json =
+        node.client.send_to_address(&address, Amount::from_sat(10_000)).expect("sendtddress");
     assert!(json.into_model().is_ok());
 }

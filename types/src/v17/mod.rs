@@ -72,11 +72,11 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | getblocktemplate                   | todo            |
-//! | getmininginfo                      | todo            |
-//! | getnetworkhashps                   | todo            |
-//! | prioritisetransaction              | todo            |
-//! | submitblock                        | todo            |
+//! | getblocktemplate                   | done            |
+//! | getmininginfo                      | done            |
+//! | getnetworkhashps                   | done            |
+//! | prioritisetransaction              | done            |
+//! | submitblock                        | done (untested) |
 //!
 //! </details>
 //!
@@ -239,6 +239,10 @@ pub use self::{
     },
     control::{GetMemoryInfoStats, Locked, Logging},
     generating::{Generate, GenerateToAddress},
+    mining::{
+        BlockTemplateTransaction, BlockTemplateTransactionError, GetBlockTemplate,
+        GetBlockTemplateError, GetMiningInfo,
+    },
     network::{
         AddedNode, AddedNodeAddress, Banned, GetAddedNodeInfo, GetNetTotals, GetNetworkInfo,
         GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork, GetPeerInfo, ListBanned,

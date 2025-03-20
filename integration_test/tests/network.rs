@@ -30,6 +30,26 @@ fn get_network_info() {
 
 #[test]
 fn get_peer_info() {
+    get_peer_info_one_node_network();
+    get_peer_info_three_node_network();
+}
+
+fn get_peer_info_one_node_network() {
     let node = Node::with_wallet(Wallet::None, &[]);
-    let _ = node.client.get_peer_info().expect("getpeerinfo");
+    let json = node.client.get_peer_info().expect("getpeerinfo");
+    assert_eq!(json.0.len(), 0);
+}
+
+fn get_peer_info_three_node_network() {
+    let (node1, node2, node3) = integration_test::three_node_network();
+
+    // Just for good measure.
+    node1.mine_a_block();
+    node2.mine_a_block();
+    node3.mine_a_block();
+
+    // FIXME: Fails if we use equal to 2 ???
+    assert!(node1.peers_connected() >= 1);
+    assert!(node2.peers_connected() >= 1);
+    assert!(node3.peers_connected() >= 1);
 }

@@ -72,12 +72,12 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | getblocktemplate                   | todo            |
-//! | getmininginfo                      | todo            |
-//! | getnetworkhashps                   | todo            |
-//! | getprioritisedtransactions         | todo            |
-//! | prioritisetransaction              | todo            |
-//! | submitblock                        | todo            |
+//! | getblocktemplate                   | done            |
+//! | getmininginfo                      | done            |
+//! | getnetworkhashps                   | done            |
+//! | getprioritisedtransactions         | done            |
+//! | prioritisetransaction              | done            |
+//! | submitblock                        | done (untested) |
 //! | submitheader                       | todo            |
 //!
 //! </details>
@@ -254,17 +254,17 @@ pub use crate::{
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoLabel, GetAddressesByLabel,
         GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
-        GetBlockHeaderVerbose, GetBlockStats, GetBlockVerbosityOne, GetBlockVerbosityZero,
-        GetChainTips, GetChainTxStats, GetDifficulty, GetMemoryInfoStats, GetMempoolInfo,
-        GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
-        GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
-        GetRawMempoolVerbose, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-        GetUnconfirmedBalance, GetWalletInfo, GetZmqNotifications, ListAddressGroupings,
-        ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem,
-        ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
-        ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
-        ListUnspentItem, ListWallets, Locked, PeerInfo, RescanBlockchain, SendMany,
-        SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
+        GetBlockHeaderVerbose, GetBlockStats, GetBlockTemplate, GetBlockTemplateError,
+        GetBlockVerbosityOne, GetBlockVerbosityZero, GetChainTips, GetChainTxStats, GetDifficulty,
+        GetMemoryInfoStats, GetMempoolInfo, GetMiningInfo, GetNetTotals, GetNetworkInfo,
+        GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress,
+        GetPeerInfo, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
+        GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetUnconfirmedBalance,
+        GetWalletInfo, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsItem,
+        ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListReceivedByAddress,
+        ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockTransaction, ListTransactions,
+        ListTransactionsItem, ListUnspent, ListUnspentItem, ListWallets, Locked, PeerInfo,
+        RescanBlockchain, SendMany, SendRawTransaction, SendToAddress, SignErrorData, SignMessage,
         SignRawTransactionWithWallet, SoftforkReject, TransactionCategory, UploadTarget,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
@@ -278,5 +278,8 @@ pub use crate::{
         SoftforkType,
     },
     v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
-    v26::{CreateWallet, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet, UnloadWallet},
+    v26::{
+        CreateWallet, GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError,
+        LoadWallet, PrioritisedTransaction, UnloadWallet,
+    },
 };

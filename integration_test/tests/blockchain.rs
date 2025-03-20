@@ -61,7 +61,8 @@ fn get_block_hash() {
 }
 
 #[test]
-fn get_block_header() { // verbose = false
+fn get_block_header() {
+    // verbose = false
     let node = Node::with_wallet(Wallet::None, &[]);
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
     let json = node.client.get_block_header(&block_hash).expect("getblockheader");
@@ -69,7 +70,8 @@ fn get_block_header() { // verbose = false
 }
 
 #[test]
-fn get_block_header_verbose() { // verbose = true
+fn get_block_header_verbose() {
+    // verbose = true
     let node = Node::with_wallet(Wallet::None, &[]);
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
     let json = node.client.get_block_header_verbose(&block_hash).expect("getblockheader");

@@ -5,9 +5,7 @@
 use std::collections::BTreeMap;
 
 use bitcoin::{Amount, Sequence};
-
 use client::client_sync::Input;
-
 use integration_test::{Node, NodeExt as _, Wallet};
 
 #[test]
@@ -34,18 +32,24 @@ fn send_raw_transaction() {
     _create_and_send(&node);
 }
 
-fn _create_and_send(node: &Node)  {
+fn _create_and_send(node: &Node) {
     let (_addr, txid) = node.create_mempool_transaction(); // A million sats.
     node.mine_a_block();
 
     // We don't know what vout the UTXO is in.
-    let tx_out = node.client.get_tx_out(txid, 0).expect("gettxout").into_model().expect("GetTxOut into model").tx_out;
+    let tx_out = node
+        .client
+        .get_tx_out(txid, 0)
+        .expect("gettxout")
+        .into_model()
+        .expect("GetTxOut into model")
+        .tx_out;
     let spend_amount = Amount::from_sat(100_000);
     let fee = Amount::from_sat(1000);
     let change_amount = tx_out.value - spend_amount - fee;
 
     let sequence = Sequence::MAX; // Ignore locktime.
-    let inputs = vec![Input{ txid, vout: 0, sequence: Some(sequence) }];
+    let inputs = vec![Input { txid, vout: 0, sequence: Some(sequence) }];
 
     let mut outputs = BTreeMap::new();
 
@@ -60,7 +64,10 @@ fn _create_and_send(node: &Node)  {
     let json = node.client.create_raw_transaction(&inputs, &outputs).expect("createrawtransaction");
 
     // This method is from the wallet section.
-    let json = node.client.sign_raw_transaction_with_wallet(&json.0).expect("signrawtransactionwithwallet");
+    let json = node
+        .client
+        .sign_raw_transaction_with_wallet(&json.0)
+        .expect("signrawtransactionwithwallet");
 
     // The proves we did everything correctly.
     let model = json.clone().into_model().expect("SignRawTransactionWithWalet into model");
@@ -73,23 +80,30 @@ fn _create_fund_and_send(node: &Node) {
     node.mine_a_block();
 
     // We don't know what vout the UTXO is in.
-    let tx_out = node.client.get_tx_out(txid, 0).expect("gettxout").into_model().expect("GetTxOut into model").tx_out;
+    let tx_out = node
+        .client
+        .get_tx_out(txid, 0)
+        .expect("gettxout")
+        .into_model()
+        .expect("GetTxOut into model")
+        .tx_out;
     let spend_amount = Amount::from_sat(100_000);
     let fee = Amount::from_sat(1000);
     let change_amount = tx_out.value - spend_amount - fee;
 
     // Just send back to ourself.
     let spend_address = node.client.new_address().expect("failed to get new address");
-    let change_address = node.client.get_raw_change_address().expect("getrawchangeaddress").into_model().expect("GetRawChangeAddress into model").0.assume_checked();
-    
-    let spend = TxOut {
-        value: spend_amount,
-        script_pubkey: spend_address.script_pubkey(),
-    };
-    let change = TxOut {
-        value: change_amount,
-        script_pubkey: change_address.script_pubkey(),
-    };
+    let change_address = node
+        .client
+        .get_raw_change_address()
+        .expect("getrawchangeaddress")
+        .into_model()
+        .expect("GetRawChangeAddress into model")
+        .0
+        .assume_checked();
+
+    let spend = TxOut { value: spend_amount, script_pubkey: spend_address.script_pubkey() };
+    let change = TxOut { value: change_amount, script_pubkey: change_address.script_pubkey() };
 
     let tx = Transaction {
         version: transaction::Version::TWO,
