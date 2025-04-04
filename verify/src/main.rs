@@ -43,10 +43,8 @@ fn main() -> Result<()> {
     } else if let Ok(v) = version.parse::<Version>() {
         verify_version(v, test_output, quiet)?;
     } else {
-        eprint!("Unrecognised version: {} (supported versions:", version);
-        for version in VERSIONS {
-            eprint!(" {}", version);
-        }
+        eprint!("Unrecognised version: {} (supported versions: ", version);
+        eprint!("{} - {}", VERSIONS[0], VERSIONS[VERSIONS.len() - 1]);
         eprintln!(")");
         process::exit(1);
     }
