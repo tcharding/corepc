@@ -6,8 +6,9 @@ use super::Method;
 
 /// Data for the JSON RPC methods provided by Bitcoin Core v17.
 pub const METHODS: &[Method] = &[
+    // blockchain
     Method::new_modelled("getbestblockhash", "GetBestBlockHash", "get_best_block_hash"),
-    Method::new_modelled("getblock", "GetBlockVerbosityZero", "get_block"), // We only check one of the types.
+    Method::new_modelled("getblock", "GetBlockVerboseZero", "get_block"), // We only check one of the types.
     Method::new_modelled("getblockchaininfo", "GetBlockchainInfo", "get_blockchain_info"),
     Method::new_modelled("getblockcount", "GetBlockCount", "get_block_count"),
     Method::new_modelled("getblockhash", "GetBlockHash", "get_block_hash"),
@@ -34,18 +35,22 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("scantxoutset", "ScanTxOutSet", "scan_tx_out_set"),
     Method::new_bool("verifychain", "verify_chain"),
     Method::new_modelled("verifytxoutproof", "VerifyTxOutProof", "verify_tx_out_proof"),
+    // control
     Method::new_no_model("getmemoryinfo", "GetMemoryInfoStats", "get_memory_info"),
     Method::new_string("help", "help"),
     Method::new_no_model("logging", "Logging", "logging"),
     Method::new_string("stop", "stop"),
     Method::new_numeric("uptime", "uptime"),
+    // generating
     Method::new_modelled("generate", "Generate", "generate"),
     Method::new_modelled("generatetoaddress", "GenerateToAddress", "generate_to_address"),
+    // mining
     Method::new_modelled("getblocktemplate", "GetBlockTemplate", "get_block_template"),
     Method::new_no_model("getmininginfo", "GetMiningInfo", "get_mining_info"),
-    Method::new_nothing("getnetworkhashps", "get_network_hashes_per_second"),
+    Method::new_numeric("getnetworkhashps", "get_network_hashes_per_second"),
     Method::new_bool("prioritisetransaction", "prioritise_transaction"),
     Method::new_nothing("submitblock", "submit_block"),
+    // network
     Method::new_nothing("addnode", "add_node"),
     Method::new_nothing("clearbanned", "clear_banned"),
     Method::new_nothing("disconnectnode", "disconnect_node"),
@@ -58,6 +63,7 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("ping", "ping"),
     Method::new_nothing("setban", "set_ban"),
     Method::new_nothing("setnetworkactive", "set_network_active"),
+    // raw transactions
     Method::new_nothing("combinepsbt", "combine_psbt"),
     Method::new_nothing("combinerawtransaction", "combine_raw_transaction"),
     Method::new_nothing("converttopsbt", "convert_to_psbt"),
@@ -73,11 +79,13 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("signrawtransaction", "sign_raw_transaction"),
     Method::new_nothing("signrawtransactionwithkey", "sign_raw_transaction_with_key"),
     Method::new_nothing("testmempoolaccept", "test_mempool_accept"),
+    // util
     Method::new_modelled("createmultisig", "CreateMultisig", "create_multisig"),
     Method::new_nothing("estimatesmartfee", "estimate_smart_fee"),
     Method::new_string("signmessagewithprivkey", "sign_message_with_priv_key"),
     Method::new_modelled("validateaddress", "ValidateAddress", "validate_address"),
     Method::new_bool("verifymessage", "verify_message"),
+    // wallet
     Method::new_nothing("abandontransaction", "abandon_transaction"),
     Method::new_nothing("abortrescan", "abort_rescan"),
     Method::new_modelled("addmultisigaddress", "AddMultisigAddress", "add_multisig_address"),
@@ -152,5 +160,6 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("walletpassphrase", "wallet_passphrase"),
     Method::new_nothing("walletpassphrasechange", "wallet_passphrase_change"),
     Method::new_modelled("walletprocesspsbt", "WalletProcessPsbt", "wallet_process_psbt"),
+    // zmq
     Method::new_no_model("getzmqnotifications", "GetZmqNotifications", "get_zmq_notifications"),
 ];
