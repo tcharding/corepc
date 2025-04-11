@@ -16,7 +16,7 @@
     not(feature = "0_20_2"),
     not(feature = "0_19_1"),
     not(feature = "0_18_1"),
-    not(feature = "0_17_1")
+    not(feature = "0_17_2")
 ))]
 compile_error!("enable a feature in order to select the version of Bitcoin Core to use");
 
@@ -66,8 +66,8 @@ pub const VERSION: &str = "0.19.1";
 #[cfg(all(feature = "0_18_1", not(feature = "0_19_1")))]
 pub const VERSION: &str = "0.18.1";
 
-#[cfg(all(feature = "0_17_1", not(feature = "0_18_1")))]
-pub const VERSION: &str = "0.17.1";
+#[cfg(all(feature = "0_17_2", not(feature = "0_18_1")))]
+pub const VERSION: &str = "0.17.2";
 
 /// This is meaningless but we need it otherwise we can't get far enough into
 /// the build process to trigger the `compile_error!` in `./versions.rs`.
@@ -87,6 +87,6 @@ pub const VERSION: &str = "0.17.1";
     not(feature = "0_20_2"),
     not(feature = "0_19_1"),
     not(feature = "0_18_1"),
-    not(feature = "0_17_1")
+    not(feature = "0_17_2")
 ))]
 pub const VERSION: &str = "never-used";
