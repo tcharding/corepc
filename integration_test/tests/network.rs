@@ -21,7 +21,7 @@ fn network__get_net_totals() {
 }
 
 #[test]
-fn network__get_network_info() {
+fn network__get_network_info__modelled() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let json: GetNetworkInfo = node.client.get_network_info().expect("getnetworkinfo");
     let model: Result<mtype::GetNetworkInfo, GetNetworkInfoError> = json.into_model();

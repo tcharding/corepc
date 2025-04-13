@@ -36,8 +36,12 @@ pub use self::{
     },
     network::{GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork},
     raw_transactions::{
-        CreateRawTransaction, FundRawTransaction, SendRawTransaction, SubmitPackage,
-        SubmitPackageTxResult, SubmitPackageTxResultFees,
+        AnalyzePsbt, AnalyzePsbtInput, AnalyzePsbtInputMissing, CombinePsbt, CombineRawTransaction,
+        ConvertToPsbt, CreatePsbt, CreateRawTransaction, DecodePsbt, DecodeRawTransaction,
+        DecodeScript, DescriptorProcessPsbt, FinalizePsbt, FundRawTransaction, GetRawTransaction,
+        GetRawTransactionVerbose, JoinPsbts, MempoolAcceptance, SendRawTransaction, SignFail,
+        SignRawTransaction, SubmitPackage, SubmitPackageTxResult, SubmitPackageTxResultFees,
+        TestMempoolAccept, UtxoUpdatePsbt,
     },
     wallet::{
         AddMultisigAddress, AddressInformation, AddressLabel, AddressPurpose, Bip125Replaceable,
@@ -49,7 +53,6 @@ pub use self::{
         ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
         ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspentItem,
         ListWallets, LoadWallet, RescanBlockchain, ScriptType, SendMany, SendToAddress,
-        SignErrorData, SignMessage, SignRawTransactionWithWallet, TransactionCategory,
-        UnloadWallet, WalletCreateFundedPsbt, WalletProcessPsbt,
+        SignMessage, TransactionCategory, UnloadWallet, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
 };

@@ -105,21 +105,21 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | combinepsbt                        | todo            |
-//! | combinerawtransaction              | todo            |
-//! | converttopsbt                      | todo            |
-//! | createpsbt                         | todo            |
+//! | combinepsbt                        | done            |
+//! | combinerawtransaction              | done            |
+//! | converttopsbt                      | done            |
+//! | createpsbt                         | done            |
 //! | createrawtransaction               | done            |
-//! | decodepsbt                         | todo            |
-//! | decoderawtransaction               | todo            |
-//! | decodescript                       | todo            |
-//! | finalizepsbt                       | todo            |
-//! | fundrawtransaction                 | done (untested) |
-//! | getrawtransaction                  | todo            |
+//! | decodepsbt                         | done            |
+//! | decoderawtransaction               | done            |
+//! | decodescript                       | done            |
+//! | finalizepsbt                       | done (untested) |
+//! | fundrawtransaction                 | done            |
+//! | getrawtransaction                  | done            |
 //! | sendrawtransaction                 | done            |
-//! | signrawtransaction                 | todo            |
-//! | signrawtransactionwithkey          | todo            |
-//! | testmempoolaccept                  | todo            |
+//! | signrawtransaction                 | done            |
+//! | signrawtransactionwithkey          | done            |
+//! | testmempoolaccept                  | done (untested) |
 //!
 //! </details>
 //!
@@ -192,7 +192,7 @@
 //! | sethdseed                          | omitted         |
 //! | settxfee                           | omitted         |
 //! | signmessage                        | done (untested) |
-//! | signrawtransactionwithwallet       | done (untested) |
+//! | signrawtransactionwithwallet       | done            |
 //! | unloadwallet                       | done            |
 //! | walletcreatefundedpsbt             | done (untested) |
 //! | walletlock                         | omitted         |
@@ -217,7 +217,7 @@ mod control;
 mod generating;
 mod mining;
 mod network;
-mod raw_transactions;
+pub(crate) mod raw_transactions;
 mod util;
 mod wallet;
 mod zmq;
@@ -234,8 +234,7 @@ pub use self::{
         GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo, GetMempoolInfoError,
         GetRawMempool, GetRawMempoolVerbose, GetTxOut, GetTxOutError, GetTxOutSetInfo,
         GetTxOutSetInfoError, MapMempoolEntryError, MempoolEntry, MempoolEntryError,
-        MempoolEntryFees, MempoolEntryFeesError, ScriptPubkey, Softfork, SoftforkReject,
-        VerifyTxOutProof,
+        MempoolEntryFees, MempoolEntryFeesError, Softfork, SoftforkReject, VerifyTxOutProof,
     },
     control::{GetMemoryInfoStats, Locked, Logging},
     generating::{Generate, GenerateToAddress},
@@ -249,7 +248,13 @@ pub use self::{
         PeerInfo, UploadTarget,
     },
     raw_transactions::{
-        CreateRawTransaction, FundRawTransaction, FundRawTransactionError, SendRawTransaction,
+        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreatePsbt, CreateRawTransaction,
+        DecodePsbt, DecodePsbtError, DecodeRawTransaction, DecodeScript, DecodeScriptError,
+        FinalizePsbt, FinalizePsbtError, FundRawTransaction, FundRawTransactionError,
+        GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
+        MempoolAcceptance, PsbtInput, PsbtInputError, PsbtOutput, PsbtOutputError,
+        SendRawTransaction, SignFail, SignFailError, SignRawTransaction, SignRawTransactionError,
+        TestMempoolAccept,
     },
     wallet::{
         AddMultisigAddress, AddMultisigAddressError, AddressInformation, BumpFee, BumpFeeError,
@@ -264,9 +269,14 @@ pub use self::{
         ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
         ListUnspentItemError, ListWallets, LoadWallet, RescanBlockchain, SendMany, SendToAddress,
-        SignErrorData, SignErrorDataError, SignMessage, SignRawTransactionWithWallet,
-        SignRawTransactionWithWalletError, TransactionCategory, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt,
+        SignMessage, TransactionCategory, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
+        WalletProcessPsbt,
     },
     zmq::GetZmqNotifications,
+};
+#[doc(inline)]
+pub use crate::psbt::{
+    Bip32Deriv, Bip32DerivError, FinalScript, InputKeySource, PartialSignatureError, PsbtScript,
+    RawTransaction, RawTransactionError, RawTransactionInput, RawTransactionInputError,
+    RawTransactionOutput, RawTransactionOutputError, WitnessUtxo, WitnessUtxoError,
 };
