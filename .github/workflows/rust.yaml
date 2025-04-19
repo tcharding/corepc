@@ -210,14 +210,13 @@ jobs:
       matrix:
         feature:
           [
+            "29_0,download",
             "28_1,download",
             "28_0,download",
             "27_2,download",
             "27_1,download",
             "27_0,download",
             "26_2,download",
-            "26_1,download",
-            "26_0,download",
             "25_2,download",
             "24_2,download",
             "23_2,download",

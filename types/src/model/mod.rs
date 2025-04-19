@@ -21,18 +21,19 @@ mod zmq;
 #[doc(inline)]
 pub use self::{
     blockchain::{
-        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, ChainTips, ChainTipsStatus,
-        GetBestBlockHash, GetBlockCount, GetBlockFilter, GetBlockHash, GetBlockHeader,
-        GetBlockHeaderVerbose, GetBlockStats, GetBlockVerboseOne, GetBlockVerboseZero,
-        GetBlockchainInfo, GetChainTips, GetChainTxStats, GetDifficulty, GetMempoolAncestors,
-        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetMempoolEntry, GetMempoolInfo, GetRawMempool, GetRawMempoolVerbose, GetTxOut,
-        GetTxOutSetInfo, MempoolEntry, MempoolEntryFees, Softfork, SoftforkType, VerifyTxOutProof,
+        ActivityEntry, Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, ChainTips,
+        ChainTipsStatus, GetBestBlockHash, GetBlockCount, GetBlockFilter, GetBlockHash,
+        GetBlockHeader, GetBlockHeaderVerbose, GetBlockStats, GetBlockVerboseOne,
+        GetBlockVerboseZero, GetBlockchainInfo, GetChainTips, GetChainTxStats,
+        GetDescriptorActivity, GetDifficulty, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
+        GetRawMempool, GetRawMempoolVerbose, GetTxOut, GetTxOutSetInfo, MempoolEntry,
+        MempoolEntryFees, ReceiveActivity, Softfork, SoftforkType, SpendActivity, VerifyTxOutProof,
     },
     generating::{Generate, GenerateToAddress},
     mining::{
-        BlockTemplateTransaction, GetBlockTemplate, GetPrioritisedTransactions,
-        PrioritisedTransaction,
+        BlockTemplateTransaction, GetBlockTemplate, GetMiningInfo, GetPrioritisedTransactions,
+        NextBlockInfo, PrioritisedTransaction,
     },
     network::{
         GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork, GetNodeAddresses, NodeAddress,

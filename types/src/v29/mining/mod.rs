@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core `v0.17` - mining.
+//! The JSON-RPC API for Bitcoin Core `v29` - mining.
 //!
 //! Types for methods found under the `== Mining ==` section of the API docs.
 
@@ -11,7 +11,9 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-pub use self::error::{BlockTemplateTransactionError, GetBlockTemplateError};
+pub use self::error::{
+    BlockTemplateTransactionError, GetBlockTemplateError, GetMiningInfoError, NextBlockInfoError,
+};
 
 /// Result of the JSON-RPC method `getblocktemplate`.
 ///
@@ -69,6 +71,11 @@ pub struct GetBlockTemplate {
     /// Maximum allowable input to coinbase transaction, including the generation award and transaction fees (in satoshis).
     #[serde(rename = "coinbasevalue")]
     pub coinbase_value: i64,
+    /// A list of supported features,for example `proposal`
+    pub capabilities: Vec<String>,
+    /// ID to include with a request to longpoll on an update to this template.
+    #[serde(rename = "longpollid")]
+    pub long_poll_id: String,
     // This is in the docs but not actually returned (for v17 and v18 at least).
     // coinbase_txn: ???, // Also I don't know what the JSON object represents: `{ ... }`
     /// The hash target.
@@ -99,6 +106,11 @@ pub struct GetBlockTemplate {
     pub bits: String,
     /// The height of the next block,
     pub height: i64,
+    /// Optional signet challenge
+    #[serde(rename = "signet_challenge")]
+    pub signet_challenge: Option<String>,
+    #[serde(rename = "defaultwitnesscommitment")]
+    pub default_witness_commitment: Option<String>,
 }
 
 /// Contents of non-coinbase transactions that should be included in the next block.
@@ -137,14 +149,20 @@ pub struct BlockTemplateTransaction {
 pub struct GetMiningInfo {
     /// The current block.
     pub blocks: u64,
-    /// The last block weight.
+    /// The block weight (including reserved weight for block header, txs count and coinbase tx) of
+    /// the last assembled block (only present if a block was ever assembled).
     #[serde(rename = "currentblockweight")]
     pub current_block_weight: Option<u64>,
-    /// The last block transaction.
+    /// The number of block transactions (excluding coinbase) of the last assembled block (only
+    /// present if a block was ever assembled).
     #[serde(rename = "currentblocktx")]
     pub current_block_tx: Option<i64>,
+    /// The current nBits, compact representation of the block difficulty target.
+    pub bits: String,
     /// The current difficulty.
     pub difficulty: f64,
+    /// The current target.
+    pub target: String,
     /// The network hashes per second.
     #[serde(rename = "networkhashps")]
     pub network_hash_ps: i64,
@@ -153,6 +171,24 @@ pub struct GetMiningInfo {
     pub pooled_tx: i64,
     /// Current network name as defined in BIP70 (main, test, regtest).
     pub chain: String,
+    /// The block challenge (aka. block script), in hexadecimal (only present if the current network
+    /// is a signet).
+    pub signet_challenge: Option<String>,
+    /// The next block.
+    pub next: NextBlockInfo,
     /// Any network and blockchain warnings.
-    pub warnings: String,
+    pub warnings: Vec<String>,
+}
+
+/// Represents the `next` block information within the GetMiningInfo result.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct NextBlockInfo {
+    /// The next height.
+    pub height: u64,
+    /// The next nBits.
+    pub bits: String,
+    /// The next difficulty.
+    pub difficulty: f64,
+    /// The next target.
+    pub target: String,
 }

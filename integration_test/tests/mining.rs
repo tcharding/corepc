@@ -19,17 +19,64 @@ fn mining__get_block_template__modelled() {
     node2.mine_a_block();
     node3.mine_a_block();
 
-    let options = TemplateRequest { rules: vec![TemplateRules::Segwit] };
+    let options = match () {
+        #[cfg(not(feature = "v29"))]
+        () => TemplateRequest { rules: vec![TemplateRules::Segwit] },
+        #[cfg(feature = "v29")]
+        () => TemplateRequest {
+            rules: vec![TemplateRules::Segwit],
+            mode: Some("template".to_string()),
+            ..Default::default()
+        }
+    };
 
-    let json: GetBlockTemplate = node1.client.get_block_template(&options).expect("rpc");
-    let model: Result<mtype::GetBlockTemplate, GetBlockTemplateError> = json.into_model();
-    model.unwrap();
+    let json: GetBlockTemplate = node1.client.get_block_template(&options)
+        .expect("get_block_template RPC failed");
+    let _: Result<mtype::GetBlockTemplate, GetBlockTemplateError> = json.into_model();
 }
 
 #[test]
 fn mining__get_mining_info() {
     let node = Node::with_wallet(Wallet::Default, &[]);
-    let _: GetMiningInfo = node.client.get_mining_info().expect("rpc");
+
+    let json: GetMiningInfo = node.client.get_mining_info().expect("rpc");
+
+    // Upto v9 there is no error converting into model.
+    #[cfg(any(
+        feature = "v17",
+        feature = "v18",
+        feature = "v19",
+        feature = "v20",
+        feature = "v21",
+        feature = "v22",
+        feature = "v23",
+        feature = "v24",
+        feature = "v25",
+        feature = "v26",
+        feature = "v27",
+        feature = "v28",
+    ))]
+    let _: mtype::GetMiningInfo = json.into_model();
+
+    // v29 onwards - these feature gates are shit, we need a better way to do this.
+    #[cfg(not(any(
+        feature = "v17",
+        feature = "v18",
+        feature = "v19",
+        feature = "v20",
+        feature = "v21",
+        feature = "v22",
+        feature = "v23",
+        feature = "v24",
+        feature = "v25",
+        feature = "v26",
+        feature = "v27",
+        feature = "v28",
+    )))]
+    {
+        let model: Result<mtype::GetMiningInfo, GetMiningInfoError> = json.into_model();
+        model.unwrap();
+    }
 }
 
 #[test]

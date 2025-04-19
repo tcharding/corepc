@@ -46,7 +46,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("generatetoaddress", "GenerateToAddress", "generate_to_address"),
     // mining
     Method::new_modelled("getblocktemplate", "GetBlockTemplate", "get_block_template"),
-    Method::new_no_model("getmininginfo", "GetMiningInfo", "get_mining_info"),
+    Method::new_modelled("getmininginfo", "GetMiningInfo", "get_mining_info"),
     Method::new_numeric("getnetworkhashps", "get_network_hash_ps"),
     Method::new_bool("prioritisetransaction", "prioritise_transaction"),
     Method::new_nothing("submitblock", "submit_block"),

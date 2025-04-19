@@ -49,7 +49,7 @@ pub const METHODS: &[Method] = &[
     Method::new_numeric("uptime", "uptime"),
     // mining
     Method::new_modelled("getblocktemplate", "GetBlockTemplate", "get_block_template"),
-    Method::new_no_model("getmininginfo", "GetMiningInfo", "get_mining_info"),
+    Method::new_modelled("getmininginfo", "GetMiningInfo", "get_mining_info"),
     Method::new_nothing("getnetworkhashps", "get_network_hashes_per_second"),
     Method::new_bool("prioritisetransaction", "prioritise_transaction"),
     Method::new_nothing("submitblock", "submit_block"),

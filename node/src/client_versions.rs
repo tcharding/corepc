@@ -6,7 +6,10 @@
 
 #![allow(unused_imports)] // Not all users need the json types.
 
-#[cfg(feature = "28_1")]
+#[cfg(feature = "29_0")]
+pub use corepc_client::{client_sync::v29::*, types::v29 as vtype};
+
+#[cfg(all(feature = "28_1", not(feature = "29_0")))]
 pub use corepc_client::{client_sync::v28::*, types::v28 as vtype};
 
 #[cfg(all(feature = "28_0", not(feature = "28_1")))]
@@ -24,13 +27,7 @@ pub use corepc_client::{client_sync::v27::*, types::v27 as vtype};
 #[cfg(all(feature = "26_2", not(feature = "27_0")))]
 pub use corepc_client::{client_sync::v26::*, types::v26 as vtype};
 
-#[cfg(all(feature = "26_1", not(feature = "26_2")))]
-pub use corepc_client::{client_sync::v26::*, types::v26 as vtype};
-
-#[cfg(all(feature = "26_0", not(feature = "26_1")))]
-pub use corepc_client::{client_sync::v26::*, types::v26 as vtype};
-
-#[cfg(all(feature = "25_2", not(feature = "26_0")))]
+#[cfg(all(feature = "25_2", not(feature = "26_2")))]
 pub use corepc_client::{client_sync::v25::*, types::v25 as vtype};
 
 #[cfg(all(feature = "24_2", not(feature = "25_2")))]
@@ -60,14 +57,13 @@ pub use corepc_client::{client_sync::v17::*, types::v17 as vtype};
 /// This is meaningless but we need it otherwise we can't get far enough into
 /// the build process to trigger the `compile_error!` in `./versions.rs`.
 #[cfg(all(
+    not(feature = "29_0"),
     not(feature = "28_1"),
     not(feature = "28_0"),
     not(feature = "27_2"),
     not(feature = "27_1"),
     not(feature = "27_0"),
     not(feature = "26_2"),
-    not(feature = "26_1"),
-    not(feature = "26_0"),
     not(feature = "25_2"),
     not(feature = "24_2"),
     not(feature = "23_2"),
