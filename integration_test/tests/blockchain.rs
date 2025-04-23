@@ -262,6 +262,21 @@ fn blockchain__precious_block() {
 }
 
 #[test]
+fn blockchain__prune_blockchain() {
+    const NBLOCKS: usize = 1;
+
+    let node = Node::with_wallet(Wallet::Default, &["-prune=550"]);
+    let address = node.client.new_address().expect("Failed to get new address");
+
+    let gen_result = node.client.generate_to_address(NBLOCKS, &address).expect("generate_to_address RPC call failed");
+    assert_eq!(gen_result.0.len(), NBLOCKS, "generate_to_address did not return the expected number of block hashes");
+
+    let target_height: u64 = 500;
+
+    let _: Result<PruneBlockchain, _> = node.client.prune_blockchain(target_height);
+}
+
+#[test]
 fn blockchain__verify_tx_out_proof__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();

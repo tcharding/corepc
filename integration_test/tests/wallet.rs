@@ -169,7 +169,6 @@ fn wallet__get_balance__modelled() {
     json.into_model().unwrap();
 }
 
-
 #[test]
 #[cfg(all(not(feature = "v17"), not(feature = "v18")))]
 fn wallet__get_balances() {

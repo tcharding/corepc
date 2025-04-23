@@ -274,7 +274,7 @@ pub use crate::{
         ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
         ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,
         ListTransactionsItemError, ListUnspent, ListUnspentItem, ListUnspentItemError, ListWallets,
-        LoadWallet, Locked, PeerInfo, RawTransactionError, RawTransactionInput,
+        LoadWallet, Locked, PeerInfo, PruneBlockchain, RawTransactionError, RawTransactionInput,
         RawTransactionOutput, RescanBlockchain, SendMany, SendRawTransaction, SendToAddress,
         SignMessage, SignRawTransaction, SignRawTransactionError, SoftforkReject,
         TestMempoolAccept, TransactionCategory, UploadTarget, VerifyTxOutProof,
