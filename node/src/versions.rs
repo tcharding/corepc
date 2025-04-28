@@ -25,7 +25,7 @@ compile_error!("enable a feature in order to select the version of Bitcoin Core 
 pub const VERSION: &str = "28.0";
 
 #[cfg(all(feature = "27_2", not(feature = "28_0")))]
-pub const VERSION: &str = "27.1";
+pub const VERSION: &str = "27.2";
 
 #[cfg(all(feature = "27_1", not(feature = "27_2")))]
 pub const VERSION: &str = "27.1";
