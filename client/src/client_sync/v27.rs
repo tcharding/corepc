@@ -17,7 +17,7 @@ use crate::types::v27::*;
 pub use crate::client_sync::{v23::AddressType, WalletCreateFundedPsbtInput};
 
 crate::define_jsonrpc_minreq_client!("v27");
-crate::impl_client_check_expected_server_version!({ [270000, 270100] });
+crate::impl_client_check_expected_server_version!({ [270000, 270100, 270200] });
 
 // == Blockchain ==
 crate::impl_client_v17__getbestblockhash!();
