@@ -87,12 +87,6 @@ pub struct CreateWallet {
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct DumpPrivKey(pub PrivateKey);
 
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
-pub struct DumpWallet {
-    /// The filename with full absolute path.
-    pub file_name: String, // FIXME: Should this be `PathBuf`?
-}
-
 /// Models the result of JSON-RPC method `getaddressesbylabel`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct GetAddressesByLabel(pub BTreeMap<Address<NetworkUnchecked>, AddressInformation>);

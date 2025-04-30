@@ -93,7 +93,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("bumpfee", "BumpFee", "bump_fee"),
     Method::new_modelled("createwallet", "CreateWallet", "create_wallet"),
     Method::new_modelled("dumpprivkey", "DumpPrivKey", "dump_priv_key"),
-    Method::new_modelled("dumpwallet", "DumpWallet", "dump_wallet"),
+    Method::new_no_model("dumpwallet", "DumpWallet", "dump_wallet"),
     Method::new_nothing("encryptwallet", "encrypt_wallet"),
     Method::new_nothing("getaccount", "get_account"), // Deprecated
     Method::new_nothing("getaccountaddress", "get_account_address"), // Deprecated

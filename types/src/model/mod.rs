@@ -45,7 +45,7 @@ pub use self::{
     },
     wallet::{
         AddMultisigAddress, AddressInformation, AddressLabel, AddressPurpose, Bip125Replaceable,
-        BumpFee, CreateWallet, DumpPrivKey, DumpWallet, GetAddressInfo, GetAddressInfoEmbedded,
+        BumpFee, CreateWallet, DumpPrivKey, GetAddressInfo, GetAddressInfoEmbedded,
         GetAddressesByLabel, GetBalance, GetBalances, GetBalancesMine, GetBalancesWatchOnly,
         GetNewAddress, GetRawChangeAddress, GetReceivedByAddress, GetTransaction,
         GetTransactionDetail, GetUnconfirmedBalance, GetWalletInfo, ListAddressGroupings,
