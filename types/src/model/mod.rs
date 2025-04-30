@@ -51,8 +51,9 @@ pub use self::{
         GetTransactionDetail, GetUnconfirmedBalance, GetWalletInfo, ListAddressGroupings,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
         ListReceivedByAddress, ListReceivedByAddressItem, ListSinceBlock,
-        ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspentItem,
-        ListWallets, LoadWallet, RescanBlockchain, ScriptType, SendMany, SendToAddress,
-        SignMessage, TransactionCategory, UnloadWallet, WalletCreateFundedPsbt, WalletProcessPsbt,
+        ListSinceBlockTransaction, ListTransactions, ListTransactionsItem, ListUnspent,
+        ListUnspentItem, ListWallets, LoadWallet, RescanBlockchain, ScriptType, SendMany,
+        SendToAddress, SignMessage, TransactionCategory, UnloadWallet, WalletCreateFundedPsbt,
+        WalletProcessPsbt,
     },
 };
