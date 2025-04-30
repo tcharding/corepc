@@ -6,6 +6,7 @@ use super::Method;
 
 /// Data for the JSON RPC methods provided by Bitcoin Core v25.
 pub const METHODS: &[Method] = &[
+    // blockchain
     Method::new_modelled("getbestblockhash", "GetBestBlockHash", "get_best_block_hash"),
     Method::new_modelled("getblock", "GetBlockVerboseZero", "get_block"), // We only check one of the types.
     Method::new_modelled("getblockchaininfo", "GetBlockchainInfo", "get_blockchain_info"),
@@ -39,18 +40,21 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("scantxoutset", "ScanTxOutSet", "scan_tx_out_set"),
     Method::new_bool("verifychain", "verify_chain"),
     Method::new_modelled("verifytxoutproof", "VerifyTxOutProof", "verify_tx_out_proof"),
-    Method::new_no_model("getrpcinfo", "GetRpcInfo", "get_rpc_info"),
+    // control
     Method::new_no_model("getmemoryinfo", "GetMemoryInfoStats", "get_memory_info"),
+    Method::new_no_model("getrpcinfo", "GetRpcInfo", "get_rpc_info"),
     Method::new_string("help", "help"),
     Method::new_no_model("logging", "Logging", "logging"),
     Method::new_nothing("stop", "stop"),
     Method::new_numeric("uptime", "uptime"),
+    // mining
     Method::new_modelled("getblocktemplate", "GetBlockTemplate", "get_block_template"),
     Method::new_no_model("getmininginfo", "GetMiningInfo", "get_mining_info"),
     Method::new_nothing("getnetworkhashps", "get_network_hashes_per_second"),
     Method::new_bool("prioritisetransaction", "prioritise_transaction"),
     Method::new_nothing("submitblock", "submit_block"),
     Method::new_nothing("submitheader", "submit_header"),
+    // network
     Method::new_nothing("addnode", "add_node"),
     Method::new_nothing("clearbanned", "clear_banned"),
     Method::new_nothing("disconnectnode", "disconnect_node"),
@@ -64,6 +68,7 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("ping", "ping"),
     Method::new_nothing("setban", "set_ban"),
     Method::new_nothing("setnetworkactive", "set_network_active"),
+    // raw transactions
     Method::new_modelled("analyzepsbt", "AnalyzePsbt", "analyze_psbt"),
     Method::new_nothing("combinepsbt", "combine_psbt"),
     Method::new_nothing("combinerawtransaction", "combine_raw_transaction"),
@@ -91,6 +96,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("validateaddress", "ValidateAddress", "validate_address"),
     Method::new_bool("verifymessage", "verify_message"),
     Method::new_nothing("abandontransaction", "abandon_transaction"),
+    // wallet
     Method::new_nothing("abortrescan", "abort_rescan"),
     Method::new_modelled("addmultisigaddress", "AddMultisigAddress", "add_multisig_address"),
     Method::new_nothing("backupwallet", "backup_wallet"),
@@ -172,5 +178,6 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("walletpassphrase", "wallet_passphrase"),
     Method::new_nothing("walletpassphrasechange", "wallet_passphrase_change"),
     Method::new_modelled("walletprocesspsbt", "WalletProcessPsbt", "wallet_process_psbt"),
+    // zmq
     Method::new_no_model("getzmqnotifications", "GetZmqNotifications", "get_zmq_notifications"),
 ];
