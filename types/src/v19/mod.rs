@@ -108,23 +108,23 @@
 //!
 //! | JSON-PRC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
-//! | analyzepsbt                        | todo            |
-//! | combinepsbt                        | todo            |
-//! | combinerawtransaction              | todo            |
-//! | converttopsbt                      | todo            |
-//! | createpsbt                         | todo            |
+//! | analyzepsbt                        | done            |
+//! | combinepsbt                        | done            |
+//! | combinerawtransaction              | done            |
+//! | converttopsbt                      | done            |
+//! | createpsbt                         | done            |
 //! | createrawtransaction               | done            |
-//! | decodepsbt                         | todo            |
-//! | decoderawtransaction               | todo            |
-//! | decodescript                       | todo            |
-//! | finalizepsbt                       | todo            |
-//! | fundrawtransaction                 | done (untested) |
-//! | getrawtransaction                  | todo            |
-//! | joinpsbts                          | todo            |
+//! | decodepsbt                         | done            |
+//! | decoderawtransaction               | done            |
+//! | decodescript                       | done            |
+//! | finalizepsbt                       | done (untested) |
+//! | fundrawtransaction                 | done            |
+//! | getrawtransaction                  | done            |
+//! | joinpsbts                          | done (untested) |
 //! | sendrawtransaction                 | done            |
-//! | signrawtransactionwithkey          | todo            |
-//! | testmempoolaccept                  | todo            |
-//! | utxoupdatepsbt                     | todo            |
+//! | signrawtransactionwithkey          | done            |
+//! | testmempoolaccept                  | done (untested) |
+//! | utxoupdatepsbt                     | done (untested) |
 //!
 //! </details>
 //!
@@ -214,13 +214,6 @@
 //! | getzmqnotifications                | done (untested) |
 //!
 //! </details>
-//!
-//!
-//! **Items marked omitted were omitted because:**
-//!
-//! - Method does not return anything.
-//! - Method returns a simple type (e.g. bool or integer).
-//! - Method is deprecated.
 
 // JSON-RPC types by API section.
 mod blockchain;
@@ -240,8 +233,10 @@ pub use self::{
 #[doc(inline)]
 pub use crate::v17::{
     AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
-    Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-    CreateRawTransaction, CreateWallet, DumpPrivKey, DumpWallet, FundRawTransaction,
+    Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt,
+    CombineRawTransaction, ConvertToPsbt, CreatePsbt, CreateRawTransaction, CreateWallet,
+    DecodePsbt, DecodePsbtError, DecodeRawTransaction, DecodeScript, DecodeScriptError,
+    DumpPrivKey, DumpWallet, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
     FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo,
     GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel,
     GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
@@ -251,7 +246,8 @@ pub use crate::v17::{
     GetChainTxStatsError, GetDifficulty, GetMemoryInfoStats, GetMempoolInfo, GetMempoolInfoError,
     GetMiningInfo, GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
     GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
-    GetRawMempoolVerbose, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
+    GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
+    GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
     GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
     GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
     GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
@@ -260,10 +256,13 @@ pub use crate::v17::{
     ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
     ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspent,
     ListUnspentItem, ListUnspentItemError, ListWallets, LoadWallet, Locked, Logging, PeerInfo,
-    RescanBlockchain, ScriptPubkey, SendMany, SendRawTransaction, SendToAddress, SignErrorData,
-    SignErrorDataError, SignMessage, SignRawTransactionWithWallet,
-    SignRawTransactionWithWalletError, SoftforkReject, TransactionCategory, UploadTarget,
-    VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
+    RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany,
+    SendRawTransaction, SendToAddress, SignMessage, SignRawTransaction, SignRawTransactionError,
+    SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, VerifyTxOutProof,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
 };
 #[doc(inline)]
-pub use crate::v18::{ActiveCommand, GetRpcInfo};
+pub use crate::v18::{
+    ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
+    AnalyzePsbtInputMissingError, GetRpcInfo, JoinPsbts, UtxoUpdatePsbt,
+};

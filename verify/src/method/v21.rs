@@ -149,7 +149,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("signmessage", "SignMessage", "sign_message"),
     Method::new_modelled(
         "signrawtransactionwithwallet",
-        "SignRawTransactionWithWallet",
+        "SignRawTransaction",
         "sign_raw_transaction_with_wallet",
     ),
     Method::new_nothing("unloadwallet", "unload_wallet"),

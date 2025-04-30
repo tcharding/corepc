@@ -7,10 +7,94 @@
 mod error;
 mod into;
 
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 
-// TODO: Remove wildcard, use explicit types.
-pub use self::error::*;
+use crate::ScriptSig;
+
+#[rustfmt::skip]                // Keep public re-exports separate.
+pub use self::error::{
+    DecodePsbtError, DecodeScriptError, FundRawTransactionError, GetRawTransactionVerboseError,
+    PsbtInputError, PsbtOutputError, SignFailError, SignRawTransactionError, FinalizePsbtError,
+};
+// Re-export types that appear in the public API of this module.
+pub use crate::psbt::{
+    Bip32Deriv, InputKeySource, PsbtScript, RawTransaction, RawTransactionInput,
+    RawTransactionOutput, WitnessUtxo,
+};
+
+/// Result of JSON-RPC method `combinepsbt`.
+///
+/// > combinepsbt ["psbt",...]
+/// >
+/// > Combine multiple partially signed Bitcoin transactions into one transaction.
+/// > Implements the Combiner role.
+/// >
+/// > Arguments:
+/// > 1. "txs"                   (string) A json array of base64 strings of partially signed transactions
+/// >     [
+/// >       "psbt"             (string) A base64 string of a PSBT
+/// >       ,...
+/// >     ]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct CombinePsbt(
+    /// The base64-encoded partially signed transaction.
+    pub String,
+);
+
+/// Result of JSON-RPC method `combinerawtransaction`.
+///
+/// > combinerawtransaction ["hexstring",...]
+/// >
+/// > Combine multiple partially signed transactions into one transaction.
+/// > The combined transaction may be another partially signed transaction or a
+/// > fully signed transaction.
+/// > Arguments:
+/// > 1. "txs"         (string) A json array of hex strings of partially signed transactions
+/// >     [
+/// >       "hexstring"     (string) A transaction hash
+/// >       ,...
+/// >     ]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct CombineRawTransaction(
+    /// The hex-encoded raw transaction with signature(s).
+    pub String,
+);
+
+/// Result of JSON-RPC method `converttopsbt`.
+///
+/// > converttopsbt "hexstring" ( permitsigdata iswitness )
+/// >
+/// > Converts a network serialized transaction to a PSBT. This should be used only with createrawtransaction and fundrawtransaction
+/// > createpsbt and walletcreatefundedpsbt should be used for new applications.
+/// >
+/// > Arguments:
+/// > 1. "hexstring"              (string, required) The hex string of a raw transaction
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ConvertToPsbt(
+    /// The resulting raw transaction (base64-encoded string).
+    pub String,
+);
+
+/// Result of JSON-RPC method `createpsbt`.
+///
+/// > createpsbt [{"txid":"id","vout":n},...] [{"address":amount},{"data":"hex"},...] ( locktime ) ( replaceable )
+/// >
+/// > Creates a transaction in the Partially Signed Transaction format.
+/// > Implements the Creator role.
+/// >
+/// > Arguments:
+/// > 1. "inputs"                (array, required) A json array of json objects
+/// >      [
+/// >        {
+/// >          "txid":"id",      (string, required) The transaction id
+/// >          "vout":n,         (numeric, required) The output number
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct CreatePsbt(
+    /// The resulting raw transaction (base64-encoded string).
+    pub String,
+);
 
 /// Result of JSON-RPC method `createrawtransaction`.
 ///
@@ -28,29 +112,154 @@ pub use self::error::*;
 /// >        {
 /// >          "txid":"id",      (string, required) The transaction id
 /// >          "vout":n,         (numeric, required) The output number
-/// >          "sequence":n      (numeric, optional) The sequence number
-/// >        }
-/// >        ,...
-/// >      ]
-/// > 2. "outputs"               (array, required) a json array with outputs (key-value pairs)
-/// >    [
-/// >     {
-/// >       "address": x.xxx,    (obj, optional) A key-value pair. The key (string) is the bitcoin address, the value (float or string) is the amount in BTC
-/// >     },
-/// >     {
-/// >       "data": "hex"        (obj, optional) A key-value pair. The key must be "data", the value is hex encoded data
-/// >     }
-/// >     ,...                     More key-value pairs of the above form. For compatibility reasons, a dictionary, which holds the key-value pairs directly, is also
-/// >                              accepted as second parameter.
-/// >    ]
-/// > 3. locktime                  (numeric, optional, default=0) Raw locktime. Non-0 value also locktime-activates inputs
-/// > 4. replaceable               (boolean, optional, default=false) Marks this transaction as BIP125 replaceable.
-/// >                              Allows this transaction to be replaced by a transaction with higher fees. If provided, it is an error if explicit sequence numbers are incompatible.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct CreateRawTransaction(
-    /// The hex encoded transaction.
+    /// hex string of the transaction.
     pub String,
 );
+
+/// Result of JSON-RPC method `decodepsbt`.
+///
+/// > decodepsbt "psbt"
+/// >
+/// > Return a JSON object representing the serialized, base64-encoded partially signed Bitcoin transaction.
+/// >
+/// > Arguments:
+/// > 1. "psbt"            (string, required) The PSBT base64 string
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct DecodePsbt {
+    /// The decoded network-serialized unsigned transaction.
+    pub tx: RawTransaction,
+    /// The unknown global fields.
+    pub unknown: Option<HashMap<String, String>>,
+    /// Array of transaction inputs.
+    pub inputs: Vec<PsbtInput>,
+    /// Array of transaction outputs.
+    pub outputs: Vec<PsbtOutput>,
+    /// The transaction fee paid if all UTXOs slots in the PSBT have been filled.
+    pub fee: Option<u64>,
+}
+
+/// An input in a partially signed Bitcoin transaction.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct PsbtInput {
+    /// Decoded network transaction for non-witness UTXOs.
+    pub non_witness_utxo: Option<RawTransaction>,
+    /// Transaction output for witness UTXOs.
+    pub witness_utxo: Option<WitnessUtxo>,
+    /// The public key and signature that corresponds to it.
+    pub partial_signatures: Option<HashMap<String, String>>,
+    /// The sighash type to be used.
+    pub sighash: Option<String>,
+    /// The redeem script.
+    pub redeem_script: Option<PsbtScript>,
+    /// The witness script.
+    pub witness_script: Option<PsbtScript>,
+    /// The public key with the derivation path as the value.
+    pub bip32_derivs: Option<HashMap<String, InputKeySource>>,
+    /// The final scriptsig.
+    #[serde(rename = "final_scriptsig")]
+    pub final_script_sig: Option<ScriptSig>,
+    /// Hex-encoded witness data (if any).
+    #[serde(rename = "final_scriptwitness")]
+    pub final_script_witness: Option<Vec<String>>,
+    // `s/global/input`: this is a bug in the Core v17 docs.
+    /// The unknown global fields.
+    pub unknown: Option<HashMap<String, String>>,
+}
+
+/// An output in a partially signed Bitcoin transaction.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct PsbtOutput {
+    /// The redeem script.
+    pub redeem_script: Option<PsbtScript>,
+    /// The witness script.
+    pub witness_script: Option<PsbtScript>,
+    /// The public key with the derivation path as the value.
+    pub bip32_derivs: Option<Vec<Bip32Deriv>>,
+    /// The unknown global fields.
+    pub unknown: Option<HashMap<String, String>>,
+}
+
+/// Result of JSON-RPC method `decoderawtransaction`.
+///
+/// > decoderawtransaction "hexstring" ( iswitness )
+/// >
+/// > Return a JSON object representing the serialized, hex-encoded transaction.
+/// >
+/// > Arguments:
+/// > 1. "hexstring"      (string, required) The transaction hex string
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct DecodeRawTransaction(pub RawTransaction);
+
+/// Result of JSON-RPC method `decodescript`.
+///
+/// > decodescript "hexstring"
+/// >
+/// > Decode a hex-encoded script.
+/// >
+/// > Arguments:
+/// > 1. "hexstring"     (string) the hex encoded script
+// The docs on Core v17 appear to be way off what is actually returned.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct DecodeScript {
+    /// Script public key.
+    pub asm: String,
+    /// Hex encoded public key.
+    pub hex: Option<String>,
+    /// The output type.
+    #[serde(rename = "type")]
+    pub type_: Option<String>,
+    /// The required signatures.
+    #[serde(rename = "reqSigs")]
+    pub required_signatures: Option<u64>,
+    /// List of bitcoin addresses.
+    pub addresses: Option<Vec<String>>,
+    /// Address of P2SH script wrapping this redeem script (not returned if the script is already a P2SH).
+    pub p2sh: Option<String>,
+    /// Segwit data (see `DecodeScriptSegwit` for explanation).
+    pub segwit: Option<DecodeScriptSegwit>,
+}
+
+/// Seemingly undocumented data returned in the `segwit` field of `DecodeScript`.
+// This seems to be the same as `DecodeScript` except the `p2sh` field is caled `p2sh-segwit`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct DecodeScriptSegwit {
+    /// Script public key.
+    pub asm: String,
+    /// Hex encoded public key.
+    pub hex: String,
+    /// The output type.
+    #[serde(rename = "type")]
+    pub type_: String,
+    /// The required signatures.
+    #[serde(rename = "reqSigs")]
+    pub required_signatures: Option<u64>,
+    /// List of bitcoin addresses.
+    pub addresses: Option<Vec<String>>,
+    /// Address of P2SH script wrapping this redeem script (not returned if the script is already a P2SH).
+    pub p2sh_segtwit: Option<String>,
+}
+
+/// Result of JSON-RPC method `finalizepsbt`.
+///
+/// > finalizepsbt "psbt" ( extract )
+/// > Finalize the inputs of a PSBT. If the transaction is fully signed, it will produce a
+/// > network serialized transaction which can be broadcast with sendrawtransaction. Otherwise a PSBT will be
+/// > created which has the final_scriptSig and final_scriptWitness fields filled for inputs that are complete.
+/// > Implements the Finalizer and Extractor roles.
+/// >
+/// > Arguments:
+/// > 1. "psbt"                 (string) A base64 string of a PSBT
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct FinalizePsbt {
+    /// The base64-encoded partially signed transaction if not extracted.
+    pub psbt: String,
+    /// The hex-encoded network transaction if extracted.
+    pub hex: Option<String>,
+    /// If the transaction has a complete set of signatures.
+    pub complete: bool,
+}
 
 /// Result of JSON-RPC method `fundrawtransaction`.
 ///
@@ -69,31 +278,6 @@ pub struct CreateRawTransaction(
 /// >
 /// > Arguments:
 /// > 1. "hexstring"           (string, required) The hex string of the raw transaction
-/// > 2. options                 (object, optional)
-/// >    {
-/// >      "changeAddress"          (string, optional, default pool address) The bitcoin address to receive the change
-/// >      "changePosition"         (numeric, optional, default random) The index of the change output
-/// >      "change_type"            (string, optional) The output type to use. Only valid if changeAddress is not specified. Options are "legacy", "p2sh-segwit", and "bech32". Default is set by -changetype.
-/// >      "includeWatching"        (boolean, optional, default false) Also select inputs which are watch only
-/// >      "lockUnspents"           (boolean, optional, default false) Lock selected unspent outputs
-/// >      "feeRate"                (numeric, optional, default not set: makes wallet determine the fee) Set a specific fee rate in BTC/kB
-/// >      "subtractFeeFromOutputs" (array, optional) A json array of integers.
-/// >                               The fee will be equally deducted from the amount of each specified output.
-/// >                               The outputs are specified by their zero-based index, before any change output is added.
-/// >                               Those recipients will receive less bitcoins than you enter in their corresponding amount field.
-/// >                               If no outputs are specified here, the sender pays the fee.
-/// >                                   [vout_index,...]
-/// >      "replaceable"            (boolean, optional) Marks this transaction as BIP125 replaceable.
-/// >                               Allows this transaction to be replaced by a transaction with higher fees
-/// >      "conf_target"            (numeric, optional) Confirmation target (in blocks)
-/// >      "estimate_mode"          (string, optional, default=UNSET) The fee estimate mode, must be one of:
-/// >          "UNSET"
-/// >          "ECONOMICAL"
-/// >          "CONSERVATIVE"
-/// >    }
-/// >                          for backward compatibility: passing in a true instead of an object will result in {"includeWatching":true}
-/// > 3. iswitness               (boolean, optional) Whether the transaction hex is a serialized witness transaction
-/// >                               If iswitness is not present, heuristic tests will be used in decoding
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct FundRawTransaction {
     /// The resulting raw transaction (hex-encoded string).
@@ -103,6 +287,74 @@ pub struct FundRawTransaction {
     /// The position of the added change output, or -1.
     #[serde(rename = "changepos")]
     pub change_position: i64,
+}
+
+/// Result of JSON-RPC method `getrawtransaction` with verbose set to `false`.
+///
+/// > getrawtransaction "txid" ( verbose "blockhash" )
+/// >
+/// > NOTE: By default this function only works for mempool transactions. If the -txindex option is
+/// > enabled, it also works for blockchain transactions. If the block which contains the transaction
+/// > is known, its hash can be provided even for nodes without -txindex. Note that if a blockhash is
+/// > provided, only that block will be searched and if the transaction is in the mempool or other
+/// > blocks, or if this node does not have the given block available, the transaction will not be found.
+/// > DEPRECATED: for now, it also works for transactions with unspent outputs.
+/// >
+/// > Return the raw transaction data.
+/// >
+/// > If verbose is 'true', returns an Object with information about 'txid'.
+/// > If verbose is 'false' or omitted, returns a string that is serialized, hex-encoded data for 'txid'.
+/// >
+/// > Arguments:
+/// > 1. "txid"      (string, required) The transaction id
+/// > 2. verbose     (bool, optional, default=false) If false, return a string, otherwise return a json object
+/// > 3. "blockhash" (string, optional) The block in which to look for the transaction
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetRawTransaction(
+    /// The serialized, hex-encoded data for 'txid'.
+    pub String,
+);
+
+/// Result of JSON-RPC method `getrawtransaction` with verbose set to `true`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetRawTransactionVerbose {
+    /// Whether specified block is in the active chain or not (only present with explicit "blockhash" argument).
+    pub in_active_chain: Option<bool>,
+    /// The serialized, hex-encoded data for 'txid'.
+    pub hex: String,
+    /// The transaction id (same as provided).
+    pub txid: String,
+    /// The transaction hash (differs from txid for witness transactions).
+    pub hash: String,
+    /// The serialized transaction size.
+    pub size: u64,
+    /// The virtual transaction size (differs from size for witness transactions).
+    pub vsize: u64,
+    /// The transaction's weight (between vsize*4-3 and vsize*4).
+    pub weight: u64,
+    /// The version.
+    pub version: i32,
+    /// The lock time.
+    #[serde(rename = "locktime")]
+    pub lock_time: u32,
+    /// Array of transaction inputs.
+    #[serde(rename = "vin")]
+    pub inputs: Vec<RawTransactionInput>,
+    /// Array of transaction outputs.
+    #[serde(rename = "vout")]
+    pub outputs: Vec<RawTransactionOutput>,
+    // The following fields are all `None` if the transaction is in the mempool.
+    /// The block hash.
+    #[serde(rename = "blockhash")]
+    pub block_hash: Option<String>,
+    /// The confirmations.
+    pub confirmations: Option<u64>,
+    /// The transaction time in seconds since epoch (Jan 1 1970 GMT).
+    #[serde(rename = "time")]
+    pub transaction_time: Option<u64>,
+    /// The block time in seconds since epoch (Jan 1 1970 GMT).
+    #[serde(rename = "blocktime")]
+    pub block_time: Option<u64>,
 }
 
 /// Result of JSON-RPC method `sendrawtransaction`.
@@ -115,8 +367,82 @@ pub struct FundRawTransaction {
 /// >
 /// > Arguments:
 /// > 1. hexstring        (string, required) The hex string of the raw transaction
+/// > 2. allowhighfees    (boolean, optional, default=false) Allow high fees
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct SendRawTransaction(
-    /// The hex encoded txid.
+    /// The transaction hash in hex.
     pub String,
 );
+
+/// Result of JSON-RPC method `signrawtransactionwithkey` (and deprecated `signrawtransaction`).
+///
+/// > signrawtransaction "hexstring" ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] ["privatekey1",...] sighashtype )
+/// >
+/// > DEPRECATED. Sign inputs for raw transaction (serialized, hex-encoded).
+/// > The second optional argument (may be null) is an array of previous transaction outputs that
+/// > this transaction depends on but may not yet be in the block chain.
+/// > The third optional argument (may be null) is an array of base58-encoded private
+/// > keys that, if given, will be the only keys used to sign the transaction.
+/// >
+/// >
+/// > Arguments:
+/// > 1. "hexstring"     (string, required) The transaction hex string
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct SignRawTransaction {
+    /// The hex-encoded raw transaction with signature(s).
+    pub hex: String,
+    /// If the transaction has a complete set of signatures.
+    pub complete: bool,
+    /// Script verification errors (if there are any).
+    pub errors: Option<Vec<SignFail>>,
+}
+
+/// Represents a script verification error.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct SignFail {
+    /// The hash of the referenced, previous transaction.
+    pub txid: String,
+    /// The index of the output to spent and used as input.
+    pub vout: u64,
+    /// The hex-encoded signature script.
+    #[serde(rename = "scriptSig")]
+    pub script_sig: String,
+    /// Script sequence number.
+    pub sequence: u32,
+    /// Verification or signing error related to the input.
+    pub error: String,
+}
+
+/// Result of JSON-RPC method `testmempoolaccept`.
+///
+/// > testmempoolaccept ["rawtxs"] ( allowhighfees )
+/// >
+/// > Returns if raw transaction (serialized, hex-encoded) would be accepted by mempool.
+/// >
+/// > This checks if the transaction violates the consensus or policy rules.
+/// >
+/// > See sendrawtransaction call.
+/// >
+/// > Arguments:
+/// > 1. ["rawtxs"]       (array, required) An array of hex strings of raw transactions.
+/// >                                         Length must be one for now.
+/// > 2. allowhighfees    (boolean, optional, default=false) Allow high fees
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct TestMempoolAccept {
+    /// Array of test results for each raw transaction in the input array.
+    ///
+    /// Length is exactly one for now.
+    pub results: Vec<MempoolAcceptance>,
+}
+
+/// Represents a single mempool acceptance test result.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct MempoolAcceptance {
+    /// The transaction hash in hex.
+    pub txid: String,
+    /// If the mempool allows this tx to be inserted.
+    pub allowed: bool,
+    /// Rejection string (only present when 'allowed' is false).
+    #[serde(rename = "reject-reason")]
+    pub reject_reason: Option<String>,
+}

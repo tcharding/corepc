@@ -27,7 +27,7 @@ fn wallet__add_multisig_address__modelled() {
         .client
         .add_multisig_address_with_addresses(nrequired, vec![add1, add2])
         .expect("addmultisigaddress");
-    let model: Result<AddMultisigAddress, AddMultisigAddressError> = json.into_model();
+    let model: Result<mtype::AddMultisigAddress, AddMultisigAddressError> = json.into_model();
     model.unwrap();
 }
 
@@ -245,6 +245,10 @@ fn wallet__get_transaction__modelled() {
 fn wallet__load_wallet__modelled() {
     create_load_unload_wallet();
 }
+
+// This is tested in raw_transactions.rs `create_sign_send()`.
+#[test]
+fn wallet__sign_raw_transaction_with_wallet__modelled() {}
 
 #[test]
 fn wallet__unload_wallet() {
