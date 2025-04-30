@@ -95,7 +95,7 @@ fn wallet__dump_priv_key__modelled() {
 }
 
 #[test]
-fn wallet__dump_wallet__modelled() {
+fn wallet__dump_wallet() {
     // As of Core v23 the default wallet is an native descriptor wallet which does not
     // support dumping private keys. Legacy wallets are supported upto v25 it seems.
     #[cfg(any(
@@ -109,8 +109,7 @@ fn wallet__dump_wallet__modelled() {
         node.client.create_legacy_wallet("legacy_wallet").expect("legacy create_wallet");
         let out = integration_test::random_tmp_file();
 
-        let json: DumpWallet = node.client.dump_wallet(&out).expect("dumpwallet");
-        let _: mtype::DumpWallet = json.into_model();
+        let _: DumpWallet = node.client.dump_wallet(&out).expect("dumpwallet");
     }
 
     #[cfg(any(
@@ -125,8 +124,7 @@ fn wallet__dump_wallet__modelled() {
         let node = Node::with_wallet(Wallet::Default, &[]);
         let out = integration_test::random_tmp_file();
 
-        let json: DumpWallet = node.client.dump_wallet(&out).expect("dumpwallet");
-        let _: mtype::DumpWallet = json.into_model();
+        let _: DumpWallet = node.client.dump_wallet(&out).expect("dumpwallet");
     }
 }
 

@@ -98,11 +98,6 @@ impl DumpPrivKey {
     }
 }
 
-impl DumpWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::DumpWallet { model::DumpWallet { file_name: self.file_name } }
-}
-
 impl AddressInformation {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> model::AddressInformation {
