@@ -164,6 +164,10 @@ fn check_types_exist_if_required(version: Version, method_name: &str) -> Result<
         if !model::type_exists(version, method_name)? {
             eprintln!("missing model type: {}", output_method(out));
         }
+    } else {
+        if model::type_exists(version, method_name)? {
+            eprintln!("found model type when none expected: {}", output_method(out));
+        }
     }
     Ok(())
 }
