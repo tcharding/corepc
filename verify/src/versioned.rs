@@ -34,19 +34,31 @@ pub fn methods_and_status(version: Version) -> Result<Vec<Method>> {
         .with_context(|| format!("Failed to grep rustdocs in {}", path.display()))?;
     let reader = io::BufReader::new(file);
 
-    // let re = Regex::new(r"\/\/\! \| ([a-z]+) \| ([.*?]) \|").unwrap();
-    let re = Regex::new(r"\/\/\! \| ([a-z]+) .* \| ([a-z ()]+?) \|").unwrap();
+    let re = Regex::new(r"\/\/\! \| ([a-z]+) .* \| ([a-z +]+?) \|.*\|").unwrap();
 
     let mut methods = Vec::new();
 
     for line in reader.lines() {
         let line = line?;
 
+        let override_status = if line.contains("UNTESTED") {
+            Some(Status::Untested)
+        } else if line.contains("TODO") {
+            Some(Status::Todo)
+        } else {
+            None
+        };
+
         if let Some(caps) = re.captures(&line) {
-            let name = caps.get(1).unwrap().as_str();
-            let status = caps.get(2).unwrap().as_str();
-            let status = status.trim().parse::<Status>()?;
-            methods.push(Method { name: name.to_string(), status });
+            let method_name = caps.get(1).unwrap().as_str();
+            let returns_column = caps.get(2).unwrap().as_str();
+
+            let status = match override_status {
+                Some(status) => status,
+                None => returns_column.trim().parse::<Status>()?,
+            };
+
+            methods.push(Method { name: method_name.to_string(), status });
         }
     }
     Ok(methods)
@@ -122,10 +134,10 @@ impl FromStr for Status {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "done" => Ok(Status::Done),
+            "version" => Ok(Status::Done),
+            "version + model" => Ok(Status::Done),
             "omitted" => Ok(Status::Omitted),
-            "done (untested)" => Ok(Status::Untested),
-            "todo" => Ok(Status::Todo),
+            "returns nothing" | "returns numeric" | "returns boolean" | "returns string"=> Ok(Status::Done),
             other => Err(anyhow::Error::msg(format!("unknown status: '{}'", other))),
         }
     }
