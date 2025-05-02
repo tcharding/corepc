@@ -1,10 +1,5 @@
 // SPDX-License-Identifier: CC0-1.0
 
-// TODO: Work out how to solve the problem that the docs on the re-exported types are for v17.
-//
-// We probably need to write a script to pull the v18 docs from Core (code base or RPC call) and
-// check them against the v17 docs for differences.
-
 //! # JSON-RPC types for Bitcoin Core `v0.18`
 //!
 //! These structs are shaped for the JSON data returned by the JSON-RPC API. They use stdlib types
