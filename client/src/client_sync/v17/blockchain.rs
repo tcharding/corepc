@@ -302,6 +302,22 @@ macro_rules! impl_client_v17__pruneblockchain {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `savemempool`
+#[macro_export]
+macro_rules! impl_client_v17__savemempool {
+    () => {
+        impl Client {
+            pub fn save_mempool(&self) -> Result<()> {
+                match self.call("savemempool", &[]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `verifytxoutproof`
 #[macro_export]
 macro_rules! impl_client_v17__verifytxoutproof {

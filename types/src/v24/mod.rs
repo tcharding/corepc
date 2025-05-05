@@ -50,7 +50,7 @@
 //! | gettxspendingprevout               | version + model | TODO                                   |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | returns numeric |                                        |
-//! | savemempool                        | returns nothing |                                        |
+//! | savemempool                        | version         |                                        |
 //! | scantxoutset                       | omitted         | API marked as experimental             |
 //! | verifychain                        | returns boolean |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
@@ -294,4 +294,5 @@ pub use crate::{
     },
     v21::UnloadWallet,
     v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
+    v23::SaveMempool,
 };

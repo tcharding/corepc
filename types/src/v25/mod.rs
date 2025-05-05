@@ -50,7 +50,7 @@
 //! | gettxspendingprevout               | version + model | TODO                                   |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | returns numeric |                                        |
-//! | savemempool                        | returns nothing |                                        |
+//! | savemempool                        | version         |                                        |
 //! | scanblocks                         | version + model | TODO                                   |
 //! | scantxoutset                       | omitted         | API marked as experimental             |
 //! | verifychain                        | returns boolean |                                        |
@@ -290,6 +290,7 @@ pub use crate::{
         SoftforkType,
     },
     v22::{GetTxOut, GetTxOutError, Logging, ScriptPubkey},
+    v23::SaveMempool,
     v24::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
