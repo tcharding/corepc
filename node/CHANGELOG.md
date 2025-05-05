@@ -1,3 +1,7 @@
+# 0.7.1 2025-05-05
+
+- backport: bump zip in light of RUSTSEC-2020-0071 [#145](https://github.com/rust-bitcoin/corepc/pull/145)
+
 # 0.7.0 2025-04-04
 
 - Retry initial client connections [#111](https://github.com/rust-bitcoin/corepc/pull/111)
