@@ -637,6 +637,19 @@ pub struct GetTxOutSetInfo {
     pub total_amount: f64,
 }
 
+/// Result of JSON-RPC method `pruneblockchain`.
+///
+/// > pruneblockchain height
+/// >
+/// > Arguments:
+/// > 1. "height"       (numeric, required) The block height to prune up to. May be set to a discrete height, or a unix timestamp
+/// >                   to prune blocks whose block time is at least 2 hours older than the provided timestamp.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct PruneBlockchain(
+    /// The height of the last block pruned.
+    pub i64,
+);
+
 /// Result of JSON-RPC method `verifytxoutproof`.
 ///
 /// > verifytxoutproof "proof"
