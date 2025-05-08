@@ -49,7 +49,7 @@
 //! | gettxoutsetinfo                    | version + model |                                        |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | returns numeric |                                        |
-//! | savemempool                        | returns nothing |                                        |
+//! | savemempool                        | version         |                                        |
 //! | scantxoutset                       | omitted         | API marked as experimental             |
 //! | verifychain                        | returns boolean |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
@@ -236,11 +236,15 @@
 //! </details>
 
 // JSON-RPC types by API section.
+mod blockchain;
 mod raw_transactions;
 
 #[doc(inline)]
-pub use self::raw_transactions::{
-    DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
+pub use self::{
+    blockchain::SaveMempool,
+    raw_transactions::{
+        DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
+    },
 };
 #[doc(inline)]
 pub use crate::{

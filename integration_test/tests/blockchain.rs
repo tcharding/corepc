@@ -277,6 +277,37 @@ fn blockchain__prune_blockchain() {
 }
 
 #[test]
+fn blockchain__savemempool() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let (_addr, _txid) = node.create_mempool_transaction();
+
+    #[cfg(any(
+        feature = "0_17_2",
+        feature = "0_18_1",
+        feature = "0_19_1",
+        feature = "0_20_2",
+        feature = "0_21_2",
+        feature = "22_1"
+    ))]
+    {
+        node.client.save_mempool().expect("savemempool");
+    }
+
+    #[cfg(not(any(
+        feature = "0_17_2",
+        feature = "0_18_1",
+        feature = "0_19_1",
+        feature = "0_20_2",
+        feature = "0_21_2",
+        feature = "22_1"
+    )))]
+    {
+        let _: Result<SaveMempool, _> = node.client.save_mempool();
+    }
+}
+
+#[test]
 fn blockchain__verify_tx_out_proof__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
