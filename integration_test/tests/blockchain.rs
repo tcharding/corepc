@@ -283,24 +283,24 @@ fn blockchain__savemempool() {
     let (_addr, _txid) = node.create_mempool_transaction();
 
     #[cfg(any(
-        feature = "0_17_2",
-        feature = "0_18_1",
-        feature = "0_19_1",
-        feature = "0_20_2",
-        feature = "0_21_2",
-        feature = "22_1"
+        feature = "v17",
+        feature = "v18",
+        feature = "v19",
+        feature = "v20",
+        feature = "v21",
+        feature = "v22",
     ))]
     {
         node.client.save_mempool().expect("savemempool");
     }
 
     #[cfg(not(any(
-        feature = "0_17_2",
-        feature = "0_18_1",
-        feature = "0_19_1",
-        feature = "0_20_2",
-        feature = "0_21_2",
-        feature = "22_1"
+        feature = "v17",
+        feature = "v18",
+        feature = "v19",
+        feature = "v20",
+        feature = "v21",
+        feature = "v22",
     )))]
     {
         let _: Result<SaveMempool, _> = node.client.save_mempool();

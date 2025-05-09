@@ -3,6 +3,7 @@
 //! The JSON-RPC API for Bitcoin Core `v23` - blockchain.
 //!
 //! Types for methods found under the `== Blockchain ==` section of the API docs.
+
 use serde::{Deserialize, Serialize};
 
 /// Result of JSON-RPC method `savemempool`.
