@@ -8,9 +8,8 @@
 use bitcoin::address::{Address, NetworkChecked};
 use bitcoin::Amount;
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::AddressType;
+use node::{mtype,AddressType};
 use node::vtype::*;             // All the version specific types.
-use node::mtype;
 
 #[test]
 #[cfg(feature = "TODO")]

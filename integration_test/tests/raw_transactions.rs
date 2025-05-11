@@ -9,9 +9,8 @@ use bitcoin::hex::FromHex as _;
 use bitcoin::opcodes::all::*;
 use bitcoin::{absolute, transaction, consensus,  script, Amount, TxOut, Transaction, ScriptBuf};
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::client::client_sync::{Input, Output};
+use node::{mtype, Input, Output};
 use node::vtype::*;             // All the version specific types.
-use node::mtype;
 
 #[test]
 #[cfg(not(feature = "v17"))]    // analyzepsbt was added in v18.

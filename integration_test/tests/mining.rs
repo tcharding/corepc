@@ -6,9 +6,8 @@
 
 use bitcoin::SignedAmount;
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::{TemplateRequest, TemplateRules};
+use node::{mtype, TemplateRequest, TemplateRules};
 use node::vtype::*;             // All the version specific types.
-use node::mtype;
 
 #[test]
 fn mining__get_block_template__modelled() {

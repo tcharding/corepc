@@ -59,11 +59,7 @@ macro_rules! impl_client_v17__converttopsbt {
 macro_rules! impl_client_v17__createpsbt {
     () => {
         impl Client {
-            pub fn create_psbt(
-                &self,
-                inputs: &[$crate::client_sync::Input],
-                outputs: &[$crate::client_sync::Output],
-            ) -> Result<CreatePsbt> {
+            pub fn create_psbt(&self, inputs: &[Input], outputs: &[Output]) -> Result<CreatePsbt> {
                 self.call("createpsbt", &[into_json(inputs)?, into_json(outputs)?])
             }
         }
@@ -77,8 +73,8 @@ macro_rules! impl_client_v17__createrawtransaction {
         impl Client {
             pub fn create_raw_transaction(
                 &self,
-                inputs: &[$crate::client_sync::Input],
-                outputs: &[$crate::client_sync::Output],
+                inputs: &[Input],
+                outputs: &[Output],
             ) -> Result<CreateRawTransaction> {
                 self.call("createrawtransaction", &[into_json(inputs)?, into_json(outputs)?])
             }
