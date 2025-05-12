@@ -2,6 +2,8 @@ set export
 
 REPO_DIR := `git rev-parse --show-toplevel`
 
+alias ulf := update-lock-files
+
 default:
   @just --list
 
