@@ -146,12 +146,12 @@
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | createmultisig                     | version + model | TODO                                   |
 //! | deriveaddresses                    | version + model | TODO                                   |
-//! | estimatesmartfee                   | returns nothing | TODO                                   |
+//! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         | TODO                                   |
 //! | getindexinfo                       | version         | TODO                                   |
-//! | signmessagewithprivkey             | returns string  | TODO                                   |
+//! | signmessagewithprivkey             | version + model | TODO                                   |
 //! | validateaddress                    | version + model | TODO                                   |
-//! | verifymessage                      | returns boolean | TODO                                   |
+//! | verifymessage                      | version         |                                        |
 //!
 //! </details>
 //!
@@ -241,11 +241,12 @@ pub use crate::{
     v17::{
         AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
-        ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreatePsbt,
-        CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction,
-        DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet, FinalizePsbt, FinalizePsbtError,
-        FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
-        GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
+        ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig,
+        CreateMultisigError, CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt,
+        DecodePsbtError, DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey,
+        DumpWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
+        FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo,
+        GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
         GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
         GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
@@ -265,10 +266,11 @@ pub use crate::{
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
         ListUnspentItemError, ListWallets, LoadWallet, Locked, PeerInfo, PruneBlockchain,
         RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany,
-        SendRawTransaction, SendToAddress, SignMessage, SignRawTransaction,
+        SendRawTransaction, SendToAddress, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
         SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
-        UploadTarget, VerifyChain, VerifyTxOutProof, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+        UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
+        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
+        WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
