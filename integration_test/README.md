@@ -1,0 +1,28 @@
+# Integration testing
+
+This crate is used to run tests against all the supported versions of
+Core. It runs Core by using `corepc-node` with the `download` feature
+enabled. However `node` allows setting the environment variable
+`BITCOIND_EXE` to override downloading the Core executable. E.g. 
+
+`BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=28_0`
+
+## Shell alias' for the impatient
+
+I have all the Core versions on my machine e.g., `/opt/bitcoin-28.0`
+then I use the following shell alias' to run tests
+
+```bash
+alias test17='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=0_17_2'
+alias test18='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=0_18_1'
+alias test19='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=0_19_1'
+alias test20='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=0_20_2'
+alias test21='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=0_21_2'
+alias test22='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=22_1'
+alias test23='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=23_2'
+alias test24='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=24_2'
+alias test25='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=25_2'
+alias test26='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=26_2'
+alias test27='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=27_2'
+alias test28='BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=28_0'
+```
