@@ -23,8 +23,8 @@ pub use {anyhow, serde_json, tempfile, which};
 #[rustfmt::skip]                // Keep pubic re-exports separate.
 #[doc(inline)]
 pub use self::{
-    // Re-export `vtype` - the version specific types.
-    client_versions::{vtype, Client, AddressType, TemplateRequest, TemplateRules},
+    // Re-export `vtype` (the version specific types) and client defined types.
+    client_versions::*,
     // Re-export the version string e.g., "28.0".
     versions::VERSION,
     // Re-export the model types as `mtype` to differentiate it from `vtype`.

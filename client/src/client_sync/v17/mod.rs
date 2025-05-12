@@ -12,7 +12,7 @@ pub mod network;
 pub mod raw_transactions;
 pub mod wallet;
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
 
 use bitcoin::address::{Address, NetworkChecked};
@@ -21,9 +21,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::client_sync::into_json;
 use crate::types::v17::*;
-
-#[rustfmt::skip]                // Keep public re-exports separate.
-pub use crate::client_sync::WalletCreateFundedPsbtInput;
 
 crate::define_jsonrpc_minreq_client!("v17");
 crate::impl_client_check_expected_server_version!({ [170200] });
@@ -173,4 +170,39 @@ pub enum TemplateRules {
     Csv,
     /// Taproot supported.
     Taproot,
+}
+
+/// Input used as parameter to `create_raw_transaction`.
+#[derive(Debug, Serialize)]
+pub struct Input {
+    /// The txid of the transaction that contains the UTXO.
+    pub txid: bitcoin::Txid,
+    /// The vout for the UTXO.
+    pub vout: u64,
+    /// Sequence number if needed.
+    pub sequence: Option<bitcoin::Sequence>,
+}
+
+/// Output used as parameter to `create_raw_transaction`.
+// Abuse `HashMap` so we can derive serialize to get the correct JSON object.
+#[derive(Debug, Serialize)]
+pub struct Output(
+    /// Map of address to value. Always only has a single item in it.
+    HashMap<String, f64>,
+);
+
+impl Output {
+    /// Creates a single output that serializes as Core expects.
+    pub fn new(addr: Address, value: Amount) -> Self {
+        let mut map = HashMap::new();
+        map.insert(addr.to_string(), value.to_btc());
+        Output(map)
+    }
+}
+
+/// An element in the `inputs` argument of method `walletcreatefundedpsbt`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct WalletCreateFundedPsbtInput {
+    txid: Txid,
+    vout: u32,
 }

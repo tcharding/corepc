@@ -15,8 +15,8 @@ use crate::types::v24::*;
 
 #[rustfmt::skip]                // Keep public re-exports separate.
 pub use crate::client_sync::{
-    v17::{TemplateRequest, TemplateRules},
-    v23::AddressType, WalletCreateFundedPsbtInput
+    v17::{Input, Output, TemplateRequest, TemplateRules, WalletCreateFundedPsbtInput},
+    v23::AddressType,
 };
 
 crate::define_jsonrpc_minreq_client!("v24");
