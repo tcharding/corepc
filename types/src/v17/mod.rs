@@ -200,7 +200,7 @@
 //! | setaccount                         | returns nothing |                                        |
 //! | sethdseed                          | returns nothing |                                        |
 //! | settxfee                           | returns boolean |                                        |
-//! | signmessage                        | version + model | UNTESTED                               |
+//! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |

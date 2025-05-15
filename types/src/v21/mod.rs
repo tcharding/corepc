@@ -210,7 +210,7 @@
 //! | setlabel                           | returns nothing |                                        |
 //! | settxfee                           | returns boolean |                                        |
 //! | setwalletflag                      | version         | TODO                                   |
-//! | signmessage                        | version + model | UNTESTED                               |
+//! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         | TODO                                   |
