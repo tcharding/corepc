@@ -263,6 +263,23 @@ fn wallet__send_to_address__modelled() {
     model.unwrap();
 }
 
+#[test]
+fn wallet__sign_message__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let address = node.client.new_address_with_type(AddressType::Legacy).unwrap();
+    let message = "integration test message";
+
+    // Sign the message with the address key
+    let json: SignMessage = node
+        .client
+        .sign_message(&address, message)
+        .expect("signmessage");
+    let res: Result<mtype::SignMessage, _> = json.into_model();
+    let _ = res.expect("SignMessage into model");
+}
+
 fn create_load_unload_wallet() {
     let node = Node::with_wallet(Wallet::None, &[]);
 

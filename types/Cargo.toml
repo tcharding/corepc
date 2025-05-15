@@ -17,7 +17,7 @@ default = ["std"]
 std = ["bitcoin/std"]
 
 [dependencies]
-bitcoin = { version = "0.32.0", default-features = false, features = ["serde", "base64"] }
+bitcoin = { version = "0.32.0", default-features = false, features = ["serde", "base64", "secp-recovery"] }
 serde = { version = "1.0.103", default-features = false, features = [ "derive", "alloc" ] }
 serde_json = { version = "1.0.117" }
 
