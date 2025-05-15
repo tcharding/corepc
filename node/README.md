@@ -2,11 +2,10 @@
 
 Utility to run a regtest bitcoind process, useful in integration testing environment.
 
-When the auto-download feature is selected by activating one of the version feature, such as `25_1`
-for bitcoin core 25.1, starting a regtest node is as simple as that:
+When the auto-download feature is enabled, starting a regtest node is as simple as that:
 
 ```rust
-// the download feature is enabled whenever a specific version is enabled, for example `25_1` or `24_0_1`
+// the download feature must be enabled with a specific version, for example `25_1` or `24_0_1`
 #[cfg(feature = "download")]
 {
   let node = corepc_node::Node::from_downloaded().unwrap();
