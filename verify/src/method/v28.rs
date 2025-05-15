@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! JSON RPC methods provided by Bitcoin Core v26.
+//! JSON RPC methods provided by Bitcoin Core v28.
 
 use super::Method;
 
-/// Data for the JSON RPC methods provided by Bitcoin Core v26.
+/// Data for the JSON RPC methods provided by Bitcoin Core v28.
 pub const METHODS: &[Method] = &[
     // blockchain
     Method::new_no_model("dumptxoutset", "DumpTxOutSet", "dump_tx_out_set"),
@@ -45,7 +45,7 @@ pub const METHODS: &[Method] = &[
     Method::new_no_model("verifychain", "VerifyChain", "verify_chain"),
     Method::new_modelled("verifytxoutproof", "VerifyTxOutProof", "verify_tx_out_proof"),
     Method::new_no_model("getrpcinfo", "GetRpcInfo", "get_rpc_info"),
-    // controll
+    // control
     Method::new_no_model("getmemoryinfo", "GetMemoryInfoStats", "get_memory_info"),
     Method::new_string("help", "help"),
     Method::new_no_model("logging", "Logging", "logging"),

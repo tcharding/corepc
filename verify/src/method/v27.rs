@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! JSON RPC methods provided by Bitcoin Core v26.
+//! JSON RPC methods provided by Bitcoin Core v27.
 
 use super::Method;
 
-/// Data for the JSON RPC methods provided by Bitcoin Core v26.
+/// Data for the JSON RPC methods provided by Bitcoin Core v27.
 pub const METHODS: &[Method] = &[
     // blockchain
     Method::new_no_model("dumptxoutset", "DumpTxOutSet", "dump_tx_out_set"),
