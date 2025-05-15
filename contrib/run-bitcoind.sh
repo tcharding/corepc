@@ -211,6 +211,12 @@ run_bitcoind() {
 say() {
     echo "run-bitcoind: $1"
 }
+
+err() {
+    echo "$1" >&2
+    exit 1
+}
+
 #
 # Main script
 #
