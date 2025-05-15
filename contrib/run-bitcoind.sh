@@ -186,7 +186,7 @@ run_bitcoind() {
     echo "Starting bitcoind v${version_number} (alias: ${version})..."
     "$bitcoind" -regtest $fallback_fee_arg $block_filter_arg \
                 -datadir="${test_dir}/1" \
-                -port="${version_id}48" \
+                -bind="127.0.0.1:${version_id}48" \
                 -server=0 \
                 -printtoconsole=0 &
 
