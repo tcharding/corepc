@@ -22,7 +22,7 @@ pub use crate::client_sync::{
 };
 
 crate::define_jsonrpc_minreq_client!("v28");
-crate::impl_client_check_expected_server_version!({ [280000] });
+crate::impl_client_check_expected_server_version!({ [280000, 280100] });
 
 // == Blockchain ==
 crate::impl_client_v17__getbestblockhash!();
