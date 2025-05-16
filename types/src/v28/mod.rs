@@ -51,7 +51,7 @@
 //! | gettxoutsetinfo                    | version + model |                                        |
 //! | gettxspendingprevout               | version + model | TODO                                   |
 //! | importmempool                      | version + model | TODO                                   |
-//! | loadtxoutset                      | version + model | TODO                                   |
+//! | loadtxoutset                       | version + model | TODO                                   |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | returns numeric |                                        |
 //! | savemempool                        | version         |                                        |
