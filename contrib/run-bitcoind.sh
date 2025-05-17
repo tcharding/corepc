@@ -42,7 +42,7 @@ CONFIGURATION
 
 - Examples
 
-    v28 28.1 281 /opt/bitcoin-28.0/bin/bitcoind
+    v28 28.1 281 /opt/bitcoin-28.1/bin/bitcoind
     v24 24.2 242 /opt/bitcoin-24.2/bin/bitcoind
     v21 0.21.2 212 /opt/bitcoin-0.21.2/bin/bitcoind
 
@@ -158,7 +158,7 @@ start() {
 
 run_bitcoind() {
     local version="$1"              # e.g., v28
-    local version_number="$2"       # e.g., 28.1.0
+    local version_number="$2"       # e.g., 28.1
     local version_id="$3"           # e.g., 281
     local bitcoind="$4"
 
