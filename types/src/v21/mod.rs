@@ -24,7 +24,7 @@
 //! <details>
 //! <summary> Methods from the == Blockchain == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getbestblockhash                   | version + model |                                        |
 //! | getblock                           | version + model | Includes additional 'verbose' type     |
@@ -57,7 +57,7 @@
 //! <details>
 //! <summary> Methods from the == Control == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getmemoryinfo                      | version         |                                        |
 //! | getrpcinfo                         | version + model |                                        |
@@ -71,7 +71,7 @@
 //! <details>
 //! <summary> Methods from the == Generating == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | generateblock                      | version + model | TODO                                   |
 //! | generatetoaddress                  | version + model |                                        |
@@ -82,7 +82,7 @@
 //! <details>
 //! <summary> Methods from the == Mining == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getblocktemplate                   | version + model |                                        |
 //! | getmininginfo                      | version         |                                        |
@@ -96,7 +96,7 @@
 //! <details>
 //! <summary> Methods from the == Network == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | addnode                            | returns nothing |                                        |
 //! | clearbanned                        | returns nothing |                                        |
@@ -117,7 +117,7 @@
 //! <details>
 //! <summary> Methods from the == Rawtransactions == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | analyzepsbt                        | version + model |                                        |
 //! | combinepsbt                        | version + model |                                        |
@@ -142,7 +142,7 @@
 //! <details>
 //! <summary> Methods from the == Util == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | createmultisig                     | version + model | TODO                                   |
 //! | deriveaddresses                    | version + model | TODO                                   |
@@ -158,7 +158,7 @@
 //! <details>
 //! <summary> Methods from the == Wallet == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
 //! | abortrescan                        | returns nothing |                                        |
@@ -225,7 +225,7 @@
 //! <details>
 //! <summary> Methods from the == Zmq == section </summary>
 //!
-//! | JSON-PRC Method Name               | Returns         | Notes                                  |
+//! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getzmqnotifications                | version         | UNTESTED                               |
 //!
