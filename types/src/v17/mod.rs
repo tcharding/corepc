@@ -137,11 +137,11 @@
 //!
 //! | JSON-PRC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | createmultisig                     | version + model | TODO                                   |
-//! | estimatesmartfee                   | returns nothing | TODO                                   |
-//! | signmessagewithprivkey             | returns string  | TODO                                   |
-//! | validateaddress                    | version + model | TODO                                   |
-//! | verifymessage                      | returns boolean | TODO                                   |
+//! | createmultisig                     | version + model |                                        |
+//! | estimatesmartfee                   | version + model |                                        |
+//! | signmessagewithprivkey             | version + model |                                        |
+//! | validateaddress                    | version + model |                                        |
+//! | verifymessage                      | version         |                                        |
 //!
 //! </details>
 //!
@@ -265,6 +265,10 @@ pub use self::{
         MempoolAcceptance, PsbtInput, PsbtInputError, PsbtOutput, PsbtOutputError,
         SendRawTransaction, SignFail, SignFailError, SignRawTransaction, SignRawTransactionError,
         TestMempoolAccept,
+    },
+    util::{
+        CreateMultisig, CreateMultisigError, EstimateSmartFee, SignMessageWithPrivKey,
+        ValidateAddress, ValidateAddressError, VerifyMessage,
     },
     wallet::{
         AddMultisigAddress, AddMultisigAddressError, AddressInformation, BumpFee, BumpFeeError,

@@ -142,13 +142,13 @@
 //!
 //! | JSON-PRC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | createmultisig                     | version + model | TODO                                   |
+//! | createmultisig                     | version + model |                                        |
 //! | deriveaddresses                    | version + model | TODO                                   |
-//! | estimatesmartfee                   | returns nothing | TODO                                   |
+//! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         | TODO                                   |
-//! | signmessagewithprivkey             | returns string  | TODO                                   |
-//! | validateaddress                    | version + model | TODO                                   |
-//! | verifymessage                      | returns boolean | TODO                                   |
+//! | signmessagewithprivkey             | version + model |                                        |
+//! | validateaddress                    | version + model |                                        |
+//! | verifymessage                      | version         |                                        |
 //!
 //! </details>
 //!
@@ -243,33 +243,34 @@ pub use self::{
 pub use crate::v17::{
     AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
     Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt,
-    CombineRawTransaction, ConvertToPsbt, CreatePsbt, CreateRawTransaction, CreateWallet,
-    DecodePsbt, DecodePsbtError, DecodeRawTransaction, DecodeScript, DecodeScriptError,
-    DumpPrivKey, DumpWallet, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
-    FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo,
-    GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel,
-    GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
-    GetBlockHeaderError, GetBlockHeaderVerbose, GetBlockHeaderVerboseError, GetBlockStats,
-    GetBlockStatsError, GetBlockTemplate, GetBlockTemplateError, GetBlockVerboseOne,
-    GetBlockVerboseOneError, GetBlockVerboseZero, GetChainTips, GetChainTxStats,
-    GetChainTxStatsError, GetDifficulty, GetMemoryInfoStats, GetMempoolInfo, GetMempoolInfoError,
-    GetMiningInfo, GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
-    GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
-    GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
-    GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-    GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
-    GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
-    GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
-    ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
-    ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock,
-    ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
-    ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspent,
-    ListUnspentItem, ListUnspentItemError, ListWallets, LoadWallet, Locked, Logging, PeerInfo,
-    PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
-    RescanBlockchain, SendMany, SendRawTransaction, SendToAddress, SignMessage, SignRawTransaction,
+    CombineRawTransaction, ConvertToPsbt, CreateMultisig, CreateMultisigError, CreatePsbt,
+    CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction,
+    DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet, EstimateSmartFee, FinalizePsbt,
+    FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress,
+    GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError,
+    GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash,
+    GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
+    GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
+    GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockVerboseZero,
+    GetChainTips, GetChainTxStats, GetChainTxStatsError, GetDifficulty, GetMemoryInfoStats,
+    GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfo,
+    GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo,
+    GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetRawTransaction,
+    GetRawTransactionVerbose, GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction,
+    GetTransactionDetail, GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError,
+    GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo,
+    GetWalletInfoError, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
+    ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem,
+    ListLockUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError,
+    ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
+    ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,
+    ListTransactionsItemError, ListUnspent, ListUnspentItem, ListUnspentItemError, ListWallets,
+    LoadWallet, Locked, Logging, PeerInfo, PruneBlockchain, RawTransactionError,
+    RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany, SendRawTransaction,
+    SendToAddress, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
-    VerifyChain, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-    WalletProcessPsbt, WitnessUtxo,
+    ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
 };
 #[doc(inline)]
 pub use crate::v18::{
