@@ -1,0 +1,57 @@
+name: PR Labeler
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  label-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Label PR based on changed files
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const changedFiles = await github.paginate(
+              github.rest.pulls.listFiles,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+              }
+            );
+            
+            const filePathsToLabels = {
+              'node/': 'c-node',
+              'client/': 'c-client',
+              'integration_test/': 'c-integration_test',
+              'jsonrpc/': 'c-jsonrpc',
+              'types/': 'c-types',
+              'verify/': 'c-verify'
+            };
+            
+            const labelsToAdd = new Set();
+            
+            changedFiles.forEach(file => {
+              const filePath = file.filename;
+              for (const [path, label] of Object.entries(filePathsToLabels)) {
+                if (filePath.startsWith(path)) {
+                  labelsToAdd.add(label);
+                  break;
+                }
+              }
+            });
+            
+            if (labelsToAdd.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: Array.from(labelsToAdd)
+              });
+            }
