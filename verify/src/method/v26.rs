@@ -68,7 +68,7 @@ pub const METHODS: &[Method] = &[
     Method::new_numeric("getconnectioncount", "get_connection_count"),
     Method::new_no_model("getnettotals", "GetNetTotals", "get_net_totals"),
     Method::new_modelled("getnetworkinfo", "GetNetworkInfo", "get_network_info"),
-    Method::new_no_model("getnodeaddresses", "GetNodeAddresses", "get_node_addresses"),
+    Method::new_modelled("getnodeaddresses", "GetNodeAddresses", "get_node_addresses"),
     Method::new_no_model("getpeerinfo", "GetPeerInfo", "get_peer_info"),
     Method::new_string("listbanned", "list_banned"), // v17 docs seem wrong, says no return.
     Method::new_nothing("ping", "ping"),

@@ -37,10 +37,11 @@ fn network__get_network_info__modelled() {
 fn network__get_node_addresses() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let json: GetNodeAddresses = node.client.get_node_addresses().expect("getnodeaddresses");
-    assert!(json.0.len() <= 2500);
-    if let Some(addr) = json.0.first() {
+    let res: Result<mtype::GetNodeAddresses, _> = json.into_model();
+    let model = res.expect("GetNodeAddresses into model");
+    assert!(model.0.len() <= 2500);
+    if let Some(addr) = model.0.first() {
         assert!(addr.port > 0);
-        assert!(!addr.address.is_empty());
         assert!(addr.time > 1231006505);
     }
 }

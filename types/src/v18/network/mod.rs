@@ -4,6 +4,8 @@
 //!
 //! Types for methods found under the `== Network ==` section of the API docs.
 
+mod into;
+
 use serde::{Deserialize, Serialize};
 
 /// Result of JSON-RPC method `getnodeaddresses`.
