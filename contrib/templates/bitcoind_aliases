@@ -1,0 +1,16 @@
+# Template for creating aliases for different versions of Bitcoin Core
+# The folder names and first 3 digits of the port numbers need to match run-bitcoind.conf
+
+alias bt17='/opt/bitcoin-0.17.2/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=17249'
+alias bt18='/opt/bitcoin-0.18.1/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=18149'
+alias bt19='/opt/bitcoin-0.19.1/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=19149'
+alias bt20='/opt/bitcoin-0.20.2/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=20249'
+alias bt21='/opt/bitcoin-0.21.2/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=21249'
+alias bt22='/opt/bitcoin-22.1/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=22149'
+alias bt23='/opt/bitcoin-23.2/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=23249'
+alias bt24='/opt/bitcoin-24.2/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=24249'
+alias bt25='/opt/bitcoin-25.2/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=25249'
+alias bt26='/opt/bitcoin-26.2/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=26249'
+alias bt27='/opt/bitcoin-27.2/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=27249'
+alias bt28='/opt/bitcoin-28.1/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=28149'
+alias bt29='/opt/bitcoin-29.0/bin/bitcoin-cli -regtest -rpcuser=user -rpcpassword=password -rpcport=29049'

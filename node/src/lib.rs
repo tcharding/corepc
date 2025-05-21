@@ -562,7 +562,7 @@ pub fn downloaded_exe_path() -> anyhow::Result<String> {
 /// Returns the daemon `bitcoind` executable with the following precedence:
 ///
 /// 1) If it's specified in the `BITCOIND_EXE` env var
-/// 2) If there is no env var but an auto-download feature such as `23_1` is enabled, returns the
+/// 2) If there is no env var but the auto-download feature is enabled, returns the
 ///    path of the downloaded executabled
 /// 3) If neither of the precedent are available, the `bitcoind` executable is searched in the `PATH`
 pub fn exe_path() -> anyhow::Result<String> {

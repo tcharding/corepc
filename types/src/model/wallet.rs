@@ -10,8 +10,8 @@ use alloc::collections::BTreeMap;
 use bitcoin::address::NetworkUnchecked;
 use bitcoin::hashes::hash160;
 use bitcoin::{
-    bip32, ecdsa, Address, Amount, BlockHash, FeeRate, PrivateKey, Psbt, PublicKey, ScriptBuf,
-    SignedAmount, Transaction, Txid, WitnessProgram, WitnessVersion,
+    bip32, sign_message, Address, Amount, BlockHash, FeeRate, PrivateKey, Psbt, PublicKey,
+    ScriptBuf, SignedAmount, Transaction, Txid, WitnessProgram, WitnessVersion,
 };
 use serde::{Deserialize, Serialize};
 
@@ -622,8 +622,8 @@ pub struct SendToAddress {
 }
 
 /// Models the result of JSON-RPC method `signmessage`.
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
-pub struct SignMessage(pub ecdsa::Signature);
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SignMessage(pub sign_message::MessageSignature);
 
 /// Models the result of JSON-RPC method `unloadwallet`.
 ///

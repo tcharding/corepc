@@ -10,7 +10,7 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 use bitcoin::address::{Address, NetworkChecked};
-use bitcoin::{Amount, Block, BlockHash, PublicKey, Txid};
+use bitcoin::{sign_message, Amount, Block, BlockHash, PublicKey, Txid};
 
 use crate::client_sync::into_json;
 use crate::types::v28::*;
@@ -22,7 +22,7 @@ pub use crate::client_sync::{
 };
 
 crate::define_jsonrpc_minreq_client!("v28");
-crate::impl_client_check_expected_server_version!({ [280000] });
+crate::impl_client_check_expected_server_version!({ [280000, 280100] });
 
 // == Blockchain ==
 crate::impl_client_v17__getbestblockhash!();
@@ -97,6 +97,13 @@ crate::impl_client_v17__signrawtransactionwithkey!();
 crate::impl_client_v28__submitpackage!();
 crate::impl_client_v17__testmempoolaccept!();
 crate::impl_client_v18__utxoupdatepsbt!();
+
+// == Util ==
+crate::impl_client_v17__createmultisig!();
+crate::impl_client_v17__estimatesmartfee!();
+crate::impl_client_v17__signmessagewithprivkey!();
+crate::impl_client_v17__validateaddress!();
+crate::impl_client_v17__verifymessage!();
 
 // == Wallet ==
 crate::impl_client_v17__addmultisigaddress!();

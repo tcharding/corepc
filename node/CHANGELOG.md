@@ -5,7 +5,6 @@
 # 0.7.0 2025-04-04
 
 - Retry initial client connections [#111](https://github.com/rust-bitcoin/corepc/pull/111)
-- 
 
 # 0.6.1 - 2025-03-11
 

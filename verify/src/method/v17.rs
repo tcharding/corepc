@@ -81,10 +81,10 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("testmempoolaccept", "TestMempoolAccept", "test_mempool_accept"),
     // util
     Method::new_modelled("createmultisig", "CreateMultisig", "create_multisig"),
-    Method::new_nothing("estimatesmartfee", "estimate_smart_fee"),
-    Method::new_string("signmessagewithprivkey", "sign_message_with_priv_key"),
+    Method::new_modelled("estimatesmartfee", "EstimateSmartFee", "estimate_smart_fee"),
+    Method::new_modelled("signmessagewithprivkey", "SignMessageWithPrivKey", "sign_message_with_priv_key"),
     Method::new_modelled("validateaddress", "ValidateAddress", "validate_address"),
-    Method::new_bool("verifymessage", "verify_message"),
+    Method::new_no_model("verifymessage", "VerifyMessage", "verify_message"),
     // wallet
     Method::new_nothing("abandontransaction", "abandon_transaction"),
     Method::new_nothing("abortrescan", "abort_rescan"),

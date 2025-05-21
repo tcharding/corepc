@@ -8,8 +8,8 @@ use bitcoin::hex::FromHex;
 use bitcoin::key::{self, PrivateKey, PublicKey};
 use bitcoin::psbt::PsbtParseError;
 use bitcoin::{
-    address, bip32, ecdsa, Address, Amount, BlockHash, Psbt, ScriptBuf, SignedAmount, Transaction,
-    Txid, WitnessProgram, WitnessVersion,
+    address, bip32, sign_message, Address, Amount, BlockHash, Psbt, ScriptBuf, SignedAmount,
+    Transaction, Txid, WitnessProgram, WitnessVersion,
 };
 
 // TODO: Use explicit imports?
@@ -695,8 +695,8 @@ impl SendToAddress {
 
 impl SignMessage {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::SignMessage, ecdsa::Error> {
-        let sig = self.0.parse::<ecdsa::Signature>()?;
+    pub fn into_model(self) -> Result<model::SignMessage, sign_message::MessageSignatureError> {
+        let sig = self.0.parse::<sign_message::MessageSignature>()?;
         Ok(model::SignMessage(sig))
     }
 }

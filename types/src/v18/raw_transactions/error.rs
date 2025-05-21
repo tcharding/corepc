@@ -25,7 +25,7 @@ impl fmt::Display for AnalyzePsbtError {
         match *self {
             E::Inputs(ref e) => write_err!(f, "conversion of one of the `inputs` failed"; e),
             E::EstimatedFeeRate(ref e) =>
-                write_err!(f, "conversion of the `estimated_fee_rate` field failed"; e),
+                write_err!(f, "conversioon of the `estimated_fee_rate` field failed"; e),
             E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }

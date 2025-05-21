@@ -14,7 +14,7 @@
 
 set -euox pipefail
 
-FEATURES=("28_0" "27_1" "27_0" "26_2" "26_1" "26_0" "25_2" "24_2"  \
+FEATURES=("28_1" "28_0" "27_1" "27_0" "26_2" "26_1" "26_0" "25_2" "24_2"  \
           "23_2" "22_1" "0_21_2" "0_20_2" "0_19_1" "0_18_1" "0_17_2")
 
 # Use the current `Cargo.lock` file without updating it.
@@ -32,7 +32,7 @@ main() {
 
     # But only run tests for the latest version. This is ok because we are mainly checking
     # MSRV and docs with this script. Integration test will check every Core version.
-    $cargo test --features=download,28_0
+    $cargo test --features=download,29_0
 }
 
 #

@@ -10,13 +10,14 @@ pub mod generating;
 pub mod mining;
 pub mod network;
 pub mod raw_transactions;
+pub mod util;
 pub mod wallet;
 
 use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
 
 use bitcoin::address::{Address, NetworkChecked};
-use bitcoin::{Amount, Block, BlockHash, PublicKey, Txid};
+use bitcoin::{sign_message, Amount, Block, BlockHash, PublicKey, Txid};
 use serde::{Deserialize, Serialize};
 
 use crate::client_sync::into_json;
@@ -91,6 +92,13 @@ crate::impl_client_v17__sendrawtransaction!();
 crate::impl_client_v17__signrawtransaction!();
 crate::impl_client_v17__signrawtransactionwithkey!();
 crate::impl_client_v17__testmempoolaccept!();
+
+// == Util ==
+crate::impl_client_v17__createmultisig!();
+crate::impl_client_v17__estimatesmartfee!();
+crate::impl_client_v17__signmessagewithprivkey!();
+crate::impl_client_v17__validateaddress!();
+crate::impl_client_v17__verifymessage!();
 
 // == Wallet ==
 crate::impl_client_v17__addmultisigaddress!();

@@ -115,7 +115,7 @@ sub start_section {
 //! <details>
 //! <summary> Methods from the $section section </summary>
 //!
-//! | JSON-PRC Method Name               | Status          |
+//! | JSON-RPC Method Name               | Status          |
 //! |:-----------------------------------|:---------------:|
 EOM
 }
