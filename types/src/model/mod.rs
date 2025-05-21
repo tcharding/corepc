@@ -34,7 +34,9 @@ pub use self::{
         BlockTemplateTransaction, GetBlockTemplate, GetPrioritisedTransactions,
         PrioritisedTransaction,
     },
-    network::{GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork},
+    network::{
+        GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoNetwork, GetNodeAddresses, NodeAddress,
+    },
     raw_transactions::{
         AnalyzePsbt, AnalyzePsbtInput, AnalyzePsbtInputMissing, CombinePsbt, CombineRawTransaction,
         ConvertToPsbt, CreatePsbt, CreateRawTransaction, DecodePsbt, DecodeRawTransaction,
