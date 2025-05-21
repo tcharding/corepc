@@ -14,7 +14,7 @@ getdeploymentinfo ( "blockhash" )
 getdifficulty
 getmempoolancestors "txid" ( verbose )
 getmempooldescendants "txid" ( verbose )
-getmempoolentry "txid"
+getmempoolentry "txidd"
 getmempoolinfo
 getrawmempool ( verbose mempool_sequence )
 gettxout "txid" n ( include_mempool )
