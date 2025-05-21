@@ -296,7 +296,7 @@ impl Node {
 
         let work_dir_path = work_dir.path();
         if !work_dir_path.exists() {
-            panic!("work dir does not exist");
+            panic!("work dir doesn't exist");
         }
         debug!("work_dir: {:?}", work_dir_path);
 

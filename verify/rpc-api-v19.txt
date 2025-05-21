@@ -12,7 +12,7 @@ getchaintxstats ( nblocks "blockhash" )
 getdifficulty
 getmempoolancestors "txid" ( verbose )
 getmempooldescendants "txid" ( verbose )
-getmempoolentry "txid"
+getmempoolentry "txidd"
 getmempoolinfo
 getrawmempool ( verbose )
 gettxout "txid" n ( include_mempool )
