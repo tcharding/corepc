@@ -18,7 +18,10 @@ use crate::types::v19::*;
 
 #[rustfmt::skip]                // Keep public re-exports separate.
 pub use crate::client_sync::{
-    v17::{AddressType, Input, Output, TemplateRequest, TemplateRules, WalletCreateFundedPsbtInput},
+    v17::{
+        AddNodeCommand, AddressType, Input, Output, TemplateRequest, TemplateRules,
+        WalletCreateFundedPsbtInput
+    },
 };
 
 crate::define_jsonrpc_minreq_client!("v19");
@@ -70,6 +73,7 @@ crate::impl_client_v17__prioritisetransaction!();
 crate::impl_client_v17__submitblock!();
 
 // == Network ==
+crate::impl_client_v17__addnode!();
 crate::impl_client_v17__getaddednodeinfo!();
 crate::impl_client_v17__getnettotals!();
 crate::impl_client_v17__getnetworkinfo!();

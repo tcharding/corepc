@@ -71,6 +71,7 @@ crate::impl_client_v17__prioritisetransaction!();
 crate::impl_client_v17__submitblock!();
 
 // == Network ==
+crate::impl_client_v17__addnode!();
 crate::impl_client_v17__getaddednodeinfo!();
 crate::impl_client_v17__getnettotals!();
 crate::impl_client_v17__getnetworkinfo!();
@@ -213,4 +214,13 @@ impl Output {
 pub struct WalletCreateFundedPsbtInput {
     txid: Txid,
     vout: u32,
+}
+
+/// Args for the `addnode` method
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum AddNodeCommand {
+    Add,
+    Remove,
+    OneTry,
 }

@@ -15,7 +15,7 @@ use crate::types::v25::*;
 
 #[rustfmt::skip]                // Keep public re-exports separate.
 pub use crate::client_sync::{
-    v17::{Input, Output, TemplateRequest, TemplateRules, WalletCreateFundedPsbtInput},
+    v17::{AddNodeCommand, Input, Output, TemplateRequest, TemplateRules, WalletCreateFundedPsbtInput},
     v23::AddressType,
 };
 
@@ -68,6 +68,7 @@ crate::impl_client_v17__prioritisetransaction!();
 crate::impl_client_v17__submitblock!();
 
 // == Network ==
+crate::impl_client_v17__addnode!();
 crate::impl_client_v17__getaddednodeinfo!();
 crate::impl_client_v17__getnettotals!();
 crate::impl_client_v17__getnetworkinfo!();
