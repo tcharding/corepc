@@ -82,7 +82,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getblocktemplate                   | version + model |                                        |
-//! | getmininginfo                      | version         |                                        |
+//! | getmininginfo                      | version + model |                                        |
 //! | getnetworkhashps                   | returns boolean |                                        |
 //! | getprioritisedtransactions         | version + model | TODO                                   |
 //! | prioritisetransaction              | returns boolean |                                        |
@@ -104,7 +104,7 @@
 //! | getconnectioncount                 | returns numeric |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
-//! | getnodeaddresses                   | version + model | TODO                                   |
+//! | getnodeaddresses                   | version + model |                                        |
 //! | getpeerinfo                        | version         |                                        |
 //! | listbanned                         | returns string  |                                        |
 //! | ping                               | returns nothing |                                        |

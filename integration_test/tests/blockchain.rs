@@ -149,6 +149,16 @@ fn blockchain__get_chain_tx_stats__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v29")]
+fn blockchain__get_descriptor_activity__modelled() {
+    let node = Node::with_wallet(Wallet::None, &["-coinstatsindex=1", "-txindex=1"]);
+
+    let json: GetDescriptorActivity = node.client.get_descriptor_activity().expect("getdescriptoractivity");
+    let model: Result<mtype::GetDescriptorActivity, GetDescriptorActivityError> = json.into_model();
+    model.unwrap();
+}
+
+#[test]
 fn blockchain__get_difficulty__modelled() {
     let node = Node::with_wallet(Wallet::None, &[]);
 

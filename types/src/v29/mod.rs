@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! # JSON-RPC types for Bitcoin Core `v24`
+//! # JSON-RPC types for Bitcoin Core `v29`
 //!
 //! These structs are shaped for the JSON data returned by the JSON-RPC API. They use stdlib types
 //! (or custom types) and where necessary implement an `into_model` function to convert the type to
@@ -26,6 +26,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
+//! | dumptxoutset                       | version + model | TODO                                   |
 //! | getbestblockhash                   | version + model |                                        |
 //! | getblock                           | version + model | Includes additional 'verbose' type     |
 //! | getblockchaininfo                  | version + model |                                        |
@@ -35,9 +36,11 @@
 //! | getblockhash                       | version + model |                                        |
 //! | getblockheader                     | version + model | Includes additional 'verbose' type     |
 //! | getblockstats                      | version + model |                                        |
+//! | getchainstates                     | version + model | TODO                                   |
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdeploymentinfo                  | version + model | TODO                                   |
+//! | getdescriptoractivity              | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
 //! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
 //! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
@@ -48,9 +51,12 @@
 //! | gettxoutproof                      | returns string  |                                        |
 //! | gettxoutsetinfo                    | version + model |                                        |
 //! | gettxspendingprevout               | version + model | TODO                                   |
+//! | importmempool                      | version + model | TODO                                   |
+//! | loadtxoutset                       | version + model | TODO                                   |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | returns numeric |                                        |
 //! | savemempool                        | version         |                                        |
+//! | scanblocks                         | version + model | TODO                                   |
 //! | scantxoutset                       | omitted         | API marked as experimental             |
 //! | verifychain                        | returns boolean |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
@@ -79,6 +85,7 @@
 //! | getblocktemplate                   | version + model |                                        |
 //! | getmininginfo                      | version + model |                                        |
 //! | getnetworkhashps                   | returns boolean |                                        |
+//! | getprioritisedtransactions         | version + model | TODO                                   |
 //! | prioritisetransaction              | returns boolean |                                        |
 //! | submitblock                        | returns nothing |                                        |
 //! | submitheader                       | return nothing  | TODO                                   |
@@ -94,6 +101,7 @@
 //! | clearbanned                        | returns nothing |                                        |
 //! | disconnectnode                     | returns nothing |                                        |
 //! | getaddednodeinfo                   | version         |                                        |
+//! | getaddrmaninfo                     | version + model | TODO                                   |
 //! | getconnectioncount                 | returns numeric |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
@@ -118,6 +126,7 @@
 //! | createpsbt                         | version + model |                                        |
 //! | createrawtransaction               | version + model |                                        |
 //! | decodepsbt                         | version + model |                                        |
+//! | descriptorprocesspsbt              | returns boolean |                                        |
 //! | decoderawtransaction               | version + model |                                        |
 //! | decodescript                       | version + model |                                        |
 //! | finalizepsbt                       | version + model | UNTESTED                               |
@@ -126,6 +135,7 @@
 //! | joinpsbts                          | version + model | UNTESTED                               |
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
+//! | submitpackage                      | version + model |                                        |
 //! | testmempoolaccept                  | version + model | UNTESTED                               |
 //! | utxoupdatepsbt                     | version + model | UNTESTED                               |
 //!
@@ -167,6 +177,7 @@
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
+//! | createwalletdescriptor             | version + model | TODO                                   |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | returns nothing |                                        |
@@ -174,6 +185,7 @@
 //! | getaddressinfo                     | version + model | UNTESTED                               |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
+//! | gethdkeys                          | version + model | TODO                                   |
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
 //! | getreceivedbyaddress               | version + model | TODO                                   |
@@ -239,13 +251,23 @@
 //!
 //! </details>
 
-// JSON-RPC types by API section.
-mod raw_transactions;
+mod blockchain;
+mod mining;
+mod network;
 
 #[doc(inline)]
-pub use self::raw_transactions::{
-    DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput, TaprootBip32Deriv,
-    TaprootLeaf, TaprootScript, TaprootScriptPathSig,
+pub use self::{
+    blockchain::{
+        ActivityEntry, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
+        GetBlockHeaderVerboseError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockchainInfo,
+        GetBlockchainInfoError, GetDescriptorActivity, GetDescriptorActivityError, ReceiveActivity,
+        SpendActivity,
+    },
+    mining::{
+        BlockTemplateTransaction, GetBlockTemplate, GetBlockTemplateError, GetMiningInfo,
+        GetMiningInfoError, NextBlockInfo, NextBlockInfoError,
+    },
+    network::GetNetworkInfo,
 };
 #[doc(inline)]
 pub use crate::{
@@ -253,35 +275,32 @@ pub use crate::{
         AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
         ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig,
-        CreateMultisigError, CreatePsbt, CreateRawTransaction, CreateWallet, DecodeRawTransaction,
-        DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet, EstimateSmartFee, FinalizePsbt,
+        CreateMultisigError, CreatePsbt, CreateRawTransaction, DecodeRawTransaction, DecodeScript,
+        DecodeScriptError, DumpPrivKey, DumpWallet, EstimateSmartFee, FinalizePsbt,
         FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate,
         GenerateToAddress, GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded,
         GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel,
-        GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
-        GetBlockHeaderError, GetBlockHeaderVerbose, GetBlockHeaderVerboseError, GetBlockStats,
-        GetBlockStatsError, GetBlockTemplate, GetBlockTemplateError, GetBlockVerboseOne,
-        GetBlockVerboseOneError, GetBlockVerboseZero, GetChainTips, GetChainTxStats,
+        GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockStats,
+        GetBlockStatsError, GetBlockVerboseZero, GetChainTips, GetChainTxStats,
         GetChainTxStatsError, GetDifficulty, GetMemoryInfoStats, GetMempoolInfo,
-        GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress,
-        GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo,
-        GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetRawTransaction,
-        GetRawTransactionVerbose, GetRawTransactionVerboseError, GetReceivedByAddress,
-        GetTransaction, GetTransactionDetail, GetTransactionDetailError, GetTransactionError,
-        GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance,
-        GetWalletInfo, GetWalletInfoError, GetZmqNotifications, ListAddressGroupings,
-        ListAddressGroupingsError, ListAddressGroupingsItem, ListBanned, ListLabels,
-        ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddress,
-        ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError,
-        ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
-        ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
-        ListUnspentItemError, ListWallets, LoadWallet, Locked, PeerInfo, PruneBlockchain,
-        RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany,
-        SendRawTransaction, SendToAddress, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
-        SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
-        UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo,
+        GetMempoolInfoError, GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError,
+        GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
+        GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
+        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
+        GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError,
+        GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, GetZmqNotifications,
+        ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListBanned,
+        ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
+        ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem,
+        ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
+        ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,
+        ListTransactionsItemError, ListUnspent, ListUnspentItem, ListUnspentItemError, ListWallets,
+        Locked, PeerInfo, PruneBlockchain, RawTransactionError, RawTransactionInput,
+        RawTransactionOutput, RescanBlockchain, SendMany, SendRawTransaction, SendToAddress,
+        SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
+        TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
+        ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
@@ -290,13 +309,22 @@ pub use crate::{
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
-        GetBlockchainInfoError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
-        SoftforkType,
+        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetMempoolAncestors,
+        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
+        GetMempoolEntry, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
+        MempoolEntryFeesError, Softfork, SoftforkType,
     },
-    v21::UnloadWallet,
     v22::{Logging, ScriptPubkey},
     v23::SaveMempool,
+    v24::{
+        DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
+        TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
+    },
+    v26::{
+        CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
+        GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
+        PrioritisedTransaction, SubmitPackage, SubmitPackageError, SubmitPackageTxResult,
+        SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
+        UnloadWallet,
+    },
 };

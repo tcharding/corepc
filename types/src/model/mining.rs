@@ -7,7 +7,9 @@
 
 use std::collections::BTreeMap;
 
-use bitcoin::{block, BlockHash, CompactTarget, SignedAmount, Transaction, Txid, Weight, Wtxid};
+use bitcoin::{
+    block, BlockHash, CompactTarget, SignedAmount, Target, Transaction, Txid, Weight, Wtxid,
+};
 use serde::{Deserialize, Serialize};
 
 /// Models the result of JSON-RPC method `getblocktemplate`.
@@ -85,6 +87,51 @@ pub struct BlockTemplateTransaction {
     pub sigops: u32,
     /// Total transaction weight, as counted for purposes of block limits.
     pub weight: Weight,
+}
+
+/// Models the result of JSON-RPC method `getmininginfo`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetMiningInfo {
+    /// The current block.
+    pub blocks: u64,
+    /// The block weight (including reserved weight for block header, txs count and coinbase tx) of
+    /// the last assembled block (only present if a block was ever assembled).
+    pub current_block_weight: Option<Weight>,
+    /// The number of block transactions (excluding coinbase) of the last assembled block (only present if a block was ever assembled).
+    pub current_block_tx: Option<i64>,
+    /// The current nBits (v29 onwards).
+    pub bits: Option<CompactTarget>,
+    /// The current difficulty.
+    pub difficulty: f64,
+    /// The current target (v29 onwards).
+    pub target: Option<Target>,
+    /// The network hashes per second.
+    pub network_hash_ps: i64,
+    /// The size of the mempool.
+    pub pooled_tx: i64,
+    /// Current network name as defined in BIP70 (main, test, regtest).
+    pub chain: String,
+    /// The block challenge (aka. block script).
+    ///
+    /// Only present if the current network is a signet (v29 onwards).
+    pub signet_challenge: Option<String>,
+    /// The next block (v29 onwards).
+    pub next: Option<NextBlockInfo>,
+    /// Any network and blockchain warnings.
+    pub warnings: Vec<String>,
+}
+
+/// Represents the `next` block information within the GetMiningInfo result.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct NextBlockInfo {
+    /// The next height.
+    pub height: u64,
+    /// The next nBits.
+    pub bits: CompactTarget,
+    /// The next difficulty.
+    pub difficulty: f64,
+    /// The next target.
+    pub target: Target,
 }
 
 /// Models the result of JSON-RPC method `getprioritisedtransactions`.

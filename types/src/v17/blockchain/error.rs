@@ -175,9 +175,9 @@ impl fmt::Display for GetBlockHeaderVerboseError {
             Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
             ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
             PreviousBlockHash(ref e) =>
-                write_err!(f, "conversion of the `previous_bock_hash` field failed"; e),
+                write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
             NextBlockHash(ref e) =>
-                write_err!(f, "conversion of the `next_bock_hash` field failed"; e),
+                write_err!(f, "conversion of the `next_block_hash` field failed"; e),
         }
     }
 }
