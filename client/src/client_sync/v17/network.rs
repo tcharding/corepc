@@ -9,6 +9,22 @@
 //!
 //! See, or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
+/// Implements Bitcoin Core JSON-RPC API method `addnode`
+#[macro_export]
+macro_rules! impl_client_v17__addnode {
+    () => {
+        impl Client {
+            pub fn add_node(&self, node: &str, command: AddNodeCommand) -> Result<()> {
+                match self.call("addnode", &[into_json(node)?, into_json(command)?]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `getaddednodeinfo`
 #[macro_export]
 macro_rules! impl_client_v17__getaddednodeinfo {
