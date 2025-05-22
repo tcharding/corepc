@@ -1,3 +1,16 @@
+# 0.8.0 2025-05-21
+
+- Add support for Bitcoin Core 29.0 [#131](https://github.com/rust-bitcoin/corepc/pull/131)
+- Add support for Bitcoin Core 28.1 [#184](https://github.com/rust-bitcoin/corepc/pull/184)
+- Add support for Bitcoin Core 0.17.2 [#128](https://github.com/rust-bitcoin/corepc/pull/128)
+- Remove unnecessary error variants [#127](https://github.com/rust-bitcoin/corepc/pull/127)
+- Move types to version specific module [#156](https://github.com/rust-bitcoin/corepc/pull/156)
+- Move `TemplateRequest` and `TemplateRules` into their proper module [#151](https://github.com/rust-bitcoin/corepc/pull/151)
+- Implement `pruneblock` method and test [#132](https://github.com/rust-bitcoin/corepc/pull/132)
+- Implement `savemempool` method and test [#148](https://github.com/rust-bitcoin/corepc/pull/148)
+- Implement `verifychain` method and test [#155](https://github.com/rust-bitcoin/corepc/pull/155)
+- Implement `getnodeaddresses` method and test [#154](https://github.com/rust-bitcoin/corepc/pull/154)
+
 # 0.7.0 2025-04-04
 
 - Fix unloadwallet method [#110](https://github.com/rust-bitcoin/corepc/pull/110)

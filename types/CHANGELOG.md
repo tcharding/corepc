@@ -1,3 +1,17 @@
+# 0.8.0 2025-05-21
+
+- doc: update docs for now explicit download feature flag [#177](https://github.com/rust-bitcoin/corepc/pull/177)
+- Implement all v17 util functions [#163](https://github.com/rust-bitcoin/corepc/pull/163)
+- Add support for Bitcoin Core 29.0 [#131](https://github.com/rust-bitcoin/corepc/pull/131)
+- Improve the version specific SSOT docs [#142](https://github.com/rust-bitcoin/corepc/pull/142)
+- Remove model for `dumpwallet` [#141](https://github.com/rust-bitcoin/corepc/pull/141)
+- Implement `pruneblock` method and test [#132](https://github.com/rust-bitcoin/corepc/pull/132)
+- Implement `savemempool` method and test [#148](https://github.com/rust-bitcoin/corepc/pull/148)
+- Implement `verifychain` method and test [#155](https://github.com/rust-bitcoin/corepc/pull/155)
+- Implement `getnodeaddresses` method and test [#154](https://github.com/rust-bitcoin/corepc/pull/154)
+- Change `signmessage` returned signature type [#179](https://github.com/rust-bitcoin/corepc/pull/179)
+- Add model for `getnodeaddresses` [#191](https://github.com/rust-bitcoin/corepc/pull/191)
+
 # 0.7.0 2025-04-04
 
 - Fix `{create,load}wallet` on `v25` [#108](https://github.com/rust-bitcoin/corepc/pull/108)
