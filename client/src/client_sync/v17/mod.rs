@@ -76,6 +76,7 @@ crate::impl_client_v17__getaddednodeinfo!();
 crate::impl_client_v17__getnettotals!();
 crate::impl_client_v17__getnetworkinfo!();
 crate::impl_client_v17__getpeerinfo!();
+crate::impl_client_v17__setban!();
 
 // == Rawtransactions ==
 crate::impl_client_v17__combinepsbt!();
@@ -223,4 +224,12 @@ pub enum AddNodeCommand {
     Add,
     Remove,
     OneTry,
+}
+
+/// Args for the `setban` method
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum SetBanCommand {
+    Add,
+    Remove,
 }

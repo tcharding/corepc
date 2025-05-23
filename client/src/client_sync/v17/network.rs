@@ -74,3 +74,19 @@ macro_rules! impl_client_v17__getpeerinfo {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `setban`
+#[macro_export]
+macro_rules! impl_client_v17__setban {
+    () => {
+        impl Client {
+            pub fn set_ban(&self, subnet: &str, command: SetBanCommand) -> Result<()> {
+                match self.call("setban", &[into_json(subnet)?, into_json(command)?]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}

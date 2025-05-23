@@ -6,7 +6,7 @@
 
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::vtype::*;             // All the version specific types.
-use node::{AddNodeCommand, mtype};
+use node::{AddNodeCommand, mtype, SetBanCommand};
 
 #[test]
 fn network__add_node() {
@@ -101,4 +101,13 @@ fn get_peer_info_three_node_network() {
     assert!(node1.peers_connected() >= 1);
     assert!(node2.peers_connected() >= 1);
     assert!(node3.peers_connected() >= 1);
+}
+
+#[test]
+fn network__set_ban() {
+    let node = Node::with_wallet(Wallet::None, &[]);
+    let dummy_subnet = "192.0.2.3";
+
+    node.client.set_ban(dummy_subnet, SetBanCommand::Add).expect("setban add");
+    node.client.set_ban(dummy_subnet, SetBanCommand::Remove).expect("setban remove");
 }
