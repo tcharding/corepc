@@ -27,12 +27,12 @@ jobs:
             );
 
             const filePathsToLabels = {
-              'node/': 'c-node',
-              'client/': 'c-client',
-              'integration_test/': 'c-integration_test',
-              'jsonrpc/': 'c-jsonrpc',
-              'types/': 'c-types',
-              'verify/': 'c-verify'
+              'node/': 'C-node',
+              'client/': 'C-client',
+              'integration_test/': 'C-integration_test',
+              'jsonrpc/': 'C-jsonrpc',
+              'types/': 'C-types',
+              'verify/': 'C-verify'
             };
 
             const labelsToAdd = new Set();
