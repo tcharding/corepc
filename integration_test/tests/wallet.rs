@@ -58,11 +58,7 @@ fn wallet__create_wallet__modelled() {
 fn wallet__dump_priv_key__modelled() {
     // As of Core v23 the default wallet is an native descriptor wallet which does not
     // support dumping private keys. Legacy wallets are supported upto v25 it seems.
-    #[cfg(any(
-        feature = "v23",
-        feature = "v24",
-        feature = "v25",
-    ))]
+    #[cfg(all(feature = "v25_and_below", not(feature = "v22_and_below")))]
     {
         let node = Node::with_wallet(Wallet::None, &[]);
 
@@ -75,14 +71,7 @@ fn wallet__dump_priv_key__modelled() {
         model.unwrap();
     }
 
-    #[cfg(any(
-        feature = "v17",
-        feature = "v18",
-        feature = "v19",
-        feature = "v20",
-        feature = "v21",
-        feature = "v22",
-    ))]
+    #[cfg(feature = "v22_and_below")]
     {
         let node = Node::with_wallet(Wallet::Default, &[]);
         let address = node.client.new_address().expect("failed to get new address");
@@ -97,11 +86,7 @@ fn wallet__dump_priv_key__modelled() {
 fn wallet__dump_wallet() {
     // As of Core v23 the default wallet is an native descriptor wallet which does not
     // support dumping private keys. Legacy wallets are supported upto v25 it seems.
-    #[cfg(any(
-        feature = "v23",
-        feature = "v24",
-        feature = "v25",
-    ))]
+    #[cfg(all(feature = "v25_and_below", not(feature = "v22_and_below")))]
     {
         let node = Node::with_wallet(Wallet::None, &[]);
 
@@ -111,14 +96,7 @@ fn wallet__dump_wallet() {
         let _: DumpWallet = node.client.dump_wallet(&out).expect("dumpwallet");
     }
 
-    #[cfg(any(
-        feature = "v17",
-        feature = "v18",
-        feature = "v19",
-        feature = "v20",
-        feature = "v21",
-        feature = "v22",
-    ))]
+    #[cfg(feature = "v22_and_below")]
     {
         let node = Node::with_wallet(Wallet::Default, &[]);
         let out = integration_test::random_tmp_file();
@@ -169,7 +147,7 @@ fn wallet__get_balance__modelled() {
 }
 
 #[test]
-#[cfg(all(not(feature = "v17"), not(feature = "v18")))]
+#[cfg(not(feature = "v18_and_below"))]
 fn wallet__get_balances() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -287,11 +265,11 @@ fn create_load_unload_wallet() {
     node.client.create_wallet(&wallet).expect("failed to create wallet");
 
     // Upto version 20 Core returns null for `unloadwallet`.
-    #[cfg(any(feature = "v17", feature = "v18", feature = "v19", feature = "v20"))]
+    #[cfg(feature = "v20_and_below")]
     let _ = node.client.unload_wallet(&wallet).expect("unloadwallet");
 
     // From version 21 Core returns warnings for `unloadwallet`.
-    #[cfg(all(not(feature = "v17"), not(feature = "v18"), not(feature = "v19"), not(feature = "v20")))]
+    #[cfg(not(feature = "v20_and_below"))]
     {
         let json: UnloadWallet = node.client.unload_wallet(&wallet).expect("unloadwallet");
         let _: mtype::UnloadWallet = json.into_model();

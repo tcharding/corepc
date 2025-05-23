@@ -54,8 +54,7 @@ fn blockchain__get_block_count__modelled() {
 }
 
 #[test]
-#[cfg(not(feature = "v17"))]
-#[cfg(not(feature = "v18"))]
+#[cfg(not(feature = "v18_and_below"))]
 fn blockchain__get_block_filter__modelled() {
     let node = Node::with_wallet(Wallet::Default, &["-blockfilterindex"]);
     node.mine_a_block();
@@ -93,15 +92,15 @@ fn blockchain__get_block_header__modelled() {
 
 #[test]
 fn blockchain__get_block_stats__modelled() {
-    // Version 18 cannot call `getblockstats` if `-txindex` is not enabled.
-    #[cfg(not(feature = "v18"))]
+    // Version 17 and 18 cannot call `getblockstats` if `-txindex` is not enabled.
+    #[cfg(not(feature = "v18_and_below"))]
     getblockstats();
 
-    // All versions including 18 can `getblockstats` if `-txindex` is enabled.
+    // All versions including 17 and 18 can `getblockstats` if `-txindex` is enabled.
     getblockstats_txindex();
 }
 
-#[cfg(not(feature = "v18"))]
+#[cfg(not(feature = "v18_and_below"))]
 fn getblockstats() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -149,7 +148,7 @@ fn blockchain__get_chain_tx_stats__modelled() {
 }
 
 #[test]
-#[cfg(feature = "v29")]
+#[cfg(not(feature = "v28_and_below"))]
 fn blockchain__get_descriptor_activity__modelled() {
     let node = Node::with_wallet(Wallet::None, &["-coinstatsindex=1", "-txindex=1"]);
 
@@ -292,26 +291,12 @@ fn blockchain__savemempool() {
     node.fund_wallet();
     let (_addr, _txid) = node.create_mempool_transaction();
 
-    #[cfg(any(
-        feature = "v17",
-        feature = "v18",
-        feature = "v19",
-        feature = "v20",
-        feature = "v21",
-        feature = "v22",
-    ))]
+    #[cfg(feature = "v22_and_below")]
     {
         node.client.save_mempool().expect("savemempool");
     }
 
-    #[cfg(not(any(
-        feature = "v17",
-        feature = "v18",
-        feature = "v19",
-        feature = "v20",
-        feature = "v21",
-        feature = "v22",
-    )))]
+    #[cfg(not(feature = "v22_and_below"))]
     {
         let _: Result<SaveMempool, _> = node.client.save_mempool();
     }

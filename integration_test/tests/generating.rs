@@ -10,10 +10,7 @@ use node::mtype;
 
 #[test]
 // The `generate` method was deprecated in Core v18 and was removed in v19.
-#[cfg(all(
-    feature = "v17",
-    not(feature = "v18")        // We just need one `not` so that --all-features builds.
-))]
+#[cfg(feature = "v17")]
 fn generating__generate__modelled() {
     const NBLOCKS: usize = 10;
     let node = Node::with_wallet(Wallet::Default, &[]);
