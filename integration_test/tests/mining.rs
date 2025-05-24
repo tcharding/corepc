@@ -20,9 +20,9 @@ fn mining__get_block_template__modelled() {
     node3.mine_a_block();
 
     let options = match () {
-        #[cfg(not(feature = "v29"))]
+        #[cfg(feature = "v28_and_below")]
         () => TemplateRequest { rules: vec![TemplateRules::Segwit] },
-        #[cfg(feature = "v29")]
+        #[cfg(not(feature = "v28_and_below"))]
         () => TemplateRequest {
             rules: vec![TemplateRules::Segwit],
             mode: Some("template".to_string()),
@@ -41,38 +41,12 @@ fn mining__get_mining_info() {
 
     let json: GetMiningInfo = node.client.get_mining_info().expect("rpc");
 
-    // Upto v9 there is no error converting into model.
-    #[cfg(any(
-        feature = "v17",
-        feature = "v18",
-        feature = "v19",
-        feature = "v20",
-        feature = "v21",
-        feature = "v22",
-        feature = "v23",
-        feature = "v24",
-        feature = "v25",
-        feature = "v26",
-        feature = "v27",
-        feature = "v28",
-    ))]
+    // Up to v28 (i.e., not 29_0) there is no error converting into model.
+    #[cfg(feature = "v28_and_below")]
     let _: mtype::GetMiningInfo = json.into_model();
 
-    // v29 onwards - these feature gates are shit, we need a better way to do this.
-    #[cfg(not(any(
-        feature = "v17",
-        feature = "v18",
-        feature = "v19",
-        feature = "v20",
-        feature = "v21",
-        feature = "v22",
-        feature = "v23",
-        feature = "v24",
-        feature = "v25",
-        feature = "v26",
-        feature = "v27",
-        feature = "v28",
-    )))]
+    // v29 onwards
+    #[cfg(not(feature = "v28_and_below"))]
     {
         let model: Result<mtype::GetMiningInfo, GetMiningInfoError> = json.into_model();
         model.unwrap();
@@ -88,17 +62,7 @@ fn mining__get_network_hash_ps() {
 
 #[test]
 // Core version 26 onwards.
-#[cfg(all(
-    not(feature = "v17"),
-    not(feature = "v18"),
-    not(feature = "v19"),
-    not(feature = "v20"),
-    not(feature = "v21"),
-    not(feature = "v22"),
-    not(feature = "v23"),
-    not(feature = "v24"),
-    not(feature = "v25"),
-))]
+#[cfg(not(feature = "v25_and_below"))]
 fn mining__get_prioritised_transactions() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();

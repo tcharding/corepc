@@ -12,12 +12,7 @@ use node::{AddNodeCommand, mtype};
 fn network__add_node() {
     let dummy_peer = "192.0.2.1:8333";
 
-    #[cfg(not(any(
-        feature = "v26",
-        feature = "v27",
-        feature = "v28",
-        feature = "v29",
-    )))]
+    #[cfg(feature = "v25_and_below")]
     {
         let node = Node::with_wallet(Wallet::None, &[]);
         node.client.add_node(dummy_peer, AddNodeCommand::OneTry).expect("addnode onetry");
@@ -25,12 +20,7 @@ fn network__add_node() {
         node.client.add_node(dummy_peer, AddNodeCommand::Remove).expect("addnode remove");
     }
 
-    #[cfg(any(
-        feature = "v26",
-        feature = "v27",
-        feature = "v28",
-        feature = "v29",
-    ))]
+    #[cfg(not(feature = "v25_and_below"))]
     {
         let node = Node::with_wallet(Wallet::None, &["-v2transport"]);
         node.client.add_node(dummy_peer, AddNodeCommand::OneTry).expect("addnode onetry");

@@ -169,11 +169,10 @@ fn raw_transactions__decode_psbt__modelled() {
     let decoded = res.expect("DecodePsbt into model");
 
     // Before Core v23 global xpubs was not a known keypair.
-    #[cfg(feature = "v17")]
-    #[cfg(feature = "v22")]
+    #[cfg(feature = "v22_and_below")]
     assert_eq!(decoded.psbt.unknown.len(), 1);
 
-    #[cfg(feature = "v23")]
+    #[cfg(not(feature = "v22_and_below"))]
     assert_eq!(decoded.psbt.xpub.len(), 1);
 
     // TODO: Add a taproot field and test it with v24
@@ -360,14 +359,7 @@ fn raw_transactions__sign_raw_transaction__modelled() {
 
 // TODO: Work out how to test things without using dumpprivkey.
 #[test]
-#[cfg(any(
-    feature = "v17",
-    feature = "v18",
-    feature = "v19",
-    feature = "v20",
-    feature = "v21",
-    feature = "v22",
-))] // In v23 dumpprivkey no longer works.
+#[cfg(feature = "v22_and_below")] // In v23 dumpprivkey no longer works.
 fn raw_transactions__sign_raw_transaction_with_key__modelled() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
     node.fund_wallet();
@@ -376,7 +368,7 @@ fn raw_transactions__sign_raw_transaction_with_key__modelled() {
 
 // FIXME: Doesn't work for v26 for some reason.
 #[test]
-#[cfg(all(feature = "v27", not(feature = "v28")))]
+#[cfg(all(feature = "v27_and_below", not(feature = "v26_and_below")))]
 fn raw_transactions__submit_package__modelled() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
 
@@ -404,7 +396,7 @@ fn raw_transactions__submit_package__modelled() {
 
 // In Core v28 submitpackage has additional optional features.
 #[test]
-#[cfg(all(not(feature = "v27"), feature = "v28"))]
+#[cfg(not(feature = "v27_and_below"))]
 fn raw_transactions__submit_package__modelled() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
 
@@ -499,14 +491,7 @@ fn create_sign_send(node: &Node) {
 // - send_raw_transaction
 //
 // TODO: Work out how to get a private key without using `dumpprivkey`.
-#[cfg(any(
-    feature = "v17",
-    feature = "v18",
-    feature = "v19",
-    feature = "v20",
-    feature = "v21",
-    feature = "v22",
-))] // In v23 dumpprivkey no longer works.
+#[cfg(feature = "v22_and_below")] // In v23 dumpprivkey no longer works.
 fn create_sign_with_key_send(node: &Node) {
     let (addr, _tx, txid, tx_out, vout) = create_utxo(node);
 
