@@ -10,23 +10,18 @@ use node::{AddNodeCommand, mtype, SetBanCommand};
 
 #[test]
 fn network__add_node() {
+    let node = match () {
+        #[cfg(feature = "v25_and_below")]
+        () => Node::with_wallet(Wallet::None, &[]),
+        #[cfg(not(feature = "v25_and_below"))]
+        () => Node::with_wallet(Wallet::None, &["-v2transport"]),
+    };
+
     let dummy_peer = "192.0.2.1:8333";
 
-    #[cfg(feature = "v25_and_below")]
-    {
-        let node = Node::with_wallet(Wallet::None, &[]);
-        node.client.add_node(dummy_peer, AddNodeCommand::OneTry).expect("addnode onetry");
-        node.client.add_node(dummy_peer, AddNodeCommand::Add).expect("addnode add");
-        node.client.add_node(dummy_peer, AddNodeCommand::Remove).expect("addnode remove");
-    }
-
-    #[cfg(not(feature = "v25_and_below"))]
-    {
-        let node = Node::with_wallet(Wallet::None, &["-v2transport"]);
-        node.client.add_node(dummy_peer, AddNodeCommand::OneTry).expect("addnode onetry");
-        node.client.add_node(dummy_peer, AddNodeCommand::Add).expect("addnode add");
-        node.client.add_node(dummy_peer, AddNodeCommand::Remove).expect("addnode remove");
-    }
+    node.client.add_node(dummy_peer, AddNodeCommand::OneTry).expect("addnode onetry");
+    node.client.add_node(dummy_peer, AddNodeCommand::Add).expect("addnode add");
+    node.client.add_node(dummy_peer, AddNodeCommand::Remove).expect("addnode remove");
 }
 
 #[test]
