@@ -69,7 +69,11 @@ impl NodeExt for Node {
             conf.args.push(arg);
         }
 
-        Node::with_conf(exe, &conf).expect("failed to create node")
+        let node = Node::with_conf(exe, &conf).expect("failed to create node");
+        // We are getting intermittent test fails.
+        // Just pause here to give the node time to sort itself out.
+        std::thread::sleep(std::time::Duration::from_millis(500));
+        node
     }
 
     fn fund_wallet(&self) {
