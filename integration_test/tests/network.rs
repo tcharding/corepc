@@ -34,6 +34,16 @@ fn network__clear_banned() {
 }
 
 #[test]
+fn network__disconnect_node() {
+    let (_node1, node2, _node3) = integration_test::three_node_network();
+
+    let peers = node2.client.get_peer_info().expect("getpeerinfo");
+    let peer = peers.0.first().expect("should have at least one peer");
+
+    node2.client.disconnect_node(&peer.address).expect("disconnectnode");
+}
+
+#[test]
 fn network__get_added_node_info() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let _: GetAddedNodeInfo = node.client.get_added_node_info().expect("getaddednodeinfo");
