@@ -47,6 +47,14 @@ pub struct AddedNodeAddress {
     pub connected: String,
 }
 
+/// Result of JSON-RPC method `getconnectioncount`.
+///
+/// > getconnectioncount
+/// >
+/// > Returns n (numeric) The connection count
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetConnectionCount(pub u64);
+
 /// Result of JSON-RPC method `getnettotals`.
 ///
 /// > getnettotals

@@ -69,6 +69,18 @@ macro_rules! impl_client_v17__get_added_node_info {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `getconnectioncount`
+#[macro_export]
+macro_rules! impl_client_v17__get_connection_count {
+    () => {
+        impl Client {
+            pub fn get_connection_count(&self) -> Result<GetConnectionCount> {
+                self.call("getconnectioncount", &[])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `getnettotals`
 #[macro_export]
 macro_rules! impl_client_v17__get_net_totals {

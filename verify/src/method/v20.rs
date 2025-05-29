@@ -58,7 +58,7 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("clearbanned", "clear_banned"),
     Method::new_nothing("disconnectnode", "disconnect_node"),
     Method::new_no_model("getaddednodeinfo", "GetAddedNodeInfo", "get_added_node_info"),
-    Method::new_numeric("getconnectioncount", "get_connection_count"),
+    Method::new_no_model("getconnectioncount", "GetConnectionCount", "get_connection_count"),
     Method::new_no_model("getnettotals", "GetNetTotals", "get_net_totals"),
     Method::new_modelled("getnetworkinfo", "GetNetworkInfo", "get_network_info"),
     Method::new_modelled("getnodeaddresses", "GetNodeAddresses", "get_node_addresses"),

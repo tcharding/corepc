@@ -253,9 +253,9 @@ pub use self::{
         GetBlockTemplateError, GetMiningInfo,
     },
     network::{
-        AddedNode, AddedNodeAddress, Banned, GetAddedNodeInfo, GetNetTotals, GetNetworkInfo,
-        GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork, GetPeerInfo, ListBanned,
-        PeerInfo, UploadTarget,
+        AddedNode, AddedNodeAddress, Banned, GetAddedNodeInfo, GetConnectionCount, GetNetTotals,
+        GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
+        GetPeerInfo, ListBanned, PeerInfo, UploadTarget,
     },
     raw_transactions::{
         CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreatePsbt, CreateRawTransaction,
