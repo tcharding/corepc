@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `generatetoaddress`
 #[macro_export]
-macro_rules! impl_client_v17__generatetoaddress {
+macro_rules! impl_client_v17__generate_to_address {
     () => {
         impl Client {
             pub fn generate_to_address(

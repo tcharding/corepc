@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `addnode`
 #[macro_export]
-macro_rules! impl_client_v17__addnode {
+macro_rules! impl_client_v17__add_node {
     () => {
         impl Client {
             pub fn add_node(&self, node: &str, command: AddNodeCommand) -> Result<()> {
@@ -27,7 +27,7 @@ macro_rules! impl_client_v17__addnode {
 
 /// Implements Bitcoin Core JSON-RPC API method `clearbanned`
 #[macro_export]
-macro_rules! impl_client_v17__clearbanned {
+macro_rules! impl_client_v17__clear_banned {
     () => {
         impl Client {
             pub fn clear_banned(&self) -> Result<()> {
@@ -43,7 +43,7 @@ macro_rules! impl_client_v17__clearbanned {
 
 /// Implements Bitcoin Core JSON-RPC API method `disconnectnode`
 #[macro_export]
-macro_rules! impl_client_v17__disconnectnode {
+macro_rules! impl_client_v17__disconnect_node {
     () => {
         impl Client {
             pub fn disconnect_node(&self, address: &str) -> Result<()> {
@@ -59,7 +59,7 @@ macro_rules! impl_client_v17__disconnectnode {
 
 /// Implements Bitcoin Core JSON-RPC API method `getaddednodeinfo`
 #[macro_export]
-macro_rules! impl_client_v17__getaddednodeinfo {
+macro_rules! impl_client_v17__get_added_node_info {
     () => {
         impl Client {
             pub fn get_added_node_info(&self) -> Result<GetAddedNodeInfo> {
@@ -71,7 +71,7 @@ macro_rules! impl_client_v17__getaddednodeinfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `getnettotals`
 #[macro_export]
-macro_rules! impl_client_v17__getnettotals {
+macro_rules! impl_client_v17__get_net_totals {
     () => {
         impl Client {
             pub fn get_net_totals(&self) -> Result<GetNetTotals> { self.call("getnettotals", &[]) }
@@ -81,7 +81,7 @@ macro_rules! impl_client_v17__getnettotals {
 
 /// Implements Bitcoin Core JSON-RPC API method `getnetworkinfo`
 #[macro_export]
-macro_rules! impl_client_v17__getnetworkinfo {
+macro_rules! impl_client_v17__get_network_info {
     () => {
         impl Client {
             /// Returns the server version field of `GetNetworkInfo`.
@@ -99,7 +99,7 @@ macro_rules! impl_client_v17__getnetworkinfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `getpeerinfo`
 #[macro_export]
-macro_rules! impl_client_v17__getpeerinfo {
+macro_rules! impl_client_v17__get_peer_info {
     () => {
         impl Client {
             pub fn get_peer_info(&self) -> Result<GetPeerInfo> { self.call("getpeerinfo", &[]) }
@@ -109,7 +109,7 @@ macro_rules! impl_client_v17__getpeerinfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `setban`
 #[macro_export]
-macro_rules! impl_client_v17__setban {
+macro_rules! impl_client_v17__set_ban {
     () => {
         impl Client {
             pub fn set_ban(&self, subnet: &str, command: SetBanCommand) -> Result<()> {

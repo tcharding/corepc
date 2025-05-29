@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `getdescriptoractivity`
 #[macro_export]
-macro_rules! impl_client_v29__getdescriptoractivity {
+macro_rules! impl_client_v29__get_descriptor_activity {
     () => {
         impl Client {
             pub fn get_descriptor_activity(&self) -> Result<GetDescriptorActivity> {

@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `combinepsbt`
 #[macro_export]
-macro_rules! impl_client_v17__combinepsbt {
+macro_rules! impl_client_v17__combine_psbt {
     () => {
         impl Client {
             pub fn combine_psbt(&self, txs: &[bitcoin::Psbt]) -> Result<CombinePsbt> {
@@ -24,7 +24,7 @@ macro_rules! impl_client_v17__combinepsbt {
 
 /// Implements Bitcoin Core JSON-RPC API method `combinerawtransaction`
 #[macro_export]
-macro_rules! impl_client_v17__combinerawtransaction {
+macro_rules! impl_client_v17__combine_raw_transaction {
     () => {
         impl Client {
             pub fn combine_raw_transaction(
@@ -43,7 +43,7 @@ macro_rules! impl_client_v17__combinerawtransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `converttopsbt`
 #[macro_export]
-macro_rules! impl_client_v17__converttopsbt {
+macro_rules! impl_client_v17__convert_to_psbt {
     () => {
         impl Client {
             pub fn convert_to_psbt(&self, tx: &bitcoin::Transaction) -> Result<ConvertToPsbt> {
@@ -56,7 +56,7 @@ macro_rules! impl_client_v17__converttopsbt {
 
 /// Implements Bitcoin Core JSON-RPC API method `createpsbt`
 #[macro_export]
-macro_rules! impl_client_v17__createpsbt {
+macro_rules! impl_client_v17__create_psbt {
     () => {
         impl Client {
             pub fn create_psbt(&self, inputs: &[Input], outputs: &[Output]) -> Result<CreatePsbt> {
@@ -68,7 +68,7 @@ macro_rules! impl_client_v17__createpsbt {
 
 /// Implements Bitcoin Core JSON-RPC API method `createrawtransaction`
 #[macro_export]
-macro_rules! impl_client_v17__createrawtransaction {
+macro_rules! impl_client_v17__create_raw_transaction {
     () => {
         impl Client {
             pub fn create_raw_transaction(
@@ -84,7 +84,7 @@ macro_rules! impl_client_v17__createrawtransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `decodepsbt`
 #[macro_export]
-macro_rules! impl_client_v17__decodepsbt {
+macro_rules! impl_client_v17__decode_psbt {
     () => {
         impl Client {
             pub fn decode_psbt(&self, psbt: &str) -> Result<DecodePsbt> {
@@ -96,7 +96,7 @@ macro_rules! impl_client_v17__decodepsbt {
 
 /// Implements Bitcoin Core JSON-RPC API method `finalizepsbt`
 #[macro_export]
-macro_rules! impl_client_v17__finalizepsbt {
+macro_rules! impl_client_v17__finalize_psbt {
     () => {
         impl Client {
             pub fn finalize_psbt(&self, psbt: &bitcoin::Psbt) -> Result<FinalizePsbt> {
@@ -109,7 +109,7 @@ macro_rules! impl_client_v17__finalizepsbt {
 
 /// Implements Bitcoin Core JSON-RPC API method `decoderawtransaction`
 #[macro_export]
-macro_rules! impl_client_v17__decoderawtransaction {
+macro_rules! impl_client_v17__decode_raw_transaction {
     () => {
         impl Client {
             pub fn decode_raw_transaction(
@@ -125,7 +125,7 @@ macro_rules! impl_client_v17__decoderawtransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `decodescript`
 #[macro_export]
-macro_rules! impl_client_v17__decodescript {
+macro_rules! impl_client_v17__decode_script {
     () => {
         impl Client {
             // Arg is the hex encoded script we want to decode.
@@ -138,7 +138,7 @@ macro_rules! impl_client_v17__decodescript {
 
 /// Implements Bitcoin Core JSON-RPC API method `fundrawtransaction`
 #[macro_export]
-macro_rules! impl_client_v17__fundrawtransaction {
+macro_rules! impl_client_v17__fund_raw_transaction {
     () => {
         impl Client {
             pub fn fund_raw_transaction(
@@ -154,7 +154,7 @@ macro_rules! impl_client_v17__fundrawtransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `getrawtransaction`
 #[macro_export]
-macro_rules! impl_client_v17__getrawtransaction {
+macro_rules! impl_client_v17__get_raw_transaction {
     () => {
         impl Client {
             pub fn get_raw_transaction(&self, txid: bitcoin::Txid) -> Result<GetRawTransaction> {
@@ -173,7 +173,7 @@ macro_rules! impl_client_v17__getrawtransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `sendrawtransaction`
 #[macro_export]
-macro_rules! impl_client_v17__sendrawtransaction {
+macro_rules! impl_client_v17__send_raw_transaction {
     () => {
         impl Client {
             pub fn send_raw_transaction(
@@ -189,7 +189,7 @@ macro_rules! impl_client_v17__sendrawtransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `signrawtransaction`
 #[macro_export]
-macro_rules! impl_client_v17__signrawtransaction {
+macro_rules! impl_client_v17__sign_raw_transaction {
     () => {
         impl Client {
             pub fn sign_raw_transaction(
@@ -205,7 +205,7 @@ macro_rules! impl_client_v17__signrawtransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `signrawtransactionwithkey`
 #[macro_export]
-macro_rules! impl_client_v17__signrawtransactionwithkey {
+macro_rules! impl_client_v17__sign_raw_transaction_with_key {
     () => {
         impl Client {
             pub fn sign_raw_transaction_with_key(
@@ -223,7 +223,7 @@ macro_rules! impl_client_v17__signrawtransactionwithkey {
 
 /// Implements Bitcoin Core JSON-RPC API method `testmempoolaccept`
 #[macro_export]
-macro_rules! impl_client_v17__testmempoolaccept {
+macro_rules! impl_client_v17__test_mempool_accept {
     () => {
         impl Client {
             pub fn test_mempool_accept(

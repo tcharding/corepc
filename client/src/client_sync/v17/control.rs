@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `getmemoryinfo`.
 #[macro_export]
-macro_rules! impl_client_v17__getmemoryinfo {
+macro_rules! impl_client_v17__get_memory_info {
     () => {
         impl Client {
             pub fn get_memory_info(&self) -> Result<GetMemoryInfoStats> {

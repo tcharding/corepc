@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `submitpackage`
 #[macro_export]
-macro_rules! impl_client_v26__submitpackage {
+macro_rules! impl_client_v26__submit_package {
     () => {
         impl Client {
             pub fn submit_package(

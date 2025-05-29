@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `getblockfilter`
 #[macro_export]
-macro_rules! impl_client_v19__getblockfilter {
+macro_rules! impl_client_v19__get_block_filter {
     () => {
         impl Client {
             pub fn get_block_filter(&self, block: BlockHash) -> Result<GetBlockFilter> {

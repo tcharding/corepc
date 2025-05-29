@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `createwallet`.
 #[macro_export]
-macro_rules! impl_client_v23__createwallet {
+macro_rules! impl_client_v23__create_wallet {
     () => {
         impl Client {
             /// Calls `createwallet` with `wallet` as the only argument.

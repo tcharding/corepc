@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `loadwallet`
 #[macro_export]
-macro_rules! impl_client_v22__loadwallet {
+macro_rules! impl_client_v22__load_wallet {
     () => {
         impl Client {
             pub fn load_wallet(&self, wallet: &str) -> Result<LoadWallet> {

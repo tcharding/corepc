@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `getnodeaddresses`
 #[macro_export]
-macro_rules! impl_client_v18__getnodeaddresses {
+macro_rules! impl_client_v18__get_node_addresses {
     () => {
         impl Client {
             pub fn get_node_addresses(&self) -> Result<GetNodeAddresses> {

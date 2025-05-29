@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `savemempool`
 #[macro_export]
-macro_rules! impl_client_v23__savemempool {
+macro_rules! impl_client_v23__save_mempool {
     () => {
         impl Client {
             pub fn save_mempool(&self) -> Result<SaveMempool> { self.call("savemempool", &[]) }
