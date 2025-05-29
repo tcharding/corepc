@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `getbalances`
 #[macro_export]
-macro_rules! impl_client_v19__getbalances {
+macro_rules! impl_client_v19__get_balances {
     () => {
         impl Client {
             pub fn get_balances(&self) -> Result<GetBalances> { self.call("getbalances", &[]) }

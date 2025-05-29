@@ -9,7 +9,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `getrpcinfo`.
 #[macro_export]
-macro_rules! impl_client_v18__getrpcinfo {
+macro_rules! impl_client_v18__get_rpc_info {
     () => {
         impl Client {
             pub fn get_rpc_info(&self) -> Result<GetRpcInfo> { self.call("getrpcinfo", &[]) }

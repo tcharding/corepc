@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `gettxoutsetinfo`
 #[macro_export]
-macro_rules! impl_client_v26__gettxoutsetinfo {
+macro_rules! impl_client_v26__get_tx_out_set_info {
     () => {
         impl Client {
             pub fn get_tx_out_set_info(&self) -> Result<GetTxOutSetInfo> {

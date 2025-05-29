@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `unloadwallet`
 #[macro_export]
-macro_rules! impl_client_v21__unloadwallet {
+macro_rules! impl_client_v21__unload_wallet {
     () => {
         impl Client {
             pub fn unload_wallet(&self, wallet: &str) -> Result<UnloadWallet> {

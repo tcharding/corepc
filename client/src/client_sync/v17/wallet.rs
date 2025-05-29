@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `addmultisigaddress`.
 #[macro_export]
-macro_rules! impl_client_v17__addmultisigaddress {
+macro_rules! impl_client_v17__add_multisig_address {
     () => {
         impl Client {
             pub fn add_multisig_address_with_keys(
@@ -35,7 +35,7 @@ macro_rules! impl_client_v17__addmultisigaddress {
 
 /// Implements Bitcoin Core JSON-RPC API method `bumpfee`.
 #[macro_export]
-macro_rules! impl_client_v17__bumpfee {
+macro_rules! impl_client_v17__bump_fee {
     () => {
         impl Client {
             pub fn bump_fee(&self, txid: Txid) -> Result<BumpFee> {
@@ -47,7 +47,7 @@ macro_rules! impl_client_v17__bumpfee {
 
 /// Implements Bitcoin Core JSON-RPC API method `createwallet`.
 #[macro_export]
-macro_rules! impl_client_v17__createwallet {
+macro_rules! impl_client_v17__create_wallet {
     () => {
         impl Client {
             pub fn create_wallet(&self, wallet: &str) -> Result<CreateWallet> {
@@ -59,7 +59,7 @@ macro_rules! impl_client_v17__createwallet {
 
 /// Implements Bitcoin Core JSON-RPC API method `dumpprivkey`.
 #[macro_export]
-macro_rules! impl_client_v17__dumpprivkey {
+macro_rules! impl_client_v17__dump_priv_key {
     () => {
         impl Client {
             pub fn dump_priv_key(&self, address: &Address) -> Result<DumpPrivKey> {
@@ -71,7 +71,7 @@ macro_rules! impl_client_v17__dumpprivkey {
 
 /// Implements Bitcoin Core JSON-RPC API method `dumpwallet`.
 #[macro_export]
-macro_rules! impl_client_v17__dumpwallet {
+macro_rules! impl_client_v17__dump_wallet {
     () => {
         impl Client {
             // filename is either absolute or relative to bitcoind.
@@ -84,7 +84,7 @@ macro_rules! impl_client_v17__dumpwallet {
 
 /// Implements Bitcoin Core JSON-RPC API method `getaddressesbylabel`.
 #[macro_export]
-macro_rules! impl_client_v17__getaddressesbylabel {
+macro_rules! impl_client_v17__get_addresses_by_label {
     () => {
         impl Client {
             pub fn get_addresses_by_label(&self, label: &str) -> Result<GetAddressesByLabel> {
@@ -96,7 +96,7 @@ macro_rules! impl_client_v17__getaddressesbylabel {
 
 /// Implements Bitcoin Core JSON-RPC API method `getaddressinfo`.
 #[macro_export]
-macro_rules! impl_client_v17__getaddressinfo {
+macro_rules! impl_client_v17__get_address_info {
     () => {
         impl Client {
             pub fn get_address_info(&self, address: &Address) -> Result<GetAddressInfo> {
@@ -108,7 +108,7 @@ macro_rules! impl_client_v17__getaddressinfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `getbalance`.
 #[macro_export]
-macro_rules! impl_client_v17__getbalance {
+macro_rules! impl_client_v17__get_balance {
     () => {
         impl Client {
             pub fn get_balance(&self) -> Result<GetBalance> { self.call("getbalance", &[]) }
@@ -118,7 +118,7 @@ macro_rules! impl_client_v17__getbalance {
 
 /// Implements Bitcoin Core JSON-RPC API method `getnewaddress`.
 #[macro_export]
-macro_rules! impl_client_v17__getnewaddress {
+macro_rules! impl_client_v17__get_new_address {
     () => {
         impl Client {
             /// Gets a new address from `bitcoind` and parses it assuming its correct.
@@ -166,7 +166,7 @@ macro_rules! impl_client_v17__getnewaddress {
 
 /// Implements Bitcoin Core JSON-RPC API method `getrawchangeaddress`.
 #[macro_export]
-macro_rules! impl_client_v17__getrawchangeaddress {
+macro_rules! impl_client_v17__get_raw_change_address {
     () => {
         impl Client {
             pub fn get_raw_change_address(&self) -> Result<GetRawChangeAddress> {
@@ -178,7 +178,7 @@ macro_rules! impl_client_v17__getrawchangeaddress {
 
 /// Implements Bitcoin Core JSON-RPC API method `getreceivedbyaddress`.
 #[macro_export]
-macro_rules! impl_client_v17__getreceivedbyaddress {
+macro_rules! impl_client_v17__get_received_by_address {
     () => {
         impl Client {
             pub fn get_received_by_address(
@@ -193,7 +193,7 @@ macro_rules! impl_client_v17__getreceivedbyaddress {
 
 /// Implements Bitcoin Core JSON-RPC API method `gettransaction`.
 #[macro_export]
-macro_rules! impl_client_v17__gettransaction {
+macro_rules! impl_client_v17__get_transaction {
     () => {
         impl Client {
             pub fn get_transaction(&self, txid: Txid) -> Result<GetTransaction> {
@@ -205,7 +205,7 @@ macro_rules! impl_client_v17__gettransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `getunconfirmedbalance`.
 #[macro_export]
-macro_rules! impl_client_v17__getunconfirmedbalance {
+macro_rules! impl_client_v17__get_unconfirmed_balance {
     () => {
         impl Client {
             pub fn get_unconfirmed_balance(&self) -> Result<GetUnconfirmedBalance> {
@@ -217,7 +217,7 @@ macro_rules! impl_client_v17__getunconfirmedbalance {
 
 /// Implements Bitcoin Core JSON-RPC API method `getwalletinfo`.
 #[macro_export]
-macro_rules! impl_client_v17__getwalletinfo {
+macro_rules! impl_client_v17__get_wallet_info {
     () => {
         impl Client {
             pub fn get_wallet_info(&self) -> Result<GetWalletInfo> {
@@ -229,7 +229,7 @@ macro_rules! impl_client_v17__getwalletinfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `listaddressgroupings`.
 #[macro_export]
-macro_rules! impl_client_v17__listaddressgroupings {
+macro_rules! impl_client_v17__list_address_groupings {
     () => {
         impl Client {
             pub fn list_address_groupings(&self) -> Result<ListAddressGroupings> {
@@ -241,7 +241,7 @@ macro_rules! impl_client_v17__listaddressgroupings {
 
 /// Implements Bitcoin Core JSON-RPC API method `listlabels`.
 #[macro_export]
-macro_rules! impl_client_v17__listlabels {
+macro_rules! impl_client_v17__list_labels {
     () => {
         impl Client {
             pub fn list_labels(&self) -> Result<ListLabels> { self.call("listlabels", &[]) }
@@ -251,7 +251,7 @@ macro_rules! impl_client_v17__listlabels {
 
 /// Implements Bitcoin Core JSON-RPC API method `listlockunspent`.
 #[macro_export]
-macro_rules! impl_client_v17__listlockunspent {
+macro_rules! impl_client_v17__list_lock_unspent {
     () => {
         impl Client {
             pub fn list_lock_unspent(&self) -> Result<ListLockUnspent> {
@@ -263,7 +263,7 @@ macro_rules! impl_client_v17__listlockunspent {
 
 /// Implements Bitcoin Core JSON-RPC API method `listreceivedbyaddress`.
 #[macro_export]
-macro_rules! impl_client_v17__listreceivedbyaddress {
+macro_rules! impl_client_v17__list_received_by_address {
     () => {
         impl Client {
             pub fn list_received_by_address(&self) -> Result<ListReceivedByAddress> {
@@ -275,7 +275,7 @@ macro_rules! impl_client_v17__listreceivedbyaddress {
 
 /// Implements Bitcoin Core JSON-RPC API method `listsinceblock`.
 #[macro_export]
-macro_rules! impl_client_v17__listsinceblock {
+macro_rules! impl_client_v17__list_since_block {
     () => {
         impl Client {
             pub fn list_since_block(&self) -> Result<ListSinceBlock> {
@@ -287,7 +287,7 @@ macro_rules! impl_client_v17__listsinceblock {
 
 /// Implements Bitcoin Core JSON-RPC API method `listtransactions`.
 #[macro_export]
-macro_rules! impl_client_v17__listtransactions {
+macro_rules! impl_client_v17__list_transactions {
     () => {
         impl Client {
             pub fn list_transactions(&self) -> Result<ListTransactions> {
@@ -299,7 +299,7 @@ macro_rules! impl_client_v17__listtransactions {
 
 /// Implements Bitcoin Core JSON-RPC API method `listunspent`.
 #[macro_export]
-macro_rules! impl_client_v17__listunspent {
+macro_rules! impl_client_v17__list_unspent {
     () => {
         impl Client {
             pub fn list_unspent(&self) -> Result<ListUnspent> { self.call("listunspent", &[]) }
@@ -309,7 +309,7 @@ macro_rules! impl_client_v17__listunspent {
 
 /// Implements Bitcoin Core JSON-RPC API method `listwallets`.
 #[macro_export]
-macro_rules! impl_client_v17__listwallets {
+macro_rules! impl_client_v17__list_wallets {
     () => {
         impl Client {
             pub fn list_wallets(&self) -> Result<ListWallets> { self.call("listwallets", &[]) }
@@ -319,7 +319,7 @@ macro_rules! impl_client_v17__listwallets {
 
 /// Implements Bitcoin Core JSON-RPC API method `loadwallet`.
 #[macro_export]
-macro_rules! impl_client_v17__loadwallet {
+macro_rules! impl_client_v17__load_wallet {
     () => {
         impl Client {
             pub fn load_wallet(&self, filename: &str) -> Result<LoadWallet> {
@@ -331,7 +331,7 @@ macro_rules! impl_client_v17__loadwallet {
 
 /// Implements Bitcoin Core JSON-RPC API method `rescanblockchain`.
 #[macro_export]
-macro_rules! impl_client_v17__rescanblockchain {
+macro_rules! impl_client_v17__rescan_blockchain {
     () => {
         impl Client {
             pub fn rescan_blockchain(&self) -> Result<RescanBlockchain> {
@@ -343,7 +343,7 @@ macro_rules! impl_client_v17__rescanblockchain {
 
 /// Implements Bitcoin Core JSON-RPC API method `sendmany`.
 #[macro_export]
-macro_rules! impl_client_v17__sendmany {
+macro_rules! impl_client_v17__send_many {
     () => {
         impl Client {
             pub fn send_many(&self, amounts: BTreeMap<Address, Amount>) -> Result<SendMany> {
@@ -356,7 +356,7 @@ macro_rules! impl_client_v17__sendmany {
 
 /// Implements Bitcoin Core JSON-RPC API method `sendtoaddress`.
 #[macro_export]
-macro_rules! impl_client_v17__sendtoaddress {
+macro_rules! impl_client_v17__send_to_address {
     () => {
         impl Client {
             // Send to address - no RBF.
@@ -396,7 +396,7 @@ macro_rules! impl_client_v17__sendtoaddress {
 
 /// Implements Bitcoin Core JSON-RPC API method `signmessage`.
 #[macro_export]
-macro_rules! impl_client_v17__signmessage {
+macro_rules! impl_client_v17__sign_message {
     () => {
         impl Client {
             pub fn sign_message(&self, address: &Address, message: &str) -> Result<SignMessage> {
@@ -408,7 +408,7 @@ macro_rules! impl_client_v17__signmessage {
 
 /// Implements Bitcoin Core JSON-RPC API method `signrawtransactionwithwallet`.
 #[macro_export]
-macro_rules! impl_client_v17__signrawtransactionwithwallet {
+macro_rules! impl_client_v17__sign_raw_transaction_with_wallet {
     () => {
         impl Client {
             // `hexstring`: The transaction hex string.
@@ -425,7 +425,7 @@ macro_rules! impl_client_v17__signrawtransactionwithwallet {
 
 /// Implements Bitcoin Core JSON-RPC API method `unloadwallet`.
 #[macro_export]
-macro_rules! impl_client_v17__unloadwallet {
+macro_rules! impl_client_v17__unload_wallet {
     () => {
         impl Client {
             pub fn unload_wallet(&self, wallet_name: &str) -> Result<()> {
@@ -441,7 +441,7 @@ macro_rules! impl_client_v17__unloadwallet {
 
 /// Implements Bitcoin Core JSON-RPC API method `walletcreatefundedpsbt`.
 #[macro_export]
-macro_rules! impl_client_v17__walletcreatefundedpsbt {
+macro_rules! impl_client_v17__wallet_create_funded_psbt {
     () => {
         impl Client {
             pub fn wallet_create_funded_psbt(
@@ -457,7 +457,7 @@ macro_rules! impl_client_v17__walletcreatefundedpsbt {
 
 /// Implements Bitcoin Core JSON-RPC API method `walletprocesspsbt`.
 #[macro_export]
-macro_rules! impl_client_v17__walletprocesspsbt {
+macro_rules! impl_client_v17__wallet_process_psbt {
     () => {
         impl Client {
             pub fn wallet_process_psbt(&self, psbt: &bitcoin::Psbt) -> Result<WalletProcessPsbt> {

@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `getblocktemplate`
 #[macro_export]
-macro_rules! impl_client_v17__getblocktemplate {
+macro_rules! impl_client_v17__get_block_template {
     () => {
         impl Client {
             pub fn get_block_template(
@@ -26,7 +26,7 @@ macro_rules! impl_client_v17__getblocktemplate {
 
 /// Implements Bitcoin Core JSON-RPC API method `getmininginfo`
 #[macro_export]
-macro_rules! impl_client_v17__getmininginfo {
+macro_rules! impl_client_v17__get_mining_info {
     () => {
         impl Client {
             pub fn get_mining_info(&self) -> Result<GetMiningInfo> {
@@ -38,7 +38,7 @@ macro_rules! impl_client_v17__getmininginfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `getnetworkhashps`
 #[macro_export]
-macro_rules! impl_client_v17__getnetworkhashps {
+macro_rules! impl_client_v17__get_network_hashes_per_second {
     () => {
         impl Client {
             pub fn get_network_hash_ps(&self) -> Result<f64> { self.call("getnetworkhashps", &[]) }
@@ -48,7 +48,7 @@ macro_rules! impl_client_v17__getnetworkhashps {
 
 /// Implements Bitcoin Core JSON-RPC API method `prioritisetransaction`
 #[macro_export]
-macro_rules! impl_client_v17__prioritisetransaction {
+macro_rules! impl_client_v17__prioritise_transaction {
     () => {
         impl Client {
             pub fn prioritise_transaction(
@@ -65,7 +65,7 @@ macro_rules! impl_client_v17__prioritisetransaction {
 
 /// Implements Bitcoin Core JSON-RPC API method `submitblock`
 #[macro_export]
-macro_rules! impl_client_v17__submitblock {
+macro_rules! impl_client_v17__submit_block {
     () => {
         impl Client {
             pub fn submit_block(&self, block: &Block) -> Result<()> {

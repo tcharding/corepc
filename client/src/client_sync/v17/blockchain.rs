@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `getblockchaininfo`
 #[macro_export]
-macro_rules! impl_client_v17__getblockchaininfo {
+macro_rules! impl_client_v17__get_blockchain_info {
     () => {
         impl Client {
             pub fn get_blockchain_info(&self) -> Result<GetBlockchainInfo> {
@@ -23,7 +23,7 @@ macro_rules! impl_client_v17__getblockchaininfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `getbestblockhash`
 #[macro_export]
-macro_rules! impl_client_v17__getbestblockhash {
+macro_rules! impl_client_v17__get_best_block_hash {
     () => {
         impl Client {
             /// Gets the blockhash of the current chain tip.
@@ -41,7 +41,7 @@ macro_rules! impl_client_v17__getbestblockhash {
 
 /// Implements Bitcoin Core JSON-RPC API method `getblock`
 #[macro_export]
-macro_rules! impl_client_v17__getblock {
+macro_rules! impl_client_v17__get_block {
     () => {
         impl Client {
             /// Gets a block by blockhash.
@@ -65,7 +65,7 @@ macro_rules! impl_client_v17__getblock {
 
 /// Implements Bitcoin Core JSON-RPC API method `getblockcount`
 #[macro_export]
-macro_rules! impl_client_v17__getblockcount {
+macro_rules! impl_client_v17__get_block_count {
     () => {
         impl Client {
             pub fn get_block_count(&self) -> Result<GetBlockCount> {
@@ -77,7 +77,7 @@ macro_rules! impl_client_v17__getblockcount {
 
 /// Implements Bitcoin Core JSON-RPC API method `getblockhash`
 #[macro_export]
-macro_rules! impl_client_v17__getblockhash {
+macro_rules! impl_client_v17__get_block_hash {
     () => {
         impl Client {
             pub fn get_block_hash(&self, height: u64) -> Result<GetBlockHash> {
@@ -89,7 +89,7 @@ macro_rules! impl_client_v17__getblockhash {
 
 /// Implements Bitcoin Core JSON-RPC API method `getblockheader`
 #[macro_export]
-macro_rules! impl_client_v17__getblockheader {
+macro_rules! impl_client_v17__get_block_header {
     () => {
         impl Client {
             pub fn get_block_header(&self, hash: &BlockHash) -> Result<GetBlockHeader> {
@@ -109,7 +109,7 @@ macro_rules! impl_client_v17__getblockheader {
 
 /// Implements Bitcoin Core JSON-RPC API method `getblockstats`
 #[macro_export]
-macro_rules! impl_client_v17__getblockstats {
+macro_rules! impl_client_v17__get_block_stats {
     () => {
         impl Client {
             pub fn get_block_stats_by_height(&self, height: u32) -> Result<GetBlockStats> {
@@ -125,7 +125,7 @@ macro_rules! impl_client_v17__getblockstats {
 
 /// Implements Bitcoin Core JSON-RPC API method `getchaintips`
 #[macro_export]
-macro_rules! impl_client_v17__getchaintips {
+macro_rules! impl_client_v17__get_chain_tips {
     () => {
         impl Client {
             pub fn get_chain_tips(&self) -> Result<GetChainTips> { self.call("getchaintips", &[]) }
@@ -135,7 +135,7 @@ macro_rules! impl_client_v17__getchaintips {
 
 /// Implements Bitcoin Core JSON-RPC API method `getchaintxstats`
 #[macro_export]
-macro_rules! impl_client_v17__getchaintxstats {
+macro_rules! impl_client_v17__get_chain_tx_stats {
     () => {
         impl Client {
             pub fn get_chain_tx_stats(&self) -> Result<GetChainTxStats> {
@@ -147,7 +147,7 @@ macro_rules! impl_client_v17__getchaintxstats {
 
 /// Implements Bitcoin Core JSON-RPC API method `getdifficulty`
 #[macro_export]
-macro_rules! impl_client_v17__getdifficulty {
+macro_rules! impl_client_v17__get_difficulty {
     () => {
         impl Client {
             pub fn get_difficulty(&self) -> Result<GetDifficulty> {
@@ -159,7 +159,7 @@ macro_rules! impl_client_v17__getdifficulty {
 
 /// Implements Bitcoin Core JSON-RPC API method `getmempoolancestors`
 #[macro_export]
-macro_rules! impl_client_v17__getmempoolancestors {
+macro_rules! impl_client_v17__get_mempool_ancestors {
     () => {
         impl Client {
             pub fn get_mempool_ancestors(&self, txid: Txid) -> Result<GetMempoolAncestors> {
@@ -179,7 +179,7 @@ macro_rules! impl_client_v17__getmempoolancestors {
 
 /// Implements Bitcoin Core JSON-RPC API method `getmempooldescendants`
 #[macro_export]
-macro_rules! impl_client_v17__getmempooldescendants {
+macro_rules! impl_client_v17__get_mempool_descendants {
     () => {
         impl Client {
             pub fn get_mempool_descendants(&self, txid: Txid) -> Result<GetMempoolDescendants> {
@@ -199,7 +199,7 @@ macro_rules! impl_client_v17__getmempooldescendants {
 
 /// Implements Bitcoin Core JSON-RPC API method `getmempoolentry`
 #[macro_export]
-macro_rules! impl_client_v17__getmempoolentry {
+macro_rules! impl_client_v17__get_mempool_entry {
     () => {
         impl Client {
             pub fn get_mempool_entry(&self, txid: Txid) -> Result<GetMempoolEntry> {
@@ -211,7 +211,7 @@ macro_rules! impl_client_v17__getmempoolentry {
 
 /// Implements Bitcoin Core JSON-RPC API method `getmempoolinfo`
 #[macro_export]
-macro_rules! impl_client_v17__getmempoolinfo {
+macro_rules! impl_client_v17__get_mempool_info {
     () => {
         impl Client {
             pub fn get_mempool_info(&self) -> Result<GetMempoolInfo> {
@@ -223,7 +223,7 @@ macro_rules! impl_client_v17__getmempoolinfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `getrawmempool`
 #[macro_export]
-macro_rules! impl_client_v17__getrawmempool {
+macro_rules! impl_client_v17__get_raw_mempool {
     () => {
         impl Client {
             pub fn get_raw_mempool(&self) -> Result<GetRawMempool> {
@@ -239,7 +239,7 @@ macro_rules! impl_client_v17__getrawmempool {
 
 /// Implements Bitcoin Core JSON-RPC API method `gettxout`
 #[macro_export]
-macro_rules! impl_client_v17__gettxout {
+macro_rules! impl_client_v17__get_tx_out {
     () => {
         impl Client {
             pub fn get_tx_out(&self, txid: Txid, vout: u64) -> Result<GetTxOut> {
@@ -251,7 +251,7 @@ macro_rules! impl_client_v17__gettxout {
 
 /// Implements Bitcoin Core JSON-RPC API method `gettxoutproof`
 #[macro_export]
-macro_rules! impl_client_v17__gettxoutproof {
+macro_rules! impl_client_v17__get_tx_out_proof {
     () => {
         impl Client {
             pub fn get_tx_out_proof(&self, txids: &[Txid]) -> Result<String> {
@@ -263,7 +263,7 @@ macro_rules! impl_client_v17__gettxoutproof {
 
 /// Implements Bitcoin Core JSON-RPC API method `gettxoutsetinfo`
 #[macro_export]
-macro_rules! impl_client_v17__gettxoutsetinfo {
+macro_rules! impl_client_v17__get_tx_out_set_info {
     () => {
         impl Client {
             pub fn get_tx_out_set_info(&self) -> Result<GetTxOutSetInfo> {
@@ -275,7 +275,7 @@ macro_rules! impl_client_v17__gettxoutsetinfo {
 
 /// Implements Bitcoin Core JSON-RPC API method `preciousblock`
 #[macro_export]
-macro_rules! impl_client_v17__preciousblock {
+macro_rules! impl_client_v17__precious_block {
     () => {
         impl Client {
             pub fn precious_block(&self, hash: BlockHash) -> Result<()> {
@@ -291,7 +291,7 @@ macro_rules! impl_client_v17__preciousblock {
 
 /// Implements Bitcoin Core JSON-RPC API method `pruneblockchain`
 #[macro_export]
-macro_rules! impl_client_v17__pruneblockchain {
+macro_rules! impl_client_v17__prune_blockchain {
     () => {
         impl Client {
             /// Instructs the node to prune the blockchain up to a specified height or timestamp.
@@ -304,7 +304,7 @@ macro_rules! impl_client_v17__pruneblockchain {
 
 /// Implements Bitcoin Core JSON-RPC API method `savemempool`
 #[macro_export]
-macro_rules! impl_client_v17__savemempool {
+macro_rules! impl_client_v17__save_mempool {
     () => {
         impl Client {
             pub fn save_mempool(&self) -> Result<()> {
@@ -320,7 +320,7 @@ macro_rules! impl_client_v17__savemempool {
 
 /// Implements Bitcoin Core JSON-RPC API method `verifychain`
 #[macro_export]
-macro_rules! impl_client_v17__verifychain {
+macro_rules! impl_client_v17__verify_chain {
     () => {
         impl Client {
             pub fn verify_chain(&self) -> Result<VerifyChain> { self.call("verifychain", &[]) }
@@ -330,7 +330,7 @@ macro_rules! impl_client_v17__verifychain {
 
 /// Implements Bitcoin Core JSON-RPC API method `verifytxoutproof`
 #[macro_export]
-macro_rules! impl_client_v17__verifytxoutproof {
+macro_rules! impl_client_v17__verify_tx_out_proof {
     () => {
         impl Client {
             // `proof` is the hex-encoded proof generated by `gettxoutproof`.

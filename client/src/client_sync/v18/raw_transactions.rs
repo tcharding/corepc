@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `analyzepsbt`
 #[macro_export]
-macro_rules! impl_client_v18__analyzepsbt {
+macro_rules! impl_client_v18__analyze_psbt {
     () => {
         impl Client {
             pub fn analyze_psbt(&self, psbt: &bitcoin::Psbt) -> Result<AnalyzePsbt> {
@@ -24,7 +24,7 @@ macro_rules! impl_client_v18__analyzepsbt {
 
 /// Implements Bitcoin Core JSON-RPC API method `joinpsbts`
 #[macro_export]
-macro_rules! impl_client_v18__joinpsbts {
+macro_rules! impl_client_v18__join_psbts {
     () => {
         impl Client {
             pub fn join_psbts(&self, psbts: &[bitcoin::Psbt]) -> Result<JoinPsbts> {
@@ -37,7 +37,7 @@ macro_rules! impl_client_v18__joinpsbts {
 
 /// Implements Bitcoin Core JSON-RPC API method `uxtoupdatepsbt`
 #[macro_export]
-macro_rules! impl_client_v18__utxoupdatepsbt {
+macro_rules! impl_client_v18__utxo_update_psbt {
     () => {
         impl Client {
             pub fn utxo_update_psbt(&self, psbt: &bitcoin::Psbt) -> Result<JoinPsbts> {
