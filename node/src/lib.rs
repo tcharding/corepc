@@ -282,18 +282,7 @@ impl Node {
 
     /// Launch the bitcoind process from the given `exe` executable with given [Conf] param and create/load the "default" wallet.
     pub fn with_conf<S: AsRef<OsStr>>(exe: S, conf: &Conf) -> anyhow::Result<Node> {
-        let tmpdir =
-            conf.tmpdir.clone().or_else(|| env::var("TEMPDIR_ROOT").map(PathBuf::from).ok());
-        let work_dir = match (&tmpdir, &conf.staticdir) {
-            (Some(_), Some(_)) => return Err(Error::BothDirsSpecified.into()),
-            (Some(tmpdir), None) => DataDir::Temporary(TempDir::new_in(tmpdir)?),
-            (None, Some(workdir)) => {
-                fs::create_dir_all(workdir)?;
-                DataDir::Persistent(workdir.to_owned())
-            }
-            (None, None) => DataDir::Temporary(TempDir::new()?),
-        };
-
+        let work_dir = Self::init_work_dir(conf)?;
         let work_dir_path = work_dir.path();
         if !work_dir_path.exists() {
             panic!("work dir does not exist");
@@ -306,45 +295,9 @@ impl Node {
         let rpc_url = format!("http://{}", rpc_socket);
         debug!("rpc_url: {}", rpc_url);
 
-        let (p2p_args, p2p_socket) = match conf.p2p {
-            P2P::No => (vec!["-listen=0".to_string()], None),
-            P2P::Yes => {
-                let p2p_port = get_available_port()?;
-                let p2p_socket = SocketAddrV4::new(LOCAL_IP, p2p_port);
-                let bind_arg = format!("-bind={}", p2p_socket);
-                let args = vec![bind_arg];
-                (args, Some(p2p_socket))
-            }
-            P2P::Connect(other_node_url, listen) => {
-                let p2p_port = get_available_port()?;
-                let p2p_socket = SocketAddrV4::new(LOCAL_IP, p2p_port);
-                let bind_arg = format!("-bind={}", p2p_socket);
-                let connect = format!("-connect={}", other_node_url);
-                let mut args = vec![bind_arg, connect];
-                if listen {
-                    args.push("-listen=1".to_string())
-                }
-                (args, Some(p2p_socket))
-            }
-        };
-
-        let (zmq_args, zmq_pub_raw_tx_socket, zmq_pub_raw_block_socket) = match conf.enable_zmq {
-            true => {
-                let zmq_pub_raw_tx_port = get_available_port()?;
-                let zmq_pub_raw_tx_socket = SocketAddrV4::new(LOCAL_IP, zmq_pub_raw_tx_port);
-                let zmq_pub_raw_block_port = get_available_port()?;
-                let zmq_pub_raw_block_socket = SocketAddrV4::new(LOCAL_IP, zmq_pub_raw_block_port);
-                let zmqpubrawblock_arg =
-                    format!("-zmqpubrawblock=tcp://0.0.0.0:{}", zmq_pub_raw_block_port);
-                let zmqpubrawtx_arg = format!("-zmqpubrawtx=tcp://0.0.0.0:{}", zmq_pub_raw_tx_port);
-                (
-                    vec![zmqpubrawtx_arg, zmqpubrawblock_arg],
-                    Some(zmq_pub_raw_tx_socket),
-                    Some(zmq_pub_raw_block_socket),
-                )
-            }
-            false => (vec![], None, None),
-        };
+        let (p2p_args, p2p_socket) = Self::p2p_args(&conf.p2p)?;
+        let (zmq_args, zmq_pub_raw_tx_socket, zmq_pub_raw_block_socket) =
+            Self::zmq_args(conf.enable_zmq)?;
 
         let stdout = if conf.view_stdout { Stdio::inherit() } else { Stdio::null() };
 
@@ -457,6 +410,66 @@ impl Node {
                 zmq_pub_raw_tx_socket,
             },
         })
+    }
+
+    fn init_work_dir(conf: &Conf) -> anyhow::Result<DataDir> {
+        let tmpdir =
+            conf.tmpdir.clone().or_else(|| env::var("TEMPDIR_ROOT").map(PathBuf::from).ok());
+        let work_dir = match (&tmpdir, &conf.staticdir) {
+            (Some(_), Some(_)) => return Err(Error::BothDirsSpecified.into()),
+            (Some(tmpdir), None) => DataDir::Temporary(TempDir::new_in(tmpdir)?),
+            (None, Some(workdir)) => {
+                fs::create_dir_all(workdir)?;
+                DataDir::Persistent(workdir.to_owned())
+            }
+            (None, None) => DataDir::Temporary(TempDir::new()?),
+        };
+        Ok(work_dir)
+    }
+
+    fn p2p_args(p2p: &P2P) -> anyhow::Result<(Vec<String>, Option<SocketAddrV4>)> {
+        match p2p {
+            P2P::No => Ok((vec!["-listen=0".to_string()], None)),
+            P2P::Yes => {
+                let p2p_port = get_available_port()?;
+                let p2p_socket = SocketAddrV4::new(LOCAL_IP, p2p_port);
+                let bind_arg = format!("-bind={}", p2p_socket);
+                let args = vec![bind_arg];
+                Ok((args, Some(p2p_socket)))
+            }
+            P2P::Connect(other_node_url, listen) => {
+                let p2p_port = get_available_port()?;
+                let p2p_socket = SocketAddrV4::new(LOCAL_IP, p2p_port);
+                let bind_arg = format!("-bind={}", p2p_socket);
+                let connect = format!("-connect={}", other_node_url);
+                let mut args = vec![bind_arg, connect];
+                if *listen {
+                    args.push("-listen=1".to_string())
+                }
+                Ok((args, Some(p2p_socket)))
+            }
+        }
+    }
+
+    fn zmq_args(
+        enable_zmq: bool,
+    ) -> anyhow::Result<(Vec<String>, Option<SocketAddrV4>, Option<SocketAddrV4>)> {
+        if enable_zmq {
+            let zmq_pub_raw_tx_port = get_available_port()?;
+            let zmq_pub_raw_tx_socket = SocketAddrV4::new(LOCAL_IP, zmq_pub_raw_tx_port);
+            let zmq_pub_raw_block_port = get_available_port()?;
+            let zmq_pub_raw_block_socket = SocketAddrV4::new(LOCAL_IP, zmq_pub_raw_block_port);
+            let zmqpubrawblock_arg =
+                format!("-zmqpubrawblock=tcp://0.0.0.0:{}", zmq_pub_raw_block_port);
+            let zmqpubrawtx_arg = format!("-zmqpubrawtx=tcp://0.0.0.0:{}", zmq_pub_raw_tx_port);
+            Ok((
+                vec![zmqpubrawtx_arg, zmqpubrawblock_arg],
+                Some(zmq_pub_raw_tx_socket),
+                Some(zmq_pub_raw_block_socket),
+            ))
+        } else {
+            Ok((vec![], None, None))
+        }
     }
 
     /// Returns the rpc URL including the schema eg. http://127.0.0.1:44842
