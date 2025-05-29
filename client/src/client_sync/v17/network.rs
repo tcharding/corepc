@@ -41,6 +41,22 @@ macro_rules! impl_client_v17__clearbanned {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `disconnectnode`
+#[macro_export]
+macro_rules! impl_client_v17__disconnectnode {
+    () => {
+        impl Client {
+            pub fn disconnect_node(&self, address: &str) -> Result<()> {
+                match self.call("disconnectnode", &[into_json(address)?]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `getaddednodeinfo`
 #[macro_export]
 macro_rules! impl_client_v17__getaddednodeinfo {
