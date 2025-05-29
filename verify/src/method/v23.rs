@@ -77,7 +77,7 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("decoderawtransaction", "decode_raw_transaction"),
     Method::new_nothing("decodescript", "decode_script"),
     Method::new_nothing("finalizepsbt", "finalize_psbt"),
-    Method::new_nothing("fundrawtransaction", "fund_raw_transaciton"),
+    Method::new_nothing("fundrawtransaction", "fund_raw_transaction"),
     Method::new_nothing("getrawtransaction", "get_raw_transaction"),
     Method::new_modelled("joinpsbts", "JoinPsbts", "join_psbts"),
     Method::new_modelled("sendrawtransaction", "SendRawTransaction", "send_raw_transaction"),
