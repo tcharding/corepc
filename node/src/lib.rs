@@ -525,7 +525,6 @@ impl Node {
     /// Returns the rpc URL including the schema eg. http://127.0.0.1:44842
     pub fn rpc_url(&self) -> String { format!("http://{}", self.params.rpc_socket) }
 
-    #[cfg(any(feature = "0_19_1", not(feature = "download")))]
     /// Returns the rpc URL including the schema and the given `wallet_name`
     /// eg. http://127.0.0.1:44842/wallet/my_wallet
     pub fn rpc_url_with_wallet<T: AsRef<str>>(&self, wallet_name: T) -> String {
@@ -546,7 +545,6 @@ impl Node {
         Ok(self.process.wait()?)
     }
 
-    #[cfg(any(feature = "0_19_1", not(feature = "download")))]
     /// Create a new wallet in the running node, and return an RPC client connected to the just
     /// created wallet
     pub fn create_wallet<T: AsRef<str>>(&self, wallet: T) -> anyhow::Result<Client> {
