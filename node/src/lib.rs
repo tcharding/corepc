@@ -9,14 +9,13 @@ mod versions;
 
 use std::ffi::OsStr;
 use std::net::{Ipv4Addr, SocketAddrV4, TcpListener};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::{Child, Command, ExitStatus, Stdio};
 use std::time::Duration;
 use std::{env, fmt, fs, thread};
 
 use anyhow::Context;
 use corepc_client::client_sync::{self, Auth};
-use log::{debug, error, warn};
 use tempfile::TempDir;
 pub use {anyhow, serde_json, tempfile, which};
 
@@ -136,8 +135,9 @@ pub enum Error {
     RpcUserAndPasswordUsed,
     /// Returned when expecting an auto-downloaded executable but `BITCOIND_SKIP_DOWNLOAD` env var is set
     SkipDownload,
-    /// It appears that bitcoind is not reachable.
-    NoBitcoindInstance,
+    /// Returned when bitcoind could not be reached after multiple attempts.
+    /// The attached string, if present, contains the error encountered when trying to connect.
+    NoBitcoindInstance(String),
 }
 
 impl fmt::Debug for Error {
@@ -154,7 +154,7 @@ impl fmt::Debug for Error {
             BothDirsSpecified => write!(f, "tempdir and staticdir cannot be enabled at same time in configuration options"),
             RpcUserAndPasswordUsed => write!(f, "`-rpcuser` and `-rpcpassword` cannot be used, it will be deprecated soon and it's recommended to use `-rpcauth` instead which works alongside with the default cookie authentication"),
             SkipDownload => write!(f, "expecting an auto-downloaded executable but `BITCOIND_SKIP_DOWNLOAD` env var is set"),
-            NoBitcoindInstance => write!(f, "it appears that bitcoind is not reachable"),
+            NoBitcoindInstance(msg) => write!(f, "it appears that bitcoind is not reachable: {}", msg),
         }
     }
 }
@@ -177,7 +177,7 @@ impl std::error::Error for Error {
             | BothDirsSpecified
             | RpcUserAndPasswordUsed
             | SkipDownload
-            | NoBitcoindInstance => None,
+            | NoBitcoindInstance(_) => None,
         }
     }
 }
@@ -202,7 +202,7 @@ const INVALID_ARGS: [&str; 2] = ["-rpcuser", "-rpcpassword"];
 /// conf.network = "regtest";
 /// conf.tmpdir = None;
 /// conf.staticdir = None;
-/// conf.attempts = 3;
+/// conf.attempts = 5;
 /// assert_eq!(conf, bitcoind::Conf::default());
 /// ```
 ///
@@ -265,7 +265,7 @@ impl Default for Conf<'_> {
             network: "regtest",
             tmpdir: None,
             staticdir: None,
-            attempts: 3,
+            attempts: 5,
             enable_zmq: false,
             wallet: Some("default".to_string()),
         }
@@ -280,8 +280,118 @@ impl Node {
         Node::with_conf(exe, &Conf::default())
     }
 
-    /// Launch the bitcoind process from the given `exe` executable with given [Conf] param and create/load the "default" wallet.
+    /// Launch the bitcoind process from the given `exe` executable with given [Conf] param and
+    /// create/load the "default" wallet.
+    ///
+    /// Waits for the node to be ready to accept connections before returning.
+    ///
+    /// # Parameters
+    ///
+    /// * `exe` - The path to the bitcoind executable.
+    /// * `conf` - The configuration parameters for the node.
+    ///
+    /// # Returns
+    ///
+    /// A [`Node`] instance if the node is successfully started and ready to accept connections.
+    ///
+    /// # Errors
+    ///
+    /// If the node fails to start after the specified number of attempts.
     pub fn with_conf<S: AsRef<OsStr>>(exe: S, conf: &Conf) -> anyhow::Result<Node> {
+        for attempt in 0..conf.attempts {
+            let work_dir = Self::init_work_dir(conf)?;
+            let cookie_file = work_dir.path().join(conf.network).join(".cookie");
+
+            let rpc_port = get_available_port()?;
+            let rpc_socket = SocketAddrV4::new(LOCAL_IP, rpc_port);
+            let rpc_url = format!("http://{}", rpc_socket);
+
+            let (p2p_args, p2p_socket) = Self::p2p_args(&conf.p2p)?;
+            let (zmq_args, zmq_pub_raw_tx_socket, zmq_pub_raw_block_socket) =
+                Self::zmq_args(conf.enable_zmq)?;
+
+            let stdout = if conf.view_stdout { Stdio::inherit() } else { Stdio::null() };
+
+            let datadir_arg = format!("-datadir={}", work_dir.path().display());
+            let rpc_arg = format!("-rpcport={}", rpc_port);
+            let default_args = [&datadir_arg, &rpc_arg];
+            let conf_args = validate_args(conf.args.clone())?;
+
+            let mut process = Command::new(exe.as_ref())
+                .args(default_args)
+                .args(&p2p_args)
+                .args(&conf_args)
+                .args(&zmq_args)
+                .stdout(stdout)
+                .spawn()
+                .with_context(|| format!("Error while executing {:?}", exe.as_ref()))?;
+            match process.try_wait() {
+                Ok(Some(_)) | Err(_) => {
+                    // Process has exited or an error occurred, kill and retry
+                    let _ = process.kill();
+                    continue;
+                }
+                Ok(None) => {
+                    // Process is still running, proceed
+                }
+            }
+
+            if Self::wait_for_cookie_file(cookie_file.as_path(), Duration::from_secs(5)).is_err() {
+                // If the cookie file is not accessible a new work_dir is needed and therefore a new
+                // process. Kill the process and retry.
+                let _ = process.kill();
+                continue;
+            }
+            let auth = Auth::CookieFile(cookie_file.clone());
+
+            let client_base = Self::create_client_base(&rpc_url, &auth)?;
+            let client = match &conf.wallet {
+                Some(wallet) =>
+                    match Self::create_client_wallet(&client_base, &rpc_url, &auth, wallet) {
+                        Ok(client) => client,
+                        Err(e) =>
+                            if attempt == conf.attempts - 1 {
+                                return Err(e);
+                            } else {
+                                // If the wallet cannot be created or loaded, there might be an issue
+                                // with the work_dir or process. Kill the process and retry.
+                                let _ = process.kill();
+                                continue;
+                            },
+                    },
+                None => client_base,
+            };
+            if Self::wait_for_client(&client, Duration::from_secs(5)).is_err() {
+                // If the client times out there might be an issue with the work_dir or process. Kill
+                // the process and retry.
+                let _ = process.kill();
+                continue;
+            }
+
+            return Ok(Node {
+                process,
+                client,
+                work_dir,
+                params: ConnectParams {
+                    cookie_file,
+                    rpc_socket,
+                    p2p_socket,
+                    zmq_pub_raw_block_socket,
+                    zmq_pub_raw_tx_socket,
+                },
+            });
+        }
+        Err(anyhow::anyhow!("Failed to start the node after {} attempts", conf.attempts))
+    }
+
+    /// Initialize the work directory based on the provided configuration in [`Conf`].
+    ///
+    /// # Parameters
+    ///
+    /// * `conf` - Contains the paths for temporary (`tmpdir`) and static (`staticdir`)
+    ///   directories. If neither is specified, a temporary directory will be created in the
+    ///   system's default temporary directory.
+    fn init_work_dir(conf: &Conf) -> anyhow::Result<DataDir> {
         let tmpdir =
             conf.tmpdir.clone().or_else(|| env::var("TEMPDIR_ROOT").map(PathBuf::from).ok());
         let work_dir = match (&tmpdir, &conf.staticdir) {
@@ -293,27 +403,19 @@ impl Node {
             }
             (None, None) => DataDir::Temporary(TempDir::new()?),
         };
+        Ok(work_dir)
+    }
 
-        let work_dir_path = work_dir.path();
-        if !work_dir_path.exists() {
-            panic!("work dir does not exist");
-        }
-        debug!("work_dir: {:?}", work_dir_path);
-
-        let cookie_file = work_dir_path.join(conf.network).join(".cookie");
-        let rpc_port = get_available_port()?;
-        let rpc_socket = SocketAddrV4::new(LOCAL_IP, rpc_port);
-        let rpc_url = format!("http://{}", rpc_socket);
-        debug!("rpc_url: {}", rpc_url);
-
-        let (p2p_args, p2p_socket) = match conf.p2p {
-            P2P::No => (vec!["-listen=0".to_string()], None),
+    /// Returns the p2p args and the p2p socket address if any.
+    fn p2p_args(p2p: &P2P) -> anyhow::Result<(Vec<String>, Option<SocketAddrV4>)> {
+        match p2p {
+            P2P::No => Ok((vec!["-listen=0".to_string()], None)),
             P2P::Yes => {
                 let p2p_port = get_available_port()?;
                 let p2p_socket = SocketAddrV4::new(LOCAL_IP, p2p_port);
                 let bind_arg = format!("-bind={}", p2p_socket);
                 let args = vec![bind_arg];
-                (args, Some(p2p_socket))
+                Ok((args, Some(p2p_socket)))
             }
             P2P::Connect(other_node_url, listen) => {
                 let p2p_port = get_available_port()?;
@@ -321,142 +423,103 @@ impl Node {
                 let bind_arg = format!("-bind={}", p2p_socket);
                 let connect = format!("-connect={}", other_node_url);
                 let mut args = vec![bind_arg, connect];
-                if listen {
+                if *listen {
                     args.push("-listen=1".to_string())
                 }
-                (args, Some(p2p_socket))
-            }
-        };
-
-        let (zmq_args, zmq_pub_raw_tx_socket, zmq_pub_raw_block_socket) = match conf.enable_zmq {
-            true => {
-                let zmq_pub_raw_tx_port = get_available_port()?;
-                let zmq_pub_raw_tx_socket = SocketAddrV4::new(LOCAL_IP, zmq_pub_raw_tx_port);
-                let zmq_pub_raw_block_port = get_available_port()?;
-                let zmq_pub_raw_block_socket = SocketAddrV4::new(LOCAL_IP, zmq_pub_raw_block_port);
-                let zmqpubrawblock_arg =
-                    format!("-zmqpubrawblock=tcp://0.0.0.0:{}", zmq_pub_raw_block_port);
-                let zmqpubrawtx_arg = format!("-zmqpubrawtx=tcp://0.0.0.0:{}", zmq_pub_raw_tx_port);
-                (
-                    vec![zmqpubrawtx_arg, zmqpubrawblock_arg],
-                    Some(zmq_pub_raw_tx_socket),
-                    Some(zmq_pub_raw_block_socket),
-                )
-            }
-            false => (vec![], None, None),
-        };
-
-        let stdout = if conf.view_stdout { Stdio::inherit() } else { Stdio::null() };
-
-        let datadir_arg = format!("-datadir={}", work_dir_path.display());
-        let rpc_arg = format!("-rpcport={}", rpc_port);
-        let default_args = [&datadir_arg, &rpc_arg];
-        let conf_args = validate_args(conf.args.clone())?;
-
-        debug!(
-            "launching {:?} with args: {:?} {:?} AND custom args: {:?}",
-            exe.as_ref(),
-            default_args,
-            p2p_args,
-            conf_args
-        );
-
-        let mut process = Command::new(exe.as_ref())
-            .args(default_args)
-            .args(&p2p_args)
-            .args(&conf_args)
-            .args(&zmq_args)
-            .stdout(stdout)
-            .spawn()
-            .with_context(|| format!("Error while executing {:?}", exe.as_ref()))?;
-
-        debug!("cookie file: {}", cookie_file.display());
-
-        if let Some(status) = process.try_wait()? {
-            if conf.attempts > 0 {
-                warn!("early exit with: {:?}. Trying to launch again ({} attempts remaining), maybe some other process used our available port", status, conf.attempts);
-                let mut conf = conf.clone();
-                conf.attempts -= 1;
-                return Self::with_conf(exe, &conf)
-                    .with_context(|| format!("Remaining attempts {}", conf.attempts));
-            } else {
-                error!("early exit with: {:?}", status);
-                return Err(Error::EarlyExit(status).into());
+                Ok((args, Some(p2p_socket)))
             }
         }
-        thread::sleep(Duration::from_millis(1000));
-        assert!(process.stderr.is_none());
+    }
 
-        let mut tries = 0;
-        let auth = Auth::CookieFile(cookie_file.clone());
+    /// Returns the zmq args and the zmq socket addresses if any.
+    ///
+    /// # Parameters
+    /// * `enable_zmq` - If `true`, creates two ZMQ sockets:
+    ///     - `zmq_pub_raw_tx_socket`: for raw transaction publishing
+    ///     - `zmq_pub_raw_block_socket`: for raw block publishing
+    fn zmq_args(
+        enable_zmq: bool,
+    ) -> anyhow::Result<(Vec<String>, Option<SocketAddrV4>, Option<SocketAddrV4>)> {
+        if enable_zmq {
+            let zmq_pub_raw_tx_port = get_available_port()?;
+            let zmq_pub_raw_tx_socket = SocketAddrV4::new(LOCAL_IP, zmq_pub_raw_tx_port);
+            let zmq_pub_raw_block_port = get_available_port()?;
+            let zmq_pub_raw_block_socket = SocketAddrV4::new(LOCAL_IP, zmq_pub_raw_block_port);
+            let zmqpubrawblock_arg =
+                format!("-zmqpubrawblock=tcp://0.0.0.0:{}", zmq_pub_raw_block_port);
+            let zmqpubrawtx_arg = format!("-zmqpubrawtx=tcp://0.0.0.0:{}", zmq_pub_raw_tx_port);
+            Ok((
+                vec![zmqpubrawtx_arg, zmqpubrawblock_arg],
+                Some(zmq_pub_raw_tx_socket),
+                Some(zmq_pub_raw_block_socket),
+            ))
+        } else {
+            Ok((vec![], None, None))
+        }
+    }
 
-        let client = loop {
-            tries += 1;
-
-            if tries > 10 {
-                error!("failed to get a response from bitcoind");
-                return Err(Error::NoBitcoindInstance.into());
+    /// Returns `Ok` once the cookie file is accessible, or an error if it times out.
+    fn wait_for_cookie_file(cookie_file: &Path, timeout: Duration) -> anyhow::Result<()> {
+        let start = std::time::Instant::now();
+        while start.elapsed() < timeout {
+            if cookie_file.exists() {
+                return Ok(());
             }
+            thread::sleep(Duration::from_millis(200));
+        }
+        Err(anyhow::anyhow!("timeout waiting for cookie file: {}", cookie_file.display()))
+    }
 
-            let client_base = match Client::new_with_auth(&rpc_url, auth.clone()) {
-                Ok(client) => client,
-                Err(e) => {
-                    error!("failed to create client: {}. Retrying!", e);
-                    thread::sleep(Duration::from_millis(1000));
-                    continue;
-                }
-            };
-
-            // Just use serde value because changes to the GetBlockchainInfo type make debugging hard.
-            let client_result: Result<serde_json::Value, _> =
-                client_base.call("getblockchaininfo", &[]);
-
-            match client_result {
-                Ok(_) => {
-                    let url = match &conf.wallet {
-                        Some(wallet) => {
-                            debug!("trying to create/load wallet: {}", wallet);
-                            // Debugging logic here implicitly tests `into_model` for create/load wallet.
-                            match client_base.create_wallet(wallet) {
-                                Ok(json) => {
-                                    debug!("created wallet: {}", json.name());
-                                }
-                                Err(e) => {
-                                    debug!(
-                                        "initial create_wallet failed, try load instead: {:?}",
-                                        e
-                                    );
-                                    let wallet = client_base.load_wallet(wallet)?.name();
-                                    debug!("loaded wallet: {}", wallet);
-                                }
-                            }
-                            format!("{}/wallet/{}", rpc_url, wallet)
-                        }
-                        None => rpc_url,
-                    };
-                    debug!("creating client with url: {}", url);
-                    break Client::new_with_auth(&url, auth)?;
-                }
-                Err(e) => {
-                    error!("failed to get a response from bitcoind: {}. Retrying!", e);
-                    thread::sleep(Duration::from_millis(1000));
-                    continue;
-                }
+    /// Returns `Ok` once the client can successfully call, or an error if it times out.
+    fn wait_for_client(client: &Client, timeout: Duration) -> anyhow::Result<()> {
+        let start = std::time::Instant::now();
+        while start.elapsed() < timeout {
+            // Test calling GetBlockchainInfo. Use serde value to be resilient to upstream changes.
+            if client.call::<serde_json::Value>("getblockchaininfo", &[]).is_ok() {
+                return Ok(());
             }
-        };
+            thread::sleep(Duration::from_millis(200));
+        }
+        Err(anyhow::anyhow!("timeout waiting for client to be ready"))
+    }
 
-        Ok(Node {
-            process,
-            client,
-            work_dir,
-            params: ConnectParams {
-                cookie_file,
-                rpc_socket,
-                p2p_socket,
-                zmq_pub_raw_block_socket,
-                zmq_pub_raw_tx_socket,
-            },
-        })
+    /// Create a new RPC client connected to the given `rpc_url` with the provided `auth`.
+    ///
+    /// The client may not be immediately available, so retry up to 10 times.
+    fn create_client_base(rpc_url: &str, auth: &Auth) -> anyhow::Result<Client> {
+        for _ in 0..10 {
+            if let Ok(client) = Client::new_with_auth(rpc_url, auth.clone()) {
+                return Ok(client);
+            }
+            thread::sleep(Duration::from_millis(200));
+        }
+        Client::new_with_auth(rpc_url, auth.clone())
+            .map_err(|e| Error::NoBitcoindInstance(e.to_string()).into())
+    }
+
+    /// Create a new RPC client connected to the given `wallet`.
+    ///
+    /// If the wallet with the given name does not exist, it will create it.
+    /// If the wallet already exists, it will load it.
+    ///
+    /// The client or wallet may not be immediately available, so retry up to 10 times.
+    fn create_client_wallet(
+        client_base: &Client,
+        rpc_url: &str,
+        auth: &Auth,
+        wallet: &str,
+    ) -> anyhow::Result<Client> {
+        for _ in 0..10 {
+            // Try to create the wallet, or if that fails it might already exist so try to load it.
+            if client_base.create_wallet(wallet).is_ok() || client_base.load_wallet(wallet).is_ok()
+            {
+                let url = format!("{}/wallet/{}", rpc_url, wallet);
+                return Client::new_with_auth(&url, auth.clone())
+                    .map_err(|e| Error::NoBitcoindInstance(e.to_string()).into());
+            }
+            thread::sleep(Duration::from_millis(200));
+        }
+        Err(Error::NoBitcoindInstance("Could not create or load wallet".to_string()).into())
     }
 
     /// Returns the rpc URL including the schema eg. http://127.0.0.1:44842
@@ -555,7 +618,6 @@ pub fn downloaded_exe_path() -> anyhow::Result<String> {
     }
 
     let path = format!("{}", path.display());
-    debug!("path: {}", path);
     Ok(path)
 }
 
