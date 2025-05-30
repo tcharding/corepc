@@ -49,10 +49,10 @@
 //! | gettxoutsetinfo                    | version + model |                                        |
 //! | gettxspendingprevout               | version + model | TODO                                   |
 //! | preciousblock                      | returns nothing |                                        |
-//! | pruneblockchain                    | returns numeric |                                        |
+//! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
 //! | scantxoutset                       | omitted         | API marked as experimental             |
-//! | verifychain                        | returns boolean |                                        |
+//! | verifychain                        | version         |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
 //!
 //! </details>
@@ -94,7 +94,7 @@
 //! | clearbanned                        | returns nothing |                                        |
 //! | disconnectnode                     | returns nothing |                                        |
 //! | getaddednodeinfo                   | version         |                                        |
-//! | getconnectioncount                 | returns numeric |                                        |
+//! | getconnectioncount                 | version         |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
 //! | getnodeaddresses                   | version + model |                                        |
