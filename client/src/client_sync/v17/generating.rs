@@ -40,7 +40,7 @@ macro_rules! impl_client_v17__generate {
 /// Implements Bitcoin Core JSON-RPC API method `invalidateblock`
 // This method does not appear in the output of `bitcoin-cli help`.
 #[macro_export]
-macro_rules! impl_client_v17__invalidateblock {
+macro_rules! impl_client_v17__invalidate_block {
     () => {
         impl Client {
             pub fn invalidate_block(&self, hash: BlockHash) -> Result<()> {
