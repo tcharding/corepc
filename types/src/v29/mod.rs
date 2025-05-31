@@ -54,11 +54,11 @@
 //! | importmempool                      | version + model | TODO                                   |
 //! | loadtxoutset                       | version + model | TODO                                   |
 //! | preciousblock                      | returns nothing |                                        |
-//! | pruneblockchain                    | returns numeric |                                        |
+//! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
 //! | scanblocks                         | version + model | TODO                                   |
 //! | scantxoutset                       | omitted         | API marked as experimental             |
-//! | verifychain                        | returns boolean |                                        |
+//! | verifychain                        | version         |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
 //!
 //! </details>
@@ -102,7 +102,7 @@
 //! | disconnectnode                     | returns nothing |                                        |
 //! | getaddednodeinfo                   | version         |                                        |
 //! | getaddrmaninfo                     | version + model | TODO                                   |
-//! | getconnectioncount                 | returns numeric |                                        |
+//! | getconnectioncount                 | version         |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
 //! | getnodeaddresses                   | version + model |                                        |
