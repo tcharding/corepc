@@ -50,6 +50,12 @@ fn network__get_added_node_info() {
 }
 
 #[test]
+fn network__get_connection_count() {
+    let node = Node::with_wallet(Wallet::None, &[]);
+    let _: GetConnectionCount = node.client.get_connection_count().expect("getconnectioncount");
+}
+
+#[test]
 fn network__get_net_totals() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let _: GetNetTotals = node.client.get_net_totals().expect("getnettotals");
