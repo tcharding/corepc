@@ -119,6 +119,22 @@ macro_rules! impl_client_v17__get_peer_info {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `ping`
+#[macro_export]
+macro_rules! impl_client_v17__ping {
+    () => {
+        impl Client {
+            pub fn ping(&self) -> Result<()> {
+                match self.call("ping", &[]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `setban`
 #[macro_export]
 macro_rules! impl_client_v17__set_ban {

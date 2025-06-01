@@ -114,6 +114,12 @@ fn get_peer_info_three_node_network() {
 }
 
 #[test]
+fn network__ping() {
+    let node = Node::with_wallet(Wallet::None, &[]);
+    node.client.ping().expect("ping");
+}
+
+#[test]
 fn network__set_ban() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let dummy_subnet = "192.0.2.3";
