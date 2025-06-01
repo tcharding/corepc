@@ -107,7 +107,7 @@
 //! | getnetworkinfo                     | version + model |                                        |
 //! | getnodeaddresses                   | version + model |                                        |
 //! | getpeerinfo                        | version         |                                        |
-//! | listbanned                         | returns string  |                                        |
+//! | listbanned                         | version         |                                        |
 //! | ping                               | returns nothing |                                        |
 //! | setban                             | returns nothing |                                        |
 //! | setnetworkactive                   | version         |                                        |
@@ -235,12 +235,14 @@
 mod wallet;
 
 #[doc(inline)]
-pub use self::wallet::UnloadWallet;
+pub use self::{
+    wallet::UnloadWallet,
+};
 #[doc(inline)]
 pub use crate::{
     v17::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
+        AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
         ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig,
         CreateMultisigError, CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt,
         DecodePsbtError, DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey,
@@ -259,7 +261,7 @@ pub use crate::{
         GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,
         GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError,
         GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, GetZmqNotifications,
-        ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListBanned,
+        ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
         ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
         ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem,
         ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
@@ -286,5 +288,5 @@ pub use crate::{
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
         SoftforkType,
     },
-    v20::Logging,
+    v20::{Banned, Logging, ListBanned},
 };

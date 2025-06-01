@@ -107,7 +107,7 @@
 //! | getnetworkinfo                     | version + model |                                        |
 //! | getnodeaddresses                   | version + model |                                        |
 //! | getpeerinfo                        | version         |                                        |
-//! | listbanned                         | returns string  |                                        |
+//! | listbanned                         | version         |                                        |
 //! | ping                               | returns nothing |                                        |
 //! | setban                             | returns nothing |                                        |
 //! | setnetworkactive                   | version         |                                        |
@@ -244,14 +244,18 @@
 
 // JSON-RPC types by API section.
 mod control;
+mod network;
 
 #[doc(inline)]
-pub use self::control::Logging;
+pub use self::{
+    control::Logging,
+    network::{Banned, ListBanned}
+};
 #[doc(inline)]
 pub use crate::{
     v17::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
+        AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
         ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig,
         CreateMultisigError, CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt,
         DecodePsbtError, DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey,
@@ -270,7 +274,7 @@ pub use crate::{
         GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,
         GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError,
         GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, GetZmqNotifications,
-        ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListBanned,
+        ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
         ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
         ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem,
         ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
