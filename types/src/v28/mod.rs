@@ -187,7 +187,7 @@
 //! | gethdkeys                          | version + model | TODO                                   |
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
-//! | getreceivedbyaddress               | version + model | TODO                                   |
+//! | getreceivedbyaddress               | version + model |                                        |
 //! | getreceivedbylabel                 | version + model | TODO                                   |
 //! | gettransaction                     | version + model |                                        |
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
