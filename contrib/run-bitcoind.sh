@@ -21,6 +21,7 @@ COMMAND
 
    - all                      Start all bitcoind versions defined in the config file.
    - start [VERSION_ALIAS]    Start bitcoind nodes for the specified version alias (default: v22).
+   - run [VERSION_ALIAS]      Alias for `start [VERSION_ALIAS]`. Provided for ergonomic compatibility.
    - stop                     Kill all bitcoind nodes and clean up test directories.
 
 CONFIGURATION
@@ -61,7 +62,7 @@ main() {
     fi
 
     case $cmd in
-        all|start)
+        all|start|run)
             # Config loading logic
             local config_file=${RUN_BITCOIND_CONF:-}
 
@@ -110,7 +111,7 @@ main() {
             done
             ;;
 
-        start)
+        start|run)
             if [ -z "$version" ]; then
                 version="v22"  # Default version
             fi
