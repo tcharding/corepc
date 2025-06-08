@@ -255,7 +255,7 @@ pub use self::{
     network::{
         AddedNode, AddedNodeAddress, Banned, GetAddedNodeInfo, GetConnectionCount, GetNetTotals,
         GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
-        GetPeerInfo, ListBanned, PeerInfo, UploadTarget, SetNetworkActive,
+        GetPeerInfo, ListBanned, PeerInfo, SetNetworkActive, UploadTarget,
     },
     raw_transactions::{
         CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreatePsbt, CreateRawTransaction,
