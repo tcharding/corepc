@@ -150,3 +150,15 @@ macro_rules! impl_client_v17__set_ban {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `setnetworkactive`
+#[macro_export]
+macro_rules! impl_client_v17__set_network_active {
+    () => {
+        impl Client {
+            pub fn set_network_active(&self, state: bool) -> Result<SetNetworkActive> {
+                self.call("setnetworkactive", &[into_json(state)?])
+            }
+        }
+    };
+}

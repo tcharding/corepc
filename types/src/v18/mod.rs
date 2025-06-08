@@ -108,7 +108,7 @@
 //! | listbanned                         | returns string  |                                        |
 //! | ping                               | returns nothing |                                        |
 //! | setban                             | returns nothing |                                        |
-//! | setnetworkactive                   | returns nothing |                                        |
+//! | setnetworkactive                   | version         |                                        |
 //!
 //! </details>
 //!
@@ -274,5 +274,5 @@ pub use crate::v17::{
     SignRawTransaction, SignRawTransactionError, Softfork, SoftforkReject, TestMempoolAccept,
     TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
     VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-    WalletProcessPsbt, WitnessUtxo,
+    WalletProcessPsbt, WitnessUtxo, SetNetworkActive,
 };

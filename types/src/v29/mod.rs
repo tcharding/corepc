@@ -110,7 +110,7 @@
 //! | listbanned                         | returns string  |                                        |
 //! | ping                               | returns nothing |                                        |
 //! | setban                             | returns nothing |                                        |
-//! | setnetworkactive                   | returns nothing |                                        |
+//! | setnetworkactive                   | version         |                                        |
 //!
 //! </details>
 //!
@@ -300,7 +300,7 @@ pub use crate::{
         SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, TestMempoolAccept,
         TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
         VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WalletProcessPsbt, WitnessUtxo,
+        WalletProcessPsbt, WitnessUtxo, SetNetworkActive,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
