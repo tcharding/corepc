@@ -127,3 +127,13 @@ fn network__set_ban() {
     node.client.set_ban(dummy_subnet, SetBanCommand::Add).expect("setban add");
     node.client.set_ban(dummy_subnet, SetBanCommand::Remove).expect("setban remove");
 }
+
+#[test]
+fn network__set_network_active() {
+    let node = Node::with_wallet(Wallet::None, &[]);
+    let json: SetNetworkActive = node.client.set_network_active(false).expect("setnetworkactive false");
+    assert!(json.0 == false);
+
+    let json: SetNetworkActive = node.client.set_network_active(true).expect("setnetworkactive true");
+    assert!(json.0 == true);
+}

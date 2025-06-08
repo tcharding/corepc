@@ -81,6 +81,7 @@ crate::impl_client_v17__get_network_info!();
 crate::impl_client_v17__get_peer_info!();
 crate::impl_client_v17__ping!();
 crate::impl_client_v17__set_ban!();
+crate::impl_client_v17__set_network_active!();
 
 // == Rawtransactions ==
 crate::impl_client_v17__combine_psbt!();

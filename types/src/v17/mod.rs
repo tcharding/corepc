@@ -105,7 +105,7 @@
 //! | listbanned                         | returns string  |                                        |
 //! | ping                               | returns nothing |                                        |
 //! | setban                             | returns nothing |                                        |
-//! | setnetworkactive                   | returns nothing |                                        |
+//! | setnetworkactive                   | version         |                                        |
 //!
 //! </details>
 //!
@@ -255,7 +255,7 @@ pub use self::{
     network::{
         AddedNode, AddedNodeAddress, Banned, GetAddedNodeInfo, GetConnectionCount, GetNetTotals,
         GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
-        GetPeerInfo, ListBanned, PeerInfo, UploadTarget,
+        GetPeerInfo, ListBanned, PeerInfo, SetNetworkActive, UploadTarget,
     },
     raw_transactions::{
         CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreatePsbt, CreateRawTransaction,

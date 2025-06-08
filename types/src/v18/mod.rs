@@ -108,7 +108,7 @@
 //! | listbanned                         | returns string  |                                        |
 //! | ping                               | returns nothing |                                        |
 //! | setban                             | returns nothing |                                        |
-//! | setnetworkactive                   | returns nothing |                                        |
+//! | setnetworkactive                   | version         |                                        |
 //!
 //! </details>
 //!
@@ -270,7 +270,7 @@ pub use crate::v17::{
     MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
     PruneBlockchain, PsbtInput, PsbtOutput, PsbtScript, RawTransaction, RawTransactionError,
     RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany, SendRawTransaction,
-    SendToAddress, SignFail, SignFailError, SignMessage, SignMessageWithPrivKey,
+    SendToAddress, SetNetworkActive, SignFail, SignFailError, SignMessage, SignMessageWithPrivKey,
     SignRawTransaction, SignRawTransactionError, Softfork, SoftforkReject, TestMempoolAccept,
     TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
     VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
