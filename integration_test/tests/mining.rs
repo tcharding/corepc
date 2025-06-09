@@ -211,4 +211,18 @@ fn mining__submit_block_with_dummy_coinbase(node: &Node, bt: &mtype::GetBlockTem
     let _ = node.client.submit_block(&block).expect("submitblock");
 }
 
-// TODO: submitheader "hexdata" (v0.18 onwards)
+#[cfg(not(feature = "v17"))]
+#[test]
+fn mining__submit_header() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    node.mine_a_block();
+
+    let best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
+    let mut header = node.client.get_block_header(&best_block).expect("getblockheader").into_model().unwrap().0;
+
+    // Change the nonce to ensure the header is different from the current tip.
+    header.nonce = header.nonce.wrapping_add(1);
+
+    let _ = node.client.submit_header(&header);
+}
