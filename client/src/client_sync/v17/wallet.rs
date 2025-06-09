@@ -9,6 +9,22 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
+/// Implements Bitcoin Core JSON-RPC API method `abandontransaction`.
+#[macro_export]
+macro_rules! impl_client_v17__abandon_transaction {
+    () => {
+        impl Client {
+            pub fn abandon_transaction(&self, txid: Txid) -> Result<()> {
+                match self.call("abandontransaction", &[into_json(txid)?]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `addmultisigaddress`.
 #[macro_export]
 macro_rules! impl_client_v17__add_multisig_address {

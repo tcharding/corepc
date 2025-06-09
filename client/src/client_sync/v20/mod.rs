@@ -111,6 +111,7 @@ crate::impl_client_v17__validate_address!();
 crate::impl_client_v17__verify_message!();
 
 // == Wallet ==
+crate::impl_client_v17__abandon_transaction!();
 crate::impl_client_v17__add_multisig_address!();
 crate::impl_client_v17__bump_fee!();
 crate::impl_client_v17__create_wallet!();
