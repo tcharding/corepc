@@ -87,7 +87,7 @@
 //! | getprioritisedtransactions         | version + model | TODO                                   |
 //! | prioritisetransaction              | returns boolean |                                        |
 //! | submitblock                        | returns nothing |                                        |
-//! | submitheader                       | return nothing  | TODO                                   |
+//! | submitheader                       | returns nothing | TODO                                   |
 //!
 //! </details>
 //!
