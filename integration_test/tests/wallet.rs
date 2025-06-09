@@ -12,6 +12,31 @@ use node::{mtype,AddressType};
 use node::vtype::*;             // All the version specific types.
 
 #[test]
+fn wallet__abandon_transaction() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let mining_addr = node.client.new_address().expect("newaddress");
+    let json = node.client.generate_to_address(101, &mining_addr).expect("generatetoaddress");
+    let block_hashes = json.into_model();
+
+    let block_hash = block_hashes.expect("blockhash").0[0];
+
+    let dest_addr = node.client.new_address().expect("newaddress");
+    let amount = bitcoin::Amount::from_sat(1_000_000);
+
+    let txid = node
+        .client
+        .send_to_address_rbf(&dest_addr, amount)
+        .expect("sendtoaddressrbf")
+        .txid()
+        .expect("txid");
+
+    node.client.invalidate_block(block_hash).expect("invalidateblock");
+
+    node.client.abandon_transaction(txid).expect("abandontransaction");
+}
+
+#[test]
 #[cfg(feature = "TODO")]
 fn wallet__add_multisig_address__modelled() {
     let nrequired = 1; // 1-of-2 multisig.
