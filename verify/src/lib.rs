@@ -19,15 +19,15 @@ use regex::Regex;
 /// Supported Bitcoin Core versions.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Version {
-    /// Bitcoin Core v17.
+    /// Bitcoin Core v0.17.
     V17,
-    /// Bitcoin Core v18.
+    /// Bitcoin Core v0.18.
     V18,
-    /// Bitcoin Core v19.
+    /// Bitcoin Core v0.19.
     V19,
-    /// Bitcoin Core v20.
+    /// Bitcoin Core v0.20.
     V20,
-    /// Bitcoin Core v21.
+    /// Bitcoin Core v0.21.
     V21,
     /// Bitcoin Core v22.
     V22,

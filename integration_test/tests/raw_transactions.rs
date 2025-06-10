@@ -13,7 +13,7 @@ use node::{mtype, Input, Output};
 use node::vtype::*;             // All the version specific types.
 
 #[test]
-#[cfg(not(feature = "v17"))]    // analyzepsbt was added in v18.
+#[cfg(not(feature = "v17"))]    // analyzepsbt was added in v0.18.
 fn raw_transactions__analyze_psbt__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -427,7 +427,7 @@ fn raw_transactions__submit_package__modelled() {
 fn raw_transactions__test_mempool_accept__modelled() {}
 
 #[test]
-#[cfg(not(feature = "v17"))]    // utxoupdatepsbt was added in v18.
+#[cfg(not(feature = "v17"))]    // utxoupdatepsbt was added in v0.18.
 fn raw_transactions__utxo_update_psbt() {}
 
 // Manipulates raw transactions.
@@ -487,7 +487,7 @@ fn create_sign_send(node: &Node) {
 //
 // Calls the following RPC methods:
 // - create_raw_transaction
-// - sign_raw_transaction_with_key (sign_raw_transaction was deprecated in v17).
+// - sign_raw_transaction_with_key (sign_raw_transaction was deprecated in v0.17).
 // - send_raw_transaction
 //
 // TODO: Work out how to get a private key without using `dumpprivkey`.
@@ -544,7 +544,7 @@ fn create_sign_with_key_send(node: &Node) {
 //
 // Calls the following RPC methods:
 // - fund_raw_transaction
-// - sign_raw_transaction_with_wallet (sign_raw_transaction was deprecated in v17).
+// - sign_raw_transaction_with_wallet (sign_raw_transaction was deprecated in v0.17).
 // - send_raw_transaction
 fn create_fund_sign_send(node: &Node) {
     let (_addr, _tx, txid, _tx_out, vout) = create_utxo(node);

@@ -225,7 +225,7 @@ pub struct MempoolEntry {
     pub ancestor_size: i64,
     /// Hash of serialized transaction, including witness data.
     pub wtxid: String,
-    /// (No docs in Core v19.)
+    /// (No docs in Core v0.19.)
     pub fees: MempoolEntryFees,
     /// Unconfirmed transactions used as inputs for this transaction (parent transaction id).
     pub depends: Vec<String>,
@@ -234,7 +234,7 @@ pub struct MempoolEntry {
     pub spent_by: Vec<String>,
 }
 
-/// (No docs in Core v19.)
+/// (No docs in Core v0.19.)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct MempoolEntryFees {
     /// Transaction fee in BTC.

@@ -163,7 +163,7 @@ pub struct PsbtInput {
     /// Hex-encoded witness data (if any).
     #[serde(rename = "final_scriptwitness")]
     pub final_script_witness: Option<Vec<String>>,
-    // `s/global/input`: this is a bug in the Core v17 docs.
+    // `s/global/input`: this is a bug in the Core v0.17 docs.
     /// The unknown global fields.
     pub unknown: Option<HashMap<String, String>>,
 }
@@ -200,7 +200,7 @@ pub struct DecodeRawTransaction(pub RawTransaction);
 /// >
 /// > Arguments:
 /// > 1. "hexstring"     (string) the hex encoded script
-// The docs on Core v17 appear to be way off what is actually returned.
+// The docs on Core v0.17 appear to be way off what is actually returned.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct DecodeScript {
     /// Script public key.
