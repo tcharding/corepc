@@ -3,7 +3,7 @@
 //! Macros for implementing JSON-RPC methods on a client.
 //!
 //! Specifically this is methods found under the `== Blockchain ==` section of the
-//! API docs of Bitcoin Core `v0.26`.
+//! API docs of Bitcoin Core `v26`.
 //!
 //! All macros require `Client` to be in scope.
 //!

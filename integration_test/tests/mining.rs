@@ -211,4 +211,4 @@ fn mining__submit_block_with_dummy_coinbase(node: &Node, bt: &mtype::GetBlockTem
     let _ = node.client.submit_block(&block).expect("submitblock");
 }
 
-// TODO: submitheader "hexdata" (v18 onwards)
+// TODO: submitheader "hexdata" (v0.18 onwards)

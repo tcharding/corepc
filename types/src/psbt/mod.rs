@@ -196,7 +196,7 @@ pub struct Bip32Deriv {
 }
 
 /// The key source data for a BIP-32 derivation.
-// In v17 the BIP-32 derivation for inputs is a map of pubkey to this type.
+// In v0.17 the BIP-32 derivation for inputs is a map of pubkey to this type.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct InputKeySource {
     /// The fingerprint of the master key.

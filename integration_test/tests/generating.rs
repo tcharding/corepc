@@ -9,7 +9,7 @@ use node::vtype::*;             // All the version specific types.
 use node::mtype;
 
 #[test]
-// The `generate` method was deprecated in Core v18 and was removed in v19.
+// The `generate` method was deprecated in Core v0.18 and was removed in v0.19.
 #[cfg(feature = "v17")]
 fn generating__generate__modelled() {
     const NBLOCKS: usize = 10;

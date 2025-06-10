@@ -76,7 +76,7 @@ pub struct GetBlockTemplate {
     /// ID to include with a request to longpoll on an update to this template.
     #[serde(rename = "longpollid")]
     pub long_poll_id: String,
-    // This is in the docs but not actually returned (for v17 and v18 at least).
+    // This is in the docs but not actually returned (for v0.17 and v0.18 at least).
     // coinbase_txn: ???, // Also I don't know what the JSON object represents: `{ ... }`
     /// The hash target.
     pub target: String,

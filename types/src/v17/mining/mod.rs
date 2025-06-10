@@ -69,7 +69,7 @@ pub struct GetBlockTemplate {
     /// Maximum allowable input to coinbase transaction, including the generation award and transaction fees (in satoshis).
     #[serde(rename = "coinbasevalue")]
     pub coinbase_value: i64,
-    // This is in the docs but not actually returned (for v17 and v18 at least).
+    // This is in the docs but not actually returned (for v0.17 and v0.18 at least).
     // coinbase_txn: ???, // Also I don't know what the JSON object represents: `{ ... }`
     /// The hash target.
     pub target: String,

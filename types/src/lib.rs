@@ -177,7 +177,7 @@ pub fn compact_size_decode(slice: &mut &[u8]) -> u64 {
 ///
 /// This is used by methods in the blockchain section and in the raw transaction section (i.e raw
 /// transaction and psbt methods). The shape changed in Core v22 but the new shape is fully
-/// backwards compatible so we only provide it not a v17 specific type. The `mtype::ScriptPubkey`
+/// backwards compatible so we only provide it not a v0.17 specific type. The `mtype::ScriptPubkey`
 /// mirrors this design (but with concrete `rust-bitcoin` types).
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct ScriptPubkey {
