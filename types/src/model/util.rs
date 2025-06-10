@@ -29,6 +29,18 @@ pub struct EstimateSmartFee {
     pub blocks: u32,
 }
 
+/// Models the result of JSON-RPC method `deriveaddresses`.
+///
+/// > deriveaddresses "descriptor" ( range )
+/// >
+/// > Derives one or more addresses corresponding to an output descriptor.
+/// > Returns an array of derived addresses.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct DeriveAddresses {
+    /// The derived addresses.
+    pub addresses: Vec<Address<NetworkUnchecked>>,
+}
+
 /// Models the result of JSON-RPC method `signmessagewithprivkey`.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SignMessageWithPrivKey(pub sign_message::MessageSignature);

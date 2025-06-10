@@ -145,9 +145,9 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | createmultisig                     | version + model | TODO                                   |
-//! | deriveaddresses                    | version + model | TODO                                   |
+//! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
-//! | getdescriptorinfo                  | version         | TODO                                   |
+//! | getdescriptorinfo                  | version         |                                        |
 //! | getindexinfo                       | version         | TODO                                   |
 //! | signmessagewithprivkey             | version + model | TODO                                   |
 //! | validateaddress                    | version + model | TODO                                   |
@@ -285,7 +285,7 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, GetNodeAddresses, GetRpcInfo, JoinPsbts, ListUnspent,
-        ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
+        ListUnspentItem, NodeAddress, UtxoUpdatePsbt, DeriveAddresses,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
@@ -293,7 +293,7 @@ pub use crate::{
         GetBlockchainInfoError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
-        SoftforkType,
+        SoftforkType, GetDescriptorInfo,
     },
     v21::UnloadWallet,
     v22::{Logging, ScriptPubkey},

@@ -7,6 +7,7 @@
 pub mod control;
 pub mod network;
 pub mod raw_transactions;
+pub mod util;
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -110,7 +111,9 @@ crate::impl_client_v18__utxo_update_psbt!();
 
 // == Util ==
 crate::impl_client_v17__create_multisig!();
+crate::impl_client_v18__derive_addresses!();
 crate::impl_client_v17__estimate_smart_fee!();
+crate::impl_client_v18__get_descriptor_info!();
 crate::impl_client_v17__sign_message_with_priv_key!();
 crate::impl_client_v17__validate_address!();
 crate::impl_client_v17__verify_message!();

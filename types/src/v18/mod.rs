@@ -143,9 +143,9 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | createmultisig                     | version + model |                                        |
-//! | deriveaddresses                    | version + model | TODO                                   |
+//! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
-//! | getdescriptorinfo                  | version         | TODO                                   |
+//! | getdescriptorinfo                  | version         |                                        |
 //! | signmessagewithprivkey             | version + model |                                        |
 //! | validateaddress                    | version + model |                                        |
 //! | verifymessage                      | version         |                                        |
@@ -226,6 +226,7 @@
 mod control;
 mod network;
 mod raw_transactions;
+mod util;
 mod wallet;
 
 #[doc(inline)]
@@ -236,6 +237,7 @@ pub use self::{
         AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, JoinPsbts, UtxoUpdatePsbt,
     },
+    util::{DeriveAddresses, GetDescriptorInfo},
     wallet::{ListUnspent, ListUnspentItem},
 };
 #[doc(inline)]
