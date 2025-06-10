@@ -306,8 +306,8 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, GetNodeAddresses, GetRpcInfo, JoinPsbts, ListUnspent,
-        ListUnspentItem, NodeAddress, UtxoUpdatePsbt, DeriveAddresses,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetRpcInfo, JoinPsbts,
+        ListUnspent, ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,

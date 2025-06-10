@@ -274,16 +274,16 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, GetNodeAddresses, GetRpcInfo, JoinPsbts, ListUnspent,
-        ListUnspentItem, NodeAddress, UtxoUpdatePsbt, DeriveAddresses,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetRpcInfo, JoinPsbts,
+        ListUnspent, ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
-        GetBlockchainInfoError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetBlockchainInfoError, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
-        SoftforkType, GetDescriptorInfo,
+        SoftforkType,
     },
     v20::Logging,
 };
