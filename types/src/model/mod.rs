@@ -46,7 +46,9 @@ pub use self::{
         SignRawTransaction, SubmitPackage, SubmitPackageTxResult, SubmitPackageTxResultFees,
         TestMempoolAccept, UtxoUpdatePsbt,
     },
-    util::{CreateMultisig, EstimateSmartFee, SignMessageWithPrivKey, ValidateAddress},
+    util::{
+        CreateMultisig, DeriveAddresses, EstimateSmartFee, SignMessageWithPrivKey, ValidateAddress,
+    },
     wallet::{
         AddMultisigAddress, AddressInformation, AddressLabel, AddressPurpose, Bip125Replaceable,
         BumpFee, CreateWallet, DumpPrivKey, GetAddressInfo, GetAddressInfoEmbedded,

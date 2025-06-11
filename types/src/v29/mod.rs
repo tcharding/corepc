@@ -158,7 +158,7 @@
 //! | createmultisig                     | version + model | TODO                                   |
 //! | deriveaddresses                    | version + model | TODO                                   |
 //! | estimatesmartfee                   | version + model |                                        |
-//! | getdescriptorinfo                  | version         | TODO                                   |
+//! | getdescriptorinfo                  | version         |                                        |
 //! | getindexinfo                       | version         | TODO                                   |
 //! | signmessagewithprivkey             | version + model | TODO                                   |
 //! | validateaddress                    | version + model | TODO                                   |
@@ -254,6 +254,7 @@
 mod blockchain;
 mod mining;
 mod network;
+mod util;
 
 #[doc(inline)]
 pub use self::{
@@ -268,6 +269,7 @@ pub use self::{
         GetMiningInfoError, NextBlockInfo, NextBlockInfoError,
     },
     network::GetNetworkInfo,
+    util::GetDescriptorInfo,
 };
 #[doc(inline)]
 pub use crate::{
@@ -304,8 +306,8 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, GetNodeAddresses, GetRpcInfo, JoinPsbts, ListUnspent,
-        ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetRpcInfo, JoinPsbts,
+        ListUnspent, ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,

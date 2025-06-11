@@ -155,9 +155,9 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | createmultisig                     | version + model | TODO                                   |
-//! | deriveaddresses                    | version + model | TODO                                   |
+//! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
-//! | getdescriptorinfo                  | version         | TODO                                   |
+//! | getdescriptorinfo                  | version         |                                        |
 //! | getindexinfo                       | version         | TODO                                   |
 //! | signmessagewithprivkey             | version + model | TODO                                   |
 //! | validateaddress                    | version + model | TODO                                   |
@@ -285,13 +285,13 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, GetNodeAddresses, GetRpcInfo, JoinPsbts, ListUnspent,
-        ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetRpcInfo, JoinPsbts,
+        ListUnspent, ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
-        GetBlockchainInfoError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetBlockchainInfoError, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
         SoftforkType,

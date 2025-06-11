@@ -143,9 +143,9 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | createmultisig                     | version + model |                                        |
-//! | deriveaddresses                    | version + model | TODO                                   |
+//! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
-//! | getdescriptorinfo                  | version         | TODO                                   |
+//! | getdescriptorinfo                  | version         |                                        |
 //! | signmessagewithprivkey             | version + model |                                        |
 //! | validateaddress                    | version + model |                                        |
 //! | verifymessage                      | version         |                                        |
@@ -226,6 +226,7 @@
 
 // JSON-RPC types by API section.
 mod blockchain;
+mod util;
 mod wallet;
 
 #[doc(inline)]
@@ -237,6 +238,7 @@ pub use self::{
         GetMempoolEntry, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
         MempoolEntryFeesError, Softfork, SoftforkType,
     },
+    util::GetDescriptorInfo,
     wallet::{GetBalances, GetBalancesMine, GetBalancesWatchOnly},
 };
 #[doc(inline)]
@@ -275,6 +277,6 @@ pub use crate::v17::{
 #[doc(inline)]
 pub use crate::v18::{
     ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-    AnalyzePsbtInputMissingError, GetNodeAddresses, GetRpcInfo, JoinPsbts, ListUnspent,
-    ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
+    AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetRpcInfo, JoinPsbts,
+    ListUnspent, ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
 };

@@ -30,6 +30,19 @@ fn util__create_multisig__modelled() {
     let _ = res.expect("CreateMultisig into model");
 }
 
+#[cfg(not(feature = "v17"))]
+#[test]
+fn util__derive_addresses__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    // Use a valid, deterministic public key from the pubkey_sort test vectors and the checksum for it.
+    let descriptor = "pkh(02ff12471208c14bd580709cb2358d98975247d8765f92bc25eab3b2763ed605f8)#sf4k0g3u";
+
+    let json: DeriveAddresses = node.client.derive_addresses(&descriptor).expect("deriveaddresses");
+    let res: Result<mtype::DeriveAddresses, _> = json.into_model();
+    let _ = res.expect("DeriveAddresses into model");
+}
+
 #[test]
 fn util__estimate_smart_fee__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -38,6 +51,16 @@ fn util__estimate_smart_fee__modelled() {
     let json: EstimateSmartFee = node.client.estimate_smart_fee(6).expect("estimatesmartfee");
     let res: Result<mtype::EstimateSmartFee, _> = json.into_model();
     let _ = res.expect("EstimateSmartFee into model");
+}
+
+#[cfg(not(feature = "v17"))]
+#[test]
+fn util__get_descriptor_info() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    // Use a valid, deterministic public key from the pubkey_sort test vectors
+    let descriptor = "pkh(02ff12471208c14bd580709cb2358d98975247d8765f92bc25eab3b2763ed605f8)";
+    let _: GetDescriptorInfo = node.client.get_descriptor_info(descriptor).expect("getdescriptorinfo");
 }
 
 #[test]
