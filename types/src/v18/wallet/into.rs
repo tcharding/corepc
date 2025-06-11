@@ -1,11 +1,49 @@
 // SPDX-License-Identifier: CC0-1.0
 
-use bitcoin::{Address, ScriptBuf, SignedAmount, Txid};
+use bitcoin::amount::ParseAmountError;
+use bitcoin::{Address, Amount, ScriptBuf, SignedAmount, Txid};
 
+pub use self::error::ListReceivedByLabelError;
 // TODO: Use explicit imports?
 use super::*;
 use crate::model;
 use crate::v17::ListUnspentItemError;
+
+impl GetReceivedByLabel {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetReceivedByLabel, ParseAmountError> {
+        let amount = bitcoin::Amount::from_btc(self.0)?;
+        Ok(model::GetReceivedByLabel(amount))
+    }
+}
+
+impl ListReceivedByLabel {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::ListReceivedByLabel, ListReceivedByLabelError> {
+        self.0
+            .into_iter()
+            .map(|item| item.into_model())
+            .collect::<Result<Vec<_>, _>>()
+            .map(model::ListReceivedByLabel)
+    }
+}
+
+impl ListReceivedByLabelItem {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::ListReceivedByLabelItem, ListReceivedByLabelError> {
+        use ListReceivedByLabelError as E;
+
+        let amount = Amount::from_btc(self.amount).map_err(E::Amount)?;
+        let confirmations = crate::to_u32(self.confirmations, "confirmations")?;
+
+        Ok(model::ListReceivedByLabelItem {
+            involves_watch_only: self.involves_watch_only,
+            amount,
+            confirmations,
+            label: self.label,
+        })
+    }
+}
 
 impl ListUnspent {
     /// Converts version specific type to a version nonspecific, more strongly typed type.

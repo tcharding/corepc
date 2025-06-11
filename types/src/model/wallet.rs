@@ -272,6 +272,10 @@ pub struct GetRawChangeAddress(pub Address<NetworkUnchecked>);
 /// Models the result of JSON-RPC method `getreceivedbyaddress`.
 pub struct GetReceivedByAddress(pub Amount);
 
+/// Models the result of JSON-RPC method `getreceivedbylabel`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetReceivedByLabel(pub Amount);
+
 /// Models the result of JSON-RPC method `gettransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetTransaction {
@@ -419,6 +423,23 @@ pub struct ListReceivedByAddressItem {
     pub label: String,
     /// The ids of transactions received with the address.
     pub txids: Vec<Txid>,
+}
+
+/// Models the result of JSON-RPC method `listreceivedbylabel`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct ListReceivedByLabel(pub Vec<ListReceivedByLabelItem>);
+
+/// Item returned as part of `listreceivedbylabel`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct ListReceivedByLabelItem {
+    /// Only returned if imported addresses were involved in transaction.
+    pub involves_watch_only: Option<bool>,
+    /// The total amount received by addresses with this label.
+    pub amount: Amount,
+    /// The number of confirmations of the most recent transaction included.
+    pub confirmations: u32,
+    /// The label of the receiving address. The default label is "".
+    pub label: String,
 }
 
 /// Models the result of JSON-RPC method `listsinceblock`.
