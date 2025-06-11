@@ -293,9 +293,9 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetRpcInfo, JoinPsbts,
-        ListUnspent, ListUnspentItem, NodeAddress, UtxoUpdatePsbt, GetReceivedByLabel,
-        ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
+        GetRpcInfo, JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
+        ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,

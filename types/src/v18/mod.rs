@@ -239,8 +239,8 @@ pub use self::{
     },
     util::{DeriveAddresses, GetDescriptorInfo},
     wallet::{
-        ListUnspent, ListUnspentItem, GetReceivedByLabel, ListReceivedByLabel,
-        ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet,
+        GetReceivedByLabel, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
+        ListUnspentItem, ListWalletDir, ListWalletDirWallet,
     },
 };
 #[doc(inline)]
