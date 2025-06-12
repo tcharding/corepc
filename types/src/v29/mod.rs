@@ -265,7 +265,7 @@ pub use self::{
         SpendActivity,
     },
     mining::{
-        BlockTemplateTransaction, GetBlockTemplate, GetBlockTemplateError, GetMiningInfo,
+        BlockTemplateTransaction, GetMiningInfo,
         GetMiningInfoError, NextBlockInfo, NextBlockInfoError,
     },
     network::GetNetworkInfo,
@@ -302,7 +302,7 @@ pub use crate::{
         SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
         TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
         ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, GetBlockTemplate, GetBlockTemplateError,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

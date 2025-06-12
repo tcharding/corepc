@@ -53,6 +53,8 @@ pub struct GetBlockTemplate {
     /// readiness for the named softfork rule.
     #[serde(rename = "vbavailable")]
     pub version_bits_available: BTreeMap<String, u32>,
+    /// Client side supported features.
+    pub capabilities: Vec<String>,
     /// Bit mask of versionbits the server requires set in submissions.
     #[serde(rename = "vbrequired")]
     pub version_bits_required: i64,
@@ -69,6 +71,9 @@ pub struct GetBlockTemplate {
     /// Maximum allowable input to coinbase transaction, including the generation award and transaction fees (in satoshis).
     #[serde(rename = "coinbasevalue")]
     pub coinbase_value: i64,
+    /// An id to include with a request to longpoll on an update to this template.
+    #[serde(rename = "longpollid")]
+    pub long_poll_id: Option<String>,
     // This is in the docs but not actually returned (for v0.17 and v0.18 at least).
     // coinbase_txn: ???, // Also I don't know what the JSON object represents: `{ ... }`
     /// The hash target.
@@ -78,7 +83,7 @@ pub struct GetBlockTemplate {
     pub min_time: u32,
     /// List of ways the block template may be changed.
     ///
-    /// A way the block template may be changed, e.g. 'time', 'transactions', 'prevblock'
+    /// A way the block template may be changed, e.g. 'time', 'transactions', 'prevblock'.
     pub mutable: Vec<String>,
     /// A range of valid nonces.
     #[serde(rename = "noncerange")]
@@ -97,8 +102,12 @@ pub struct GetBlockTemplate {
     pub current_time: u64,
     /// Compressed target of next block.
     pub bits: String,
-    /// The height of the next block,
+    /// The height of the next block.
     pub height: i64,
+    /// Optional signet challenge.
+    pub signet_challenge: Option<String>,
+    /// A valid witness commitment for the unmodified block template.
+    pub default_witness_commitment: Option<String>,
 }
 
 /// Contents of non-coinbase transactions that should be included in the next block.
