@@ -6,7 +6,7 @@
 
 #[cfg(feature = "TODO")]
 use bitcoin::address::{Address, NetworkChecked};
-use bitcoin::Amount;
+use bitcoin::{Amount, PrivateKey};
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::{mtype,AddressType};
 use node::vtype::*;             // All the version specific types.
@@ -238,6 +238,25 @@ fn wallet__get_transaction__modelled() {
     let json: GetTransaction = node.client.get_transaction(txid).expect("gettransaction");
     let model: Result<mtype::GetTransaction, GetTransactionError> = json.into_model();
     model.unwrap();
+}
+
+#[test]
+fn wallet__import_privkey() {
+    let node = match () {
+        #[cfg(feature = "v22_and_below")]
+        () => Node::with_wallet(Wallet::Default, &[]),
+        #[cfg(not(feature = "v22_and_below"))]
+        () => {
+            let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+            node.client.create_legacy_wallet("wallet_name").expect("createlegacywallet");
+            node
+        }
+    };
+
+    let privkey =
+        PrivateKey::from_wif("cVt4o7BGAig1UXywgGSmARhxMdzP5qvQsxKkSsc1XEkw3tDTQFpy").unwrap();
+
+    node.client.import_privkey(&privkey).expect("importprivkey");
 }
 
 #[test]
