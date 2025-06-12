@@ -307,6 +307,7 @@ impl DecodeScript {
             required_signatures: self.required_signatures,
             addresses,
             p2sh,
+            p2sh_segwit: self.p2sh_segwit,
         })
     }
 }
