@@ -270,6 +270,7 @@ pub struct GetNewAddress(pub Address<NetworkUnchecked>);
 pub struct GetRawChangeAddress(pub Address<NetworkUnchecked>);
 
 /// Models the result of JSON-RPC method `getreceivedbyaddress`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetReceivedByAddress(pub Amount);
 
 /// Models the result of JSON-RPC method `gettransaction`.
@@ -332,6 +333,7 @@ pub struct GetTransactionDetail {
 }
 
 /// Models the result of JSON-RPC method `getunconfirmedbalance`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetUnconfirmedBalance(pub Amount);
 
 /// Models the result of JSON-RPC method `getwalletinfo`.
