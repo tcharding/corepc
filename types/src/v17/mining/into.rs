@@ -17,11 +17,6 @@ impl GetBlockTemplate {
         use GetBlockTemplateError as E;
 
         let version = block::Version::from_consensus(self.version);
-        let capabilities = self
-            .capabilities
-            .into_iter()
-            .map(|s| s.to_string())
-            .collect::<Vec<_>>();
         let version_bits_required =
             crate::to_u32(self.version_bits_required, "version_bits_required")?;
         let previous_block_hash =
@@ -44,7 +39,7 @@ impl GetBlockTemplate {
             version,
             rules: self.rules,
             version_bits_available: self.version_bits_available,
-            capabilities,
+            capabilities: self.capabilities,
             version_bits_required,
             previous_block_hash,
             transactions,

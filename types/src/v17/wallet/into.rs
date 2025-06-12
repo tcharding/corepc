@@ -338,6 +338,11 @@ impl GetTransaction {
             self.block_index.map(|idx| crate::to_u32(idx, "block_index")).transpose()?;
 
         let txid = self.txid.parse::<Txid>().map_err(E::Txid)?;
+        let wallet_conflicts = self
+            .wallet_conflicts
+            .into_iter()
+            .map(|s| s.parse::<Txid>().map_err(E::WalletConflicts))
+            .collect::<Result<Vec<_>, _>>()?;
         let tx = encode::deserialize_hex::<Transaction>(&self.hex).map_err(E::Tx)?;
         let details = self
             .details
@@ -349,10 +354,12 @@ impl GetTransaction {
             amount,
             fee,
             confirmations: self.confirmations,
+            trusted: self.trusted,
             block_hash,
             block_index,
             block_time: self.block_time,
             txid,
+            wallet_conflicts,
             time: self.time,
             time_received: self.time_received,
             bip125_replaceable: self.bip125_replaceable.into_model(),
