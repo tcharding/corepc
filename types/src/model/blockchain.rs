@@ -242,6 +242,7 @@ pub struct GetBlockHeaderVerbose {
 }
 
 /// Models the result of JSON-RPC method `getblockstats`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetBlockStats {
     /// Average fee in the block.
     pub average_fee: Amount,
