@@ -9,9 +9,7 @@ mod into;
 
 use serde::{Deserialize, Serialize};
 
-pub use self::error::{
-    BlockTemplateTransactionError, GetMiningInfoError, NextBlockInfoError,
-};
+pub use self::error::{BlockTemplateTransactionError, GetMiningInfoError, NextBlockInfoError};
 
 /// Contents of non-coinbase transactions that should be included in the next block.
 ///

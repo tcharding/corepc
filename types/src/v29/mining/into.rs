@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
 
-use bitcoin::{
-    consensus, CompactTarget, SignedAmount, Target, Transaction, Txid, Weight,
-    Wtxid,
-};
+use bitcoin::{consensus, CompactTarget, SignedAmount, Target, Transaction, Txid, Weight, Wtxid};
 
 use super::{
-    BlockTemplateTransaction, BlockTemplateTransactionError, GetMiningInfo, GetMiningInfoError, NextBlockInfo, NextBlockInfoError,
+    BlockTemplateTransaction, BlockTemplateTransactionError, GetMiningInfo, GetMiningInfoError,
+    NextBlockInfo, NextBlockInfoError,
 };
 use crate::model;
 
