@@ -5,6 +5,7 @@
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
 pub mod control;
+pub mod mining;
 pub mod network;
 pub mod raw_transactions;
 pub mod util;
@@ -74,6 +75,7 @@ crate::impl_client_v17__get_mining_info!();
 crate::impl_client_v17__get_network_hashes_per_second!();
 crate::impl_client_v17__prioritise_transaction!();
 crate::impl_client_v17__submit_block!();
+crate::impl_client_v18__submit_header!();
 
 // == Network ==
 crate::impl_client_v17__add_node!();

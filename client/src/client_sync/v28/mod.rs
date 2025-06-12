@@ -72,6 +72,7 @@ crate::impl_client_v17__get_network_hashes_per_second!();
 crate::impl_client_v26__get_prioritised_transactions!();
 crate::impl_client_v17__prioritise_transaction!();
 crate::impl_client_v17__submit_block!();
+crate::impl_client_v18__submit_header!();
 
 // == Network ==
 crate::impl_client_v17__add_node!();

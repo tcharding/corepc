@@ -80,7 +80,7 @@
 //! | getnetworkhashps                   | returns boolean |                                        |
 //! | prioritisetransaction              | returns boolean |                                        |
 //! | submitblock                        | returns nothing |                                        |
-//! | submitheader                       | return nothing  | TODO                                   |
+//! | submitheader                       | returns nothing |                                        |
 //!
 //! </details>
 //!
