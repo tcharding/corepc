@@ -172,7 +172,7 @@
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
 //! | getreceivedbyaddress               | version + model |                                        |
-//! | getreceivedbylabel                 | version + model | TODO                                   |
+//! | getreceivedbylabel                 | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
@@ -187,11 +187,11 @@
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
-//! | listreceivedbylabel                | version + model | TODO                                   |
+//! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
 //! | listtransactions                   | version + model | UNTESTED                               |
 //! | listunspent                        | version + model |                                        |
-//! | listwalletdir                      | version         | TODO                                   |
+//! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model | UNTESTED                               |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | returns boolean |                                        |
@@ -238,7 +238,10 @@ pub use self::{
         AnalyzePsbtInputMissingError, JoinPsbts, UtxoUpdatePsbt,
     },
     util::{DeriveAddresses, GetDescriptorInfo},
-    wallet::{ListUnspent, ListUnspentItem},
+    wallet::{
+        GetReceivedByLabel, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
+        ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+    },
 };
 #[doc(inline)]
 pub use crate::v17::{

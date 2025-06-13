@@ -174,7 +174,7 @@
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
 //! | getreceivedbyaddress               | version + model |                                        |
-//! | getreceivedbylabel                 | version + model | TODO                                   |
+//! | getreceivedbylabel                 | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
@@ -189,11 +189,11 @@
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
-//! | listreceivedbylabel                | version + model | TODO                                   |
+//! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
 //! | listtransactions                   | version + model | UNTESTED                               |
 //! | listunspent                        | version + model |                                        |
-//! | listwalletdir                      | version         | TODO                                   |
+//! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model | UNTESTED                               |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | returns boolean |                                        |
@@ -268,8 +268,9 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetRpcInfo, JoinPsbts,
-        ListUnspent, ListUnspentItem, NodeAddress, UtxoUpdatePsbt,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
+        GetRpcInfo, JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
+        ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,

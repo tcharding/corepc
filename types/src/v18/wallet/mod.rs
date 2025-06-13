@@ -4,9 +4,42 @@
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
+mod error;
 mod into;
 
 use serde::{Deserialize, Serialize};
+
+pub use self::error::ListReceivedByLabelError;
+
+/// Result of the JSON-RPC method `getreceivedbylabel`.
+///
+/// > getreceivedbylabel "label" ( minconf )
+/// >
+/// > Returns the total amount received by addresses with `<label>` in transactions with at least `[minconf]` confirmations.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetReceivedByLabel(pub f64);
+
+/// Result of the JSON-RPC method `listreceivedbylabel`.
+///
+/// > listreceivedbylabel ( minconf include_empty include_watchonly )
+/// >
+/// > List received transactions by label.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ListReceivedByLabel(pub Vec<ListReceivedByLabelItem>);
+
+/// Item returned as part of `listreceivedbylabel`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ListReceivedByLabelItem {
+    /// Only returned if imported addresses were involved in transaction.
+    #[serde(rename = "involvesWatchonly")]
+    pub involves_watch_only: Option<bool>,
+    /// The total amount received by addresses with this label.
+    pub amount: f64,
+    /// The number of confirmations of the most recent transaction included.
+    pub confirmations: i64,
+    /// The label of the receiving address. The default label is "".
+    pub label: String,
+}
 
 /// Result of the JSON-RPC method `listunspent`.
 ///
@@ -47,4 +80,22 @@ pub struct ListUnspentItem {
     /// and unconfirmed replacement transactions are considered unsafe and are not eligible for
     /// spending by fundrawtransaction and sendtoaddress.
     pub safe: bool,
+}
+
+/// Result of the JSON-RPC method `listwalletdir`.
+///
+/// > listwalletdir
+/// >
+/// > Returns a list of wallets in the wallet directory.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ListWalletDir {
+    /// The list of wallets in the wallet directory.
+    pub wallets: Vec<ListWalletDirWallet>,
+}
+
+/// Wallet entry returned as part of `listwalletdir`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ListWalletDirWallet {
+    /// The wallet name.
+    pub name: String,
 }

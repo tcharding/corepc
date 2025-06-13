@@ -222,6 +222,24 @@ fn wallet__get_received_by_address__modelled() {
     assert_eq!(model.0, amount);
 }
 
+#[cfg(not(feature = "v17"))]
+#[test]
+fn wallet__get_received_by_label__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let label = "test-label";
+
+    // Send some coins to the label
+    let amount = Amount::from_sat(10_000);
+    let address = node.client.new_address_with_label(label).unwrap().assume_checked();
+    let _ = node.client.send_to_address(&address, amount).unwrap();
+    node.mine_a_block();
+
+    let json: GetReceivedByLabel = node.client.get_received_by_label(label).expect("getreceivedbylabel");
+    let model: Result<mtype::GetReceivedByLabel, _> = json.into_model();
+    assert_eq!(model.unwrap().0, amount);
+}
+
 #[test]
 fn wallet__get_transaction__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -238,6 +256,25 @@ fn wallet__get_transaction__modelled() {
     let json: GetTransaction = node.client.get_transaction(txid).expect("gettransaction");
     let model: Result<mtype::GetTransaction, GetTransactionError> = json.into_model();
     model.unwrap();
+}
+
+#[cfg(not(feature = "v17"))]
+#[test]
+fn wallet__list_received_by_label__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let label = "test-label";
+
+    // Send some coins to the label
+    let amount = Amount::from_sat(10_000);
+    let address = node.client.new_address_with_label(label).unwrap().assume_checked();
+    let _ = node.client.send_to_address(&address, amount).unwrap();
+    node.mine_a_block();
+
+    let json: ListReceivedByLabel = node.client.list_received_by_label().expect("listreceivedbylabel");
+    let model: Result<mtype::ListReceivedByLabel, ListReceivedByLabelError> = json.into_model();
+    let model = model.unwrap();
+    assert!(model.0.iter().any(|item| item.label == label));
 }
 
 #[test]
@@ -273,6 +310,19 @@ fn wallet__list_unspent__modelled() {
     let json: ListUnspent = node.client.list_unspent().expect("listunspent");
     let model: Result<mtype::ListUnspent, ListUnspentItemError> = json.into_model();
     model.unwrap();
+}
+
+#[cfg(not(feature = "v17"))]
+#[test]
+fn wallet__list_wallet_dir() {
+    let wallet_name = "test-wallet";
+    let node = Node::with_wallet(Wallet::None, &[]);
+    node.client.create_wallet(wallet_name).expect("failed to create wallet");
+
+    let wallet_dir = node.client.list_wallet_dir().expect("listwalletdir");
+    let wallet_names: Vec<_> = wallet_dir.wallets.iter().map(|w| &w.name).collect();
+
+    assert!(wallet_names.iter().any(|w| *w == wallet_name));
 }
 
 #[test]
