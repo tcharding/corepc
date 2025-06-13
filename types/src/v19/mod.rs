@@ -158,7 +158,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
-//! | abortrescan                        | returns nothing |                                        |
+//! | abortrescan                        | version         |                                        |
 //! | addmultisigaddress                 | version + model | UNTESTED                               |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
@@ -243,27 +243,27 @@ pub use self::{
 };
 #[doc(inline)]
 pub use crate::v17::{
-    AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
-    Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt,
-    CombineRawTransaction, ConvertToPsbt, CreateMultisig, CreateMultisigError, CreatePsbt,
-    CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction,
-    DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet, EstimateSmartFee, FinalizePsbt,
-    FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress,
-    GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError,
-    GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash,
-    GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
-    GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
-    GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockVerboseZero,
-    GetChainTips, GetChainTxStats, GetChainTxStatsError, GetConnectionCount, GetDifficulty,
-    GetMemoryInfoStats, GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals,
-    GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
-    GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
-    GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
-    GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,
-    GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError,
-    GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, GetZmqNotifications,
-    ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListBanned,
-    ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
+    AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
+    AddressInformation, Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
+    CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig, CreateMultisigError,
+    CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError,
+    DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet,
+    EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction, FundRawTransactionError,
+    Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded,
+    GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel,
+    GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError,
+    GetBlockHeaderVerbose, GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError,
+    GetBlockTemplate, GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError,
+    GetBlockVerboseZero, GetChainTips, GetChainTxStats, GetChainTxStatsError, GetConnectionCount,
+    GetDifficulty, GetMemoryInfoStats, GetMempoolInfo, GetMempoolInfoError, GetMiningInfo,
+    GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
+    GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
+    GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
+    GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
+    GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
+    GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
+    GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
+    ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
     ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock,
     ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
     ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError,

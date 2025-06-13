@@ -62,6 +62,14 @@ pub enum Bip125Replaceable {
     Unknown,
 }
 
+/// Result of JSON-RPC method `abortrescan`.
+///
+/// > abortrescan
+/// >
+/// > Stops current wallet rescan triggered by an RPC call, e.g. by an importprivkey call.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct AbortRescan(pub bool);
+
 /// Result of the JSON-RPC method `addmultisigaddress`.
 ///
 /// > addmultisigaddress nrequired ["key",...] ( "label" "address_type" )

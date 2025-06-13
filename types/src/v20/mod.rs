@@ -159,7 +159,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
-//! | abortrescan                        | returns nothing |                                        |
+//! | abortrescan                        | version         |                                        |
 //! | addmultisigaddress                 | version + model | UNTESTED                               |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
@@ -233,7 +233,7 @@ pub use self::control::Logging;
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
+        AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
         ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig,
         CreateMultisigError, CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt,

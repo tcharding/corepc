@@ -151,7 +151,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
-//! | abortrescan                        | returns nothing |                                        |
+//! | abortrescan                        | version         |                                        |
 //! | addmultisigaddress                 | version + model | UNTESTED                               |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
@@ -271,14 +271,14 @@ pub use self::{
         ValidateAddress, ValidateAddressError, VerifyMessage,
     },
     wallet::{
-        AddMultisigAddress, AddMultisigAddressError, AddressInformation, BumpFee, BumpFeeError,
-        CreateWallet, DumpPrivKey, DumpWallet, GetAddressInfo, GetAddressInfoEmbedded,
-        GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel,
-        GetBalance, GetNewAddress, GetRawChangeAddress, GetReceivedByAddress, GetTransaction,
-        GetTransactionDetail, GetTransactionDetailError, GetTransactionError,
-        GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, ListAddressGroupings,
-        ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels, ListLockUnspent,
-        ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddress,
+        AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddressInformation, BumpFee,
+        BumpFeeError, CreateWallet, DumpPrivKey, DumpWallet, GetAddressInfo,
+        GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
+        GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetNewAddress, GetRawChangeAddress,
+        GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,
+        GetTransactionError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
+        ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels,
+        ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddress,
         ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError,
         ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
