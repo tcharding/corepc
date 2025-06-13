@@ -250,7 +250,7 @@ pub use self::raw_transactions::{
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
+        AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
         ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig,
         CreateMultisigError, CreatePsbt, CreateRawTransaction, CreateWallet, DecodeRawTransaction,
@@ -281,7 +281,7 @@ pub use crate::{
         SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo, AbortRescan,
+        WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

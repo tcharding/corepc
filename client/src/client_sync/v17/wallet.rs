@@ -30,9 +30,7 @@ macro_rules! impl_client_v17__abandon_transaction {
 macro_rules! impl_client_v17__abort_rescan {
     () => {
         impl Client {
-            pub fn abort_rescan(&self) -> Result<AbortRescan> {
-                self.call("abortrescan", &[])
-            }
+            pub fn abort_rescan(&self) -> Result<AbortRescan> { self.call("abortrescan", &[]) }
         }
     };
 }
