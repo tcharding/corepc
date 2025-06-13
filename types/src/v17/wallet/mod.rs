@@ -413,6 +413,8 @@ pub struct GetTransaction {
     pub fee: Option<f64>,
     /// The number of confirmations.
     pub confirmations: i64,
+    /// Whether we consider the outputs of this unconfirmed transaction safe to spend.
+    pub trusted: Option<bool>,
     /// The block hash.
     #[serde(rename = "blockhash")]
     // The docs say this field should exist but integration test fail without `Option`.
@@ -426,6 +428,9 @@ pub struct GetTransaction {
     pub block_time: Option<u32>, // Docs are wrong, this is not documented as optional.
     /// The transaction id.
     pub txid: String,
+    /// Confirmed transactions that have been detected by the wallet to conflict with this transaction.
+    #[serde(rename = "walletconflicts")]
+    pub wallet_conflicts: Vec<String>,
     /// The transaction time in seconds since epoch (1 Jan 1970 GMT).
     pub time: u32,
     /// The time received in seconds since epoch (1 Jan 1970 GMT).

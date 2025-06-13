@@ -219,6 +219,9 @@ pub struct DecodeScript {
     pub p2sh: Option<String>,
     /// Segwit data (see `DecodeScriptSegwit` for explanation).
     pub segwit: Option<DecodeScriptSegwit>,
+    /// Address of the P2SH script wrapping this witness redeem script
+    #[serde(rename = "p2sh-segwit")]
+    pub p2sh_segwit: Option<String>,
 }
 
 /// Seemingly undocumented data returned in the `segwit` field of `DecodeScript`.
@@ -238,6 +241,7 @@ pub struct DecodeScriptSegwit {
     /// List of bitcoin addresses.
     pub addresses: Option<Vec<String>>,
     /// Address of P2SH script wrapping this redeem script (not returned if the script is already a P2SH).
+    #[serde(rename = "p2sh-segwit")]
     pub p2sh_segtwit: Option<String>,
 }
 

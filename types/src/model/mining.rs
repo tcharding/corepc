@@ -24,6 +24,8 @@ pub struct GetBlockTemplate {
     /// Map of rules name to bit number - identifies the bit number as indicating acceptance and
     /// readiness for the named softfork rule.
     pub version_bits_available: BTreeMap<String, u32>,
+    /// Client side supported features.
+    pub capabilities: Vec<String>,
     /// Bit mask of versionbits the server requires set in submissions.
     pub version_bits_required: u32,
     /// The hash of current highest block.
@@ -37,6 +39,8 @@ pub struct GetBlockTemplate {
     /// Maximum allowable input to coinbase transaction, including the generation award and transaction fees (in satoshis).
     #[serde(with = "bitcoin::amount::serde::as_sat")]
     pub coinbase_value: SignedAmount,
+    /// An id to include with a request to longpoll on an update to this template.
+    pub long_poll_id: Option<String>,
     /// The hash target.
     pub target: Vec<u8>,
     /// The minimum timestamp appropriate for next block time in seconds since epoch (Jan 1 1970 GMT).
@@ -59,6 +63,10 @@ pub struct GetBlockTemplate {
     pub bits: CompactTarget,
     /// The height of the next block,
     pub height: u32,
+    /// Optional signet challenge
+    pub signet_challenge: Option<String>,
+    /// A valid witness commitment for the unmodified block template.
+    pub default_witness_commitment: Option<String>,
 }
 
 /// Contents of non-coinbase transactions that should be included in the next block.

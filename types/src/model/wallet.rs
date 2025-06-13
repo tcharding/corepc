@@ -286,6 +286,8 @@ pub struct GetTransaction {
     pub fee: Option<SignedAmount>,
     /// The number of confirmations.
     pub confirmations: i64, // Docs do not indicate what negative value means?
+    /// Whether we consider the outputs of this unconfirmed transaction safe to spend.
+    pub trusted: Option<bool>,
     /// The block hash.
     pub block_hash: Option<BlockHash>,
     /// The index of the transaction in the block that includes it.
@@ -294,6 +296,8 @@ pub struct GetTransaction {
     pub block_time: Option<u32>,
     /// The transaction id.
     pub txid: Txid,
+    /// Confirmed transactions that have been detected by the wallet to conflict with this transaction.
+    pub wallet_conflicts: Vec<Txid>,
     /// The transaction time in seconds since epoch (1 Jan 1970 GMT).
     pub time: u32,
     /// The time received in seconds since epoch (1 Jan 1970 GMT).

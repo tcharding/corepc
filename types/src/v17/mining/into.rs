@@ -39,11 +39,13 @@ impl GetBlockTemplate {
             version,
             rules: self.rules,
             version_bits_available: self.version_bits_available,
+            capabilities: self.capabilities,
             version_bits_required,
             previous_block_hash,
             transactions,
             coinbase_aux: self.coinbase_aux,
             coinbase_value,
+            long_poll_id: self.long_poll_id,
             target,
             min_time: self.min_time,
             mutable: self.mutable,
@@ -54,6 +56,8 @@ impl GetBlockTemplate {
             current_time: self.current_time,
             bits,
             height,
+            signet_challenge: self.signet_challenge,
+            default_witness_commitment: self.default_witness_commitment,
         })
     }
 }

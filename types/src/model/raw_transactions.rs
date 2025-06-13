@@ -101,6 +101,8 @@ pub struct DecodeScript {
     pub addresses: Vec<Address<NetworkUnchecked>>,
     /// Address of P2SH script wrapping this redeem script (not returned if the script is already a P2SH).
     pub p2sh: Option<Address<NetworkUnchecked>>,
+    /// Address of the P2SH script wrapping this witness redeem script
+    pub p2sh_segwit: Option<String>,
 }
 
 /// Models the result of JSON-RPC method `descriptorprocesspsbt`.

@@ -249,6 +249,8 @@ pub enum GetTransactionError {
     BlockHash(hex::HexToArrayError),
     /// Conversion of the `txid` field failed.
     Txid(hex::HexToArrayError),
+    /// Conversion of the `wallet_conflicts` field failed.
+    WalletConflicts(hex::HexToArrayError),
     /// Conversion of the transaction `hex` field failed.
     Tx(encode::FromHexError),
     /// Conversion of the `details` field failed.
@@ -265,6 +267,8 @@ impl fmt::Display for GetTransactionError {
             E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
             E::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
             E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            E::WalletConflicts(ref e) =>
+                write_err!(f, "conversion of the `wallet_conflicts` field failed"; e),
             E::Tx(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
             E::Details(ref e) => write_err!(f, "conversion of the `details` field failed"; e),
         }
@@ -282,6 +286,7 @@ impl std::error::Error for GetTransactionError {
             E::Fee(ref e) => Some(e),
             E::BlockHash(ref e) => Some(e),
             E::Txid(ref e) => Some(e),
+            E::WalletConflicts(ref e) => Some(e),
             E::Tx(ref e) => Some(e),
             E::Details(ref e) => Some(e),
         }
