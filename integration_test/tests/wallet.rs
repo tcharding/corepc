@@ -37,6 +37,14 @@ fn wallet__abandon_transaction() {
 }
 
 #[test]
+fn wallet__abort_rescan() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let json: AbortRescan = node.client.abort_rescan().expect("abortrescan");
+    assert!(!json.0); // No rescan running, abort should return false
+}
+
+#[test]
 #[cfg(feature = "TODO")]
 fn wallet__add_multisig_address__modelled() {
     let nrequired = 1; // 1-of-2 multisig.

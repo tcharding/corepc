@@ -25,6 +25,18 @@ macro_rules! impl_client_v17__abandon_transaction {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `abortrescan`.
+#[macro_export]
+macro_rules! impl_client_v17__abort_rescan {
+    () => {
+        impl Client {
+            pub fn abort_rescan(&self) -> Result<AbortRescan> {
+                self.call("abortrescan", &[])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `addmultisigaddress`.
 #[macro_export]
 macro_rules! impl_client_v17__add_multisig_address {

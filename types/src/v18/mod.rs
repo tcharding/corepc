@@ -158,7 +158,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
-//! | abortrescan                        | returns nothing |                                        |
+//! | abortrescan                        | version         |                                        |
 //! | addmultisigaddress                 | version + model | UNTESTED                               |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
@@ -276,5 +276,5 @@ pub use crate::v17::{
     SignRawTransaction, SignRawTransactionError, Softfork, SoftforkReject, TestMempoolAccept,
     TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
     VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-    WalletProcessPsbt, WitnessUtxo,
+    WalletProcessPsbt, WitnessUtxo, AbortRescan,
 };

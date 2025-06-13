@@ -87,7 +87,7 @@ pub const METHODS: &[Method] = &[
     Method::new_no_model("verifymessage", "VerifyMessage", "verify_message"),
     // wallet
     Method::new_nothing("abandontransaction", "abandon_transaction"),
-    Method::new_nothing("abortrescan", "abort_rescan"),
+    Method::new_no_model("abortrescan", "AbortRescan", "abort_rescan"),
     Method::new_modelled("addmultisigaddress", "AddMultisigAddress", "add_multisig_address"),
     Method::new_nothing("backupwallet", "backup_wallet"),
     Method::new_modelled("bumpfee", "BumpFee", "bump_fee"),
