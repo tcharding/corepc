@@ -234,7 +234,7 @@ mod wallet;
 pub use self::{
     blockchain::{GetMempoolEntry, MempoolEntry},
     control::{ActiveCommand, GetRpcInfo},
-    network::{GetNodeAddresses, NodeAddress},
+    network::{GetNodeAddresses, GetPeerInfo, NodeAddress, PeerInfo},
     raw_transactions::{
         AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, JoinPsbts, UtxoUpdatePsbt,
@@ -264,7 +264,7 @@ pub use crate::v17::{
     GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
     GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals,
     GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
-    GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
+    GetNewAddress, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
     GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
     GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,
     GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError,
@@ -275,7 +275,7 @@ pub use crate::v17::{
     ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
     ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError,
     ListWallets, LoadWallet, Locked, Logging, MapMempoolEntryError, MempoolAcceptance,
-    MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
+    MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError,
     PruneBlockchain, PsbtInput, PsbtOutput, PsbtScript, RawTransaction, RawTransactionError,
     RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany, SendRawTransaction,
     SendToAddress, SetNetworkActive, SignFail, SignFailError, SignMessage, SignMessageWithPrivKey,

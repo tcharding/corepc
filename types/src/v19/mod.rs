@@ -257,7 +257,7 @@ pub use crate::v17::{
     GetBlockVerboseZero, GetChainTips, GetChainTxStats, GetChainTxStatsError, GetConnectionCount,
     GetDifficulty, GetMemoryInfoStats, GetMempoolInfo, GetMempoolInfoError, GetMiningInfo,
     GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
-    GetNetworkInfoNetwork, GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool,
+    GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress, GetRawMempool,
     GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
     GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
     GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
@@ -267,7 +267,7 @@ pub use crate::v17::{
     ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock,
     ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
     ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError,
-    ListWallets, LoadWallet, Locked, Logging, PeerInfo, PruneBlockchain, RawTransactionError,
+    ListWallets, LoadWallet, Locked, Logging, PruneBlockchain, RawTransactionError,
     RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany, SendRawTransaction,
     SendToAddress, SetNetworkActive, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
@@ -280,4 +280,5 @@ pub use crate::v18::{
     AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
     GetRpcInfo, JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
     ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+    GetPeerInfo, PeerInfo,
 };
