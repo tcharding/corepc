@@ -272,7 +272,7 @@ pub use self::{
     },
     wallet::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddressInformation, BumpFee,
-        BumpFeeError, CreateWallet, DumpPrivKey, DumpWallet, GetAddressInfo,
+        BumpFeeError, CreateWallet, DumpPrivKey, DumpWallet, EncryptWallet, GetAddressInfo,
         GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetNewAddress, GetRawChangeAddress,
         GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,
@@ -284,7 +284,7 @@ pub use self::{
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
         ListUnspentItemError, ListWallets, LoadWallet, RescanBlockchain, SendMany, SendToAddress,
         SignMessage, TransactionCategory, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WalletProcessPsbt, EncryptWallet,
+        WalletProcessPsbt,
     },
     zmq::GetZmqNotifications,
 };

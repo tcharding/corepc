@@ -244,7 +244,7 @@ pub use crate::{
         CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig, CreateMultisigError,
         CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError,
         DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet,
-        EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
+        EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
         FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo,
         GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
@@ -270,7 +270,7 @@ pub use crate::{
         SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo, EncryptWallet,
+        WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

@@ -194,7 +194,7 @@ pub struct DumpWallet {
 /// > Arguments:
 /// > 1. passphrase    (string, required) The pass phrase to encrypt the wallet with. It must be at least 1 character, but should be long.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
-pub struct EncryptWallet (pub String);
+pub struct EncryptWallet(pub String);
 
 /// Result of the JSON-RPC method `getaddressesbylabel`.
 ///

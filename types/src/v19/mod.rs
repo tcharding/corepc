@@ -247,7 +247,7 @@ pub use crate::v17::{
     AddressInformation, Banned, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
     CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig, CreateMultisigError,
     CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError,
-    DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet,
+    DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet, EncryptWallet,
     EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction, FundRawTransactionError,
     Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded,
     GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel,
@@ -272,7 +272,7 @@ pub use crate::v17::{
     SendToAddress, SetNetworkActive, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
     ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, EncryptWallet,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
 };
 #[doc(inline)]
 pub use crate::v18::{
