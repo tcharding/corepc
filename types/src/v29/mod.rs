@@ -253,7 +253,6 @@
 
 mod blockchain;
 mod mining;
-mod network;
 mod util;
 
 #[doc(inline)]
@@ -268,7 +267,6 @@ pub use self::{
         BlockTemplateTransaction, GetMiningInfo, GetMiningInfoError, NextBlockInfo,
         NextBlockInfoError,
     },
-    network::GetNetworkInfo,
     util::GetDescriptorInfo,
 };
 #[doc(inline)]
@@ -332,4 +330,5 @@ pub use crate::{
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
     },
+    v28::GetNetworkInfo,
 };
