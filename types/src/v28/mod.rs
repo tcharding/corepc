@@ -179,7 +179,7 @@
 //! | createwalletdescriptor             | version + model | TODO                                   |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
-//! | encryptwallet                      | returns nothing |                                        |
+//! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
 //! | getaddressinfo                     | version + model | UNTESTED                               |
 //! | getbalance                         | version + model |                                        |
@@ -288,7 +288,7 @@ pub use crate::{
         SignRawTransaction, SignRawTransactionError, SoftforkReject, TestMempoolAccept,
         TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
         VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WalletProcessPsbt, WitnessUtxo,
+        WalletProcessPsbt, WitnessUtxo, EncryptWallet,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

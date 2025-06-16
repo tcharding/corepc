@@ -124,6 +124,7 @@ crate::impl_client_v17__bump_fee!();
 crate::impl_client_v23__create_wallet!();
 crate::impl_client_v17__dump_priv_key!();
 crate::impl_client_v17__dump_wallet!();
+crate::impl_client_v17__encrypt_wallet!();
 crate::impl_client_v17__get_addresses_by_label!();
 crate::impl_client_v17__get_address_info!();
 crate::impl_client_v17__get_balance!();

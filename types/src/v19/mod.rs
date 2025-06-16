@@ -165,7 +165,7 @@
 //! | createwallet                       | version + model |                                        |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
-//! | encryptwallet                      | returns nothing |                                        |
+//! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
 //! | getaddressinfo                     | version + model | UNTESTED                               |
 //! | getbalance                         | version + model |                                        |
@@ -272,7 +272,7 @@ pub use crate::v17::{
     SendToAddress, SetNetworkActive, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
     ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, EncryptWallet,
 };
 #[doc(inline)]
 pub use crate::v18::{

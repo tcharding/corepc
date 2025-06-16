@@ -102,7 +102,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("createwallet", "CreateWallet", "create_wallet"),
     Method::new_modelled("dumpprivkey", "DumpPrivKey", "dump_priv_key"),
     Method::new_no_model("dumpwallet", "DumpWallet", "dump_wallet"),
-    Method::new_nothing("encryptwallet", "encrypt_wallet"),
+    Method::new_no_model("encryptwallet", "EncryptWallet", "encrypt_wallet"),
     Method::new_modelled("getaddressesbylabel", "GetAddressesByLabel", "get_addresses_by_label"),
     Method::new_modelled("getaddressinfo", "GetAddressInfo", "get_address_info"),
     Method::new_modelled("getbalance", "GetBalance", "get_balance"),

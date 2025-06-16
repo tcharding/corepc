@@ -158,7 +158,7 @@
 //! | createwallet                       | version + model |                                        |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
-//! | encryptwallet                      | returns nothing |                                        |
+//! | encryptwallet                      | version         |                                        |
 //! | getaccount                         | returns nothing |                                        |
 //! | getaccountaddress                  | returns nothing |                                        |
 //! | getaddressbyaccount                | returns nothing |                                        |
@@ -284,7 +284,7 @@ pub use self::{
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
         ListUnspentItemError, ListWallets, LoadWallet, RescanBlockchain, SendMany, SendToAddress,
         SignMessage, TransactionCategory, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WalletProcessPsbt,
+        WalletProcessPsbt, EncryptWallet,
     },
     zmq::GetZmqNotifications,
 };

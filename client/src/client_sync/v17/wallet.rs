@@ -124,6 +124,19 @@ macro_rules! impl_client_v17__dump_wallet {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `encryptwallet`.
+#[macro_export]
+macro_rules! impl_client_v17__encrypt_wallet {
+    () => {
+        impl Client {
+            // filename is either absolute or relative to bitcoind.
+            pub fn encrypt_wallet(&self, passphrase: &str) -> Result<EncryptWallet> {
+                self.call("encryptwallet", &[into_json(passphrase)?])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `getaddressesbylabel`.
 #[macro_export]
 macro_rules! impl_client_v17__get_addresses_by_label {
