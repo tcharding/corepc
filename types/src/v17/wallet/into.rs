@@ -668,6 +668,7 @@ impl ListUnspentItem {
             redeem_script,
             spendable: self.spendable,
             solvable: self.solvable,
+            descriptor: None,
             safe: self.safe,
         })
     }

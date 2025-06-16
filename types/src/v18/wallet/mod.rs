@@ -76,6 +76,9 @@ pub struct ListUnspentItem {
     pub spendable: bool,
     /// Whether we know how to spend this output, ignoring the lack of keys.
     pub solvable: bool,
+    /// A descriptor for spending this output (only when solvable)
+    #[serde(rename = "desc")]
+    pub descriptor: Option<String>,
     /// Whether this output is considered safe to spend. Unconfirmed transactions from outside keys
     /// and unconfirmed replacement transactions are considered unsafe and are not eligible for
     /// spending by fundrawtransaction and sendtoaddress.
