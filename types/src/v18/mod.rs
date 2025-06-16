@@ -223,6 +223,7 @@
 //! </details>
 
 // JSON-RPC types by API section.
+mod blockchain;
 mod control;
 mod network;
 mod raw_transactions;
@@ -231,6 +232,7 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
+    blockchain::{GetMempoolEntry, MempoolEntry},
     control::{ActiveCommand, GetRpcInfo},
     network::{GetNodeAddresses, NodeAddress},
     raw_transactions::{
@@ -260,7 +262,7 @@ pub use crate::v17::{
     GetBlockchainInfo, GetBlockchainInfoError, GetChainTips, GetChainTxStats, GetChainTxStatsError,
     GetConnectionCount, GetDifficulty, GetMemoryInfoStats, GetMempoolAncestors,
     GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-    GetMempoolEntry, GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals,
+    GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals,
     GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
     GetNewAddress, GetPeerInfo, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
     GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
@@ -273,7 +275,7 @@ pub use crate::v17::{
     ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
     ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError,
     ListWallets, LoadWallet, Locked, Logging, MapMempoolEntryError, MempoolAcceptance,
-    MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
+    MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
     PruneBlockchain, PsbtInput, PsbtOutput, PsbtScript, RawTransaction, RawTransactionError,
     RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany, SendRawTransaction,
     SendToAddress, SetNetworkActive, SignFail, SignFailError, SignMessage, SignMessageWithPrivKey,

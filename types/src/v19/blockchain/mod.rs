@@ -232,6 +232,9 @@ pub struct MempoolEntry {
     /// Unconfirmed transactions spending outputs from this transaction (child transaction id).
     #[serde(rename = "spentby")]
     pub spent_by: Vec<String>,
+    /// Whether this transaction could be replaced due to BIP125 (replace-by-fee)
+    #[serde(rename = "bip125-replaceable")]
+    pub bip125_replaceable: bool,
 }
 
 /// (No docs in Core v0.19.)

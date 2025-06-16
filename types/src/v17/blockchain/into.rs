@@ -425,6 +425,7 @@ impl MempoolEntry {
             fees,
             depends,
             spent_by,
+            bip125_replaceable: None,
         })
     }
 }

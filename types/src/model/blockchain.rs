@@ -414,6 +414,8 @@ pub struct MempoolEntry {
     pub depends: Vec<Txid>,
     /// Unconfirmed transactions spending outputs from this transaction (child transaction id).
     pub spent_by: Vec<Txid>,
+    /// Whether this transaction could be replaced due to BIP125 (replace-by-fee)
+    pub bip125_replaceable: Option<bool>,
 }
 
 /// (No docs in Core v0.17.)
