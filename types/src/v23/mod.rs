@@ -284,10 +284,10 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
-        GetRpcInfo, JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
-        ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
-        GetPeerInfo, PeerInfo,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetPeerInfo,
+        GetReceivedByLabel, GetRpcInfo, JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError,
+        ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress, PeerInfo,
+        UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
