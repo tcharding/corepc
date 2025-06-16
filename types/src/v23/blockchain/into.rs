@@ -17,8 +17,9 @@ impl MempoolEntry {
     pub fn into_model(self) -> Result<model::MempoolEntry, MempoolEntryError> {
         use MempoolEntryError as E;
 
-        let size = Some(crate::to_u32(self.size, "size")?);
-        let weight = None;
+        let vsize = Some(crate::to_u32(self.vsize, "vsize")?);
+        let size = None;
+        let weight = Some(crate::to_u32(self.weight, "weight")?);
         let time = crate::to_u32(self.time, "time")?;
         let height = crate::to_u32(self.height, "height")?;
         let descendant_count = crate::to_u32(self.descendant_count, "descendant_count")?;
@@ -41,7 +42,7 @@ impl MempoolEntry {
             .map_err(E::SpentBy)?;
 
         Ok(model::MempoolEntry {
-            vsize: None,
+            vsize,
             size,
             weight,
             time,
@@ -55,7 +56,7 @@ impl MempoolEntry {
             depends,
             spent_by,
             bip125_replaceable: Some(self.bip125_replaceable),
-            unbroadcast: None,
+            unbroadcast: Some(self.unbroadcast),
         })
     }
 }

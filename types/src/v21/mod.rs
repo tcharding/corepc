@@ -232,10 +232,11 @@
 //! </details>
 
 // JSON-RPC types by API section.
+mod blockchain;
 mod wallet;
 
 #[doc(inline)]
-pub use self::wallet::UnloadWallet;
+pub use self::{blockchain::GetMempoolEntry, wallet::UnloadWallet};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -283,9 +284,8 @@ pub use crate::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
         GetBlockchainInfoError, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
-        SoftforkType,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, MapMempoolEntryError, MempoolEntry,
+        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork, SoftforkType,
     },
     v20::{Banned, ListBanned, Logging},
 };

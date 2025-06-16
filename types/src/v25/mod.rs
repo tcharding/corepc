@@ -289,14 +289,13 @@ pub use crate::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
         GetBlockchainInfoError, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
-        SoftforkType,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, MapMempoolEntryError, MempoolEntry,
+        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork, SoftforkType,
     },
     v22::{Banned, ListBanned, Logging, ScriptPubkey},
     v23::SaveMempool,
     v24::{
-        DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
-        TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
+        DecodePsbt, DecodePsbtError, GetMempoolEntry, GlobalXpub, Proprietary, PsbtInput,
+        PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
     },
 };
