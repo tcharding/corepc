@@ -72,7 +72,6 @@ impl ListUnspentItem {
             .redeem_script
             .map(|hex| ScriptBuf::from_hex(&hex).map_err(E::RedeemScript))
             .transpose()?;
-
         Ok(model::ListUnspentItem {
             txid,
             vout,
@@ -84,6 +83,7 @@ impl ListUnspentItem {
             redeem_script,
             spendable: self.spendable,
             solvable: self.solvable,
+            descriptor: self.descriptor,
             safe: self.safe,
         })
     }

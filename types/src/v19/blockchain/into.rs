@@ -160,6 +160,7 @@ impl MempoolEntry {
             fees,
             depends,
             spent_by,
+            bip125_replaceable: Some(self.bip125_replaceable),
         })
     }
 }
