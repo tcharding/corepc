@@ -292,10 +292,11 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError,
         GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
+        GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
         Softfork, SoftforkType,
     },
+    v21::GetNetworkInfo,
     v22::{Banned, ListBanned, Logging, ScriptPubkey},
     v23::{CreateMultisig, GetBlockchainInfo, SaveMempool},
     v24::{
@@ -308,6 +309,6 @@ pub use crate::{
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
         PrioritisedTransaction, SubmitPackage, SubmitPackageError, SubmitPackageTxResult,
         SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
-        UnloadWallet,
+        UnloadWallet, GetPeerInfo,
     },
 };

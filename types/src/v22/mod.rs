@@ -251,7 +251,7 @@ mod network;
 pub use self::{
     blockchain::GetMempoolInfo,
     control::Logging,
-    network::{Banned, ListBanned},
+    network::{Banned, GetPeerInfo, ListBanned},
 };
 #[doc(inline)]
 pub use crate::{
@@ -299,13 +299,13 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError,
         GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
+        GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
     },
     v20::CreateMultisig,
     v21::{
         Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, Softfork, SoftforkType,
-        UnloadWallet,
+        UnloadWallet, GetNetworkInfo,
     },
     ScriptPubkey,
 };

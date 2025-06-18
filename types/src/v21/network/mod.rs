@@ -1,34 +1,65 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core `v22` - network.
+//! The JSON-RPC API for Bitcoin Core `v0.21` - network.
 //!
 //! Types for methods found under the `== Network ==` section of the API docs.
+
+mod into;
 
 use alloc::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-/// Result of JSON-RPC method `listbanned`.
-///
-/// > listbanned
-///
-/// > List all banned IPs/Subnets.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct ListBanned(pub Vec<Banned>);
+use super::{GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork};
 
-/// An item from the list returned by the JSON-RPC method `listbanned`
+/// Result of the JSON-RPC method `getnetworkinfo`.
+///
+/// > getnetworkinfo
+///
+/// > Returns an object containing various state info regarding P2P networking.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct Banned {
-    /// The IP/Subnet of the banned node.
-    pub address: String,
-    /// The UNIX epoch time the ban was created.
-    pub ban_created: u32,
-    /// The UNIX epoch time the ban was expires.
-    pub banned_until: u32,
-    /// The ban duration, in seconds.
-    pub ban_duration: u32,
-    /// The time remaining until the ban expires, in seconds.
-    pub time_remaining: u32,
+pub struct GetNetworkInfo {
+    /// The server version.
+    pub version: usize,
+    /// The server subversion string.
+    pub subversion: String,
+    /// The protocol version.
+    #[serde(rename = "protocolversion")]
+    pub protocol_version: usize,
+    /// The services we offer to the network (hex string).
+    #[serde(rename = "localservices")]
+    pub local_services: String,
+    /// The services we offer to the network. v0.19 and later only.
+    #[serde(rename = "localservicesnames")]
+    pub local_services_names: Vec<String>,
+    /// `true` if transaction relay is requested from peers.
+    #[serde(rename = "localrelay")]
+    pub local_relay: bool,
+    /// The time offset.
+    #[serde(rename = "timeoffset")]
+    pub time_offset: isize,
+    /// The total number of connections.
+    pub connections: usize,
+    /// The number of inbound connections. v21 and later only.
+    pub connections_in: usize,
+    /// The number of outbound connections. v21 and later only.
+    pub connections_out: usize,
+    /// Whether p2p networking is enabled.
+    #[serde(rename = "networkactive")]
+    pub network_active: bool,
+    /// Information per network.
+    pub networks: Vec<GetNetworkInfoNetwork>,
+    /// Minimum relay fee rate for transactions in BTC/kB.
+    #[serde(rename = "relayfee")]
+    pub relay_fee: f64,
+    /// Minimum fee rate increment for mempool limiting or replacement in BTC/kB.
+    #[serde(rename = "incrementalfee")]
+    pub incremental_fee: f64,
+    /// List of local addresses.
+    #[serde(rename = "localaddresses")]
+    pub local_addresses: Vec<GetNetworkInfoAddress>,
+    /// Any network and blockchain warnings.
+    pub warnings: String,
 }
 
 /// Result of JSON-RPC method `getpeerinfo`.
@@ -101,10 +132,6 @@ pub struct PeerInfo {
     pub subversion: String,
     /// Inbound (true) or Outbound (false).
     pub inbound: bool,
-    /// Whether we selected peer as (compact blocks) high-bandwidth peer. v22 and later only.
-    pub bip152_hb_to: bool,
-    /// Whether peer selected us as (compact blocks) high-bandwidth peer. v22 and later only.
-    pub bip152_hb_from: bool,
     /// Whether connection was due to addnode/-connect or if it was an automatic/inbound connection.
     #[serde(rename = "addnode")]
     pub add_node: Option<bool>,

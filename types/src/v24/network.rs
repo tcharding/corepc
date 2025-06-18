@@ -1,35 +1,12 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core `v22` - network.
+//! The JSON-RPC API for Bitcoin Core `v23` - network.
 //!
 //! Types for methods found under the `== Network ==` section of the API docs.
 
 use alloc::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
-
-/// Result of JSON-RPC method `listbanned`.
-///
-/// > listbanned
-///
-/// > List all banned IPs/Subnets.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct ListBanned(pub Vec<Banned>);
-
-/// An item from the list returned by the JSON-RPC method `listbanned`
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub struct Banned {
-    /// The IP/Subnet of the banned node.
-    pub address: String,
-    /// The UNIX epoch time the ban was created.
-    pub ban_created: u32,
-    /// The UNIX epoch time the ban was expires.
-    pub banned_until: u32,
-    /// The ban duration, in seconds.
-    pub ban_duration: u32,
-    /// The time remaining until the ban expires, in seconds.
-    pub time_remaining: u32,
-}
 
 /// Result of JSON-RPC method `getpeerinfo`.
 ///
@@ -49,7 +26,7 @@ pub struct PeerInfo {
     pub address: String,
     /// Bind address of the connection to the peer ("ip:port").
     #[serde(rename = "addrbind")]
-    pub address_bind: String,
+    pub address_bind: Option<String>,
     /// Local address as reported by the peer.
     #[serde(rename = "addrlocal")]
     pub address_local: Option<String>,
@@ -110,21 +87,26 @@ pub struct PeerInfo {
     pub add_node: Option<bool>,
     /// The starting height (block) of the peer.
     #[serde(rename = "startingheight")]
-    pub starting_height: i64,
+    pub starting_height: Option<i64>,
+    /// The current height of header pre-synchronization with this peer, or -1 if no low-work sync is
+    /// in progress. v24 and later only.
+    pub presynced_headers: Option<i64>,
     /// The ban score.
     #[serde(rename = "banscore")]
     pub ban_score: Option<i64>,
     /// The last header we have in common with this peer.
-    pub synced_headers: i64,
+    pub synced_headers: Option<i64>,
     /// The last block we have in common with this peer.
-    pub synced_blocks: i64,
+    pub synced_blocks: Option<i64>,
     /// The heights of blocks we're currently asking from this peer.
-    pub inflight: Vec<u64>,
+    pub inflight: Option<Vec<u64>>,
+    /// Whether we participate in address relay with this peer. v23 and later only.
+    pub addr_relay_enabled: Option<bool>,
     /// The total number of addresses processed, excluding those dropped due to rate limiting. v21 and
     /// later only.
-    pub addr_processed: usize,
+    pub addr_processed: Option<usize>,
     /// The total number of addresses dropped due to rate limiting. v21 and later only.
-    pub addr_rate_limited: usize,
+    pub addr_rate_limited: Option<usize>,
     /// Any special permissions that have been granted to this peer. v0.19 and later only.
     pub permissions: Vec<String>,
     /// The minimum fee rate for transactions this peer accepts. v0.19 and later only.

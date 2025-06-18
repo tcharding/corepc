@@ -308,7 +308,7 @@ pub use crate::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
         GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetPeerInfo,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose,
         GetRpcInfo, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
         MempoolEntryFeesError, PeerInfo, Softfork, SoftforkType,
     },
@@ -322,6 +322,6 @@ pub use crate::{
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
-        PrioritisedTransaction, UnloadWallet,
+        PrioritisedTransaction, UnloadWallet, GetPeerInfo,
     },
 };

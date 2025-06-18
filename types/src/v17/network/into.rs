@@ -21,6 +21,8 @@ impl GetNetworkInfo {
             local_relay: self.local_relay,
             time_offset: self.time_offset,
             connections: self.connections,
+            connections_in: None,
+            connections_out: None,
             network_active: self.network_active,
             networks: self.networks.into_iter().map(|n| n.into_model()).collect(),
             relay_fee,

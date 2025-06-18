@@ -36,6 +36,10 @@ pub struct GetNetworkInfo {
     pub time_offset: isize,
     /// The total number of connections.
     pub connections: usize,
+    /// The number of inbound connections. v21 and later only.
+    pub connections_in: usize,
+    /// The number of outbound connections. v21 and later only.
+    pub connections_out: usize,
     /// Whether p2p networking is enabled.
     #[serde(rename = "networkactive")]
     pub network_active: bool,
@@ -71,6 +75,8 @@ impl GetNetworkInfo {
             local_relay: self.local_relay,
             time_offset: self.time_offset,
             connections: self.connections,
+            connections_in: Some(self.connections_in),
+            connections_out: Some(self.connections_out),
             network_active: self.network_active,
             networks: self.networks.into_iter().map(|n| n.into_model()).collect(),
             relay_fee,

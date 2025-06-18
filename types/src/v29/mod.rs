@@ -310,7 +310,7 @@ pub use crate::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetChainTxStats,
         GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose, GetPeerInfo, GetRpcInfo,
+        GetMempoolDescendantsVerbose, GetRpcInfo,
         MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
         MempoolEntryFeesError, PeerInfo, Softfork, SoftforkType,
     },
@@ -329,5 +329,6 @@ pub use crate::{
     v28::{
         GetNetworkInfo, SubmitPackage, SubmitPackageError, SubmitPackageTxResult,
         SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
+        GetPeerInfo,
     },
 };

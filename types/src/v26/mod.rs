@@ -250,6 +250,7 @@
 
 mod blockchain;
 mod mining;
+mod network;
 mod raw_transactions;
 mod wallet;
 
@@ -257,6 +258,7 @@ mod wallet;
 pub use self::{
     blockchain::{GetTxOutSetInfo, GetTxOutSetInfoError},
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
+    network::GetPeerInfo,
     raw_transactions::{
         DescriptorProcessPsbt, DescriptorProcessPsbtError, SubmitPackage, SubmitPackageError,
         SubmitPackageTxResult, SubmitPackageTxResultError, SubmitPackageTxResultFees,
@@ -308,10 +310,11 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError,
         GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
+        GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
         Softfork, SoftforkType,
     },
+    v21::GetNetworkInfo,
     v22::{Banned, ListBanned, Logging, ScriptPubkey},
     v23::{CreateMultisig, GetBlockchainInfo, SaveMempool},
     v24::{

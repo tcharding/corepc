@@ -28,6 +28,10 @@ pub struct GetNetworkInfo {
     pub time_offset: isize,
     /// The total number of connections.
     pub connections: usize,
+    /// The number of inbound connections. v28 and later only.
+    pub connections_in: Option<usize>,
+    /// The number of outbound connections. v28 and later only.
+    pub connections_out: Option<usize>,
     /// Whether p2p networking is enabled.
     pub network_active: bool,
     /// Information per network.
