@@ -269,6 +269,22 @@ macro_rules! impl_client_v17__get_wallet_info {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `importaddress`.
+#[macro_export]
+macro_rules! impl_client_v17__import_address {
+    () => {
+        impl Client {
+            pub fn import_address(&self, address: &Address) -> Result<()> {
+                match self.call("importaddress", &[into_json(address)?]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `importprivkey`.
 #[macro_export]
 macro_rules! impl_client_v17__import_privkey {

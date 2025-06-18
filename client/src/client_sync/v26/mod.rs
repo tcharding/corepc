@@ -141,6 +141,7 @@ crate::impl_client_v17__get_received_by_address!();
 crate::impl_client_v17__get_transaction!();
 crate::impl_client_v17__get_unconfirmed_balance!();
 crate::impl_client_v17__get_wallet_info!();
+crate::impl_client_v17__import_address!();
 crate::impl_client_v17__import_privkey!();
 crate::impl_client_v17__list_address_groupings!();
 crate::impl_client_v17__list_labels!();
