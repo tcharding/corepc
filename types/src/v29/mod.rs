@@ -326,8 +326,10 @@ pub use crate::{
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
-        PrioritisedTransaction, SubmitPackage, SubmitPackageError, SubmitPackageTxResult,
-        SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
-        UnloadWallet,
+        PrioritisedTransaction, UnloadWallet,
+    },
+    v28::{
+        SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
+        SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
     },
 };
