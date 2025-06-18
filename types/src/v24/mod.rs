@@ -294,7 +294,7 @@ pub use crate::{
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
+        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError,
         GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
         GetMempoolInfo, GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
@@ -303,5 +303,5 @@ pub use crate::{
     },
     v21::UnloadWallet,
     v22::{Banned, ListBanned, Logging, ScriptPubkey},
-    v23::{CreateMultisig, SaveMempool},
+    v23::{CreateMultisig, GetBlockchainInfo, SaveMempool},
 };

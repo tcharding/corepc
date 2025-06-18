@@ -84,6 +84,8 @@ pub struct GetBlockchainInfo {
     pub target: Option<Target>, // Only from v29 onwards
     /// The current difficulty.
     pub difficulty: f64,
+    /// The block time expressed in UNIX epoch time. v23 and later only.
+    pub time: Option<u32>,
     /// Median time for the current best block.
     pub median_time: u32,
     /// Estimate of verification progress (between 0 and 1).
@@ -151,6 +153,8 @@ pub struct Bip9SoftforkInfo {
     pub timeout: u32,
     /// Height of the first block to which the status applies.
     pub since: u32,
+    /// Minimum height of blocks for which the rules may be enforced. v0.21 and later only.
+    pub min_activation_height: Option<i64>,
     /// Numeric statistics about BIP-9 signalling for a softfork (only for "started" status).
     pub statistics: Option<Bip9SoftforkStatistics>,
 }

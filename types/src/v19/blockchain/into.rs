@@ -39,6 +39,7 @@ impl GetBlockchainInfo {
             bits: None,
             target: None,
             difficulty: self.difficulty,
+            time: None,
             median_time: crate::to_u32(self.median_time, "median_time")?,
             verification_progress: self.verification_progress,
             initial_block_download: self.initial_block_download,

@@ -6,9 +6,61 @@
 
 mod into;
 
+use alloc::collections::BTreeMap;
+
 use serde::{Deserialize, Serialize};
 
-pub use super::{MempoolEntryError, MempoolEntryFees};
+pub use super::{GetBlockchainInfoError, MempoolEntryError, MempoolEntryFees, Softfork};
+
+/// Result of JSON-RPC method `getblockchaininfo`.
+///
+/// > getblockchaininfo
+/// >
+/// > Returns an object containing various state info regarding blockchain processing.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetBlockchainInfo {
+    /// Current network name as defined in BIP70 (main, test, signet, regtest).
+    pub chain: String,
+    /// The current number of blocks processed in the server.
+    pub blocks: i64,
+    /// The current number of headers we have validated.
+    pub headers: i64,
+    /// The hash of the currently best block.
+    #[serde(rename = "bestblockhash")]
+    pub best_block_hash: String,
+    /// The current difficulty.
+    pub difficulty: f64,
+    /// The block time expressed in UNIX epoch time. v23 and later only.
+    pub time: i64,
+    /// Median time for the current best block.
+    #[serde(rename = "mediantime")]
+    pub median_time: i64,
+    /// Estimate of verification progress (between 0 and 1).
+    #[serde(rename = "verificationprogress")]
+    pub verification_progress: f64,
+    /// Estimate of whether this node is in Initial Block Download (IBD) mode.
+    #[serde(rename = "initialblockdownload")]
+    pub initial_block_download: bool,
+    /// Total amount of work in active chain, in hexadecimal.
+    #[serde(rename = "chainwork")]
+    pub chain_work: String,
+    /// The estimated size of the block and undo files on disk.
+    pub size_on_disk: u64,
+    /// If the blocks are subject to pruning.
+    pub pruned: bool,
+    /// Lowest-height complete block stored (only present if pruning is enabled).
+    #[serde(rename = "pruneheight")]
+    pub prune_height: Option<i64>,
+    /// Whether automatic pruning is enabled (only present if pruning is enabled).
+    pub automatic_pruning: Option<bool>,
+    /// The target size used by pruning (only present if automatic pruning is enabled).
+    pub prune_target_size: Option<i64>,
+    /// Status of softforks in progress, maps softfork name -> [`Softfork`].
+    #[serde(default)]
+    pub softforks: BTreeMap<String, Softfork>,
+    /// Any network and blockchain warnings.
+    pub warnings: String,
+}
 
 /// Result of JSON-RPC method `getmempoolentry`.
 ///

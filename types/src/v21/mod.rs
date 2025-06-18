@@ -236,7 +236,10 @@ mod blockchain;
 mod wallet;
 
 #[doc(inline)]
-pub use self::{blockchain::GetMempoolEntry, wallet::UnloadWallet};
+pub use self::{
+    blockchain::{Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, Softfork, SoftforkType},
+    wallet::UnloadWallet,
+};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -279,13 +282,12 @@ pub use crate::{
         ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
-        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
+        Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
+        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError,
         GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
         GetMempoolInfo, GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
-        Softfork, SoftforkType,
     },
     v20::{Banned, CreateMultisig, ListBanned, Logging},
 };
