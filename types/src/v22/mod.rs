@@ -256,7 +256,7 @@ pub use crate::{
     v17::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig, CreateMultisigError,
+        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError,
         CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError,
         DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet,
         EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
@@ -301,6 +301,7 @@ pub use crate::{
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
         Softfork, SoftforkType,
     },
+    v20::CreateMultisig,
     v21::{GetMempoolEntry, UnloadWallet},
     ScriptPubkey,
 };

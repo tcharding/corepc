@@ -228,18 +228,20 @@
 // JSON-RPC types by API section.
 mod control;
 mod network;
+mod util;
 
 #[doc(inline)]
 pub use self::{
     control::Logging,
     network::{Banned, ListBanned},
+    util::CreateMultisig,
 };
 #[doc(inline)]
 pub use crate::{
     v17::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig, CreateMultisigError,
+        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError,
         CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError,
         DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet,
         EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,

@@ -238,6 +238,7 @@
 // JSON-RPC types by API section.
 mod blockchain;
 mod raw_transactions;
+mod util;
 
 #[doc(inline)]
 pub use self::{
@@ -245,13 +246,14 @@ pub use self::{
     raw_transactions::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
     },
+    util::CreateMultisig,
 };
 #[doc(inline)]
 pub use crate::{
     v17::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisig, CreateMultisigError,
+        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError,
         CreatePsbt, CreateRawTransaction, CreateWallet, DecodeRawTransaction, DecodeScript,
         DecodeScriptError, DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt,
         FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate,
