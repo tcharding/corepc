@@ -226,6 +226,8 @@
 
 // JSON-RPC types by API section.
 mod blockchain;
+mod control;
+mod network;
 mod util;
 mod wallet;
 
@@ -236,8 +238,10 @@ pub use self::{
         GetBlockFilterError, GetBlockchainInfo, GetBlockchainInfoError, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
         GetMempoolEntry, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
-        MempoolEntryFeesError, Softfork, SoftforkType,
+        MempoolEntryFeesError, Softfork, SoftforkType, GetChainTxStats, GetMempoolInfo,
     },
+    control::GetRpcInfo,
+    network::{GetNetworkInfo, GetPeerInfo, PeerInfo},
     util::GetDescriptorInfo,
     wallet::{GetBalances, GetBalancesMine, GetBalancesWatchOnly},
 };
@@ -254,9 +258,9 @@ pub use crate::v17::{
     GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError,
     GetBlockHeaderVerbose, GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError,
     GetBlockTemplate, GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError,
-    GetBlockVerboseZero, GetChainTips, GetChainTxStats, GetChainTxStatsError, GetConnectionCount,
-    GetDifficulty, GetMemoryInfoStats, GetMempoolInfo, GetMempoolInfoError, GetMiningInfo,
-    GetNetTotals, GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError,
+    GetBlockVerboseZero, GetChainTips, GetChainTxStatsError, GetConnectionCount,
+    GetDifficulty, GetMemoryInfoStats, GetMempoolInfoError, GetMiningInfo,
+    GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError,
     GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose,
     GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
     GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,
@@ -277,8 +281,8 @@ pub use crate::v17::{
 #[doc(inline)]
 pub use crate::v18::{
     ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-    AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetPeerInfo,
-    GetReceivedByLabel, GetRpcInfo, JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError,
-    ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress, PeerInfo,
+    AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses,
+    GetReceivedByLabel, JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError,
+    ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress,
     UtxoUpdatePsbt,
 };
