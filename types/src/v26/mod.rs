@@ -308,7 +308,7 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError,
         GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetMempoolInfo, GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
+        GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
         Softfork, SoftforkType,
     },
@@ -317,5 +317,6 @@ pub use crate::{
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GlobalXpub, Proprietary, PsbtInput,
         PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
+        GetMempoolInfo,
     },
 };

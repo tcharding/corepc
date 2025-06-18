@@ -5,7 +5,8 @@ use alloc::collections::BTreeMap;
 use bitcoin::{BlockHash, Network, Txid, Work, Wtxid};
 
 use super::{
-    GetBlockchainInfo, GetBlockchainInfoError, GetMempoolEntry, MempoolEntry, MempoolEntryError,
+    GetBlockchainInfo, GetBlockchainInfoError, GetMempoolEntry, GetMempoolInfo,
+    GetMempoolInfoError, MempoolEntry, MempoolEntryError,
 };
 use crate::model;
 
@@ -101,6 +102,33 @@ impl MempoolEntry {
             spent_by,
             bip125_replaceable: Some(self.bip125_replaceable),
             unbroadcast: Some(self.unbroadcast),
+        })
+    }
+}
+
+impl GetMempoolInfo {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetMempoolInfo, GetMempoolInfoError> {
+        let size = crate::to_u32(self.size, "size")?;
+        let bytes = crate::to_u32(self.bytes, "bytes")?;
+        let usage = crate::to_u32(self.usage, "usage")?;
+        let max_mempool = crate::to_u32(self.max_mempool, "max_mempool")?;
+        let mempool_min_fee = crate::btc_per_kb(self.mempool_min_fee)?;
+        let min_relay_tx_fee = crate::btc_per_kb(self.min_relay_tx_fee)?;
+        let unbroadcast_count = Some(crate::to_u32(self.unbroadcast_count, "unbroadcast_count")?);
+
+        Ok(model::GetMempoolInfo {
+            loaded: Some(self.loaded),
+            size,
+            bytes,
+            usage,
+            total_fee: None,
+            max_mempool,
+            mempool_min_fee,
+            min_relay_tx_fee,
+            incremental_relay_fee: None,
+            unbroadcast_count,
+            full_rbf: None,
         })
     }
 }

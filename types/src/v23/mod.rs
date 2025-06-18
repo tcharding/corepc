@@ -294,10 +294,10 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError,
         GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetMempoolInfo, GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
+        GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
         Softfork, SoftforkType,
     },
     v21::UnloadWallet,
-    v22::{Banned, ListBanned, Logging, ScriptPubkey},
+    v22::{Banned, GetMempoolInfo, ListBanned, Logging, ScriptPubkey},
 };

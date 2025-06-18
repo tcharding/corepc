@@ -245,7 +245,7 @@ mod raw_transactions;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::GetMempoolEntry,
+    blockchain::{GetMempoolEntry, GetMempoolInfo},
     raw_transactions::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
@@ -297,7 +297,7 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError,
         GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetMempoolInfo, GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
+        GetNetworkInfo, GetPeerInfo, GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
         Softfork, SoftforkType,
     },

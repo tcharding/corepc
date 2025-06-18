@@ -454,6 +454,9 @@ pub struct GetMempoolInfo {
     pub bytes: u32,
     /// Total memory usage for the mempool.
     pub usage: u32,
+    /// Total fees for the mempool in BTC, ignoring modified fees through prioritisetransaction. v23
+    /// and later only.
+    pub total_fee: Option<f64>,
     /// Maximum memory usage for the mempool.
     pub max_mempool: u32,
     /// Minimum fee rate in BTC/kB for a transaction to be accepted.
@@ -462,6 +465,13 @@ pub struct GetMempoolInfo {
     pub mempool_min_fee: Option<FeeRate>,
     /// Current minimum relay fee for transactions.
     pub min_relay_tx_fee: Option<FeeRate>,
+    /// Minimum fee rate increment for mempool limiting or replacement in BTC/kvB. v24 and later only.
+    pub incremental_relay_fee: Option<FeeRate>,
+    ///  Current number of transactions that haven't passed initial broadcast yet. v21 and later only.
+    pub unbroadcast_count: Option<u32>,
+    /// True if the mempool accepts RBF without replaceability signaling inspection. v24 and later
+    /// only.
+    pub full_rbf: Option<bool>,
 }
 
 /// Models the result of JSON-RPC method `getrawmempool` with verbose set to false.

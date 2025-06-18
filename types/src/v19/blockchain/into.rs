@@ -226,9 +226,13 @@ impl GetMempoolInfo {
             size,
             bytes,
             usage,
+            total_fee: None,
             max_mempool,
             mempool_min_fee,
             min_relay_tx_fee,
+            incremental_relay_fee: None,
+            unbroadcast_count: None,
+            full_rbf: None,
         })
     }
 }

@@ -11,8 +11,8 @@ use alloc::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 
 pub use super::{
-    Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBlockchainInfoError, MempoolEntryError,
-    MempoolEntryFees,
+    Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBlockchainInfoError, GetMempoolInfoError,
+    MempoolEntryError, MempoolEntryFees,
 };
 
 /// Result of JSON-RPC method `getblockchaininfo`.
@@ -172,4 +172,37 @@ pub struct MempoolEntry {
     /// Whether this transaction is currently unbroadcast (initial broadcast not yet acknowledged by
     /// any peers)
     pub unbroadcast: bool,
+}
+
+/// Result of JSON-RPC method `getmempoolinfo` with verbose set to `true`.
+///
+/// > getmempoolinfo
+/// >
+/// > Returns details on the active state of the TX memory pool.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetMempoolInfo {
+    /// True if the mempool is fully loaded. v0.19 and later only.
+    pub loaded: bool,
+    /// Current transaction count.
+    pub size: i64,
+    /// Sum of all virtual transaction sizes as defined in BIP 141.
+    ///
+    /// Differs from actual serialized size because witness data is discounted.
+    pub bytes: i64,
+    /// Total memory usage for the mempool.
+    pub usage: i64,
+    /// Maximum memory usage for the mempool.
+    #[serde(rename = "maxmempool")]
+    pub max_mempool: i64,
+    /// Minimum fee rate in BTC/kB for a transaction to be accepted.
+    ///
+    /// This is the maximum of `minrelaytxfee` and the minimum mempool fee.
+    #[serde(rename = "mempoolminfee")]
+    pub mempool_min_fee: f64,
+    /// Current minimum relay fee for transactions.
+    #[serde(rename = "minrelaytxfee")]
+    pub min_relay_tx_fee: f64,
+    /// Current number of transactions that haven't passed initial broadcast yet. v21 and later only.
+    #[serde(rename = "unbroadcastcount")]
+    pub unbroadcast_count: i64,
 }
