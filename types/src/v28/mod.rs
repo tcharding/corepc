@@ -253,9 +253,18 @@
 mod blockchain;
 mod mining;
 mod network;
+mod raw_transactions;
 
 #[doc(inline)]
-pub use self::{blockchain::GetBlockchainInfo, mining::GetMiningInfo, network::GetNetworkInfo};
+pub use self::{
+    blockchain::GetBlockchainInfo,
+    mining::GetMiningInfo,
+    network::GetNetworkInfo,
+    raw_transactions::{
+        SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
+        SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
+    },
+};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -313,8 +322,6 @@ pub use crate::{
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
-        PrioritisedTransaction, SubmitPackage, SubmitPackageError, SubmitPackageTxResult,
-        SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
-        UnloadWallet,
+        PrioritisedTransaction, UnloadWallet,
     },
 };
