@@ -286,6 +286,30 @@ fn wallet__get_transaction__modelled() {
     model.unwrap();
 }
 
+#[test]
+fn wallet__import_address() {
+    let node = match () {
+        #[cfg(feature = "v22_and_below")]
+        () => Node::with_wallet(Wallet::Default, &[]),
+        #[cfg(not(feature = "v22_and_below"))]
+        () => {
+            let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+            node.client.create_legacy_wallet("wallet_name").expect("createlegacywallet");
+            node
+        }
+    };
+
+    let privkey =
+        PrivateKey::from_wif("cVt4o7BGAig1UXywgGSmARhxMdzP5qvQsxKkSsc1XEkw3tDTQFpy").unwrap();
+
+    // Derive the address from the private key
+    let secp = bitcoin::secp256k1::Secp256k1::new();
+    let pubkey = privkey.public_key(&secp);
+    let addr = bitcoin::Address::p2pkh(&pubkey, privkey.network);
+
+    node.client.import_address(&addr).expect("importaddress");
+}
+
 #[cfg(not(feature = "v17"))]
 #[test]
 fn wallet__list_received_by_label__modelled() {
