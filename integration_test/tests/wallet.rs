@@ -152,6 +152,13 @@ fn wallet__dump_wallet() {
 }
 
 #[test]
+fn wallet__encrypt_wallet() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let _: EncryptWallet = node.client.encrypt_wallet("test-passphrase").expect("encryptwallet");
+}
+
+#[test]
 fn wallet__get_addresses_by_label__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let label = "some-label";

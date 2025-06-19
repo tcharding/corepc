@@ -158,7 +158,7 @@
 //! | createwallet                       | version + model |                                        |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
-//! | encryptwallet                      | returns nothing |                                        |
+//! | encryptwallet                      | version         |                                        |
 //! | getaccount                         | returns nothing |                                        |
 //! | getaccountaddress                  | returns nothing |                                        |
 //! | getaddressbyaccount                | returns nothing |                                        |
@@ -272,7 +272,7 @@ pub use self::{
     },
     wallet::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddressInformation, BumpFee,
-        BumpFeeError, CreateWallet, DumpPrivKey, DumpWallet, GetAddressInfo,
+        BumpFeeError, CreateWallet, DumpPrivKey, DumpWallet, EncryptWallet, GetAddressInfo,
         GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetNewAddress, GetRawChangeAddress,
         GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,

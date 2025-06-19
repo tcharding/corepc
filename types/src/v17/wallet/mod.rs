@@ -181,6 +181,21 @@ pub struct DumpWallet {
     pub file_name: String,
 }
 
+/// Result of the JSON-RPC method `encryptwallet`.
+///
+/// > encryptwallet "passphrase"
+/// >
+/// > Encrypts the wallet with 'passphrase'. This is for first time encryption.
+/// > After this, any calls that interact with private keys such as sending or signing
+/// > will require the passphrase to be set prior the making these calls.
+/// > Use the walletpassphrase call for this, and then walletlock call.
+/// > If the wallet is already encrypted, use the walletpassphrasechange call.
+/// >
+/// > Arguments:
+/// > 1. passphrase    (string, required) The pass phrase to encrypt the wallet with. It must be at least 1 character, but should be long.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct EncryptWallet(pub String);
+
 /// Result of the JSON-RPC method `getaddressesbylabel`.
 ///
 /// > getaddressesbylabel "label"
