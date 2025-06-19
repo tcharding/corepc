@@ -413,6 +413,7 @@ impl MempoolEntry {
             .map_err(E::SpentBy)?;
 
         Ok(model::MempoolEntry {
+            vsize: None,
             size,
             weight,
             time,
@@ -426,6 +427,7 @@ impl MempoolEntry {
             depends,
             spent_by,
             bip125_replaceable: None,
+            unbroadcast: None,
         })
     }
 }

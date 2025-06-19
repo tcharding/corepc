@@ -383,11 +383,12 @@ pub struct GetMempoolEntry(pub MempoolEntry);
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct MempoolEntry {
-    /// Virtual transaction size as defined in BIP 141.
+    /// Virtual transaction size as defined in BIP 141. v0.19 and later only.
     ///
     /// This is different from actual serialized size for witness transactions as witness data is discounted.
-    ///
-    /// This was deprecated with Bitcoin Core v0.19 and hence will be `None` for v0.19 and later.
+    pub vsize: Option<u32>,
+    /// Same as vsize. This was deprecated with Bitcoin Core v0.19 and hence
+    /// will be `None` for v0.19 and later.
     pub size: Option<u32>,
     /// Transaction weight as defined in BIP 141
     ///
@@ -416,6 +417,9 @@ pub struct MempoolEntry {
     pub spent_by: Vec<Txid>,
     /// Whether this transaction could be replaced due to BIP125 (replace-by-fee)
     pub bip125_replaceable: Option<bool>,
+    /// Whether this transaction is currently unbroadcast (initial broadcast not yet acknowledged by
+    /// any peers). v0.21 and later only.
+    pub unbroadcast: Option<bool>,
 }
 
 /// (No docs in Core v0.17.)

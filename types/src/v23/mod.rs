@@ -241,7 +241,7 @@ mod raw_transactions;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::SaveMempool,
+    blockchain::{GetMempoolEntry, SaveMempool},
     raw_transactions::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
     },
@@ -293,9 +293,8 @@ pub use crate::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
         GetBlockchainInfoError, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork,
-        SoftforkType,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, MapMempoolEntryError, MempoolEntry,
+        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, Softfork, SoftforkType,
     },
     v21::UnloadWallet,
     v22::{Banned, ListBanned, Logging, ScriptPubkey},
