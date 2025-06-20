@@ -7,6 +7,11 @@ enabled. However `node` allows setting the environment variable
 
 `BITCOIND_EXE=/opt/bitcoin-28.0/bin/bitcoind cargo test --features=28_0`
 
+## All features
+
+Note that this crate cannot be built with `--all-features` because of
+how the internal `v28_and_below` style feature gates work.
+
 ## Shell alias' for the impatient
 
 I have all the Core versions on my machine e.g., `/opt/bitcoin-28.0`
