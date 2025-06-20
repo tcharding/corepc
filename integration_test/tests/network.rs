@@ -19,9 +19,9 @@ fn network__add_node() {
 
     let dummy_peer = "192.0.2.1:8333";
 
-    node.client.add_node(dummy_peer, AddNodeCommand::OneTry).expect("addnode onetry");
-    node.client.add_node(dummy_peer, AddNodeCommand::Add).expect("addnode add");
-    node.client.add_node(dummy_peer, AddNodeCommand::Remove).expect("addnode remove");
+    let _: () = node.client.add_node(dummy_peer, AddNodeCommand::OneTry).expect("addnode onetry");
+    let _: () = node.client.add_node(dummy_peer, AddNodeCommand::Add).expect("addnode add");
+    let _: () = node.client.add_node(dummy_peer, AddNodeCommand::Remove).expect("addnode remove");
 }
 
 #[test]
@@ -29,8 +29,8 @@ fn network__clear_banned() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let dummy_subnet = "192.0.2.2";
 
-    node.client.set_ban(dummy_subnet, SetBanCommand::Add).expect("setban add");
-    node.client.clear_banned().expect("clearbanned");
+    let _: () = node.client.set_ban(dummy_subnet, SetBanCommand::Add).expect("setban add");
+    let _: () = node.client.clear_banned().expect("clearbanned");
 }
 
 #[test]
@@ -40,7 +40,7 @@ fn network__disconnect_node() {
     let peers = node2.client.get_peer_info().expect("getpeerinfo");
     let peer = peers.0.first().expect("should have at least one peer");
 
-    node2.client.disconnect_node(&peer.address).expect("disconnectnode");
+    let _: () = node2.client.disconnect_node(&peer.address).expect("disconnectnode");
 }
 
 #[test]
@@ -130,7 +130,7 @@ fn network__list_banned() {
 #[test]
 fn network__ping() {
     let node = Node::with_wallet(Wallet::None, &[]);
-    node.client.ping().expect("ping");
+    let _: () = node.client.ping().expect("ping");
 }
 
 #[test]
@@ -138,8 +138,8 @@ fn network__set_ban() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let dummy_subnet = "192.0.2.3";
 
-    node.client.set_ban(dummy_subnet, SetBanCommand::Add).expect("setban add");
-    node.client.set_ban(dummy_subnet, SetBanCommand::Remove).expect("setban remove");
+    let _: () = node.client.set_ban(dummy_subnet, SetBanCommand::Add).expect("setban add");
+    let _: () = node.client.set_ban(dummy_subnet, SetBanCommand::Remove).expect("setban remove");
 }
 
 #[test]

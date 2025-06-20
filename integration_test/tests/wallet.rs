@@ -34,7 +34,7 @@ fn wallet__abandon_transaction() {
 
     node.client.invalidate_block(block_hash).expect("invalidateblock");
 
-    node.client.abandon_transaction(txid).expect("abandontransaction");
+    let _: () = node.client.abandon_transaction(txid).expect("abandontransaction");
 }
 
 #[test]
@@ -69,7 +69,7 @@ fn wallet__backup_wallet() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let file_path = integration_test::random_tmp_file();
 
-    node.client.backup_wallet(&file_path).expect("backupwallet");
+    let _: () = node.client.backup_wallet(&file_path).expect("backupwallet");
     assert!(file_path.exists(), "Backup file should exist at destination");
     assert!(file_path.is_file(), "Backup destination should be a file");
 
@@ -307,7 +307,7 @@ fn wallet__import_address() {
     let pubkey = privkey.public_key(&secp);
     let addr = bitcoin::Address::p2pkh(&pubkey, privkey.network);
 
-    node.client.import_address(&addr).expect("importaddress");
+    let _: () = node.client.import_address(&addr).expect("importaddress");
 }
 
 #[cfg(not(feature = "v17"))]
@@ -345,7 +345,7 @@ fn wallet__import_privkey() {
     let privkey =
         PrivateKey::from_wif("cVt4o7BGAig1UXywgGSmARhxMdzP5qvQsxKkSsc1XEkw3tDTQFpy").unwrap();
 
-    node.client.import_privkey(&privkey).expect("importprivkey");
+    let _: () = node.client.import_privkey(&privkey).expect("importprivkey");
 }
 
 #[test]
@@ -428,7 +428,7 @@ fn create_load_unload_wallet() {
 
     // Upto version 20 Core returns null for `unloadwallet`.
     #[cfg(feature = "v20_and_below")]
-    let _ = node.client.unload_wallet(&wallet).expect("unloadwallet");
+    let _: () = node.client.unload_wallet(&wallet).expect("unloadwallet");
 
     // From version 21 Core returns warnings for `unloadwallet`.
     #[cfg(not(feature = "v20_and_below"))]
