@@ -266,9 +266,9 @@ pub use crate::{
         GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfoAddress,
         GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
         GetRawMempool, GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
-        GetRawTransactionVerboseError, GetReceivedByAddress,
-        GetTransactionDetailError,  GetTxOut, GetTxOutError,
-        GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
+        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransactionDetailError, GetTxOut,
+        GetTxOutError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
+        GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
         ListLockUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError,
         ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
@@ -284,8 +284,8 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
-        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError,
-        ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt, ImportMulti, ImportMultiEntry, JsonRpcError,
+        ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
+        ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,

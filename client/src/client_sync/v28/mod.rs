@@ -18,8 +18,8 @@ use crate::types::v28::*;
 #[rustfmt::skip]                // Keep public re-exports separate.
 pub use crate::client_sync::{
     v17::{
-        AddNodeCommand, Input, Output, SetBanCommand, TemplateRequest, TemplateRules,
-        WalletCreateFundedPsbtInput, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp,
+        AddNodeCommand, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp, Input, Output, SetBanCommand, TemplateRequest, TemplateRules,
+        WalletCreateFundedPsbtInput,
     },
     v23::AddressType,
 };
