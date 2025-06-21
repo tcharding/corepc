@@ -267,7 +267,7 @@ fn blockchain__precious_block() {
     let hash = node.client.best_block_hash().expect("best_block_hash failed");
     node.mine_a_block();
 
-    let _ = node.client.precious_block(hash).expect("preciousblock");
+    let _: () = node.client.precious_block(hash).expect("preciousblock");
 }
 
 #[test]
@@ -293,7 +293,7 @@ fn blockchain__savemempool() {
 
     #[cfg(feature = "v22_and_below")]
     {
-        node.client.save_mempool().expect("savemempool");
+        let _: () = node.client.save_mempool().expect("savemempool");
     }
 
     #[cfg(not(feature = "v22_and_below"))]
