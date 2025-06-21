@@ -173,7 +173,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importmulti                        | returns nothing |                                        |
+//! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
 //! | importpubkey                       | returns nothing |                                        |
@@ -271,13 +271,13 @@ pub use self::{
         ValidateAddress, ValidateAddressError, VerifyMessage,
     },
     wallet::{
-        AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddressInformation,
-        Bip125Replaceable, BumpFee, BumpFeeError, CreateWallet, DumpPrivKey, DumpWallet,
-        EncryptWallet, GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError,
-        GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetNewAddress,
-        GetRawChangeAddress, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-        GetTransactionDetailError, GetTransactionError, GetUnconfirmedBalance, GetWalletInfo,
-        GetWalletInfoError, ListAddressGroupings, ListAddressGroupingsError,
+        AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddressInformation, BumpFee,
+        Bip125Replaceable, BumpFeeError, CreateWallet, DumpPrivKey, DumpWallet, EncryptWallet, GetAddressInfo,
+        GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
+        GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetNewAddress, GetRawChangeAddress,
+        GetReceivedByAddress, GetTransaction, GetTransactionDetail, GetTransactionDetailError,
+        GetTransactionError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, ImportMulti,
+        ImportMultiEntry, JsonRpcError, ListAddressGroupings, ListAddressGroupingsError,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
         ListLockUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError,
         ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,

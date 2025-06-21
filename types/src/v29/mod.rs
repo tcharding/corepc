@@ -195,7 +195,7 @@
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
 //! | importdescriptors                  | version         | TODO                                   |
-//! | importmulti                        | returns nothing |                                        |
+//! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
 //! | importpubkey                       | returns nothing |                                        |
@@ -285,9 +285,9 @@ pub use crate::{
         GetMemoryInfoStats, GetMempoolInfoError, GetNetTotals, GetNetworkInfoAddress,
         GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
         GetRawMempool, GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
-        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransactionDetailError, GetTxOut,
-        GetTxOutError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
-        GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
+        GetRawTransactionVerboseError, GetReceivedByAddress,
+        GetTransactionDetailError, GetTxOut, GetTxOutError,
+        GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
         ListLockUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError,
         ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
@@ -303,8 +303,8 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
-        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir,
-        ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError,
+        ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt, ImportMulti, ImportMultiEntry, JsonRpcError,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,

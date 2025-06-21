@@ -184,7 +184,7 @@
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
 //! | importdescriptors                  | version         | TODO                                   |
-//! | importmulti                        | returns nothing |                                        |
+//! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
 //! | importpubkey                       | returns nothing |                                        |
@@ -268,26 +268,27 @@ pub use crate::{
         GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfoAddress,
         GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
         GetRawMempool, GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
-        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransactionDetailError, GetTxOut,
-        GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo,
-        GetWalletInfoError, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
-        ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
-        ListLockUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError,
-        ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
-        ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,
-        ListTransactionsItemError, ListUnspentItemError, ListWallets, Locked, PruneBlockchain,
-        RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany,
-        SendRawTransaction, SendToAddress, SetNetworkActive, SignMessage, SignMessageWithPrivKey,
-        SignRawTransaction, SignRawTransactionError, SoftforkReject, TestMempoolAccept,
-        TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
-        VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WalletProcessPsbt, WitnessUtxo,
+        GetRawTransactionVerboseError, GetReceivedByAddress,
+        GetTransactionDetailError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
+        GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
+        GetZmqNotifications, ListAddressGroupings,
+        ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels, ListLockUnspent,
+        ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddress,
+        ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError,
+        ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
+        ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError, ListWallets, Locked,
+        PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
+        RescanBlockchain, SendMany, SendRawTransaction, SendToAddress, SetNetworkActive,
+        SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
+        SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
+        ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
-        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir,
-        ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError,
+        ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt, ImportMulti, ImportMultiEntry, JsonRpcError,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
