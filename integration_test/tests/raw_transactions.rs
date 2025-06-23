@@ -546,6 +546,7 @@ fn create_sign_with_key_send(node: &Node) {
 // - fund_raw_transaction
 // - sign_raw_transaction_with_wallet (sign_raw_transaction was deprecated in v0.17).
 // - send_raw_transaction
+#[allow(clippy::inconsistent_digit_grouping)] // Sats to btc is a common use case.
 fn create_fund_sign_send(node: &Node) {
     let (_addr, _tx, txid, _tx_out, vout) = create_utxo(node);
 
