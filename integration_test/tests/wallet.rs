@@ -170,7 +170,7 @@ fn wallet__get_addresses_by_label__modelled() {
 
     // sanity checks.
     assert!(!map.0.is_empty());
-    assert!(map.0.get(&addr).is_some());
+    assert!(map.0.contains_key(&addr));
 }
 
 #[test]
