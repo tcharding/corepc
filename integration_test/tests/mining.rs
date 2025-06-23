@@ -150,7 +150,7 @@ fn submit_empty_block(node: &Node, bt: &mtype::GetBlockTemplate) {
         }
     }
 
-    let _ = node.client.submit_block(&block).expect("submitblock");
+    let _: () = node.client.submit_block(&block).expect("submitblock");
 }
 
 // FIXME: Submitting this block returns 'inconclusive'.
@@ -208,7 +208,7 @@ fn mining__submit_block_with_dummy_coinbase(node: &Node, bt: &mtype::GetBlockTem
         }
     }
 
-    let _ = node.client.submit_block(&block).expect("submitblock");
+    let _: () = node.client.submit_block(&block).expect("submitblock");
 }
 
 #[cfg(not(feature = "v17"))]
