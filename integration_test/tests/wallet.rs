@@ -310,6 +310,20 @@ fn wallet__import_address() {
     let _: () = node.client.import_address(&addr).expect("importaddress");
 }
 
+#[test]
+fn wallet__import_pruned_funds() {
+    let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
+    node.fund_wallet();
+
+    let (_, tx) = node.create_mined_transaction();
+    let txid = tx.compute_txid();
+
+    let raw_tx = node.client.get_raw_transaction(txid).expect("getrawtransaction");
+    let tx_out_proof = node.client.get_tx_out_proof(&[txid]).expect("gettxoutproof");
+
+    let _: () = node.client.import_pruned_funds(&raw_tx.0, &tx_out_proof).expect("importprunedfunds");
+}
+
 #[cfg(not(feature = "v17"))]
 #[test]
 fn wallet__list_received_by_label__modelled() {
