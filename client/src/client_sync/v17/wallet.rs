@@ -319,8 +319,15 @@ macro_rules! impl_client_v17__import_privkey {
 macro_rules! impl_client_v17__import_pruned_funds {
     () => {
         impl Client {
-            pub fn import_pruned_funds(&self, raw_transaction: &str, tx_out_proof: &str) -> Result<()> {
-                match self.call("importprunedfunds", &[into_json(raw_transaction)?, into_json(tx_out_proof)?]) {
+            pub fn import_pruned_funds(
+                &self,
+                raw_transaction: &str,
+                tx_out_proof: &str,
+            ) -> Result<()> {
+                match self.call(
+                    "importprunedfunds",
+                    &[into_json(raw_transaction)?, into_json(tx_out_proof)?],
+                ) {
                     Ok(serde_json::Value::Null) => Ok(()),
                     Ok(res) => Err(Error::Returned(res.to_string())),
                     Err(err) => Err(err.into()),
