@@ -388,7 +388,7 @@ fn raw_transactions__submit_package__modelled() {
         .expect("failed to submit package")
         .into_model()
         .expect("failed to submit package");
-    for (_, tx_result) in &res.tx_results {
+    for tx_result in res.tx_results.values() {
         assert!(tx_result.error.is_some());
     }
     assert!(res.replaced_transactions.is_empty());
@@ -416,7 +416,7 @@ fn raw_transactions__submit_package__modelled() {
         .expect("failed to submit package")
         .into_model()
         .expect("failed to submit package");
-    for (_, tx_result) in &res.tx_results {
+    for tx_result in res.tx_results.values() {
         assert!(tx_result.error.is_some());
     }
     assert!(res.replaced_transactions.is_empty());
