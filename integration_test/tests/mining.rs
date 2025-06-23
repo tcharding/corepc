@@ -134,7 +134,7 @@ fn submit_empty_block(node: &Node, bt: &mtype::GetBlockTemplate) {
             version: block::Version::default(),
             prev_blockhash: bt.previous_block_hash,
             merkle_root: TxMerkleNode::all_zeros(),
-            time: Ord::max(bt.min_time, std::time::UNIX_EPOCH.elapsed().expect("elapsed").as_secs() as u32) as u32,
+            time: Ord::max(bt.min_time, std::time::UNIX_EPOCH.elapsed().expect("elapsed").as_secs() as u32),
             bits: bt.bits,
             nonce: 0,
         },
