@@ -221,7 +221,7 @@ fn arbitrary_p2pkh_script() -> ScriptBuf {
     script::Builder::new()
         .push_opcode(OP_DUP)
         .push_opcode(OP_HASH160)
-        .push_slice(&pubkey_hash)
+        .push_slice(pubkey_hash)
         .push_opcode(OP_EQUALVERIFY)
         .push_opcode(OP_CHECKSIG)
         .into_script()
@@ -238,9 +238,9 @@ fn arbitrary_multisig_script() -> ScriptBuf {
     script::Builder::new()
         .push_opcode(OP_PUSHNUM_1)
         .push_opcode(OP_PUSHBYTES_33)
-        .push_slice(&pk1)
+        .push_slice(pk1)
         .push_opcode(OP_PUSHBYTES_33)
-        .push_slice(&pk2)
+        .push_slice(pk2)
         .push_opcode(OP_PUSHNUM_2)
         .push_opcode(OP_CHECKMULTISIG)
         .into_script()
@@ -581,7 +581,7 @@ fn create_fund_sign_send(node: &Node) {
 
 // Creates a transaction using client to do RPC call `create_raw_transaction`.
 fn create_a_raw_transaction(node: &Node) -> Transaction {
-    let (_addr, _tx, txid, tx_out, vout) = create_utxo(&node);
+    let (_addr, _tx, txid, tx_out, vout) = create_utxo(node);
 
     // Assumes tx_out has a million sats in it.
     let spend_amount = Amount::from_sat(100_000);

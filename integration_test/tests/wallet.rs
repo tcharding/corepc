@@ -305,7 +305,7 @@ fn wallet__import_address() {
     // Derive the address from the private key
     let secp = bitcoin::secp256k1::Secp256k1::new();
     let pubkey = privkey.public_key(&secp);
-    let addr = bitcoin::Address::p2pkh(&pubkey, privkey.network);
+    let addr = bitcoin::Address::p2pkh(pubkey, privkey.network);
 
     let _: () = node.client.import_address(&addr).expect("importaddress");
 }
