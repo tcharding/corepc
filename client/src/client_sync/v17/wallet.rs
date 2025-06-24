@@ -314,6 +314,29 @@ macro_rules! impl_client_v17__import_privkey {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `importprunedfunds`.
+#[macro_export]
+macro_rules! impl_client_v17__import_pruned_funds {
+    () => {
+        impl Client {
+            pub fn import_pruned_funds(
+                &self,
+                raw_transaction: &str,
+                tx_out_proof: &str,
+            ) -> Result<()> {
+                match self.call(
+                    "importprunedfunds",
+                    &[into_json(raw_transaction)?, into_json(tx_out_proof)?],
+                ) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `listaddressgroupings`.
 #[macro_export]
 macro_rules! impl_client_v17__list_address_groupings {
