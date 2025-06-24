@@ -75,11 +75,7 @@ pub fn requires_type(version: Version, method_name: &str) -> Result<bool> {
             ))),
     };
 
-    let requires = match method.ret {
-        Some(Return::Type(_)) => true,
-        _ => false,
-    };
-    Ok(requires)
+    Ok(matches!(method.ret, Some(Return::Type(_))))
 }
 
 /// Checks that a type exists in version specific module.
