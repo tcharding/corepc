@@ -119,7 +119,10 @@ jobs:
       - name: "Set dependencies"
         run: cp Cargo-${{ matrix.dep }}.lock Cargo.lock
       - name: "Run test script"
-        run: ./maintainer-tools/ci/run_task.sh lint
+        run: |
+          ./maintainer-tools/ci/run_task.sh lint
+          ./contrib/lint-integtation-tests.sh
+          ./contrib/lint-verify.sh
 
   Docs:
     name: Docs - stable toolchain
