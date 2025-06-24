@@ -6,7 +6,7 @@
 
 #[cfg(feature = "TODO")]
 use bitcoin::address::{Address, NetworkChecked};
-use bitcoin::{Amount, PrivateKey};
+use bitcoin::{Amount, PrivateKey, PublicKey};
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::{mtype,AddressType};
 use node::vtype::*;             // All the version specific types.
@@ -360,6 +360,26 @@ fn wallet__import_privkey() {
         PrivateKey::from_wif("cVt4o7BGAig1UXywgGSmARhxMdzP5qvQsxKkSsc1XEkw3tDTQFpy").unwrap();
 
     let _: () = node.client.import_privkey(&privkey).expect("importprivkey");
+}
+
+#[test]
+fn wallet__import_pubkey() {
+    let node = match () {
+        #[cfg(feature = "v22_and_below")]
+        () => Node::with_wallet(Wallet::Default, &[]),
+        #[cfg(not(feature = "v22_and_below"))]
+        () => {
+            let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+            node.client.create_legacy_wallet("wallet_name").expect("createlegacywallet");
+            node
+        }
+    };
+
+    let pubkey = "02ff12471208c14bd580709cb2358d98975247d8765f92bc25eab3b2763ed605f8"
+        .parse::<PublicKey>()
+        .unwrap();
+
+    let _: () = node.client.import_pubkey(&pubkey).expect("importpubkey");
 }
 
 #[test]
