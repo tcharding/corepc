@@ -145,6 +145,7 @@ crate::impl_client_v17__get_wallet_info!();
 crate::impl_client_v17__import_address!();
 crate::impl_client_v17__import_privkey!();
 crate::impl_client_v17__import_pruned_funds!();
+crate::impl_client_v17__import_pubkey!();
 crate::impl_client_v17__list_address_groupings!();
 crate::impl_client_v17__list_labels!();
 crate::impl_client_v18__list_received_by_label!();
