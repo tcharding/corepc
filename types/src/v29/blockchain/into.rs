@@ -76,6 +76,7 @@ impl GetBlockchainInfo {
             self.best_block_hash.parse::<BlockHash>().map_err(E::BestBlockHash)?;
         let bits = Some(CompactTarget::from_unprefixed_hex(&self.bits).map_err(E::Bits)?);
         let target = Some(Target::from_unprefixed_hex(self.target.as_ref()).map_err(E::Target)?);
+        let time = Some(crate::to_u32(self.time, "time")?);
         let chain_work = Work::from_unprefixed_hex(&self.chain_work).map_err(E::ChainWork)?;
         let prune_height =
             self.prune_height.map(|h| crate::to_u32(h, "prune_height")).transpose()?;
@@ -92,6 +93,7 @@ impl GetBlockchainInfo {
             bits,
             target,
             difficulty: self.difficulty,
+            time,
             median_time: crate::to_u32(self.median_time, "median_time")?,
             verification_progress: self.verification_progress,
             initial_block_download: self.initial_block_download,

@@ -17,7 +17,7 @@ impl CreateMultisig {
         let address = self.address.parse::<Address<_>>().map_err(E::Address)?;
         let redeem_script = ScriptBuf::from_hex(&self.redeem_script).map_err(E::RedeemScript)?;
 
-        Ok(model::CreateMultisig { address, redeem_script })
+        Ok(model::CreateMultisig { address, redeem_script, descriptor: None, warnings: None })
     }
 }
 

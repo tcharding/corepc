@@ -84,6 +84,8 @@ pub struct GetBlockchainInfo {
     pub target: Option<Target>, // Only from v29 onwards
     /// The current difficulty.
     pub difficulty: f64,
+    /// The block time expressed in UNIX epoch time. v23 and later only.
+    pub time: Option<u32>,
     /// Median time for the current best block.
     pub median_time: u32,
     /// Estimate of verification progress (between 0 and 1).
@@ -151,6 +153,8 @@ pub struct Bip9SoftforkInfo {
     pub timeout: u32,
     /// Height of the first block to which the status applies.
     pub since: u32,
+    /// Minimum height of blocks for which the rules may be enforced. v0.21 and later only.
+    pub min_activation_height: Option<i64>,
     /// Numeric statistics about BIP-9 signalling for a softfork (only for "started" status).
     pub statistics: Option<Bip9SoftforkStatistics>,
 }
@@ -450,6 +454,9 @@ pub struct GetMempoolInfo {
     pub bytes: u32,
     /// Total memory usage for the mempool.
     pub usage: u32,
+    /// Total fees for the mempool in BTC, ignoring modified fees through prioritisetransaction. v23
+    /// and later only.
+    pub total_fee: Option<f64>,
     /// Maximum memory usage for the mempool.
     pub max_mempool: u32,
     /// Minimum fee rate in BTC/kB for a transaction to be accepted.
@@ -458,6 +465,13 @@ pub struct GetMempoolInfo {
     pub mempool_min_fee: Option<FeeRate>,
     /// Current minimum relay fee for transactions.
     pub min_relay_tx_fee: Option<FeeRate>,
+    /// Minimum fee rate increment for mempool limiting or replacement in BTC/kvB. v24 and later only.
+    pub incremental_relay_fee: Option<FeeRate>,
+    ///  Current number of transactions that haven't passed initial broadcast yet. v21 and later only.
+    pub unbroadcast_count: Option<u32>,
+    /// True if the mempool accepts RBF without replaceability signaling inspection. v24 and later
+    /// only.
+    pub full_rbf: Option<bool>,
 }
 
 /// Models the result of JSON-RPC method `getrawmempool` with verbose set to false.

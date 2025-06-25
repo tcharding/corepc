@@ -6,9 +6,109 @@
 
 mod into;
 
+use alloc::collections::BTreeMap;
+
 use serde::{Deserialize, Serialize};
 
-pub use super::{MempoolEntryError, MempoolEntryFees};
+pub use super::{
+    Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBlockchainInfoError, GetMempoolInfoError,
+    MempoolEntryError, MempoolEntryFees,
+};
+
+/// Result of JSON-RPC method `getblockchaininfo`.
+///
+/// > getblockchaininfo
+/// >
+/// > Returns an object containing various state info regarding blockchain processing.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetBlockchainInfo {
+    /// Current network name as defined in BIP70 (main, test, signet, regtest).
+    pub chain: String,
+    /// The current number of blocks processed in the server.
+    pub blocks: i64,
+    /// The current number of headers we have validated.
+    pub headers: i64,
+    /// The hash of the currently best block.
+    #[serde(rename = "bestblockhash")]
+    pub best_block_hash: String,
+    /// The current difficulty.
+    pub difficulty: f64,
+    /// Median time for the current best block.
+    #[serde(rename = "mediantime")]
+    pub median_time: i64,
+    /// Estimate of verification progress (between 0 and 1).
+    #[serde(rename = "verificationprogress")]
+    pub verification_progress: f64,
+    /// Estimate of whether this node is in Initial Block Download (IBD) mode.
+    #[serde(rename = "initialblockdownload")]
+    pub initial_block_download: bool,
+    /// Total amount of work in active chain, in hexadecimal.
+    #[serde(rename = "chainwork")]
+    pub chain_work: String,
+    /// The estimated size of the block and undo files on disk.
+    pub size_on_disk: u64,
+    /// If the blocks are subject to pruning.
+    pub pruned: bool,
+    /// Lowest-height complete block stored (only present if pruning is enabled).
+    #[serde(rename = "pruneheight")]
+    pub prune_height: Option<i64>,
+    /// Whether automatic pruning is enabled (only present if pruning is enabled).
+    pub automatic_pruning: Option<bool>,
+    /// The target size used by pruning (only present if automatic pruning is enabled).
+    pub prune_target_size: Option<i64>,
+    /// Status of softforks in progress, maps softfork name -> [`Softfork`].
+    #[serde(default)]
+    pub softforks: BTreeMap<String, Softfork>,
+    /// Any network and blockchain warnings.
+    pub warnings: String,
+}
+
+/// Status of softfork.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct Softfork {
+    /// The [`SoftforkType`]: one of "buried", "bip9".
+    #[serde(rename = "type")]
+    pub type_: SoftforkType,
+    /// The status of bip9 softforks (only for "bip9" type).
+    pub bip9: Option<Bip9SoftforkInfo>,
+    ///  Height of the first block which the rules are or will be enforced (only for "buried" type, or "bip9" type with "active" status).
+    pub height: Option<i64>,
+    /// `true` if the rules are enforced for the mempool and the next block.
+    pub active: bool,
+}
+
+/// The softfork type: one of "buried", "bip9".
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum SoftforkType {
+    /// Softfork is "buried" (as defined in [BIP-90]).
+    ///
+    /// [BIP-90] <https://github.com/bitcoin/bips/blob/master/bip-0090.mediawiki>
+    Buried,
+    /// Softfork is "bip9" (see [BIP-9]).
+    ///
+    /// [BIP-9] <https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki>
+    Bip9,
+}
+
+/// Status of BIP-9 softforks.
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+pub struct Bip9SoftforkInfo {
+    /// One of "defined", "started", "locked_in", "active", "failed".
+    pub status: Bip9SoftforkStatus,
+    /// The bit (0-28) in the block version field used to signal this softfork (only for "started" status).
+    pub bit: Option<u8>,
+    /// The minimum median time past of a block at which the bit gains its meaning.
+    pub start_time: i64,
+    /// The median time past of a block at which the deployment is considered failed if not yet locked in.
+    pub timeout: i64,
+    /// Height of the first block to which the status applies.
+    pub since: i64,
+    /// Minimum height of blocks for which the rules may be enforced. v0.21 and later only.
+    pub min_activation_height: i64,
+    /// Numeric statistics about BIP-9 signalling for a softfork (only for "started" status).
+    pub statistics: Option<Bip9SoftforkStatistics>,
+}
 
 /// Result of JSON-RPC method `getmempoolentry`.
 ///
@@ -72,4 +172,37 @@ pub struct MempoolEntry {
     /// Whether this transaction is currently unbroadcast (initial broadcast not yet acknowledged by
     /// any peers)
     pub unbroadcast: bool,
+}
+
+/// Result of JSON-RPC method `getmempoolinfo` with verbose set to `true`.
+///
+/// > getmempoolinfo
+/// >
+/// > Returns details on the active state of the TX memory pool.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetMempoolInfo {
+    /// True if the mempool is fully loaded. v0.19 and later only.
+    pub loaded: bool,
+    /// Current transaction count.
+    pub size: i64,
+    /// Sum of all virtual transaction sizes as defined in BIP 141.
+    ///
+    /// Differs from actual serialized size because witness data is discounted.
+    pub bytes: i64,
+    /// Total memory usage for the mempool.
+    pub usage: i64,
+    /// Maximum memory usage for the mempool.
+    #[serde(rename = "maxmempool")]
+    pub max_mempool: i64,
+    /// Minimum fee rate in BTC/kB for a transaction to be accepted.
+    ///
+    /// This is the maximum of `minrelaytxfee` and the minimum mempool fee.
+    #[serde(rename = "mempoolminfee")]
+    pub mempool_min_fee: f64,
+    /// Current minimum relay fee for transactions.
+    #[serde(rename = "minrelaytxfee")]
+    pub min_relay_tx_fee: f64,
+    /// Current number of transactions that haven't passed initial broadcast yet. v21 and later only.
+    #[serde(rename = "unbroadcastcount")]
+    pub unbroadcast_count: i64,
 }

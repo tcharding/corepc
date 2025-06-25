@@ -30,6 +30,8 @@ pub struct GetBlockchainInfo {
     pub best_block_hash: String,
     /// The current difficulty.
     pub difficulty: f64,
+    /// The block time expressed in UNIX epoch time. v23 and later only.
+    pub time: i64,
     /// Median time for the current best block.
     #[serde(rename = "mediantime")]
     pub median_time: i64,
@@ -68,6 +70,7 @@ impl GetBlockchainInfo {
         let chain = Network::from_core_arg(&self.chain).map_err(E::Chain)?;
         let best_block_hash =
             self.best_block_hash.parse::<BlockHash>().map_err(E::BestBlockHash)?;
+        let time = Some(crate::to_u32(self.time, "time")?);
         let chain_work = Work::from_unprefixed_hex(&self.chain_work).map_err(E::ChainWork)?;
         let prune_height =
             self.prune_height.map(|h| crate::to_u32(h, "prune_height")).transpose()?;
@@ -83,6 +86,7 @@ impl GetBlockchainInfo {
             bits: None,
             target: None,
             difficulty: self.difficulty,
+            time,
             median_time: crate::to_u32(self.median_time, "median_time")?,
             verification_progress: self.verification_progress,
             initial_block_download: self.initial_block_download,

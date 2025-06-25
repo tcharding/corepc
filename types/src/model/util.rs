@@ -16,6 +16,10 @@ pub struct CreateMultisig {
     pub address: Address<NetworkUnchecked>,
     /// The string value of the hex-encoded redemption script.
     pub redeem_script: ScriptBuf,
+    /// The descriptor for this multisig. v0.20 and later only.
+    pub descriptor: Option<String>,
+    /// Any warnings resulting from the creation of this multisig. v23 and later only.
+    pub warnings: Option<Vec<String>>,
 }
 
 /// Models the result of JSON-RPC method `estimatesmartfee`.
