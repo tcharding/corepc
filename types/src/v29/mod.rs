@@ -314,7 +314,7 @@ pub use crate::{
         MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo, Softfork,
         SoftforkType,
     },
-    v22::{Banned, ListBanned, Logging, ScriptPubkey},
+    v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, SaveMempool, DecodeScript, DecodeScriptError},
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GlobalXpub, Proprietary,
@@ -327,6 +327,6 @@ pub use crate::{
     },
     v28::{
         GetNetworkInfo, GetPeerInfo, SubmitPackage, SubmitPackageError, SubmitPackageTxResult,
-        SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
+        SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError, Logging,
     },
 };

@@ -249,6 +249,7 @@
 //! </details>
 
 mod blockchain;
+mod control;
 mod mining;
 mod network;
 mod raw_transactions;
@@ -257,6 +258,7 @@ mod wallet;
 #[doc(inline)]
 pub use self::{
     blockchain::{GetTxOutSetInfo, GetTxOutSetInfoError},
+    control::Logging,
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
     network::GetPeerInfo,
     raw_transactions::{
@@ -314,7 +316,7 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v21::GetNetworkInfo,
-    v22::{Banned, ListBanned, Logging, ScriptPubkey},
+    v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, GetBlockchainInfo, SaveMempool, DecodeScript, DecodeScriptError},
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GlobalXpub, Proprietary,

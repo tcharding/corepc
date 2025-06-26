@@ -296,7 +296,7 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v21::GetNetworkInfo,
-    v22::{Banned, ListBanned, Logging, ScriptPubkey},
+    v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, GetBlockchainInfo, SaveMempool, DecodeScript, DecodeScriptError},
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GlobalXpub, Proprietary,
@@ -307,6 +307,6 @@ pub use crate::{
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
         PrioritisedTransaction, SubmitPackage, SubmitPackageError, SubmitPackageTxResult,
         SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
-        UnloadWallet,
+        UnloadWallet, Logging,
     },
 };

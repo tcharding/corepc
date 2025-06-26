@@ -240,10 +240,14 @@
 //!
 //! </details>
 
+mod control;
 mod wallet;
 
 #[doc(inline)]
-pub use self::wallet::{CreateWallet, LoadWallet, UnloadWallet};
+pub use self::{
+    control::Logging,
+    wallet::{CreateWallet, LoadWallet, UnloadWallet},
+};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -293,7 +297,7 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v21::GetNetworkInfo,
-    v22::{Banned, ListBanned, Logging, ScriptPubkey},
+    v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, GetBlockchainInfo, SaveMempool, DecodeScript, DecodeScriptError},
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetPeerInfo, GlobalXpub,

@@ -251,6 +251,7 @@
 //! </details>
 
 mod blockchain;
+mod control;
 mod mining;
 mod network;
 mod raw_transactions;
@@ -258,6 +259,7 @@ mod raw_transactions;
 #[doc(inline)]
 pub use self::{
     blockchain::GetBlockchainInfo,
+    control::Logging,
     mining::GetMiningInfo,
     network::GetNetworkInfo,
     raw_transactions::{
@@ -312,7 +314,7 @@ pub use crate::{
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
         Softfork, SoftforkType,
     },
-    v22::{Banned, ListBanned, Logging, ScriptPubkey},
+    v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, SaveMempool, DecodeScript, DecodeScriptError},
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GlobalXpub, Proprietary,

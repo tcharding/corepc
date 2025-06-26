@@ -237,6 +237,7 @@
 
 // JSON-RPC types by API section.
 mod blockchain;
+mod control;
 mod network;
 mod raw_transactions;
 mod util;
@@ -244,6 +245,7 @@ mod util;
 #[doc(inline)]
 pub use self::{
     blockchain::{GetBlockchainInfo, GetMempoolEntry, SaveMempool},
+    control::Logging,
     network::GetPeerInfo,
     raw_transactions::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
@@ -300,5 +302,5 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v21::{GetNetworkInfo, UnloadWallet},
-    v22::{Banned, GetMempoolInfo, ListBanned, Logging, ScriptPubkey},
+    v22::{Banned, GetMempoolInfo, ListBanned, ScriptPubkey},
 };

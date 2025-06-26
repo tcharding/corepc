@@ -302,6 +302,6 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v21::{GetNetworkInfo, UnloadWallet},
-    v22::{Banned, ListBanned, Logging, ScriptPubkey},
-    v23::{CreateMultisig, GetBlockchainInfo, SaveMempool, DecodeScript, DecodeScriptError},
+    v22::{Banned, ListBanned, ScriptPubkey},
+    v23::{CreateMultisig, GetBlockchainInfo, SaveMempool, DecodeScript, DecodeScriptError, Logging},
 };
