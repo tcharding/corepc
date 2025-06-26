@@ -4,9 +4,9 @@
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
-use serde::{Deserialize, Serialize};
+mod into;
 
-use crate::model;
+use serde::{Deserialize, Serialize};
 
 /// Result of the JSON-RPC method `createwallet`.
 ///
@@ -33,16 +33,6 @@ pub struct CreateWallet {
     pub warnings: Option<Vec<String>>,
 }
 
-impl CreateWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::CreateWallet {
-        model::CreateWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
-    }
-
-    /// Returns the created wallet name.
-    pub fn name(self) -> String { self.into_model().name }
-}
-
 /// Result of the JSON-RPC method `loadwallet`.
 ///
 /// > loadwallet "filename" ( load_on_startup )
@@ -62,16 +52,6 @@ pub struct LoadWallet {
     pub warnings: Option<Vec<String>>,
 }
 
-impl LoadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::LoadWallet {
-        model::LoadWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
-    }
-
-    /// Returns the loaded wallet name.
-    pub fn name(self) -> String { self.into_model().name }
-}
-
 /// Result of the JSON-RPC method `unloadwallet`.
 ///
 /// > unloadwallet ( "wallet_name" load_on_startup )
@@ -86,11 +66,4 @@ impl LoadWallet {
 pub struct UnloadWallet {
     /// Warning messages, if any, related to loading the wallet.
     pub warnings: Option<Vec<String>>,
-}
-
-impl UnloadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::UnloadWallet {
-        model::UnloadWallet { warnings: self.warnings.unwrap_or_default() }
-    }
 }
