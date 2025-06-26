@@ -4,14 +4,23 @@ use bitcoin::amount::ParseAmountError;
 use bitcoin::consensus::encode;
 use bitcoin::{Amount, BlockHash, SignedAmount, Transaction, Txid};
 
-use super::{GetBalances, GetBalancesMine, GetBalancesWatchOnly, GetTransaction, GetTransactionError};
+use super::{
+    GetBalances, GetBalancesError, GetBalancesMine, GetBalancesWatchOnly, GetTransaction,
+    GetTransactionError,
+};
 use crate::model;
 
 impl GetBalances {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GetBalances, ParseAmountError> {
-        let mine = self.mine.into_model()?;
-        let watch_only = self.watch_only.map(|watch_only| watch_only.into_model()).transpose()?;
+    pub fn into_model(self) -> Result<model::GetBalances, GetBalancesError> {
+        use GetBalancesError as E;
+
+        let mine = self.mine.into_model().map_err(E::Mine)?;
+        let watch_only = self
+            .watch_only
+            .map(|watch_only| watch_only.into_model())
+            .transpose()
+            .map_err(E::WatchOnly)?;
 
         Ok(model::GetBalances { mine, watch_only })
     }

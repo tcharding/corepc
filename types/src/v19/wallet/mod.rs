@@ -4,11 +4,13 @@
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
+mod error;
 mod into;
 
 use bitcoin::Transaction;
 use serde::{Deserialize, Serialize};
 
+pub use self::error::GetBalancesError;
 use super::{Bip125Replaceable, GetTransactionDetail, GetTransactionError};
 
 /// Result of the JSON-RPC method `getbalances`.
