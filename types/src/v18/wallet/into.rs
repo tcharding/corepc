@@ -85,6 +85,7 @@ impl ListUnspentItem {
             solvable: self.solvable,
             descriptor: self.descriptor,
             safe: self.safe,
+            parent_descriptors: None, // v24 and later only.
         })
     }
 }

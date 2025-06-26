@@ -229,37 +229,39 @@
 mod control;
 mod network;
 mod util;
+mod wallet;
 
 #[doc(inline)]
 pub use self::{
     control::Logging,
     network::{Banned, ListBanned},
     util::CreateMultisig,
+    wallet::{GetTransaction, GetTransactionDetail},
 };
 #[doc(inline)]
 pub use crate::{
     v17::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
-        CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction,
-        DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee,
-        FinalizePsbt, FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate,
-        GenerateToAddress, GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded,
-        GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel,
-        GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader,
-        GetBlockHeaderError, GetBlockHeaderVerbose, GetBlockHeaderVerboseError, GetBlockStats,
-        GetBlockStatsError, GetBlockTemplate, GetBlockTemplateError, GetBlockVerboseOne,
-        GetBlockVerboseOneError, GetBlockVerboseZero, GetChainTips, GetChainTxStatsError,
-        GetConnectionCount, GetDifficulty, GetMemoryInfoStats, GetMempoolInfoError, GetMiningInfo,
-        GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
-        GetNewAddress, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetRawTransaction,
-        GetRawTransactionVerbose, GetRawTransactionVerboseError, GetReceivedByAddress,
-        GetTransaction, GetTransactionDetail, GetTransactionDetailError, GetTransactionError,
-        GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance,
-        GetWalletInfo, GetWalletInfoError, GetZmqNotifications, ListAddressGroupings,
-        ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels, ListLockUnspent,
-        ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddress,
+        AddressInformation, Bip125Replaceable, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
+        ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError,
+        CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError,
+        DecodeRawTransaction, DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet,
+        EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
+        FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo,
+        GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
+        GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
+        GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
+        GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
+        GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockVerboseZero,
+        GetChainTips, GetChainTxStatsError, GetConnectionCount, GetDifficulty, GetMemoryInfoStats,
+        GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfoAddress,
+        GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
+        GetRawMempool, GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
+        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransactionDetailError,
+        GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError,
+        GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, GetZmqNotifications,
+        ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels,
+        ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddress,
         ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError,
         ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
         ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError, ListWallets,
@@ -278,12 +280,12 @@ pub use crate::{
         ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
-        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfo,
-        GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors,
-        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetMempoolEntry, GetMempoolInfo, GetNetworkInfo, GetPeerInfo, GetRpcInfo,
-        MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
+        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
+        GetBalancesError, GetBalancesMine, GetBalancesWatchOnly, GetBlockFilter,
+        GetBlockFilterError, GetBlockchainInfo, GetBlockchainInfoError, GetChainTxStats,
+        GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo, GetNetworkInfo, GetPeerInfo,
+        GetRpcInfo, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
         MempoolEntryFeesError, PeerInfo, Softfork, SoftforkType,
     },
 };

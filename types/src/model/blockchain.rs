@@ -306,6 +306,12 @@ pub struct GetBlockStats {
     pub utxo_increase: i32,
     /// The increase/decrease in size for the utxo index (not discounting op_return and similar).
     pub utxo_size_increase: i32,
+    /// The increase/decrease in the number of unspent outputs, not counting unspendables.
+    /// v25 and later only.
+    pub utxo_increase_actual: Option<i32>,
+    /// The increase/decrease in size for the utxo index, not counting unspendables.
+    /// v25 and later only.
+    pub utxo_size_increase_actual: Option<i32>,
 }
 
 /// Models the result of JSON-RPC method `getchaintips`.
@@ -516,6 +522,9 @@ pub struct GetTxOutSetInfo {
     ///
     /// This was removed in Bitcoin Core v26, and hence will be `None` for v26 and later.
     pub hash_serialized_2: Option<String>, // FIXME: What sort of hash is this?
+    /// The serialized hash (only present if 'hash_serialized_3' hash_type is chosen).
+    /// v26 and later only.
+    pub hash_serialized_3: Option<String>,
     /// The estimated size of the chainstate on disk.
     pub disk_size: u32,
     /// The total amount.

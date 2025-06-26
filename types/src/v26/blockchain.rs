@@ -37,6 +37,9 @@ pub struct GetTxOutSetInfo {
     pub disk_size: i64,
     /// The total amount.
     pub total_amount: f64,
+    /// The serialized hash (only present if 'hash_serialized_3' hash_type is chosen).
+    /// v26 and later only.
+    pub hash_serialized_3: Option<String>,
 }
 
 impl GetTxOutSetInfo {
@@ -49,7 +52,6 @@ impl GetTxOutSetInfo {
         let transactions = crate::to_u32(self.transactions, "transactions")?;
         let tx_outs = crate::to_u32(self.tx_outs, "tx_outs")?;
         let bogo_size = crate::to_u32(self.bogo_size, "bogo_size")?;
-        let hash_serialized_2 = None; // Removed in Core v26
         let disk_size = crate::to_u32(self.disk_size, "disk_size")?;
         let total_amount = Amount::from_btc(self.total_amount).map_err(E::TotalAmount)?;
 
@@ -59,7 +61,8 @@ impl GetTxOutSetInfo {
             transactions,
             tx_outs,
             bogo_size,
-            hash_serialized_2,
+            hash_serialized_2: None, // v17 to v25 only.
+            hash_serialized_3: self.hash_serialized_3,
             disk_size,
             total_amount,
         })

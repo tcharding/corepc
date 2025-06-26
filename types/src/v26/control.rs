@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core `v0.20` - control.
+//! The JSON-RPC API for Bitcoin Core `v26` - control.
 //!
 //! Types for methods found under the `== Control ==` section of the API docs.
 
@@ -15,10 +15,13 @@ use serde::{Deserialize, Serialize};
 pub struct Logging {
     pub addrman: bool,
     pub bench: bool,
+    pub blockstorage: bool, // v23 and later only
     pub cmpctblock: bool,
     pub coindb: bool,
     pub estimatefee: bool,
     pub http: bool,
+    pub i2p: bool, // v23 and later only
+    pub ipc: bool, // v23 and later only
     pub leveldb: bool,
     pub libevent: bool,
     pub mempool: bool,
@@ -30,9 +33,13 @@ pub struct Logging {
     pub rand: bool,
     pub reindex: bool,
     pub rpc: bool,
+    pub scan: bool, // v25 and later only
     pub selectcoins: bool,
     pub tor: bool,
-    pub validation: bool,
-    pub walletdb: bool,
+    pub txpackages: bool,       // v26 and later only
+    pub txreconciliation: bool, // v25 and later only
+    pub util: bool,             // v23 to v27 only
+    pub validation: bool,       // v23 and later only
+    pub walletdb: bool,         // v23 and later only
     pub zmq: bool,
 }

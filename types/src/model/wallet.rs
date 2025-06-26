@@ -232,7 +232,11 @@ pub struct GetBalance(pub Amount);
 pub struct GetBalances {
     /// Balances from outputs that the wallet can sign.
     pub mine: GetBalancesMine,
+    /// Watchonly balances (not present if wallet does not watch anything).
     pub watch_only: Option<GetBalancesWatchOnly>,
+    /// Hash and height of the block this information was generated on. v26 and later only.
+    #[serde(rename = "lastprocessedblock")]
+    pub last_processed_block: Option<LastProcessedBlock>,
 }
 
 /// Balances from outputs that the wallet can sign.
@@ -290,27 +294,49 @@ pub struct GetTransaction {
     pub fee: Option<SignedAmount>,
     /// The number of confirmations.
     pub confirmations: i64, // Docs do not indicate what negative value means?
+    /// Only present if the transaction's only input is a coinbase one. v20 and later only.
+    pub generated: Option<bool>,
     /// Whether we consider the outputs of this unconfirmed transaction safe to spend.
     pub trusted: Option<bool>,
     /// The block hash.
     pub block_hash: Option<BlockHash>,
+    /// The block height containing the transaction. v20 and later only.
+    pub block_height: Option<u32>,
     /// The index of the transaction in the block that includes it.
     pub block_index: Option<u32>,
     /// The time in seconds since epoch (1 Jan 1970 GMT).
     pub block_time: Option<u32>,
     /// The transaction id.
     pub txid: Txid,
+    /// The hash of serialized transaction, including witness data. v24 and later only.
+    pub wtxid: Option<Txid>,
     /// Confirmed transactions that have been detected by the wallet to conflict with this transaction.
     pub wallet_conflicts: Vec<Txid>,
+    /// Only if 'category' is 'send'. The txid if this tx was replaced. v23 and later only.
+    pub replaced_by_txid: Option<Txid>,
+    /// Only if 'category' is 'send'. The txid if this tx replaces another. v23 and later only.
+    pub replaces_txid: Option<Txid>,
+    /// Transactions in the mempool that directly conflict with either this transaction or an ancestor transaction. v28 and later only.
+    pub mempool_conflicts: Option<Vec<Txid>>,
+    /// If a comment to is associated with the transaction. v23 and later only.
+    pub to: Option<String>,
     /// The transaction time in seconds since epoch (1 Jan 1970 GMT).
     pub time: u32,
     /// The time received in seconds since epoch (1 Jan 1970 GMT).
     pub time_received: u32,
+    /// If a comment is associated with the transaction, only present if not empty. v20 to v24 only.
+    pub comment: Option<String>,
     /// Whether this transaction could be replaced due to BIP125 (replace-by-fee);
     /// may be unknown for unconfirmed transactions not in the mempool
     pub bip125_replaceable: Bip125Replaceable,
+    /// Only if 'category' is 'received'. List of parent descriptors for the output script of this coin. v24 and later only.
+    pub parent_descriptors: Option<Vec<String>>,
     /// Transaction details.
     pub details: Vec<GetTransactionDetail>,
+    /// The decoded transaction (only present when `verbose` is passed). v19 and later only.
+    pub decoded: Option<Transaction>,
+    /// Hash and height of the block this information was generated on. v26 and later only.
+    pub last_processed_block: Option<LastProcessedBlock>,
     /// The transaction, parsed from hex string.
     pub tx: Transaction,
 }
@@ -318,6 +344,10 @@ pub struct GetTransaction {
 /// Part of the `GetTransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetTransactionDetail {
+    /// Only returns true if imported addresses were involved in transaction. v20 and later only.
+    pub involves_watchonly: Option<bool>,
+    /// DEPRECATED. The account name involved in the transaction, can be "" for the default account.
+    pub account: Option<String>, // Docs are wrong, this is not documented as optional.
     /// The bitcoin address involved in the transaction.
     pub address: Address<NetworkUnchecked>,
     /// The category, either 'send' or 'receive'.
@@ -338,6 +368,18 @@ pub struct GetTransactionDetail {
     ///
     /// Only available for the 'send' category of transactions.
     pub abandoned: Option<bool>,
+    /// Only if 'category' is 'received'. List of parent descriptors for the output script of this
+    /// coin. v24 and later only.
+    pub parent_descriptors: Option<Vec<String>>,
+}
+
+/// Part of the `GetTransaction`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct LastProcessedBlock {
+    /// Hash of the block this information was generated on.
+    pub hash: BlockHash,
+    /// Height of the block this information was generated on.
+    pub height: u32,
 }
 
 /// Models the result of JSON-RPC method `getunconfirmedbalance`.
@@ -616,6 +658,9 @@ pub struct ListUnspentItem {
     /// and unconfirmed replacement transactions are considered unsafe and are not eligible for
     /// spending by fundrawtransaction and sendtoaddress.
     pub safe: bool,
+    /// List of parent descriptors for the scriptPubKey of this coin. v24 and later only.
+    #[serde(rename = "parent_descs")]
+    pub parent_descriptors: Option<Vec<String>>,
 }
 
 /// Models the result of JSON-RPC method `listwallets`.

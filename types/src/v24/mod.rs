@@ -243,6 +243,7 @@
 mod blockchain;
 mod network;
 mod raw_transactions;
+mod wallet;
 
 #[doc(inline)]
 pub use self::{
@@ -252,15 +253,18 @@ pub use self::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
     },
+    wallet::{
+        GetTransaction, GetTransactionDetail, GetTransactionError, ListUnspent, ListUnspentItem,
+    },
 };
 #[doc(inline)]
 pub use crate::{
     v17::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
-        CreateRawTransaction, CreateWallet, DecodeRawTransaction, DecodeScript, DecodeScriptError,
-        DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
+        AddressInformation, Bip125Replaceable, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
+        ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError,
+        CreatePsbt, CreateRawTransaction, CreateWallet, DecodeRawTransaction, DumpPrivKey,
+        DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
@@ -271,10 +275,9 @@ pub use crate::{
         GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfoAddress,
         GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
         GetRawMempool, GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
-        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-        GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
-        GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
-        GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
+        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransactionDetailError, GetTxOut,
+        GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo,
+        GetWalletInfoError, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
         ListLockUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError,
         ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
@@ -290,18 +293,21 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
-        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent, ListUnspentItem,
-        ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir,
+        ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
-        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
-        GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
-        GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
-        Softfork, SoftforkType,
+        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
+        GetBalancesError, GetBalancesMine, GetBalancesWatchOnly, GetBlockFilter,
+        GetBlockFilterError, GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo,
+        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError, MempoolEntry,
+        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo, Softfork,
+        SoftforkType,
     },
     v21::{GetNetworkInfo, UnloadWallet},
-    v22::{Banned, ListBanned, Logging, ScriptPubkey},
-    v23::{CreateMultisig, GetBlockchainInfo, SaveMempool},
+    v22::{Banned, ListBanned, ScriptPubkey},
+    v23::{
+        CreateMultisig, DecodeScript, DecodeScriptError, GetBlockchainInfo, Logging, SaveMempool,
+    },
 };
