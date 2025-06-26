@@ -266,8 +266,8 @@ pub use crate::{
         GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfoAddress,
         GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
         GetRawMempool, GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
-        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-        GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError,
+        GetRawTransactionVerboseError, GetReceivedByAddress,
+        GetTransactionDetailError, GetTxOut, GetTxOutError,
         GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError, GetZmqNotifications,
         ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels,
         ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddress,
@@ -301,12 +301,14 @@ pub use crate::{
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GlobalXpub, Proprietary,
         PsbtInput, PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
+        GetTransactionDetail,
     },
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetPeerInfo,
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
         PrioritisedTransaction, SubmitPackage, SubmitPackageError, SubmitPackageTxResult,
         SubmitPackageTxResultError, SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
-        UnloadWallet, Logging,
+        UnloadWallet, Logging, GetTransaction, GetTransactionError, LastProcessedBlock,
+        LastProcessedBlockError,
     },
 };

@@ -244,7 +244,7 @@ pub use self::{
     control::GetRpcInfo,
     network::{GetNetworkInfo, GetPeerInfo, PeerInfo},
     util::GetDescriptorInfo,
-    wallet::{GetBalances, GetBalancesMine, GetBalancesWatchOnly},
+    wallet::{GetBalances, GetBalancesMine, GetBalancesWatchOnly, GetTransaction},
 };
 #[doc(inline)]
 pub use crate::v17::{
@@ -263,7 +263,7 @@ pub use crate::v17::{
     GetMemoryInfoStats, GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfoAddress,
     GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress, GetRawMempool,
     GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
-    GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
+    GetRawTransactionVerboseError, GetReceivedByAddress, GetTransactionDetail,
     GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
     GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
     GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
@@ -277,6 +277,7 @@ pub use crate::v17::{
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
     ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
     WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    Bip125Replaceable,
 };
 #[doc(inline)]
 pub use crate::v18::{

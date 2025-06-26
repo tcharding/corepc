@@ -3,21 +3,8 @@
 use bitcoin::consensus::encode;
 use bitcoin::{BlockHash, SignedAmount, Transaction, Txid};
 
-use super::{
-    CreateWallet, GetTransaction, GetTransactionError, LastProcessedBlock, LastProcessedBlockError,
-    LoadWallet, UnloadWallet,
-};
+use super::{GetTransaction, GetTransactionError};
 use crate::model;
-
-impl CreateWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::CreateWallet {
-        model::CreateWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
-    }
-
-    /// Returns the created wallet name.
-    pub fn name(self) -> String { self.into_model().name }
-}
 
 impl GetTransaction {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
@@ -33,7 +20,6 @@ impl GetTransaction {
         let block_height =
             self.block_height.map(|h| crate::to_u32(h, "block_height")).transpose()?;
         let txid = self.txid.parse::<Txid>().map_err(E::Txid)?;
-        let wtxid = self.wtxid.map(|s| s.parse::<Txid>().map_err(E::Wtxid)).transpose()?;
         let wallet_conflicts = self
             .wallet_conflicts
             .into_iter()
@@ -51,11 +37,6 @@ impl GetTransaction {
             .into_iter()
             .map(|d| d.into_model().map_err(E::Details))
             .collect::<Result<Vec<_>, _>>()?;
-        let last_processed_block = self
-            .last_processed_block
-            .map(|l| l.into_model())
-            .transpose()
-            .map_err(E::LastProcessedBlock)?;
 
         Ok(model::GetTransaction {
             amount,
@@ -68,7 +49,7 @@ impl GetTransaction {
             block_index,
             block_time: self.block_time,
             txid,
-            wtxid,
+            wtxid: None,
             wallet_conflicts,
             replaced_by_txid,
             replaces_txid,
@@ -78,37 +59,11 @@ impl GetTransaction {
             time_received: self.time_received,
             comment: self.comment,
             bip125_replaceable: self.bip125_replaceable.into_model(),
-            parent_descriptors: self.parent_descriptors,
+            parent_descriptors: None, // v24 and later only.
             details,
             decoded: self.decoded,
-            last_processed_block,
+            last_processed_block: None, // v26 and later only.
             tx,
         })
-    }
-}
-
-impl LastProcessedBlock {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::LastProcessedBlock, LastProcessedBlockError> {
-        let hash = self.hash.parse::<BlockHash>().map_err(LastProcessedBlockError::Hash)?;
-        let height = crate::to_u32(self.height, "height")?;
-        Ok(model::LastProcessedBlock { height, hash })
-    }
-}
-
-impl LoadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::LoadWallet {
-        model::LoadWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
-    }
-
-    /// Returns the loaded wallet name.
-    pub fn name(self) -> String { self.into_model().name }
-}
-
-impl UnloadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::UnloadWallet {
-        model::UnloadWallet { warnings: self.warnings.unwrap_or_default() }
     }
 }

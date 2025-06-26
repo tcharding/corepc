@@ -241,6 +241,7 @@ mod control;
 mod network;
 mod raw_transactions;
 mod util;
+mod wallet;
 
 #[doc(inline)]
 pub use self::{
@@ -252,6 +253,7 @@ pub use self::{
         DecodeScript, DecodeScriptError,
     },
     util::CreateMultisig,
+    wallet::{GetTransaction, GetTransactionError}
 };
 #[doc(inline)]
 pub use crate::{
@@ -271,8 +273,8 @@ pub use crate::{
         GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfoAddress,
         GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
         GetRawMempool, GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
-        GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
-        GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
+        GetRawTransactionVerboseError, GetReceivedByAddress,
+        GetTransactionDetailError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
         GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
         GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
@@ -285,7 +287,7 @@ pub use crate::{
         SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
         SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
         ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, Bip125Replaceable,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
@@ -301,6 +303,7 @@ pub use crate::{
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
         Softfork, SoftforkType,
     },
+    v20::GetTransactionDetail,
     v21::{GetNetworkInfo, UnloadWallet},
     v22::{Banned, GetMempoolInfo, ListBanned, ScriptPubkey},
 };

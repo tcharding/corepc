@@ -229,12 +229,14 @@
 mod control;
 mod network;
 mod util;
+mod wallet;
 
 #[doc(inline)]
 pub use self::{
     control::Logging,
     network::{Banned, ListBanned},
     util::CreateMultisig,
+    wallet::{GetTransaction, GetTransactionDetail},
 };
 #[doc(inline)]
 pub use crate::{
@@ -255,7 +257,7 @@ pub use crate::{
         GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
         GetNewAddress, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetRawTransaction,
         GetRawTransactionVerbose, GetRawTransactionVerboseError, GetReceivedByAddress,
-        GetTransaction, GetTransactionDetail, GetTransactionDetailError, GetTransactionError,
+        GetTransactionDetailError, GetTransactionError,
         GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance,
         GetWalletInfo, GetWalletInfoError, GetZmqNotifications, ListAddressGroupings,
         ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels, ListLockUnspent,
@@ -269,7 +271,7 @@ pub use crate::{
         SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo,
+        WitnessUtxo, Bip125Replaceable,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

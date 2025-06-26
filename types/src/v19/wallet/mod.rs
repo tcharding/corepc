@@ -4,10 +4,13 @@
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
+mod into;
+
 use bitcoin::amount::ParseAmountError;
-use bitcoin::Amount;
+use bitcoin::{Amount, Transaction};
 use serde::{Deserialize, Serialize};
 
+use super::{Bip125Replaceable, GetTransactionDetail, GetTransactionError};
 use crate::model;
 
 /// Result of the JSON-RPC method `getbalances`.
@@ -80,4 +83,55 @@ impl GetBalancesWatchOnly {
 
         Ok(model::GetBalancesWatchOnly { trusted, untrusted_pending, immature })
     }
+}
+
+/// Result of the JSON-RPC method `gettransaction`.
+///
+/// > gettransaction "txid" ( include_watchonly )
+/// >
+/// > Get detailed information about in-wallet transaction `<txid>`
+/// >
+/// > Arguments:
+/// > 1. txid                 (string, required) The transaction id
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetTransaction {
+    /// The transaction amount in BTC.
+    pub amount: f64,
+    /// The amount of the fee in BTC.
+    ///
+    /// This is negative and only available for the 'send' category of transactions.
+    pub fee: Option<f64>,
+    /// The number of confirmations.
+    pub confirmations: i64,
+    /// Whether we consider the outputs of this unconfirmed transaction safe to spend.
+    pub trusted: Option<bool>,
+    /// The block hash.
+    #[serde(rename = "blockhash")]
+    pub block_hash: Option<String>,
+    /// The index of the transaction in the block that includes it.
+    #[serde(rename = "blockindex")]
+    pub block_index: Option<i64>,
+    /// The time in seconds since epoch (1 Jan 1970 GMT).
+    #[serde(rename = "blocktime")]
+    pub block_time: Option<u32>,
+    /// The transaction id.
+    pub txid: String,
+    /// Confirmed transactions that have been detected by the wallet to conflict with this transaction.
+    #[serde(rename = "walletconflicts")]
+    pub wallet_conflicts: Vec<String>,
+    /// The transaction time in seconds since epoch (1 Jan 1970 GMT).
+    pub time: u32,
+    /// The time received in seconds since epoch (1 Jan 1970 GMT).
+    #[serde(rename = "timereceived")]
+    pub time_received: u32,
+    /// Whether this transaction could be replaced due to BIP125 (replace-by-fee);
+    /// may be unknown for unconfirmed transactions not in the mempool
+    #[serde(rename = "bip125-replaceable")]
+    pub bip125_replaceable: Bip125Replaceable,
+    /// Transaction details.
+    pub details: Vec<GetTransactionDetail>,
+    /// Raw data for transaction.
+    pub hex: String,
+    /// The decoded transaction (only present when `verbose` is passed). v19 and later only.
+    pub decoded: Option<Transaction>,
 }

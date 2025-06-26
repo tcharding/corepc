@@ -354,16 +354,27 @@ impl GetTransaction {
             amount,
             fee,
             confirmations: self.confirmations,
+            generated: None, // v20 and later only.
             trusted: self.trusted,
             block_hash,
+            block_height: None, // v20 and later only.
             block_index,
             block_time: self.block_time,
             txid,
+            wtxid: None, // v24 and later only.
             wallet_conflicts,
+            replaced_by_txid: None,  // v23 and later only.
+            replaces_txid: None,     // v23 and later only.
+            mempool_conflicts: None, // v28 and later only.
+            to: None,                // v23 and later only.
             time: self.time,
             time_received: self.time_received,
+            comment: None, // v20 to v24 only.
             bip125_replaceable: self.bip125_replaceable.into_model(),
+            parent_descriptors: None, // v24 and later only.
             details,
+            decoded: None,              // v19 and later only.
+            last_processed_block: None, // v26 and later only.
             tx,
         })
     }
@@ -379,6 +390,8 @@ impl GetTransactionDetail {
         let fee = self.fee.map(|fee| SignedAmount::from_btc(fee).map_err(E::Fee)).transpose()?;
 
         Ok(model::GetTransactionDetail {
+            involves_watchonly: None, // v20 and later only.
+            account: self.account,
             address,
             category: self.category.into_model(),
             amount,
@@ -386,6 +399,7 @@ impl GetTransactionDetail {
             vout: self.vout,
             fee,
             abandoned: self.abandoned,
+            parent_descriptors: None, // v24 and later only.
         })
     }
 }

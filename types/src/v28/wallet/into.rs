@@ -3,21 +3,8 @@
 use bitcoin::consensus::encode;
 use bitcoin::{BlockHash, SignedAmount, Transaction, Txid};
 
-use super::{
-    CreateWallet, GetTransaction, GetTransactionError, LastProcessedBlock, LastProcessedBlockError,
-    LoadWallet, UnloadWallet,
-};
+use super::{GetTransaction, GetTransactionError};
 use crate::model;
-
-impl CreateWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::CreateWallet {
-        model::CreateWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
-    }
-
-    /// Returns the created wallet name.
-    pub fn name(self) -> String { self.into_model().name }
-}
 
 impl GetTransaction {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
@@ -84,31 +71,5 @@ impl GetTransaction {
             last_processed_block,
             tx,
         })
-    }
-}
-
-impl LastProcessedBlock {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::LastProcessedBlock, LastProcessedBlockError> {
-        let hash = self.hash.parse::<BlockHash>().map_err(LastProcessedBlockError::Hash)?;
-        let height = crate::to_u32(self.height, "height")?;
-        Ok(model::LastProcessedBlock { height, hash })
-    }
-}
-
-impl LoadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::LoadWallet {
-        model::LoadWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
-    }
-
-    /// Returns the loaded wallet name.
-    pub fn name(self) -> String { self.into_model().name }
-}
-
-impl UnloadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::UnloadWallet {
-        model::UnloadWallet { warnings: self.warnings.unwrap_or_default() }
     }
 }

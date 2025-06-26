@@ -274,7 +274,7 @@ pub use crate::{
         GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
         GetNewAddress, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetRawTransaction,
         GetRawTransactionVerbose, GetRawTransactionVerboseError, GetReceivedByAddress,
-        GetTransaction, GetTransactionDetail, GetTransactionDetailError, GetTransactionError,
+        GetTransactionDetailError, GetTransactionError,
         GetTxOut, GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance,
         GetWalletInfo, GetWalletInfoError, GetZmqNotifications, ListAddressGroupings,
         ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels, ListLockUnspent,
@@ -303,7 +303,7 @@ pub use crate::{
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
     },
-    v20::CreateMultisig,
+    v20::{CreateMultisig, GetTransaction, GetTransactionDetail},
     v21::{
         Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, GetNetworkInfo, Softfork,
         SoftforkType, UnloadWallet,

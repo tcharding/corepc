@@ -1,23 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
 
 use bitcoin::consensus::encode;
-use bitcoin::{BlockHash, SignedAmount, Transaction, Txid};
+use bitcoin::{Address, BlockHash, SignedAmount, Transaction, Txid};
 
-use super::{
-    CreateWallet, GetTransaction, GetTransactionError, LastProcessedBlock, LastProcessedBlockError,
-    LoadWallet, UnloadWallet,
-};
+use super::{GetTransaction, GetTransactionDetail, GetTransactionDetailError, GetTransactionError};
 use crate::model;
-
-impl CreateWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::CreateWallet {
-        model::CreateWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
-    }
-
-    /// Returns the created wallet name.
-    pub fn name(self) -> String { self.into_model().name }
-}
 
 impl GetTransaction {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
@@ -51,11 +38,6 @@ impl GetTransaction {
             .into_iter()
             .map(|d| d.into_model().map_err(E::Details))
             .collect::<Result<Vec<_>, _>>()?;
-        let last_processed_block = self
-            .last_processed_block
-            .map(|l| l.into_model())
-            .transpose()
-            .map_err(E::LastProcessedBlock)?;
 
         Ok(model::GetTransaction {
             amount,
@@ -81,34 +63,32 @@ impl GetTransaction {
             parent_descriptors: self.parent_descriptors,
             details,
             decoded: self.decoded,
-            last_processed_block,
+            last_processed_block: None, // v26 and later only.
             tx,
         })
     }
 }
 
-impl LastProcessedBlock {
+impl GetTransactionDetail {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::LastProcessedBlock, LastProcessedBlockError> {
-        let hash = self.hash.parse::<BlockHash>().map_err(LastProcessedBlockError::Hash)?;
-        let height = crate::to_u32(self.height, "height")?;
-        Ok(model::LastProcessedBlock { height, hash })
-    }
-}
+    pub fn into_model(self) -> Result<model::GetTransactionDetail, GetTransactionDetailError> {
+        use GetTransactionDetailError as E;
 
-impl LoadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::LoadWallet {
-        model::LoadWallet { name: self.name, warnings: self.warnings.unwrap_or_default() }
-    }
+        let address = self.address.parse::<Address<_>>().map_err(E::Address)?;
+        let amount = SignedAmount::from_btc(self.amount).map_err(E::Amount)?;
+        let fee = self.fee.map(|fee| SignedAmount::from_btc(fee).map_err(E::Fee)).transpose()?;
 
-    /// Returns the loaded wallet name.
-    pub fn name(self) -> String { self.into_model().name }
-}
-
-impl UnloadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::UnloadWallet {
-        model::UnloadWallet { warnings: self.warnings.unwrap_or_default() }
+        Ok(model::GetTransactionDetail {
+            involves_watchonly: self.involves_watchonly,
+            account: self.account,
+            address,
+            category: self.category.into_model(),
+            amount,
+            label: self.label,
+            vout: self.vout,
+            fee,
+            abandoned: self.abandoned,
+            parent_descriptors: self.parent_descriptors,
+        })
     }
 }
