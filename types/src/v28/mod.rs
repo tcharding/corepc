@@ -281,7 +281,7 @@ pub use crate::{
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
         GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
-        GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
+        GetBlockHeaderVerboseError, GetBlockStatsError, GetBlockTemplate,
         GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockVerboseZero,
         GetChainTips, GetChainTxStatsError, GetConnectionCount, GetDifficulty, GetMemoryInfoStats,
         GetMempoolInfoError, GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError,
@@ -323,6 +323,7 @@ pub use crate::{
         PsbtInput, PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
         GetTransactionDetail,
     },
+    v25::GetBlockStats,
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetPeerInfo,
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,

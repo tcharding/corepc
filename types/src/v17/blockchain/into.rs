@@ -261,6 +261,8 @@ impl GetBlockStats {
             txs: crate::to_u32(self.txs, "txs")?,
             utxo_increase: self.utxo_increase,
             utxo_size_increase: self.utxo_size_increase,
+            utxo_increase_actual: None,      // v25 and later only.
+            utxo_size_increase_actual: None, // v25 and later only.
         })
     }
 }

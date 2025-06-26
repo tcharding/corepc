@@ -240,11 +240,13 @@
 //!
 //! </details>
 
+mod blockchain;
 mod control;
 mod wallet;
 
 #[doc(inline)]
 pub use self::{
+    blockchain::GetBlockStats,
     control::Logging,
     wallet::{CreateWallet, LoadWallet, UnloadWallet},
 };
@@ -260,7 +262,7 @@ pub use crate::{
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
         GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
-        GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
+        GetBlockHeaderVerboseError, GetBlockStatsError, GetBlockTemplate,
         GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockVerboseZero,
         GetChainTips, GetChainTxStatsError, GetConnectionCount, GetDifficulty, GetMemoryInfoStats,
         GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfoAddress,

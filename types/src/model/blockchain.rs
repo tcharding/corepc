@@ -306,6 +306,12 @@ pub struct GetBlockStats {
     pub utxo_increase: i32,
     /// The increase/decrease in size for the utxo index (not discounting op_return and similar).
     pub utxo_size_increase: i32,
+    /// The increase/decrease in the number of unspent outputs, not counting unspendables.
+    /// v25 and later only.
+    pub utxo_increase_actual: Option<i32>,
+    /// The increase/decrease in size for the utxo index, not counting unspendables.
+    /// v25 and later only.
+    pub utxo_size_increase_actual: Option<i32>,
 }
 
 /// Models the result of JSON-RPC method `getchaintips`.

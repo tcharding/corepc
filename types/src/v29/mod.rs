@@ -280,7 +280,7 @@ pub use crate::{
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
         GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
-        GetBlockHash, GetBlockStats, GetBlockStatsError, GetBlockTemplate, GetBlockTemplateError,
+        GetBlockHash, GetBlockStatsError, GetBlockTemplate, GetBlockTemplateError,
         GetBlockVerboseZero, GetChainTips, GetChainTxStatsError, GetConnectionCount, GetDifficulty,
         GetMemoryInfoStats, GetMempoolInfoError, GetNetTotals, GetNetworkInfoAddress,
         GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
@@ -321,6 +321,7 @@ pub use crate::{
         PsbtInput, PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
         GetTransactionDetail,
     },
+    v25::GetBlockStats,
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
