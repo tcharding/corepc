@@ -516,6 +516,9 @@ pub struct GetTxOutSetInfo {
     ///
     /// This was removed in Bitcoin Core v26, and hence will be `None` for v26 and later.
     pub hash_serialized_2: Option<String>, // FIXME: What sort of hash is this?
+    /// The serialized hash (only present if 'hash_serialized_3' hash_type is chosen).
+    /// v26 and later only.
+    pub hash_serialized_3: Option<String>,
     /// The estimated size of the chainstate on disk.
     pub disk_size: u32,
     /// The total amount.

@@ -541,6 +541,7 @@ impl GetTxOutSetInfo {
             tx_outs,
             bogo_size,
             hash_serialized_2,
+            hash_serialized_3: None, // v26 and later only.
             disk_size,
             total_amount,
         })
