@@ -304,7 +304,7 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
-        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent, ListUnspentItem,
+        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError,
         ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
@@ -321,7 +321,7 @@ pub use crate::{
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GlobalXpub, Proprietary,
         PsbtInput, PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
-        GetTransactionDetail,
+        GetTransactionDetail, ListUnspent, ListUnspentItem,
     },
     v25::GetBlockStats,
 };

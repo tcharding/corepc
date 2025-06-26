@@ -253,7 +253,7 @@ pub use self::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
     },
-    wallet::{GetTransaction, GetTransactionError, GetTransactionDetail},
+    wallet::{GetTransaction, GetTransactionError, GetTransactionDetail, ListUnspent, ListUnspentItem},
 };
 #[doc(inline)]
 pub use crate::{
@@ -292,7 +292,7 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
-        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent, ListUnspentItem,
+        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError,
         ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{

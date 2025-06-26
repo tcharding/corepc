@@ -654,6 +654,9 @@ pub struct ListUnspentItem {
     /// and unconfirmed replacement transactions are considered unsafe and are not eligible for
     /// spending by fundrawtransaction and sendtoaddress.
     pub safe: bool,
+    /// List of parent descriptors for the scriptPubKey of this coin. v24 and later only.
+    #[serde(rename = "parent_descs")]
+    pub parent_descriptors: Option<Vec<String>>,
 }
 
 /// Models the result of JSON-RPC method `listwallets`.
