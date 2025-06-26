@@ -304,6 +304,8 @@ impl DecodeScript {
         Ok(model::DecodeScript {
             script_pubkey,
             type_: self.type_,
+            descriptor: None,
+            address: None,
             required_signatures: self.required_signatures,
             addresses,
             p2sh,

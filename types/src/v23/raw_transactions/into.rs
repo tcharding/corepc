@@ -6,11 +6,11 @@ use bitcoin::bip32::{DerivationPath, Fingerprint, KeySource, Xpub};
 use bitcoin::hashes::{hash160, ripemd160, sha256, sha256d};
 use bitcoin::hex::{self, FromHex as _};
 use bitcoin::psbt::{self, raw, PsbtSighashType};
-use bitcoin::Amount;
+use bitcoin::{Address, Amount};
 
 use super::{
-    DecodePsbt, DecodePsbtError, GlobalXpub, GlobalXpubError, Proprietary, PsbtInput,
-    PsbtInputError, PsbtOutput, PsbtOutputError,
+    DecodePsbt, DecodePsbtError, DecodeScript, DecodeScriptError, GlobalXpub, GlobalXpubError,
+    Proprietary, PsbtInput, PsbtInputError, PsbtOutput, PsbtOutputError,
 };
 use crate::model;
 
@@ -303,6 +303,38 @@ impl PsbtOutput {
             tap_key_origins,
             proprietary,
             unknown,
+        })
+    }
+}
+
+impl DecodeScript {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::DecodeScript, DecodeScriptError> {
+        use DecodeScriptError as E;
+
+        let address = match self.address {
+            Some(addr) => Some(addr.parse::<Address<_>>().map_err(E::Address)?),
+            None => None,
+        };
+        let addresses = match self.addresses {
+            Some(addresses) => addresses
+                .iter()
+                .map(|s| s.parse::<Address<_>>())
+                .collect::<Result<_, _>>()
+                .map_err(E::Addresses)?,
+            None => vec![],
+        };
+        let p2sh = self.p2sh.map(|s| s.parse::<Address<_>>()).transpose().map_err(E::P2sh)?;
+
+        Ok(model::DecodeScript {
+            script_pubkey: None,
+            type_: self.type_,
+            descriptor: self.descriptor,
+            address,
+            required_signatures: self.required_signatures,
+            addresses,
+            p2sh,
+            p2sh_segwit: self.p2sh_segwit,
         })
     }
 }

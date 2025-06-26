@@ -247,6 +247,7 @@ pub use self::{
     network::GetPeerInfo,
     raw_transactions::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
+        DecodeScript, DecodeScriptError,
     },
     util::CreateMultisig,
 };
@@ -256,7 +257,7 @@ pub use crate::{
         AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
         CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
-        CreateRawTransaction, CreateWallet, DecodeRawTransaction, DecodeScript, DecodeScriptError,
+        CreateRawTransaction, CreateWallet, DecodeRawTransaction,
         DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,

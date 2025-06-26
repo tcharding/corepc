@@ -246,12 +246,14 @@
 mod blockchain;
 mod control;
 mod network;
+mod raw_transactions;
 
 #[doc(inline)]
 pub use self::{
     blockchain::GetMempoolInfo,
     control::Logging,
     network::{Banned, GetPeerInfo, ListBanned},
+    raw_transactions::{DecodeScript, DecodeScriptError},
 };
 #[doc(inline)]
 pub use crate::{
@@ -260,7 +262,7 @@ pub use crate::{
         AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
         CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
         CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction,
-        DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee,
+        DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee,
         FinalizePsbt, FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate,
         GenerateToAddress, GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded,
         GetAddressInfoEmbeddedError, GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel,
