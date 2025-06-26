@@ -21,8 +21,9 @@ impl GetBalances {
             .map(|watch_only| watch_only.into_model())
             .transpose()
             .map_err(E::WatchOnly)?;
+        let last_processed_block = None; // v26 and later only.
 
-        Ok(model::GetBalances { mine, watch_only })
+        Ok(model::GetBalances { mine, watch_only, last_processed_block })
     }
 }
 

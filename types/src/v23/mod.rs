@@ -301,7 +301,7 @@ pub use crate::{
         GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
-        Softfork, SoftforkType,
+        Softfork, SoftforkType, GetBalancesError,
     },
     v20::GetTransactionDetail,
     v21::{GetNetworkInfo, UnloadWallet},

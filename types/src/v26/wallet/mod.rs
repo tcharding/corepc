@@ -10,8 +10,11 @@ mod into;
 use bitcoin::Transaction;
 use serde::{Deserialize, Serialize};
 
-pub use self::error::{GetTransactionError, LastProcessedBlockError};
-pub use super::{Bip125Replaceable, GetTransactionDetail, GetTransactionDetailError};
+pub use self::error::{GetBalancesError, GetTransactionError, LastProcessedBlockError};
+pub use super::{
+    Bip125Replaceable, GetBalancesMine, GetBalancesWatchOnly, GetTransactionDetail,
+    GetTransactionDetailError,
+};
 
 /// Result of the JSON-RPC method `createwallet`.
 ///
@@ -36,6 +39,22 @@ pub struct CreateWallet {
     pub name: String,
     /// Warning messages, if any, related to creating and loading the wallet.
     pub warnings: Option<Vec<String>>,
+}
+
+/// Result of the JSON-RPC method `getbalances`.
+///
+/// > getbalances
+/// >
+/// > Returns an object with all balances in BTC.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetBalances {
+    /// Balances from outputs that the wallet can sign.
+    pub mine: GetBalancesMine,
+    #[serde(rename = "watchonly")]
+    pub watch_only: Option<GetBalancesWatchOnly>,
+    /// Hash and height of the block this information was generated on. v26 and later only.
+    #[serde(rename = "lastprocessedblock")]
+    pub last_processed_block: Option<LastProcessedBlock>,
 }
 
 /// Result of the JSON-RPC method `gettransaction`.

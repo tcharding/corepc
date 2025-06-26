@@ -302,6 +302,7 @@ pub use crate::{
         GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
+        GetBalancesError,
     },
     v20::{CreateMultisig, GetTransaction, GetTransactionDetail},
     v21::{

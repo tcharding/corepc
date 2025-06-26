@@ -309,7 +309,7 @@ pub use crate::{
         ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
-        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
+        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
         GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
@@ -327,6 +327,6 @@ pub use crate::{
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetPeerInfo,
         GetPrioritisedTransactions, GetTxOutSetInfo, GetTxOutSetInfoError, LoadWallet,
-        PrioritisedTransaction, UnloadWallet, GetTransactionError, LastProcessedBlock, LastProcessedBlockError,
+        PrioritisedTransaction, UnloadWallet, GetTransactionError, LastProcessedBlock, LastProcessedBlockError, GetBalances, GetBalancesError,
     },
 };

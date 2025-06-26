@@ -4,8 +4,8 @@ use bitcoin::consensus::encode;
 use bitcoin::{BlockHash, SignedAmount, Transaction, Txid};
 
 use super::{
-    CreateWallet, GetTransaction, GetTransactionError, LastProcessedBlock, LastProcessedBlockError,
-    LoadWallet, UnloadWallet,
+    CreateWallet, GetBalances, GetBalancesError, GetTransaction, GetTransactionError,
+    LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet,
 };
 use crate::model;
 
@@ -17,6 +17,27 @@ impl CreateWallet {
 
     /// Returns the created wallet name.
     pub fn name(self) -> String { self.into_model().name }
+}
+
+impl GetBalances {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetBalances, GetBalancesError> {
+        use GetBalancesError as E;
+
+        let mine = self.mine.into_model().map_err(E::Mine)?;
+        let watch_only = self
+            .watch_only
+            .map(|watch_only| watch_only.into_model())
+            .transpose()
+            .map_err(E::WatchOnly)?;
+        let last_processed_block = self
+            .last_processed_block
+            .map(|l| l.into_model())
+            .transpose()
+            .map_err(E::LastProcessedBlock)?;
+
+        Ok(model::GetBalances { mine, watch_only, last_processed_block })
+    }
 }
 
 impl GetTransaction {

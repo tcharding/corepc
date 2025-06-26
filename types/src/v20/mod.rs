@@ -286,6 +286,6 @@ pub use crate::{
         GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
         GetMempoolEntry, GetMempoolInfo, GetNetworkInfo, GetPeerInfo, GetRpcInfo,
         MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
-        MempoolEntryFeesError, PeerInfo, Softfork, SoftforkType,
+        MempoolEntryFeesError, PeerInfo, Softfork, SoftforkType, GetBalancesError,
     },
 };

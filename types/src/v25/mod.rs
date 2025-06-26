@@ -296,7 +296,7 @@ pub use crate::{
         GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
         MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
-        Softfork, SoftforkType,
+        Softfork, SoftforkType, GetBalancesError,
     },
     v21::GetNetworkInfo,
     v22::{Banned, ListBanned, ScriptPubkey},

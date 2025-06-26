@@ -232,7 +232,11 @@ pub struct GetBalance(pub Amount);
 pub struct GetBalances {
     /// Balances from outputs that the wallet can sign.
     pub mine: GetBalancesMine,
+    /// Watchonly balances (not present if wallet does not watch anything).
     pub watch_only: Option<GetBalancesWatchOnly>,
+    /// Hash and height of the block this information was generated on. v26 and later only.
+    #[serde(rename = "lastprocessedblock")]
+    pub last_processed_block: Option<LastProcessedBlock>,
 }
 
 /// Balances from outputs that the wallet can sign.

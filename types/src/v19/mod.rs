@@ -244,7 +244,7 @@ pub use self::{
     control::GetRpcInfo,
     network::{GetNetworkInfo, GetPeerInfo, PeerInfo},
     util::GetDescriptorInfo,
-    wallet::{GetBalances, GetBalancesMine, GetBalancesWatchOnly, GetTransaction},
+    wallet::{GetBalances, GetBalancesError, GetBalancesMine, GetBalancesWatchOnly, GetTransaction},
 };
 #[doc(inline)]
 pub use crate::v17::{

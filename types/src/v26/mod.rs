@@ -266,7 +266,7 @@ pub use self::{
         SubmitPackageTxResult, SubmitPackageTxResultError, SubmitPackageTxResultFees,
         SubmitPackageTxResultFeesError,
     },
-    wallet::{CreateWallet, GetTransaction, GetTransactionError, LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet},
+    wallet::{CreateWallet, GetTransaction, GetTransactionError, LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet, GetBalances, GetBalancesError},
 };
 #[doc(inline)]
 pub use crate::{
@@ -308,7 +308,7 @@ pub use crate::{
         ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
-        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesMine,
+        Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
         GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
