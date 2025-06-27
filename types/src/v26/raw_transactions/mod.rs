@@ -34,6 +34,7 @@ use crate::model;
 /// >        ...
 /// >      ]
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DescriptorProcessPsbt {
     /// The base64-encoded partially signed transaction.
     pub psbt: String,
@@ -61,6 +62,7 @@ pub struct DescriptorProcessPsbt {
 /// >        ...
 /// >      ]
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SubmitPackage {
     /// The transaction package result message.
     ///
@@ -76,6 +78,7 @@ pub struct SubmitPackage {
 
 /// Models the per-transaction result included in the JSON-RPC method `submitpackage`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SubmitPackageTxResult {
     /// The transaction id.
     pub txid: String,
@@ -94,6 +97,7 @@ pub struct SubmitPackageTxResult {
 
 /// Models the fees included in the per-transaction result of the JSON-RPC method `submitpackage`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SubmitPackageTxResultFees {
     /// Transaction fee.
     #[serde(rename = "base")]

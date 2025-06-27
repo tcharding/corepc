@@ -21,6 +21,7 @@ pub use super::{
 /// >
 /// > Returns an object containing various state info regarding blockchain processing.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockchainInfo {
     /// Current network name as defined in BIP70 (main, test, signet, regtest).
     pub chain: String,
@@ -65,6 +66,7 @@ pub struct GetBlockchainInfo {
 
 /// Status of softfork.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Softfork {
     /// The [`SoftforkType`]: one of "buried", "bip9".
     #[serde(rename = "type")]
@@ -93,6 +95,7 @@ pub enum SoftforkType {
 
 /// Status of BIP-9 softforks.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkInfo {
     /// One of "defined", "started", "locked_in", "active", "failed".
     pub status: Bip9SoftforkStatus,
@@ -119,10 +122,12 @@ pub struct Bip9SoftforkInfo {
 /// > Arguments:
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
     /// Virtual transaction size as defined in BIP 141.
     ///
@@ -180,6 +185,7 @@ pub struct MempoolEntry {
 /// >
 /// > Returns details on the active state of the TX memory pool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolInfo {
     /// True if the mempool is fully loaded. v0.19 and later only.
     pub loaded: bool,

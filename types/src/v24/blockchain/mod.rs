@@ -19,10 +19,12 @@ pub use super::{GetMempoolInfoError, MempoolEntryError, MempoolEntryFees};
 /// > Arguments:
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
     /// Virtual transaction size as defined in BIP 141.
     ///
@@ -71,6 +73,7 @@ pub struct MempoolEntry {
 /// >
 /// > Returns details on the active state of the TX memory pool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolInfo {
     /// True if the mempool is fully loaded. v0.19 and later only.
     pub loaded: bool,

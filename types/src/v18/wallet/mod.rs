@@ -17,6 +17,7 @@ pub use self::error::ListReceivedByLabelError;
 /// >
 /// > Returns the total amount received by addresses with `<label>` in transactions with at least `[minconf]` confirmations.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetReceivedByLabel(pub f64);
 
 /// Result of the JSON-RPC method `listreceivedbylabel`.
@@ -25,10 +26,12 @@ pub struct GetReceivedByLabel(pub f64);
 /// >
 /// > List received transactions by label.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListReceivedByLabel(pub Vec<ListReceivedByLabelItem>);
 
 /// Item returned as part of `listreceivedbylabel`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListReceivedByLabelItem {
     /// Only returned if imported addresses were involved in transaction.
     #[serde(rename = "involvesWatchonly")]
@@ -49,10 +52,12 @@ pub struct ListReceivedByLabelItem {
 /// > with between minconf and maxconf (inclusive) confirmations.
 /// > Optionally filter to only include txouts paid to specified addresses.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListUnspent(pub Vec<ListUnspentItem>);
 
 /// Unspent transaction output, returned as part of `listunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListUnspentItem {
     /// The transaction id.
     pub txid: String,
@@ -91,6 +96,7 @@ pub struct ListUnspentItem {
 /// >
 /// > Returns a list of wallets in the wallet directory.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListWalletDir {
     /// The list of wallets in the wallet directory.
     pub wallets: Vec<ListWalletDirWallet>,
@@ -98,6 +104,7 @@ pub struct ListWalletDir {
 
 /// Wallet entry returned as part of `listwalletdir`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListWalletDirWallet {
     /// The wallet name.
     pub name: String,

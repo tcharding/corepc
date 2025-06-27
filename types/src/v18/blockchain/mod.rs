@@ -19,10 +19,12 @@ use super::{MempoolEntryError, MempoolEntryFees};
 /// > Arguments:
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
     /// Virtual transaction size as defined in BIP 141.
     ///

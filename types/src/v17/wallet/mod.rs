@@ -68,6 +68,7 @@ pub enum Bip125Replaceable {
 /// >
 /// > Stops current wallet rescan triggered by an RPC call, e.g. by an importprivkey call.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct AbortRescan(pub bool);
 
 /// Result of the JSON-RPC method `addmultisigaddress`.
@@ -84,6 +85,7 @@ pub struct AbortRescan(pub bool);
 /// > 1. nrequired                      (numeric, required) The number of required signatures out of the n keys or addresses.
 /// > 2. "keys"                         (string, required) A json array of bitcoin addresses or hex-encoded public keys
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct AddMultisigAddress {
     /// The value of the new multisig address.
     pub address: String,
@@ -111,6 +113,7 @@ pub struct AddMultisigAddress {
 /// > Arguments:
 /// > 1. txid                  (string, required) The txid to be bumped
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct BumpFee {
     /// The id of the new transaction.
     pub txid: String,
@@ -132,6 +135,7 @@ pub struct BumpFee {
 /// > Arguments:
 /// > 1. "wallet_name"          (string, required) The name for the new wallet. If this is a path, the wallet will be created at the path location.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct CreateWallet {
     /// The wallet name if created successfully.
     ///
@@ -156,6 +160,7 @@ impl CreateWallet {
 /// > Arguments:
 /// > 1. "address"   (string, required) The bitcoin address for the private key
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DumpPrivKey(pub String); // The private key.
 
 impl DumpPrivKey {
@@ -175,6 +180,7 @@ impl DumpPrivKey {
 /// > Arguments:
 /// > 1. "filename"    (string, required) The filename with path (either absolute or relative to bitcoind)
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DumpWallet {
     /// The filename with full absolute path.
     #[serde(rename = "filename")]
@@ -194,6 +200,7 @@ pub struct DumpWallet {
 /// > Arguments:
 /// > 1. passphrase    (string, required) The pass phrase to encrypt the wallet with. It must be at least 1 character, but should be long.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct EncryptWallet(pub String);
 
 /// Result of the JSON-RPC method `getaddressesbylabel`.
@@ -205,10 +212,12 @@ pub struct EncryptWallet(pub String);
 /// > Arguments:
 /// > 1. "label"  (string, required) The label.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetAddressesByLabel(pub BTreeMap<String, AddressInformation>);
 
 /// Returned as part of `getaddressesbylabel`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct AddressInformation {
     /// Purpose of address.
     pub purpose: AddressPurpose,
@@ -224,6 +233,7 @@ pub struct AddressInformation {
 /// > Arguments:
 /// > 1. "address"                    (string, required) The bitcoin address to get the information of.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetAddressInfo {
     /// The bitcoin address validated.
     pub address: String,
@@ -323,6 +333,7 @@ pub enum ScriptType {
 /// ("timestamp", "hdkeypath", "hdseedid") and relation to the wallet ("ismine", "iswatchonly",
 /// "account").
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetAddressInfoEmbedded {
     /// The bitcoin address validated.
     pub address: String,
@@ -363,6 +374,7 @@ pub struct GetAddressInfoEmbedded {
 
 /// The `label` field of `GetAddressInfo` (and `GetAddressInfoEmbedded`).
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetAddressInfoLabel {
     /// The label.
     pub name: String,
@@ -378,6 +390,7 @@ pub struct GetAddressInfoLabel {
 /// > The available balance is what the wallet considers currently spendable, and is
 /// > thus affected by options which limit spendability such as -spendzeroconfchange.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBalance(pub f64);
 
 impl GetBalance {
@@ -396,6 +409,7 @@ impl GetBalance {
 /// > If 'label' is specified, it is added to the address book
 /// > so payments received with the address will be associated with 'label'.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetNewAddress(pub String);
 
 /// Result of the JSON-RPC method `getrawchangeaddress`.
@@ -405,6 +419,7 @@ pub struct GetNewAddress(pub String);
 /// > Returns a new Bitcoin address, for receiving change.
 /// > This is for use with raw transactions, NOT normal use.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetRawChangeAddress(pub String);
 
 /// Result of the JSON-RPC method `getreceivedbyaddress`.
@@ -416,6 +431,7 @@ pub struct GetRawChangeAddress(pub String);
 /// > Arguments:
 /// > 1. "address"         (string, required) The bitcoin address for transactions.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetReceivedByAddress(pub f64); // Amount in BTC.
 
 /// Result of the JSON-RPC method `gettransaction`.
@@ -427,6 +443,7 @@ pub struct GetReceivedByAddress(pub f64); // Amount in BTC.
 /// > Arguments:
 /// > 1. txid                 (string, required) The transaction id
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTransaction {
     /// The transaction amount in BTC.
     pub amount: f64,
@@ -470,6 +487,7 @@ pub struct GetTransaction {
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTransactionDetail {
     /// DEPRECATED. The account name involved in the transaction, can be "" for the default account.
     pub account: Option<String>, // Docs are wrong, this is not documented as optional.
@@ -498,6 +516,7 @@ pub struct GetTransactionDetail {
 /// > getunconfirmedbalance
 /// > Returns the server's total unconfirmed balance
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetUnconfirmedBalance(pub f64); // Core docs are missing so this is just a guess.
 
 /// Result of the JSON-RPC method `getwalletinfo`.
@@ -505,6 +524,7 @@ pub struct GetUnconfirmedBalance(pub f64); // Core docs are missing so this is j
 /// > getwalletinfo
 /// > Returns an object containing various wallet state info.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetWalletInfo {
     /// The wallet name.
     #[serde(rename = "walletname")]
@@ -555,11 +575,13 @@ pub struct GetWalletInfo {
 /// > made public by common use as inputs or as the resulting change
 /// > in past transactions
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListAddressGroupings(pub Vec<Vec<ListAddressGroupingsItem>>);
 
 /// List item type returned as part of `listaddressgroupings`.
 // FIXME: The Core docs seem wrong, not sure what shape this should be?
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListAddressGroupingsItem {
     /// The bitcoin address.
     pub address: String,
@@ -575,6 +597,7 @@ pub struct ListAddressGroupingsItem {
 /// >
 /// > Returns the list of all labels, or labels that are assigned to addresses with a specific purpose.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListLabels(pub Vec<String>);
 
 /// Result of the JSON-RPC method `listlockunspent`.
@@ -584,10 +607,12 @@ pub struct ListLabels(pub Vec<String>);
 /// > Returns list of temporarily unspendable outputs.
 /// > See the lockunspent call to lock and unlock transactions for spending.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListLockUnspent(pub Vec<ListLockUnspentItem>);
 
 /// List item returned as part of of `listlockunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListLockUnspentItem {
     /// The transaction id locked.
     pub txid: String,
@@ -601,10 +626,12 @@ pub struct ListLockUnspentItem {
 /// >
 /// > List balances by receiving address.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddress(pub Vec<ListReceivedByAddressItem>);
 
 /// List item returned as part of of `listreceivedByaddress`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddressItem {
     /// Only returned if imported addresses were involved in transaction.
     #[serde(rename = "involvesWatchonly")]
@@ -631,6 +658,7 @@ pub struct ListReceivedByAddressItem {
 /// > If "blockhash" is no longer a part of the main chain, transactions from the fork point onward are included.
 /// > Additionally, if include_removed is set, transactions affecting the wallet which were removed are returned in the "removed" array.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListSinceBlock {
     /// All the transactions.
     pub transactions: Vec<ListSinceBlockTransaction>,
@@ -651,6 +679,7 @@ pub struct ListSinceBlock {
 /// Transaction item returned as part of `listsinceblock`.
 // FIXME: These docs from Core seem to buggy, there is only partial mention of 'move' category?
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListSinceBlockTransaction {
     /// DEPRECATED. The account name associated with the transaction. Will be "" for the default account.
     pub account: String,
@@ -727,10 +756,12 @@ pub struct ListSinceBlockTransaction {
 /// > Note that the "account" argument and "otheraccount" return value have been removed in V0.17. To use this RPC with an "account" argument, restart
 /// > bitcoind with -deprecatedrpc=accounts
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListTransactions(pub Vec<ListTransactionsItem>);
 
 /// Transaction item returned as part of `listtransactions`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListTransactionsItem {
     /// The bitcoin address of the transaction.
     pub address: String,
@@ -790,10 +821,12 @@ pub struct ListTransactionsItem {
 /// > with between minconf and maxconf (inclusive) confirmations.
 /// > Optionally filter to only include txouts paid to specified addresses.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListUnspent(pub Vec<ListUnspentItem>);
 
 /// Unspent transaction output, returned as part of `listunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListUnspentItem {
     /// The transaction id.
     pub txid: String,
@@ -831,6 +864,7 @@ pub struct ListUnspentItem {
 /// > Returns a list of currently loaded wallets.
 /// > For full information on the wallet, use "getwalletinfo"
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListWallets(pub Vec<String>);
 
 /// Result of the JSON-RPC method `loadwallet`.
@@ -844,6 +878,7 @@ pub struct ListWallets(pub Vec<String>);
 /// > Arguments:
 /// > 1. "filename"    (string, required) The wallet directory or .dat file.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct LoadWallet {
     /// The wallet name if loaded successfully.
     pub name: String,
@@ -862,6 +897,7 @@ impl LoadWallet {
 /// >
 /// > Rescan the local blockchain for wallet related transactions.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct RescanBlockchain {
     /// The block height where the rescan has started.
     pub start_height: i64,
@@ -886,6 +922,7 @@ pub struct RescanBlockchain {
 /// >       ,...
 /// >     }
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SendMany(
     /// The transaction id for the send.
     ///
@@ -903,6 +940,7 @@ pub struct SendMany(
 /// > 1. "address"            (string, required) The bitcoin address to send to.
 /// > 2. "amount"             (numeric or string, required) The amount in BTC to send. eg 0.1
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SendToAddress(pub String);
 
 impl SendToAddress {
@@ -920,6 +958,7 @@ impl SendToAddress {
 /// > 1. "address"         (string, required) The bitcoin address to use for the private key.
 /// > 2. "message"         (string, required) The message to create a signature of.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SignMessage(
     /// The signature of the message encoded in base 64.
     pub String,
@@ -954,6 +993,7 @@ pub struct SignMessage(
 /// >                              accepted as second parameter.
 /// >    ]
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct WalletCreateFundedPsbt {
     /// The resulting raw transaction (base64-encoded string).
     pub psbt: String,
@@ -975,6 +1015,7 @@ pub struct WalletCreateFundedPsbt {
 /// > Arguments:
 /// > 1. "psbt"                      (string, required) The transaction base64 string
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct WalletProcessPsbt {
     /// The base64-encoded partially signed transaction.
     pub psbt: String,

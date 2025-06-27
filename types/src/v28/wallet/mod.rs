@@ -20,6 +20,7 @@ pub use super::{Bip125Replaceable, GetTransactionDetail, GetTransactionError, La
 /// > Arguments:
 /// > 1. txid                 (string, required) The transaction id
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTransaction {
     /// The transaction amount in BTC.
     pub amount: f64,

@@ -14,10 +14,12 @@ use serde::{Deserialize, Serialize};
 /// >
 /// > Returns data about each connected network node as a json array of objects.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetPeerInfo(pub Vec<PeerInfo>);
 
 /// An item from the list returned by the JSON-RPC method `getpeerinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct PeerInfo {
     /// Peer index.
     pub id: u32,

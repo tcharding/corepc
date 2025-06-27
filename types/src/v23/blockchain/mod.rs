@@ -18,6 +18,7 @@ pub use super::{GetBlockchainInfoError, MempoolEntryError, MempoolEntryFees, Sof
 /// >
 /// > Returns an object containing various state info regarding blockchain processing.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockchainInfo {
     /// Current network name as defined in BIP70 (main, test, signet, regtest).
     pub chain: String,
@@ -71,10 +72,12 @@ pub struct GetBlockchainInfo {
 /// > Arguments:
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
     /// Virtual transaction size as defined in BIP 141.
     ///
@@ -139,6 +142,7 @@ pub struct MempoolEntry {
 ///
 /// > Dumps the mempool to disk. It will fail until the previous dump is fully loaded.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SaveMempool {
     /// The directory and file where the mempool was saved.
     pub filename: String,

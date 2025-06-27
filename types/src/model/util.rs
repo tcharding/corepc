@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 
 /// Models the result of JSON-RPC method `createmultisig`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct CreateMultisig {
     /// The value of the new multisig address.
     pub address: Address<NetworkUnchecked>,
@@ -24,6 +25,7 @@ pub struct CreateMultisig {
 
 /// Models the result of JSON-RPC method `estimatesmartfee`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct EstimateSmartFee {
     /// Estimate fee rate in BTC/kB.
     pub fee_rate: Option<FeeRate>,
@@ -40,6 +42,7 @@ pub struct EstimateSmartFee {
 /// > Derives one or more addresses corresponding to an output descriptor.
 /// > Returns an array of derived addresses.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DeriveAddresses {
     /// The derived addresses.
     pub addresses: Vec<Address<NetworkUnchecked>>,

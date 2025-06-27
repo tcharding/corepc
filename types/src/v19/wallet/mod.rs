@@ -19,6 +19,7 @@ use super::{Bip125Replaceable, GetTransactionDetail, GetTransactionError};
 /// >
 /// > Returns an object with all balances in BTC.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBalances {
     /// Balances from outputs that the wallet can sign.
     pub mine: GetBalancesMine,
@@ -28,6 +29,7 @@ pub struct GetBalances {
 
 /// Balances from outputs that the wallet can sign.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBalancesMine {
     /// Trusted balance (outputs created by the wallet or confirmed outputs).
     pub trusted: f64,
@@ -43,6 +45,7 @@ pub struct GetBalancesMine {
 
 /// Hash and height of the block this information was generated on.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBalancesWatchOnly {
     /// Trusted balance (outputs created by the wallet or confirmed outputs).
     pub trusted: f64,
@@ -61,6 +64,7 @@ pub struct GetBalancesWatchOnly {
 /// > Arguments:
 /// > 1. txid                 (string, required) The transaction id
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTransaction {
     /// The transaction amount in BTC.
     pub amount: f64,

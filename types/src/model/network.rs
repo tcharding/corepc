@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 
 /// Models the result of JSON-RPC method `getnetworkinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetNetworkInfo {
     /// The server version.
     pub version: usize,
@@ -48,6 +49,7 @@ pub struct GetNetworkInfo {
 
 /// Part of the result of the JSON-RPC method `getnetworkinfo` (information per network).
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetNetworkInfoNetwork {
     /// Network (ipv4, ipv6, onion, i2p, cjdns).
     pub name: String,
@@ -63,6 +65,7 @@ pub struct GetNetworkInfoNetwork {
 
 /// Part of the result of the JSON-RPC method `getnetworkinfo` (local address info).
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetNetworkInfoAddress {
     /// Network address.
     pub address: String,
@@ -78,10 +81,12 @@ pub struct GetNetworkInfoAddress {
 /// >
 /// > Return known addresses which can potentially be used to find new nodes in the network.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetNodeAddresses(pub Vec<NodeAddress>);
 
 /// An item from the list returned by the JSON-RPC method `getnodeaddresses`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct NodeAddress {
     /// Timestamp in seconds since epoch (Jan 1 1970 GMT) when the node was last seen.
     pub time: u64,

@@ -15,6 +15,7 @@ pub use self::error::{BlockTemplateTransactionError, GetMiningInfoError, NextBlo
 ///
 /// Returned as part of `getblocktemplate`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct BlockTemplateTransaction {
     /// Transaction data encoded in hexadecimal (byte-for-byte).
     pub data: String,
@@ -44,6 +45,7 @@ pub struct BlockTemplateTransaction {
 /// >
 /// > Returns a json object containing mining-related information.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMiningInfo {
     /// The current block.
     pub blocks: u64,
@@ -80,6 +82,7 @@ pub struct GetMiningInfo {
 
 /// Represents the `next` block information within the GetMiningInfo result.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct NextBlockInfo {
     /// The next height.
     pub height: u64,
