@@ -509,9 +509,8 @@ pub struct ListSinceBlock {
 }
 
 /// Transaction list item, part of `ListSinceBlock`.
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
-
 // https://github.com/rust-bitcoin/rust-bitcoin/issues/3516
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct ListSinceBlockTransaction {
     /// The bitcoin address of the transaction.
     pub address: Option<Address<NetworkUnchecked>>,
