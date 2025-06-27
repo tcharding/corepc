@@ -187,13 +187,13 @@ pub struct GetBlockHeaderVerbose {
 /// > 1. blockhashes  (json array, optional) The list of blockhashes to examine for activity. Order doesn't matter. Must be along main chain or an error is thrown.
 /// > 2. scanobjects  (json array, optional) Array of scan objects. Required for "start" action
 /// > 3. include_mempool  (boolean, optional, default=true) Whether to include unconfirmed activitydata
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 pub struct GetDescriptorActivity {
     pub activity: Vec<ActivityEntry>,
 }
 
 /// Enum representing either a spend or receive activity entry.
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum ActivityEntry {
     /// The spend activity.
@@ -203,7 +203,7 @@ pub enum ActivityEntry {
 }
 
 /// Represents a 'spend' activity event.
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 pub struct SpendActivity {
     // Note: 'type' field is used for deserialization tag, not included here explicitly.
     /// The total amount in BTC of the spent output.
@@ -228,7 +228,7 @@ pub struct SpendActivity {
 }
 
 /// Represents a 'receive' activity event.
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 pub struct ReceiveActivity {
     // Note: 'type' field is used for deserialization tag, not included here explicitly.
     /// The total amount in BTC of the new output
