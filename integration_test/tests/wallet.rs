@@ -365,14 +365,14 @@ fn wallet__import_multi() {
     // to ensure import succeeds, since the wallet already knows the key.
     let req1 = ImportMultiRequest {
         desc: None,
-        script_pub_key: Some(ImportMultiScriptPubKey::Script(dummy_script_hex.to_string())),
+        script_pubkey: Some(ImportMultiScriptPubKey::Script(dummy_script_hex.to_string())),
         timestamp: ImportMultiTimestamp::Now,
     };
 
     // Uses an address (valid): success - false, with JSON-RPC error.
     let req2 = ImportMultiRequest {
         desc: None,
-        script_pub_key: Some(ImportMultiScriptPubKey::Address {
+        script_pubkey: Some(ImportMultiScriptPubKey::Address {
             address: addr.to_string(),
         }),
         timestamp: ImportMultiTimestamp::Now,
@@ -383,7 +383,7 @@ fn wallet__import_multi() {
     // NOTE: Works only for v18 onwards, as v17 doesn't support descriptors.
     let req3 = ImportMultiRequest {
         desc: Some(dummy_desc.to_string()),
-        script_pub_key: None,
+        script_pubkey: None,
         timestamp: ImportMultiTimestamp::Time(1_700_000_000),
     };
 

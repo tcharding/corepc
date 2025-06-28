@@ -43,7 +43,7 @@ impl std::error::Error for CreateMultisigError {
 pub enum ValidateAddressError {
     /// Conversion of the `address` field failed.
     Address(address::ParseError),
-    /// Conversion of the `script_pub_key` field failed.
+    /// Conversion of the `script_pubkey` field failed.
     ScriptPubkey(hex::HexToBytesError),
     /// The `witness_version` field's value was too big for a u8.
     WitnessVersionValue(i64),
@@ -62,7 +62,7 @@ impl fmt::Display for ValidateAddressError {
         match *self {
             E::Address(ref e) => write!(f, "conversion of the `address` field failed: {}", e),
             E::ScriptPubkey(ref e) =>
-                write!(f, "conversion of the `script_pub_key` field failed: {}", e),
+                write!(f, "conversion of the `script_pubkey` field failed: {}", e),
             E::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
             E::WitnessVersion(ref e) =>
                 write!(f, "conversion of the `witness_version` field failed: {}", e),
