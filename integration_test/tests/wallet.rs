@@ -324,6 +324,28 @@ fn wallet__import_pruned_funds() {
     let _: () = node.client.import_pruned_funds(&raw_tx.0, &tx_out_proof).expect("importprunedfunds");
 }
 
+#[test]
+fn wallet__import_wallet() {
+    let node = match () {
+        #[cfg(feature = "v22_and_below")]
+        () => Node::with_wallet(Wallet::Default, &[]),
+        #[cfg(not(feature = "v22_and_below"))]
+        () => {
+            let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+            node.client.create_legacy_wallet("wallet_name").expect("createlegacywallet");
+            node
+        }
+    };
+
+    node.client.new_address().expect("newaddress");
+    let dump_file_path = integration_test::random_tmp_file();
+
+    node.client.dump_wallet(&dump_file_path).expect("dumpwallet");
+    assert!(dump_file_path.exists());
+
+    let _: () = node.client.import_wallet(&dump_file_path).expect("importwallet");
+}
+
 #[cfg(not(feature = "v17"))]
 #[test]
 fn wallet__list_received_by_label__modelled() {
