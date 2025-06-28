@@ -21,6 +21,7 @@ use super::{GetChainTxStatsError, GetMempoolInfoError};
 /// >
 /// > Returns an object containing various state info regarding blockchain processing.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockchainInfo {
     /// Current network name as defined in BIP70 (main, test, signet, regtest).
     pub chain: String,
@@ -65,6 +66,7 @@ pub struct GetBlockchainInfo {
 
 /// Status of softfork.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Softfork {
     /// The [`SoftforkType`]: one of "buried", "bip9".
     #[serde(rename = "type")]
@@ -93,6 +95,7 @@ pub enum SoftforkType {
 
 /// Status of BIP-9 softforks.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkInfo {
     /// One of "defined", "started", "locked_in", "active", "failed".
     pub status: Bip9SoftforkStatus,
@@ -126,6 +129,7 @@ pub enum Bip9SoftforkStatus {
 
 /// Statistics for a BIP-9 softfork.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkStatistics {
     /// The length in blocks of the BIP9 signalling period.
     pub period: i64,
@@ -149,6 +153,7 @@ pub struct Bip9SoftforkStatistics {
 /// > 1. blockhash     (string, required) The hash of the block
 /// > 2. filtertype    (string, optional, default=basic) The type name of the filter
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockFilter {
     /// The hex-encoded filter data.
     pub filter: String,
@@ -162,6 +167,7 @@ pub struct GetBlockFilter {
 /// >
 /// > Compute statistics about the total number and rate of transactions in the chain.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetChainTxStats {
     /// The timestamp for the final block in the window in UNIX format.
     pub time: i64,
@@ -192,12 +198,14 @@ pub struct GetChainTxStats {
 /// > Arguments:
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolAncestors(pub Vec<String>);
 
 /// Result of JSON-RPC method `getmempoolancestors` with verbose set to true.
 ///
 /// Map of txid to `MempoolEntry` i.e., an ancestor.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolAncestorsVerbose(pub BTreeMap<String, MempoolEntry>);
 
 /// Result of JSON-RPC method `getmempooldescendants` with verbose set to `false`.
@@ -209,12 +217,14 @@ pub struct GetMempoolAncestorsVerbose(pub BTreeMap<String, MempoolEntry>);
 /// > Arguments:
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolDescendants(pub Vec<String>);
 
 /// Result of JSON-RPC method `getmempooldescendants` with verbose set to true.
 ///
 /// Map of txid to [`MempoolEntry`] i.e., a descendant.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 
 /// Result of JSON-RPC method `getmempoolentry`.
@@ -226,10 +236,12 @@ pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 /// > Arguments:
 /// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
     /// Virtual transaction size as defined in BIP 141.
     ///
@@ -287,6 +299,7 @@ pub struct MempoolEntry {
 /// Contains the base fee, modified fee (with fee deltas), and ancestor/descendant fee totals,
 /// all in BTC.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolEntryFees {
     /// Transaction fee in BTC.
     pub base: f64,
@@ -304,6 +317,7 @@ pub struct MempoolEntryFees {
 /// >
 /// > Returns details on the active state of the TX memory pool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolInfo {
     /// True if the mempool is fully loaded. v0.19 and later only.
     pub loaded: bool,

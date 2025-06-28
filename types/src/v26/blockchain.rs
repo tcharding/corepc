@@ -19,6 +19,7 @@ use crate::{model, NumericError};
 /// > Returns statistics about the unspent transaction output set.
 /// > Note this call may take some time.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTxOutSetInfo {
     /// The current block height (index).
     pub height: i64,

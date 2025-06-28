@@ -14,10 +14,12 @@ use serde::{Deserialize, Serialize};
 ///
 /// > List all banned IPs/Subnets.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListBanned(pub Vec<Banned>);
 
 /// An item from the list returned by the JSON-RPC method `listbanned`
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Banned {
     /// The IP/Subnet of the banned node.
     pub address: String,
@@ -37,10 +39,12 @@ pub struct Banned {
 /// >
 /// > Returns data about each connected network node as a json array of objects.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetPeerInfo(pub Vec<PeerInfo>);
 
 /// An item from the list returned by the JSON-RPC method `getpeerinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct PeerInfo {
     /// Peer index.
     pub id: u32,

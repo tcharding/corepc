@@ -15,6 +15,7 @@ use crate::model;
 /// > Unloads the wallet referenced by the request endpoint, otherwise unloads the wallet specified in the argument.
 /// > Specifying the wallet name on a wallet endpoint is invalid.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UnloadWallet {
     /// Warning messages, if any, related to unloading the wallet.
     pub warning: String,

@@ -14,6 +14,7 @@ use serde::{Deserialize, Serialize};
 
 /// Models the result of JSON-RPC method `analyzepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct AnalyzePsbt {
     /// Array of input objects.
     pub inputs: Vec<AnalyzePsbtInput>,
@@ -31,6 +32,7 @@ pub struct AnalyzePsbt {
 
 /// Represents an input in a PSBT operation.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct AnalyzePsbtInput {
     /// Whether a UTXO is provided.
     pub has_utxo: bool,
@@ -44,6 +46,7 @@ pub struct AnalyzePsbtInput {
 
 /// Represents missing elements required to complete an input.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct AnalyzePsbtInputMissing {
     /// Public key IDs of public keys whose BIP 32 derivation paths are missing.
     pub pubkeys: Vec<hash160::Hash>,
@@ -57,26 +60,32 @@ pub struct AnalyzePsbtInputMissing {
 
 /// Models the result of JSON-RPC method `combinepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct CombinePsbt(pub Psbt);
 
 /// Models the result of JSON-RPC method `combinerawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct CombineRawTransaction(pub Transaction);
 
 /// Models the result of JSON-RPC method `converttopsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ConvertToPsbt(pub Psbt);
 
 /// Models the result of JSON-RPC method `createpsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct CreatePsbt(pub Psbt);
 
 /// Models the result of JSON-RPC method `createrawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct CreateRawTransaction(pub Transaction);
 
 /// Models the result of JSON-RPC method `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecodePsbt {
     /// The decoded PSBT.
     pub psbt: Psbt,
@@ -86,10 +95,12 @@ pub struct DecodePsbt {
 
 /// Models the result of JSON-RPC method `decoderawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecodeRawTransaction(pub Transaction);
 
 /// Models the result of JSON-RPC method `decodescript`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecodeScript {
     /// The `scriptPubkey`.
     pub script_pubkey: Option<ScriptBuf>,
@@ -111,6 +122,7 @@ pub struct DecodeScript {
 
 /// Models the result of JSON-RPC method `descriptorprocesspsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DescriptorProcessPsbt {
     /// The decoded PSBT.
     pub psbt: Psbt,
@@ -122,6 +134,7 @@ pub struct DescriptorProcessPsbt {
 
 /// Models the result of JSON-RPC method `finalizepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct FinalizePsbt {
     /// The partially signed transaction if not extracted.
     pub psbt: Psbt,
@@ -133,6 +146,7 @@ pub struct FinalizePsbt {
 
 /// Models the result of JSON-RPC method `fundrawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct FundRawTransaction {
     /// The resulting raw transaction.
     pub tx: Transaction,
@@ -144,11 +158,13 @@ pub struct FundRawTransaction {
 
 /// Models the result of JSON-RPC method `getrawtransaction` with verbose set to `false`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetRawTransaction(pub Transaction);
 
 /// Models the result of JSON-RPC method `getrawtransaction` with verbose set to `true`.
 /// Result of JSON-RPC method `getrawtransaction`
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetRawTransactionVerbose {
     /// Whether specified block is in the active chain or not (only present with explicit "blockhash" argument).
     pub in_active_chain: Option<bool>,
@@ -166,14 +182,17 @@ pub struct GetRawTransactionVerbose {
 
 /// Models the result of JSON-RPC method `joinpsbts`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct JoinPsbts(pub Psbt);
 
 /// Models the result of JSON-RPC method `sendrawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SendRawTransaction(pub Txid);
 
 /// Models the result of JSON-RPC method `signrawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SignRawTransaction {
     /// The raw transaction with signature(s).
     pub tx: Transaction,
@@ -185,6 +204,7 @@ pub struct SignRawTransaction {
 
 /// Represents a script verification error.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SignFail {
     /// The referenced, previous transaction.
     pub txid: Txid,
@@ -200,6 +220,7 @@ pub struct SignFail {
 
 /// Models the result of JSON-RPC method `submitpackage`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SubmitPackage {
     /// The transaction package result message. "success" indicates all transactions were accepted into or are already in the mempool.
     pub package_msg: String,
@@ -211,6 +232,7 @@ pub struct SubmitPackage {
 
 /// Models the per-transaction result included in the JSON-RPC method `submitpackage`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SubmitPackageTxResult {
     /// The transaction id.
     pub txid: Txid,
@@ -228,6 +250,7 @@ pub struct SubmitPackageTxResult {
 
 /// Models the fees included in the per-transaction result of the JSON-RPC method `submitpackage`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SubmitPackageTxResultFees {
     /// Transaction fee.
     pub base_fee: Amount,
@@ -243,6 +266,7 @@ pub struct SubmitPackageTxResultFees {
 
 /// Models the result of JSON-RPC method `testmempoolaccept`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct TestMempoolAccept {
     /// Test results for each raw transaction in the input array.
     pub results: Vec<MempoolAcceptance>,
@@ -250,6 +274,7 @@ pub struct TestMempoolAccept {
 
 /// Represents a single mempool acceptance test result.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolAcceptance {
     /// The transaction ID.
     pub txid: Txid,
@@ -261,4 +286,5 @@ pub struct MempoolAcceptance {
 
 /// Models the result of JSON-RPC method `utxoupdatepsbt;`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UtxoUpdatePsbt(pub Psbt);

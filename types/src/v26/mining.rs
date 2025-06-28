@@ -17,12 +17,14 @@ use crate::model;
 /// >
 /// > Returns a map of all user-created (see prioritisetransaction) fee deltas by txid, and whether the tx is present in mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetPrioritisedTransactions(
     /// prioritisation keyed by txid.
     pub BTreeMap<String, PrioritisedTransaction>,
 );
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct PrioritisedTransaction {
     /// Transaction fee delta in satoshis.
     pub fee_delta: i64,

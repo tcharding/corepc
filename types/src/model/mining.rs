@@ -14,6 +14,7 @@ use serde::{Deserialize, Serialize};
 
 /// Models the result of JSON-RPC method `getblocktemplate`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockTemplate {
     /// The preferred block version.
     pub version: block::Version,
@@ -73,6 +74,7 @@ pub struct GetBlockTemplate {
 ///
 /// Returned as part of `getblocktemplate`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct BlockTemplateTransaction {
     /// The transaction.
     pub data: Transaction,
@@ -99,6 +101,7 @@ pub struct BlockTemplateTransaction {
 
 /// Models the result of JSON-RPC method `getmininginfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMiningInfo {
     /// The current block.
     pub blocks: u64,
@@ -131,6 +134,7 @@ pub struct GetMiningInfo {
 
 /// Represents the `next` block information within the GetMiningInfo result.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct NextBlockInfo {
     /// The next height.
     pub height: u64,
@@ -144,9 +148,11 @@ pub struct NextBlockInfo {
 
 /// Models the result of JSON-RPC method `getprioritisedtransactions`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetPrioritisedTransactions(pub BTreeMap<Txid, PrioritisedTransaction>);
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct PrioritisedTransaction {
     /// Transaction fee delta in satoshis.
     pub fee_delta: i64,

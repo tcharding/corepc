@@ -24,6 +24,7 @@ pub use super::{
 /// > Arguments:
 /// > 1. txid                 (string, required) The transaction id
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTransaction {
     /// The transaction amount in BTC.
     pub amount: f64,
@@ -86,6 +87,7 @@ pub struct GetTransaction {
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTransactionDetail {
     /// Only returns true if imported addresses were involved in transaction. v20 and later only.
     #[serde(rename = "involvesWatchonly")]
@@ -124,10 +126,12 @@ pub struct GetTransactionDetail {
 /// > with between minconf and maxconf (inclusive) confirmations.
 /// > Optionally filter to only include txouts paid to specified addresses.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListUnspent(pub Vec<ListUnspentItem>);
 
 /// Unspent transaction output, returned as part of `listunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ListUnspentItem {
     /// The transaction id.
     pub txid: String,

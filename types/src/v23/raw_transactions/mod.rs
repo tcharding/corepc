@@ -27,6 +27,7 @@ pub use crate::psbt::{Bip32Deriv, PsbtScript, RawTransaction, WitnessUtxo};
 /// > Arguments:
 /// > 1. "psbt"            (string, required) The PSBT base64 string
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecodePsbt {
     /// The decoded network-serialized unsigned transaction.
     pub tx: RawTransaction,
@@ -48,6 +49,7 @@ pub struct DecodePsbt {
 
 /// An item from the global xpubs list of `DecodePsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GlobalXpub {
     /// The extended public key this path corresponds to.
     pub xpub: String,
@@ -59,6 +61,7 @@ pub struct GlobalXpub {
 
 /// An item from the global proprietary list of `DecodePsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Proprietary {
     /// The hex string for the proprietary identifier.
     identifier: String,
@@ -72,6 +75,7 @@ pub struct Proprietary {
 
 /// An input in a partially signed Bitcoin transaction.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct PsbtInput {
     /// Decoded network transaction for non-witness UTXOs.
     pub non_witness_utxo: Option<RawTransaction>,
@@ -109,6 +113,7 @@ pub struct PsbtInput {
 
 /// An output in a partially signed Bitcoin transaction.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct PsbtOutput {
     /// The redeem script.
     pub redeem_script: Option<PsbtScript>,
@@ -132,6 +137,7 @@ pub struct PsbtOutput {
 /// > 1. "hexstring"     (string) the hex encoded script
 // The docs on Core v0.17 appear to be way off what is actually returned.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecodeScript {
     /// Script public key.
     pub asm: String,
@@ -159,6 +165,7 @@ pub struct DecodeScript {
 
 /// `segwit` item returned as part of `decodescript`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecodeScriptSegwit {
     /// Script public key.
     pub asm: String,

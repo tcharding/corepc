@@ -18,6 +18,7 @@ use crate::{model, ScriptPubkey};
 
 /// Result of JSON-RPC method `getblock` with verbosity set to 1.
 #[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockVerboseOne {
     /// The block hash (same as provided) in RPC call.
     pub hash: String,
@@ -75,6 +76,7 @@ pub struct GetBlockVerboseOne {
 /// >
 /// > Returns an object containing various state info regarding blockchain processing.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockchainInfo {
     /// Current network name as defined in BIP70 (main, test, signet, regtest).
     pub chain: String,
@@ -127,6 +129,7 @@ pub struct GetBlockchainInfo {
 /// > Arguments:
 /// > 1. "hash"          (string, required) The block hash
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockHeader(pub String);
 
 /// Result of JSON-RPC method `getblockheader` with verbosity set to `true`.
@@ -137,6 +140,7 @@ pub struct GetBlockHeader(pub String);
 /// > Arguments:
 /// > 1. "hash"          (string, required) The block hash
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockHeaderVerbose {
     /// The block hash.
     pub hash: String,
@@ -187,13 +191,14 @@ pub struct GetBlockHeaderVerbose {
 /// > 1. blockhashes  (json array, optional) The list of blockhashes to examine for activity. Order doesn't matter. Must be along main chain or an error is thrown.
 /// > 2. scanobjects  (json array, optional) Array of scan objects. Required for "start" action
 /// > 3. include_mempool  (boolean, optional, default=true) Whether to include unconfirmed activitydata
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetDescriptorActivity {
     pub activity: Vec<ActivityEntry>,
 }
 
 /// Enum representing either a spend or receive activity entry.
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum ActivityEntry {
     /// The spend activity.
@@ -203,7 +208,8 @@ pub enum ActivityEntry {
 }
 
 /// Represents a 'spend' activity event.
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SpendActivity {
     // Note: 'type' field is used for deserialization tag, not included here explicitly.
     /// The total amount in BTC of the spent output.
@@ -228,7 +234,8 @@ pub struct SpendActivity {
 }
 
 /// Represents a 'receive' activity event.
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ReceiveActivity {
     // Note: 'type' field is used for deserialization tag, not included here explicitly.
     /// The total amount in BTC of the new output

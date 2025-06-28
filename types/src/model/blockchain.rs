@@ -18,14 +18,17 @@ use crate::ScriptPubkey;
 
 /// Models the result of JSON-RPC method `getbestblockhash`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBestBlockHash(pub BlockHash);
 
 /// Models the result of JSON-RPC method `getblock` with verbosity set to 0.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockVerboseZero(pub Block);
 
 /// Models the result of JSON-RPC method `getblock` with verbosity set to 1.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockVerboseOne {
     /// The block hash (same as provided) in RPC call.
     pub hash: BlockHash,
@@ -69,6 +72,7 @@ pub struct GetBlockVerboseOne {
 
 /// Models the result of JSON-RPC method `getblockchaininfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockchainInfo {
     /// Current network name as defined in BIP70 (main, test, signet, regtest).
     pub chain: Network,
@@ -114,6 +118,7 @@ pub struct GetBlockchainInfo {
 
 /// Status of softfork.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Softfork {
     /// The [`SoftforkType`]: one of "buried", "bip9".
     #[serde(rename = "type")]
@@ -142,6 +147,7 @@ pub enum SoftforkType {
 
 /// Status of BIP-9 softforks.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkInfo {
     /// One of "defined", "started", "locked_in", "active", "failed".
     pub status: Bip9SoftforkStatus,
@@ -176,6 +182,7 @@ pub enum Bip9SoftforkStatus {
 
 /// Statistics for a BIP-9 softfork.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkStatistics {
     /// The length in blocks of the BIP9 signalling period.
     pub period: u32,
@@ -191,10 +198,12 @@ pub struct Bip9SoftforkStatistics {
 
 /// Models the result of JSON-RPC method `getblockcount`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockCount(pub u64);
 
 /// Models the result of JSON-RPC method `getblockfilter`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockFilter {
     /// The filter data.
     pub filter: Vec<u8>,
@@ -204,14 +213,17 @@ pub struct GetBlockFilter {
 
 /// Models the result of JSON-RPC method `getblockhash`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockHash(pub BlockHash);
 
 /// Models the result of JSON-RPC method `getblockheader`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockHeader(pub block::Header);
 
 /// Models the result of JSON-RPC method `getblockheader`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockHeaderVerbose {
     /// the block hash (same as provided).
     pub hash: BlockHash,
@@ -247,6 +259,7 @@ pub struct GetBlockHeaderVerbose {
 
 /// Models the result of JSON-RPC method `getblockstats`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockStats {
     /// Average fee in the block.
     pub average_fee: Amount,
@@ -316,10 +329,12 @@ pub struct GetBlockStats {
 
 /// Models the result of JSON-RPC method `getchaintips`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetChainTips(pub Vec<ChainTips>);
 
 /// An individual list item from the result of JSON-RPC method `getchaintips`.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ChainTips {
     /// Height of the chain tip.
     pub height: u32,
@@ -349,6 +364,7 @@ pub enum ChainTipsStatus {
 
 /// Models the result of JSON-RPC method `getchaintxstats`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetChainTxStats {
     /// The timestamp for the final block in the window in UNIX format.
     pub time: u32,
@@ -370,30 +386,37 @@ pub struct GetChainTxStats {
 
 /// Models the result of JSON-RPC method `getdifficulty`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetDifficulty(pub f64);
 
 /// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to false.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolAncestors(pub Vec<Txid>);
 
 /// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to true.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolAncestorsVerbose(pub BTreeMap<Txid, MempoolEntry>);
 
 /// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to false.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolDescendants(pub Vec<Txid>);
 
 /// Models the result of JSON-RPC method `getmempooldescendants` with verbose set to true.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolDescendantsVerbose(pub BTreeMap<Txid, MempoolEntry>);
 
 /// Models the result of JSON-RPC method `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
 /// A relative (ancestor or descendant) transaction of a transaction in the mempool.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
     /// Virtual transaction size as defined in BIP 141. v0.19 and later only.
     ///
@@ -436,6 +459,7 @@ pub struct MempoolEntry {
 
 /// (No docs in Core v0.17.)
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct MempoolEntryFees {
     /// Transaction fee in BTC.
     pub base: Amount,
@@ -449,6 +473,7 @@ pub struct MempoolEntryFees {
 
 /// Models the result of JSON-RPC method `getmempoolinfo` with verbose set to true.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMempoolInfo {
     /// True if the mempool is fully loaded. v0.19 and later only.
     pub loaded: Option<bool>,
@@ -482,14 +507,17 @@ pub struct GetMempoolInfo {
 
 /// Models the result of JSON-RPC method `getrawmempool` with verbose set to false.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetRawMempool(pub Vec<Txid>);
 
 /// Models the result of JSON-RPC method `getrawmempool` with verbose set to true.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetRawMempoolVerbose(pub BTreeMap<Txid, MempoolEntry>);
 
 /// Models the result of JSON-RPC method `gettxout`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTxOut {
     /// The hash of the block at the tip of the chain.
     pub best_block: BlockHash,
@@ -507,6 +535,7 @@ pub struct GetTxOut {
 
 /// Models the result of JSON-RPC method `gettxoutsetinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTxOutSetInfo {
     /// The current block height (index).
     pub height: u32,
@@ -533,10 +562,12 @@ pub struct GetTxOutSetInfo {
 
 /// Models the result of JSON-RPC method `verifytxoutproof`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct VerifyTxOutProof(pub Vec<Txid>);
 
 /// Models the result of the JSON-RPC method `getdescriptoractivity`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetDescriptorActivity {
     /// A list of activity events related to the descriptors.
     pub activity: Vec<ActivityEntry>,
@@ -553,6 +584,7 @@ pub enum ActivityEntry {
 
 /// Models a 'spend' activity event with strongly typed fields.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct SpendActivity {
     /// The total amount of the spent output.
     pub amount: Amount,
@@ -574,6 +606,7 @@ pub struct SpendActivity {
 
 /// Models a 'receive' activity event with strongly typed fields.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ReceiveActivity {
     /// The total amount in BTC of the new output, converted to `bitcoin::Amount`.
     pub amount: Amount,

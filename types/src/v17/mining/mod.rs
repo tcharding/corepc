@@ -42,6 +42,7 @@ pub use self::error::{BlockTemplateTransactionError, GetBlockTemplateError};
 /// >        "data": "hex",          (string, optional) proposed block data to check, encoded in hexadecimal; valid only for mode="proposal"
 /// >      }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetBlockTemplate {
     /// The preferred block version.
     pub version: i32,
@@ -114,6 +115,7 @@ pub struct GetBlockTemplate {
 ///
 /// Returned as part of `getblocktemplate`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct BlockTemplateTransaction {
     /// Transaction data encoded in hexadecimal (byte-for-byte).
     pub data: String,
@@ -143,6 +145,7 @@ pub struct BlockTemplateTransaction {
 /// >
 /// > Returns a json object containing mining-related information.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetMiningInfo {
     /// The current block.
     pub blocks: u64,

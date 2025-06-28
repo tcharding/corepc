@@ -21,6 +21,7 @@ pub use self::error::DecodeScriptError;
 /// > 1. "hexstring"     (string) the hex encoded script
 // The docs on Core v0.17 appear to be way off what is actually returned.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecodeScript {
     /// Script public key.
     pub asm: String,
@@ -45,6 +46,7 @@ pub struct DecodeScript {
 
 /// `segwit` item returned as part of `decodescript`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct DecodeScriptSegwit {
     /// Script public key.
     pub asm: String,

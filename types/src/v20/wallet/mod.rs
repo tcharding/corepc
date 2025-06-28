@@ -22,6 +22,7 @@ pub use super::{
 /// > Arguments:
 /// > 1. txid                 (string, required) The transaction id
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTransaction {
     /// The transaction amount in BTC.
     pub amount: f64,
@@ -72,6 +73,7 @@ pub struct GetTransaction {
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GetTransactionDetail {
     /// Only returns true if imported addresses were involved in transaction. v20 and later only.
     #[serde(rename = "involvesWatchonly")]
