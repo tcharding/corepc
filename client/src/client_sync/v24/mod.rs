@@ -16,8 +16,8 @@ use crate::types::v24::*;
 #[rustfmt::skip]                // Keep public re-exports separate.
 pub use crate::client_sync::{
     v17::{
-        AddNodeCommand, Input, Output, SetBanCommand, TemplateRequest, TemplateRules,
-        WalletCreateFundedPsbtInput
+        AddNodeCommand, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp, Input, Output, SetBanCommand, TemplateRequest, TemplateRules,
+        WalletCreateFundedPsbtInput,
     },
     v23::AddressType,
 };
@@ -137,6 +137,7 @@ crate::impl_client_v17__get_transaction!();
 crate::impl_client_v17__get_unconfirmed_balance!();
 crate::impl_client_v17__get_wallet_info!();
 crate::impl_client_v17__import_address!();
+crate::impl_client_v17__import_multi!();
 crate::impl_client_v17__import_privkey!();
 crate::impl_client_v17__import_pruned_funds!();
 crate::impl_client_v17__import_pubkey!();

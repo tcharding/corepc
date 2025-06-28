@@ -8,7 +8,7 @@
 use bitcoin::address::{Address, NetworkChecked};
 use bitcoin::{Amount, PrivateKey, PublicKey};
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::{mtype,AddressType};
+use node::{mtype, AddressType, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp};
 use node::vtype::*;             // All the version specific types.
 use std::fs;
 
@@ -341,6 +341,70 @@ fn wallet__list_received_by_label__modelled() {
     let model: Result<mtype::ListReceivedByLabel, ListReceivedByLabelError> = json.into_model();
     let model = model.unwrap();
     assert!(model.0.iter().any(|item| item.label == label));
+}
+
+#[test]
+fn wallet__import_multi() {
+    let node = match () {
+        #[cfg(feature = "v22_and_below")]
+        () => Node::with_wallet(Wallet::Default, &[]),
+        #[cfg(not(feature = "v22_and_below"))]
+        () => {
+            let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+            node.client.create_legacy_wallet("wallet_name").expect("createlegacywallet");
+            node
+        }
+    };
+
+    let dummy_script_hex = "76a914aabbccddeeff00112233445566778899aabbccdd88ac";
+    let addr = node.client.new_address().expect("newaddress");
+    let dummy_desc = "pkh(02c6047f9441ed7d6d3045406e95c07cd85a2a0e5c1e507a7a7e3d2f0d6c3d8ef8)#tp9h0863";
+
+    // Uses scriptPubKey (valid): success - true, without warnings nor error.
+    // NOTE: On v17, use a wallet-generated address (not raw script)
+    // to ensure import succeeds, since the wallet already knows the key.
+    let req1 = ImportMultiRequest {
+        desc: None,
+        script_pub_key: Some(ImportMultiScriptPubKey::Script(dummy_script_hex.to_string())),
+        timestamp: ImportMultiTimestamp::Now,
+    };
+
+    // Uses an address (valid): success - false, with JSON-RPC error.
+    let req2 = ImportMultiRequest {
+        desc: None,
+        script_pub_key: Some(ImportMultiScriptPubKey::Address {
+            address: addr.to_string(),
+        }),
+        timestamp: ImportMultiTimestamp::Now,
+    };
+
+    // Uses descriptor (valid): success - true
+    // on v18 onwards, it will return a watch-only warning.
+    // NOTE: Works only for v18 onwards, as v17 doesn't support descriptors.
+    let req3 = ImportMultiRequest {
+        desc: Some(dummy_desc.to_string()),
+        script_pub_key: None,
+        timestamp: ImportMultiTimestamp::Time(1_700_000_000),
+    };
+
+    let json: ImportMulti = node.client.import_multi(&[req1, req2, req3]).expect("importmulti");
+
+    #[cfg(not(feature = "v17"))]
+    {
+        // result of req1: should succeed, no error, no warning.
+        // just any random script doesn't work with v17.
+        assert!(json.0[0].success);
+        assert!(json.0[0].error.is_none());
+
+        // result of req3: should succeed, with warning for v18 onwards
+        assert!(json.0[2].success);
+        assert!(json.0[2].error.is_none());
+        assert!(json.0[2].warnings.is_some());
+    }
+
+    // result of req2: should fail with error (wallet already contains privkey for address/script)
+    assert!(!json.0[1].success);
+    assert!(json.0[1].error.is_some());
 }
 
 #[test]

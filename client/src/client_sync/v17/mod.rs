@@ -18,7 +18,7 @@ use std::path::Path;
 
 use bitcoin::address::{Address, NetworkChecked};
 use bitcoin::{sign_message, Amount, Block, BlockHash, PublicKey, Txid};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::client_sync::into_json;
 use crate::types::v17::*;
@@ -128,6 +128,7 @@ crate::impl_client_v17__get_transaction!();
 crate::impl_client_v17__get_unconfirmed_balance!();
 crate::impl_client_v17__get_wallet_info!();
 crate::impl_client_v17__import_address!();
+crate::impl_client_v17__import_multi!();
 crate::impl_client_v17__import_privkey!();
 crate::impl_client_v17__import_pruned_funds!();
 crate::impl_client_v17__import_pubkey!();
@@ -246,4 +247,49 @@ pub enum AddNodeCommand {
 pub enum SetBanCommand {
     Add,
     Remove,
+}
+
+/// Args for the `importmulti` method
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct ImportMultiRequest {
+    /// Descriptor to import. If using descriptor, donot also provide address/scriptPubKey, scripts, or pubkeys.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub desc: Option<String>, // from core v18 onwards.
+    /// Type of scriptPubKey (string for script, json for address). Should not be provided if using descriptor.
+    #[serde(rename = "scriptPubKey", skip_serializing_if = "Option::is_none")]
+    pub script_pub_key: Option<ImportMultiScriptPubKey>,
+    /// Creation time of the key expressed in UNIX epoch time, or the string "now" to substitute the current synced blockchain time.
+    pub timestamp: ImportMultiTimestamp,
+}
+
+/// `scriptPubKey` can be a string for script or json for address.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(untagged)]
+pub enum ImportMultiScriptPubKey {
+    /// The script.
+    Script(String),
+    /// The address.
+    Address { address: String },
+}
+
+/// `timestamp` can be a number (UNIX epoch time) or the string `"now"`
+#[derive(Clone, Debug, Deserialize, PartialEq)]
+#[serde(untagged)]
+pub enum ImportMultiTimestamp {
+    /// The string "now".
+    Now,
+    /// The UNIX timestamp.
+    Time(u64),
+}
+
+impl Serialize for ImportMultiTimestamp {
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match self {
+            ImportMultiTimestamp::Now => serializer.serialize_str("now"),
+            ImportMultiTimestamp::Time(t) => serializer.serialize_u64(*t),
+        }
+    }
 }

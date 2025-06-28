@@ -177,7 +177,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importmulti                        | returns nothing |                                        |
+//! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
 //! | importpubkey                       | returns nothing |                                        |
@@ -241,8 +241,8 @@ pub use self::{
     },
     util::{DeriveAddresses, GetDescriptorInfo},
     wallet::{
-        GetReceivedByLabel, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
-        ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+        GetReceivedByLabel, ImportMulti, ImportMultiEntry, JsonRpcError, ListReceivedByLabel,
+        ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
     },
 };
 #[doc(inline)]

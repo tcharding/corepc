@@ -178,7 +178,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importmulti                        | returns nothing |                                        |
+//! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
 //! | importpubkey                       | returns nothing |                                        |
@@ -284,7 +284,8 @@ pub use crate::v17::{
 #[doc(inline)]
 pub use crate::v18::{
     ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-    AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel, JoinPsbts,
-    ListReceivedByLabel, ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir,
-    ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+    AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
+    ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
+    ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+    NodeAddress, UtxoUpdatePsbt,
 };

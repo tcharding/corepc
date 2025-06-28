@@ -192,7 +192,7 @@
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
 //! | importdescriptors                  | version         | TODO                                   |
-//! | importmulti                        | returns nothing |                                        |
+//! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
 //! | importpubkey                       | returns nothing |                                        |
@@ -307,8 +307,8 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
-        JoinPsbts, ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir,
-        ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+        ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
+        ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,
