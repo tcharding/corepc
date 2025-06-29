@@ -258,7 +258,7 @@ pub struct ImportMultiRequest {
     pub desc: Option<String>, // from core v18 onwards.
     /// Type of scriptPubKey (string for script, json for address). Should not be provided if using descriptor.
     #[serde(rename = "scriptPubKey", skip_serializing_if = "Option::is_none")]
-    pub script_pub_key: Option<ImportMultiScriptPubKey>,
+    pub script_pubkey: Option<ImportMultiScriptPubKey>,
     /// Creation time of the key expressed in UNIX epoch time, or the string "now" to substitute the current synced blockchain time.
     pub timestamp: ImportMultiTimestamp,
 }
