@@ -928,6 +928,15 @@ impl LoadWallet {
     pub fn name(self) -> String { self.into_model().name }
 }
 
+/// Result of JSON-RPC method `lockunspent`.
+///
+/// > lockunspent
+/// >
+/// > Arguments:
+/// > 1. unlock                  (boolean, required) Whether to unlock (true) or lock (false) the specified transactions.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct LockUnspent(pub bool);
+
 /// Result of the JSON-RPC method `rescanblockchain`.
 ///
 /// > rescanblockchain ("start_height") ("stop_height")

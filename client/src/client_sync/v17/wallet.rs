@@ -499,6 +499,22 @@ macro_rules! impl_client_v17__load_wallet {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `loadwallet`.
+#[macro_export]
+macro_rules! impl_client_v17__lock_unspent {
+    () => {
+        impl Client {
+            pub fn lock_unspent(&self) -> Result<LockUnspent> {
+                self.call("lockunspent", &[into_json(false)?])
+            }
+
+            pub fn unlock_unspent(&self) -> Result<LockUnspent> {
+                self.call("lockunspent", &[into_json(true)?])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `rescanblockchain`.
 #[macro_export]
 macro_rules! impl_client_v17__rescan_blockchain {

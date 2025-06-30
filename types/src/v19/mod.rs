@@ -195,7 +195,7 @@
 //! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model | UNTESTED                               |
 //! | loadwallet                         | version + model |                                        |
-//! | lockunspent                        | returns boolean |                                        |
+//! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | sendmany                           | version + model | UNTESTED                               |
@@ -279,7 +279,7 @@ pub use crate::v17::{
     SetNetworkActive, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
     ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, LockUnspent,
 };
 #[doc(inline)]
 pub use crate::v18::{
