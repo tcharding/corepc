@@ -214,6 +214,7 @@ jobs:
         feature:
           [
             "29_0,download",
+            "28_2,download",
             "28_1,download",
             "28_0,download",
             "27_2,download",
