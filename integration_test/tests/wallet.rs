@@ -521,6 +521,22 @@ fn wallet__lock_unspent() {
     assert!(json.0);
 }
 
+#[test]
+fn wallet__remove_pruned_funds() {
+    let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
+    node.fund_wallet();
+
+    let (_, tx) = node.create_mined_transaction();
+    let txid = tx.compute_txid();
+
+    let raw_tx = node.client.get_raw_transaction(txid).expect("getrawtransaction");
+    let tx_out_proof = node.client.get_tx_out_proof(&[txid]).expect("gettxoutproof");
+
+    let _: () = node.client.import_pruned_funds(&raw_tx.0, &tx_out_proof).expect("importprunedfunds");
+
+    let _: () = node.client.remove_pruned_funds(txid).expect("removeprunedfunds");
+}
+
 // This is tested in raw_transactions.rs `create_sign_send()`.
 #[test]
 fn wallet__sign_raw_transaction_with_wallet__modelled() {}

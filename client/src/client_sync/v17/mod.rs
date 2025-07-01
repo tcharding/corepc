@@ -144,6 +144,7 @@ crate::impl_client_v17__list_unspent!();
 crate::impl_client_v17__list_wallets!();
 crate::impl_client_v17__load_wallet!();
 crate::impl_client_v17__lock_unspent!();
+crate::impl_client_v17__remove_pruned_funds!();
 crate::impl_client_v17__rescan_blockchain!();
 crate::impl_client_v17__send_many!();
 crate::impl_client_v17__send_to_address!();
