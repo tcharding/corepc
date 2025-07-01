@@ -15,4 +15,4 @@ EXAMPLES=""
 
 # Just check the latest minor version of the last three supported Core versions.
 # This is mainly for docs and MSRV - integration tests will catch any other errors.
-EXACT_FEATURES=("download,28_1" "download,27_2" "download,26_2")
+EXACT_FEATURES=("download,28_2" "download,27_2" "download,26_2")

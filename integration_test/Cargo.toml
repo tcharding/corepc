@@ -16,6 +16,7 @@ download = ["node/download"]
 # Enable the same feature in `node` and the version feature here.
 # All minor releases of the latest three versions.
 29_0 = ["v29_and_below", "node/29_0"]
+28_2 = ["v28_and_below", "node/28_2"]
 28_1 = ["v28_and_below", "node/28_1"]
 28_0 = ["v28_and_below", "node/28_0"]
 27_2 = ["v27_and_below", "node/27_2"]

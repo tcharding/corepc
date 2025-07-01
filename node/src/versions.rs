@@ -2,6 +2,7 @@
 // We check this here instead of in `lib.rs` because this file is included in `build.rs`.
 #[cfg(all(
     not(feature = "29_0"),
+    not(feature = "28_2"),
     not(feature = "28_1"),
     not(feature = "28_0"),
     not(feature = "27_2"),
@@ -24,7 +25,10 @@ compile_error!("enable a feature in order to select the version of Bitcoin Core 
 #[allow(dead_code)] // Triggers in --all-features builds.
 pub const VERSION: &str = "29.0";
 
-#[cfg(all(feature = "28_1", not(feature = "29_0")))]
+#[cfg(all(feature = "28_2", not(feature = "29_0")))]
+pub const VERSION: &str = "28.2";
+
+#[cfg(all(feature = "28_1", not(feature = "28_2")))]
 pub const VERSION: &str = "28.1";
 
 #[cfg(all(feature = "28_0", not(feature = "28_1")))]
@@ -73,6 +77,7 @@ pub const VERSION: &str = "0.17.2";
 /// the build process to trigger the `compile_error!` in `./versions.rs`.
 #[cfg(all(
     not(feature = "29_0"),
+    not(feature = "28_2"),
     not(feature = "28_1"),
     not(feature = "28_0"),
     not(feature = "27_2"),
