@@ -215,7 +215,7 @@
 //! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model | UNTESTED                               |
 //! | loadwallet                         | version + model |                                        |
-//! | lockunspent                        | returns boolean |                                        |
+//! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | restorewallet                      | version + model | TODO                                   |
@@ -294,13 +294,13 @@ pub use crate::{
         ListLockUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError,
         ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
         ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,
-        ListTransactionsItemError, ListUnspentItemError, ListWallets, Locked, PruneBlockchain,
-        RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany,
-        SendRawTransaction, SendToAddress, SetNetworkActive, SignMessage, SignMessageWithPrivKey,
-        SignRawTransaction, SignRawTransactionError, SoftforkReject, TestMempoolAccept,
-        TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
-        VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WalletProcessPsbt, WitnessUtxo,
+        ListTransactionsItemError, ListUnspentItemError, ListWallets, LockUnspent, Locked,
+        PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
+        RescanBlockchain, SendMany, SendRawTransaction, SendToAddress, SetNetworkActive,
+        SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
+        SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
+        ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

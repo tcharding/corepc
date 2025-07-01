@@ -190,7 +190,7 @@
 //! | listunspent                        | version + model |                                        |
 //! | listwallets                        | version + model | UNTESTED                               |
 //! | loadwallet                         | version + model |                                        |
-//! | lockunspent                        | returns boolean |                                        |
+//! | lockunspent                        | version         |                                        |
 //! | move                               | returns boolean |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
@@ -283,9 +283,9 @@ pub use self::{
         ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError,
         ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
-        ListUnspentItemError, ListWallets, LoadWallet, RescanBlockchain, SendMany, SendToAddress,
-        SignMessage, TransactionCategory, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WalletProcessPsbt,
+        ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, RescanBlockchain, SendMany,
+        SendToAddress, SignMessage, TransactionCategory, WalletCreateFundedPsbt,
+        WalletCreateFundedPsbtError, WalletProcessPsbt,
     },
     zmq::GetZmqNotifications,
 };

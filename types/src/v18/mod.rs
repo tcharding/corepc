@@ -194,7 +194,7 @@
 //! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model | UNTESTED                               |
 //! | loadwallet                         | version + model |                                        |
-//! | lockunspent                        | returns boolean |                                        |
+//! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | sendmany                           | version + model | UNTESTED                               |
@@ -273,8 +273,8 @@ pub use crate::v17::{
     ListLockUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError,
     ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
     ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,
-    ListTransactionsItemError, ListUnspentItemError, ListWallets, LoadWallet, Locked, Logging,
-    MapMempoolEntryError, MempoolAcceptance, MempoolEntryError, MempoolEntryFees,
+    ListTransactionsItemError, ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, Locked,
+    Logging, MapMempoolEntryError, MempoolAcceptance, MempoolEntryError, MempoolEntryFees,
     MempoolEntryFeesError, PruneBlockchain, PsbtInput, PsbtOutput, PsbtScript, RawTransaction,
     RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany,
     SendRawTransaction, SendToAddress, SetNetworkActive, SignFail, SignFailError, SignMessage,

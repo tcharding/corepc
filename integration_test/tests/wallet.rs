@@ -509,6 +509,18 @@ fn wallet__load_wallet__modelled() {
     create_load_unload_wallet();
 }
 
+#[test]
+fn wallet__lock_unspent() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let json: LockUnspent = node.client.lock_unspent().expect("lockunspent");
+    assert!(json.0);
+
+    let json: LockUnspent = node.client.unlock_unspent().expect("unlockunspent");
+    assert!(json.0);
+}
+
 // This is tested in raw_transactions.rs `create_sign_send()`.
 #[test]
 fn wallet__sign_raw_transaction_with_wallet__modelled() {}
