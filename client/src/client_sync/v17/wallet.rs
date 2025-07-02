@@ -499,7 +499,7 @@ macro_rules! impl_client_v17__load_wallet {
     };
 }
 
-/// Implements Bitcoin Core JSON-RPC API method `loadwallet`.
+/// Implements Bitcoin Core JSON-RPC API method `lockunspent`.
 #[macro_export]
 macro_rules! impl_client_v17__lock_unspent {
     () => {
