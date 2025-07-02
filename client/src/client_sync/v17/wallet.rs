@@ -515,6 +515,18 @@ macro_rules! impl_client_v17__lock_unspent {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `removeprunedfunds`.
+#[macro_export]
+macro_rules! impl_client_v17__remove_pruned_funds {
+    () => {
+        impl Client {
+            pub fn remove_pruned_funds(&self, txid: Txid) -> Result<()> {
+                self.call("removeprunedfunds", &[into_json(txid)?])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `rescanblockchain`.
 #[macro_export]
 macro_rules! impl_client_v17__rescan_blockchain {
