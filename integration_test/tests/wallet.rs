@@ -558,6 +558,16 @@ fn wallet__send_to_address__modelled() {
     model.unwrap();
 }
 
+#[cfg(not(feature = "v18_and_below"))]
+#[test]
+fn wallet__set_wallet_flag() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let json: SetWalletFlag = node.client.set_wallet_flag("avoid_reuse").expect("setwalletflag");
+    assert_eq!(json.flag_name, "avoid_reuse");
+    assert!(json.flag_state);
+}
+
 #[test]
 fn wallet__sign_message__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);

@@ -18,3 +18,15 @@ macro_rules! impl_client_v19__get_balances {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `setwalletflag`
+#[macro_export]
+macro_rules! impl_client_v19__set_wallet_flag {
+    () => {
+        impl Client {
+            pub fn set_wallet_flag(&self, flag: &str) -> Result<SetWalletFlag> {
+                self.call("setwalletflag", &[into_json(flag)?])
+            }
+        }
+    };
+}

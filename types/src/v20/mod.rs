@@ -204,7 +204,7 @@
 //! | sethdseed                          | returns nothing |                                        |
 //! | setlabel                           | returns nothing |                                        |
 //! | settxfee                           | returns boolean |                                        |
-//! | setwalletflag                      | version         | TODO                                   |
+//! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
@@ -287,6 +287,6 @@ pub use crate::{
         GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
         GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo, GetNetworkInfo, GetPeerInfo,
         GetRpcInfo, MapMempoolEntryError, MempoolEntry, MempoolEntryError, MempoolEntryFees,
-        MempoolEntryFeesError, PeerInfo, Softfork, SoftforkType,
+        MempoolEntryFeesError, PeerInfo, SetWalletFlag, Softfork, SoftforkType,
     },
 };

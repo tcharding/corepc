@@ -203,7 +203,7 @@
 //! | sethdseed                          | returns nothing |                                        |
 //! | setlabel                           | returns nothing |                                        |
 //! | settxfee                           | returns boolean |                                        |
-//! | setwalletflag                      | version         | TODO                                   |
+//! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
@@ -246,6 +246,7 @@ pub use self::{
     util::GetDescriptorInfo,
     wallet::{
         GetBalances, GetBalancesError, GetBalancesMine, GetBalancesWatchOnly, GetTransaction,
+        SetWalletFlag,
     },
 };
 #[doc(inline)]
