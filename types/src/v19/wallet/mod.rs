@@ -106,3 +106,23 @@ pub struct GetTransaction {
     /// The decoded transaction (only present when `verbose` is passed). v19 and later only.
     pub decoded: Option<Transaction>,
 }
+
+/// Result of the JSON-RPC method `setwalletflag`.
+///
+/// > setwalletflag "flag" ( value )
+/// >
+/// > Change the state of the given wallet flag for a wallet.
+/// >
+/// > Arguments:
+/// > 1. flag     (string, required) The name of the flag to change. Current available flags: avoid_reuse
+/// > 2. value    (boolean, optional, default=true) The new state.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SetWalletFlag {
+    /// The name of the flag that was modified.
+    pub flag_name: String,
+    /// The new state of the flag.
+    pub flag_state: bool,
+    /// Any warnings associated with the change. (Always optional, but docs only state this from v24).
+    pub warnings: Option<String>,
+}
