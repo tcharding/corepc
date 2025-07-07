@@ -605,7 +605,7 @@ macro_rules! impl_client_v17__set_hd_seed {
                 }
             }
         }
-    }
+    };
 }
 
 /// Implements Bitcoin Core JSON-RPC API method `settxfee`

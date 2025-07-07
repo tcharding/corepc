@@ -284,8 +284,8 @@ pub use self::{
         ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
         ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, RescanBlockchain, SendMany,
-        SendToAddress, SignMessage, TransactionCategory, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt, SetTxFee,
+        SendToAddress, SetTxFee, SignMessage, TransactionCategory, WalletCreateFundedPsbt,
+        WalletCreateFundedPsbtError, WalletProcessPsbt,
     },
     zmq::GetZmqNotifications,
 };

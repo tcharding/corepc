@@ -277,10 +277,10 @@ pub use crate::v17::{
     ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError, ListWallets, LoadWallet,
     LockUnspent, Locked, Logging, PruneBlockchain, RawTransactionError, RawTransactionInput,
     RawTransactionOutput, RescanBlockchain, SendMany, SendRawTransaction, SendToAddress,
-    SetNetworkActive, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
+    SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
     ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, SetTxFee,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
 };
 #[doc(inline)]
 pub use crate::v18::{
