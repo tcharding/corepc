@@ -605,6 +605,19 @@ macro_rules! impl_client_v17__set_hd_seed {
                 }
             }
         }
+    }
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `settxfee`
+#[macro_export]
+macro_rules! impl_client_v17__set_tx_fee {
+    () => {
+        impl Client {
+            pub fn set_tx_fee(&self, fee_rate: bitcoin::FeeRate) -> Result<SetTxFee> {
+                let fee_rate_btc_kvb = fee_rate.to_sat_per_vb_floor() as f64 / 100_000.0;
+                self.call("settxfee", &[fee_rate_btc_kvb.into()])
+            }
+        }
     };
 }
 

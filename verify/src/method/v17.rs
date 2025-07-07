@@ -143,7 +143,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("sendtoaddress", "SendToAddress", "send_to_address"),
     Method::new_nothing("setaccount", "set_account"), // Deprecated
     Method::new_nothing("sethdseed", "set_hd_seed"),
-    Method::new_bool("settxfee", "set_tx_fee"),
+    Method::new_no_model("settxfee", "SetTxFee", "set_tx_fee"),
     Method::new_modelled("signmessage", "SignMessage", "sign_message"),
     Method::new_modelled(
         "signrawtransactionwithwallet",

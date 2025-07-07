@@ -202,7 +202,7 @@
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
 //! | setlabel                           | returns nothing |                                        |
-//! | settxfee                           | returns boolean |                                        |
+//! | settxfee                           | version         |                                        |
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
@@ -280,7 +280,7 @@ pub use crate::v17::{
     SetNetworkActive, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
     ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, SetTxFee,
 };
 #[doc(inline)]
 pub use crate::v18::{

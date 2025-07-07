@@ -162,6 +162,7 @@ crate::impl_client_v17__rescan_blockchain!();
 crate::impl_client_v17__send_many!();
 crate::impl_client_v17__send_to_address!();
 crate::impl_client_v17__set_hd_seed!();
+crate::impl_client_v17__set_tx_fee!();
 crate::impl_client_v19__set_wallet_flag!();
 crate::impl_client_v17__sign_message!();
 crate::impl_client_v17__sign_raw_transaction_with_wallet!();

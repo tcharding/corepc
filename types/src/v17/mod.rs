@@ -199,7 +199,7 @@
 //! | sendtoaddress                      | version + model |                                        |
 //! | setaccount                         | returns nothing |                                        |
 //! | sethdseed                          | returns nothing |                                        |
-//! | settxfee                           | returns boolean |                                        |
+//! | settxfee                           | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
@@ -285,7 +285,7 @@ pub use self::{
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
         ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, RescanBlockchain, SendMany,
         SendToAddress, SignMessage, TransactionCategory, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, SetTxFee,
     },
     zmq::GetZmqNotifications,
 };
