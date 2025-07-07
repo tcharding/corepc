@@ -569,6 +569,24 @@ fn wallet__set_wallet_flag() {
 }
 
 #[test]
+fn wallet__set_hd_seed() {
+    let node = match () {
+        #[cfg(feature = "v22_and_below")]
+        () => Node::with_wallet(Wallet::Default, &[]),
+        #[cfg(not(feature = "v22_and_below"))]
+        () => {
+            let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+            node.client.create_legacy_wallet("wallet_name").expect("createlegacywallet");
+            node
+        }
+    };
+
+    node.fund_wallet();
+
+    let _: () = node.client.set_hd_seed().expect("sethdseed");
+}
+
+#[test]
 fn wallet__sign_message__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
