@@ -603,6 +603,16 @@ fn wallet__sign_message__modelled() {
     let _ = res.expect("SignMessage into model");
 }
 
+#[test]
+fn wallet__wallet_lock() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    node.client.create_wallet("wallet_name").expect("createwallet");
+    node.client.encrypt_wallet("passphrase").expect("encryptwallet");
+
+    let _: () = node.client.wallet_lock().expect("walletlock");
+}
+
 fn create_load_unload_wallet() {
     let node = Node::with_wallet(Wallet::None, &[]);
 
