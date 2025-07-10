@@ -682,6 +682,22 @@ macro_rules! impl_client_v17__wallet_create_funded_psbt {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `walletlock`.
+#[macro_export]
+macro_rules! impl_client_v17__wallet_lock {
+    () => {
+        impl Client {
+            pub fn wallet_lock(&self) -> Result<()> {
+                match self.call("walletlock", &[]) {
+                    Ok(serde_json::Value::Null) => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `walletprocesspsbt`.
 #[macro_export]
 macro_rules! impl_client_v17__wallet_process_psbt {
