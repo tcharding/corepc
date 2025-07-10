@@ -622,6 +622,17 @@ fn wallet__wallet_lock() {
     let _: () = node.client.wallet_lock().expect("walletlock");
 }
 
+#[test]
+fn wallet__wallet_passphrase() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    node.client.create_wallet("wallet_name").expect("createwallet");
+    node.client.encrypt_wallet("passphrase").expect("encryptwallet");
+
+    let timeout = 60u64;
+    let _: () = node.client.wallet_passphrase("passphrase", timeout).expect("walletpassphrase");
+}
+
 fn create_load_unload_wallet() {
     let node = Node::with_wallet(Wallet::None, &[]);
 
