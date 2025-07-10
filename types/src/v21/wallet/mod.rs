@@ -121,3 +121,22 @@ pub struct UnloadWallet {
     /// Warning messages, if any, related to unloading the wallet.
     pub warning: String,
 }
+
+/// Result of JSON-RPC method `upgradewallet`.
+///
+/// > Upgrade the wallet. Upgrades to the latest version if no version number is specified.
+/// > New keys may be generated and a new wallet backup will need to be made.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct UpgradeWallet {
+    /// Name of wallet this operation was performed on
+    pub wallet_name: String,
+    /// Version of wallet before this operation
+    pub previous_version: u32,
+    /// Version of wallet after this operation
+    pub current_version: u32,
+    /// Description of result, if no error
+    pub result: Option<String>,
+    /// Error message (if there is one)
+    pub error: Option<String>,
+}

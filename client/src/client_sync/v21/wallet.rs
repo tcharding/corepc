@@ -80,3 +80,15 @@ macro_rules! impl_client_v21__unload_wallet {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `upgradewallet`.
+#[macro_export]
+macro_rules! impl_client_v21__upgrade_wallet {
+    () => {
+        impl Client {
+            pub fn upgrade_wallet(&self) -> Result<UpgradeWallet> {
+                self.call("upgradewallet", &[])
+            }
+        }
+    };
+}

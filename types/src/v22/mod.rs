@@ -223,7 +223,7 @@
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
-//! | upgradewallet                      | version         | TODO                                   |
+//! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
 //! | walletdisplayaddress               | version + model | TODO                                   |
 //! | walletlock                         | returns nothing |                                        |
@@ -309,7 +309,7 @@ pub use crate::{
         Bip9SoftforkInfo, GenerateBlock, GenerateBlockError, GetBlockchainInfo, GetIndexInfo,
         GetIndexInfoName, GetMempoolEntry, GetNetworkInfo, ImportDescriptors,
         ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError, Softfork,
-        SoftforkType, UnloadWallet,
+        SoftforkType, UnloadWallet, UpgradeWallet,
     },
     ScriptPubkey,
 };

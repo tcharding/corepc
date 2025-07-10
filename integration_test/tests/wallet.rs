@@ -697,3 +697,11 @@ fn create_load_unload_wallet() {
 
     let _: LoadWallet = node.client.load_wallet(&wallet).expect("loadwallet");
 }
+
+#[cfg(not(feature = "v20_and_below"))]
+#[test]
+fn wallet__upgrade_wallet() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let _: UpgradeWallet = node.client.upgrade_wallet().expect("upgradewallet");
+}

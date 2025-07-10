@@ -213,7 +213,7 @@
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
-//! | upgradewallet                      | version         | TODO                                   |
+//! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
@@ -249,7 +249,7 @@ pub use self::{
     util::{GetIndexInfo, GetIndexInfoName},
     wallet::{
         ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
-        UnloadWallet,
+        UnloadWallet, UpgradeWallet,
     },
 };
 #[doc(inline)]

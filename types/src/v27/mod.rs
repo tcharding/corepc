@@ -229,7 +229,7 @@
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | simulaterawtransaction             | version + model | TODO                                   |
 //! | unloadwallet                       | returns nothing |                                        |
-//! | upgradewallet                      | version         | TODO                                   |
+//! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
 //! | walletdisplayaddress               | version + model | TODO                                   |
 //! | walletlock                         | returns nothing |                                        |
@@ -298,7 +298,7 @@ pub use crate::{
     v20::GenerateToDescriptor,
     v21::{
         GetIndexInfo, GetIndexInfoName, GetNetworkInfo, ImportDescriptors, ImportDescriptorsResult,
-        PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
+        PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, GetBlockchainInfo, SaveMempool},

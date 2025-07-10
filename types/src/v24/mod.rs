@@ -220,7 +220,7 @@
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | simulaterawtransaction             | version + model | TODO                                   |
 //! | unloadwallet                       | returns nothing |                                        |
-//! | upgradewallet                      | version         | TODO                                   |
+//! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
 //! | walletdisplayaddress               | version + model | TODO                                   |
 //! | walletlock                         | returns nothing |                                        |
@@ -309,7 +309,7 @@ pub use crate::{
     v21::{
         GenerateBlock, GenerateBlockError, GetIndexInfo, GetIndexInfoName, GetNetworkInfo,
         ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
-        UnloadWallet,
+        UnloadWallet, UpgradeWallet,
     },
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{
