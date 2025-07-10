@@ -9,6 +9,27 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
+/// Implements Bitcoin Core JSON-RPC API method `createwallet` with descriptors=true (descriptor wallet)
+#[macro_export]
+macro_rules! impl_client_v21__create_wallet_with_descriptors {
+    () => {
+        impl Client {
+            pub fn create_wallet_with_descriptors(&self, wallet: &str) -> Result<CreateWallet> {
+                let args = [
+                    wallet.into(),
+                    false.into(),            // disable_private_keys
+                    false.into(),            // blank
+                    serde_json::Value::Null, // passphrase
+                    false.into(),            // avoid_reuse
+                    true.into(),             // descriptors=true
+                    serde_json::Value::Null, // load_on_startup
+                ];
+                self.call("createwallet", &args)
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `unloadwallet`
 #[macro_export]
 macro_rules! impl_client_v21__unload_wallet {
