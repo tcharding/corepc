@@ -4,9 +4,12 @@
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
+mod error;
 mod into;
 
 use serde::{Deserialize, Serialize};
+
+pub use self::error::SendError;
 
 /// Result of JSON-RPC method `importdescriptors`.
 ///
@@ -59,6 +62,29 @@ pub struct ImportDescriptorsResult {
     pub warnings: Option<Vec<String>>,
     /// Error object, if any.
     pub error: Option<serde_json::Value>,
+}
+
+/// Result of JSON-RPC method `send`.
+///
+/// > EXPERIMENTAL warning: this call may be changed in future releases.
+/// >
+/// > Send a transaction.
+/// >
+/// > Arguments:
+/// > 1. outputs (json array, required) The outputs (key-value pairs), where none of the keys are duplicated.
+/// >    That is, each address can only appear once and there can only be one 'data' object.
+/// >    For convenience, a dictionary, which holds the key-value pairs directly, is also accepted.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Send {
+    /// If the transaction has a complete set of signatures.
+    pub complete: bool,
+    /// The transaction id for the send.
+    pub txid: Option<String>,
+    /// If add_to_wallet is false, the hex-encoded raw transaction with signature(s).
+    pub hex: Option<String>,
+    /// If more signatures are needed, or if add_to_wallet is false, the base64-encoded (partially) signed transaction.
+    pub psbt: Option<String>,
 }
 
 /// Result of the JSON-RPC method `unloadwallet`.

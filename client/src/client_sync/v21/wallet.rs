@@ -45,6 +45,18 @@ macro_rules! impl_client_v21__import_descriptors {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `send`.
+#[macro_export]
+macro_rules! impl_client_v21__send {
+    () => {
+        impl Client {
+            pub fn send(&self, outputs: &BTreeMap<String, f64>) -> Result<Send> {
+                self.call("send", &[into_json(outputs)?])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `unloadwallet`
 #[macro_export]
 macro_rules! impl_client_v21__unload_wallet {

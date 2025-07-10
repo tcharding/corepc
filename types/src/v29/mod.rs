@@ -220,7 +220,7 @@
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | restorewallet                      | version + model | TODO                                   |
-//! | send                               | version + model | TODO                                   |
+//! | send                               | version + model |                                        |
 //! | sendall                            | version + model | TODO                                   |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
@@ -315,7 +315,9 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
-    v21::{GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult},
+    v21::{
+        GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult, Send, SendError,
+    },
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, SaveMempool},
     v24::{

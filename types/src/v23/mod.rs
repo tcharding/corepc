@@ -206,7 +206,7 @@
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | restorewallet                      | version + model | TODO                                   |
-//! | send                               | version + model | TODO                                   |
+//! | send                               | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
@@ -307,7 +307,7 @@ pub use crate::{
     v20::{GenerateToDescriptor, GetTransactionDetail},
     v21::{
         GenerateBlock, GenerateBlockError, GetIndexInfo, GetIndexInfoName, GetNetworkInfo,
-        ImportDescriptors, ImportDescriptorsResult, UnloadWallet,
+        ImportDescriptors, ImportDescriptorsResult, Send, SendError, UnloadWallet,
     },
     v22::{Banned, GetMempoolInfo, ListBanned, ScriptPubkey},
 };

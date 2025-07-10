@@ -203,7 +203,7 @@
 //! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
-//! | send                               | version + model | TODO                                   |
+//! | send                               | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
@@ -247,7 +247,7 @@ pub use self::{
     generating::{GenerateBlock, GenerateBlockError},
     network::{GetNetworkInfo, GetPeerInfo},
     util::{GetIndexInfo, GetIndexInfoName},
-    wallet::{ImportDescriptors, ImportDescriptorsResult, UnloadWallet},
+    wallet::{ImportDescriptors, ImportDescriptorsResult, Send, SendError, UnloadWallet},
 };
 #[doc(inline)]
 pub use crate::{

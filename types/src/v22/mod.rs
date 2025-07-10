@@ -213,7 +213,7 @@
 //! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
-//! | send                               | version + model | TODO                                   |
+//! | send                               | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
@@ -308,7 +308,7 @@ pub use crate::{
     v21::{
         Bip9SoftforkInfo, GenerateBlock, GenerateBlockError, GetBlockchainInfo, GetIndexInfo,
         GetIndexInfoName, GetMempoolEntry, GetNetworkInfo, ImportDescriptors,
-        ImportDescriptorsResult, Softfork, SoftforkType, UnloadWallet,
+        ImportDescriptorsResult, Send, SendError, Softfork, SoftforkType, UnloadWallet,
     },
     ScriptPubkey,
 };

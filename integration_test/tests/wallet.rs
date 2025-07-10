@@ -566,6 +566,23 @@ fn wallet__unload_wallet() {
     create_load_unload_wallet();
 }
 
+#[cfg(not(feature = "v20_and_below"))]
+#[test]
+fn wallet__send__modelled() {
+    use std::collections::BTreeMap;
+
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let address = node.client.new_address().expect("failed to create new address");
+
+    let mut outputs = BTreeMap::new();
+    outputs.insert(address.to_string(), 0.001);
+
+    let json: Send = node.client.send(&outputs).expect("send");
+    let model: Result<mtype::Send, SendError> = json.into_model();
+    model.unwrap();
+}
+
 #[test]
 fn wallet__send_to_address__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
