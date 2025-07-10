@@ -157,7 +157,7 @@
 //! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         |                                        |
-//! | getindexinfo                       | version         | TODO                                   |
+//! | getindexinfo                       | version         |                                        |
 //! | signmessagewithprivkey             | version + model |                                        |
 //! | validateaddress                    | version + model |                                        |
 //! | verifymessage                      | version         |                                        |
@@ -306,8 +306,8 @@ pub use crate::{
     },
     v20::{CreateMultisig, GenerateToDescriptor, GetTransaction, GetTransactionDetail},
     v21::{
-        Bip9SoftforkInfo, GenerateBlock, GenerateBlockError, GetBlockchainInfo, GetMempoolEntry,
-        GetNetworkInfo, Softfork, SoftforkType, UnloadWallet,
+        Bip9SoftforkInfo, GenerateBlock, GenerateBlockError, GetBlockchainInfo, GetIndexInfo,
+        GetIndexInfoName, GetMempoolEntry, GetNetworkInfo, Softfork, SoftforkType, UnloadWallet,
     },
     ScriptPubkey,
 };

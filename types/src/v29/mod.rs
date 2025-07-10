@@ -159,7 +159,7 @@
 //! | deriveaddresses                    | version + model | TODO                                   |
 //! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         |                                        |
-//! | getindexinfo                       | version         | TODO                                   |
+//! | getindexinfo                       | version         |                                        |
 //! | signmessagewithprivkey             | version + model |                                        |
 //! | validateaddress                    | version + model |                                        |
 //! | verifymessage                      | version         |                                        |
@@ -315,6 +315,7 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
+    v21::{GetIndexInfo, GetIndexInfoName},
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, SaveMempool},
     v24::{

@@ -148,7 +148,7 @@
 //! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         |                                        |
-//! | getindexinfo                       | version         | TODO                                   |
+//! | getindexinfo                       | version         |                                        |
 //! | signmessagewithprivkey             | version + model |                                        |
 //! | validateaddress                    | version + model |                                        |
 //! | verifymessage                      | version         |                                        |
@@ -235,6 +235,7 @@
 mod blockchain;
 mod generating;
 mod network;
+mod util;
 mod wallet;
 
 #[doc(inline)]
@@ -245,6 +246,7 @@ pub use self::{
     },
     generating::{GenerateBlock, GenerateBlockError},
     network::{GetNetworkInfo, GetPeerInfo},
+    util::{GetIndexInfo, GetIndexInfoName},
     wallet::UnloadWallet,
 };
 #[doc(inline)]

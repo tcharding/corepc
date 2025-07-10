@@ -114,6 +114,7 @@ crate::impl_client_v17__create_multisig!();
 crate::impl_client_v18__derive_addresses!();
 crate::impl_client_v17__estimate_smart_fee!();
 crate::impl_client_v18__get_descriptor_info!();
+crate::impl_client_v21__get_index_info!();
 crate::impl_client_v17__sign_message_with_priv_key!();
 crate::impl_client_v17__validate_address!();
 crate::impl_client_v17__verify_message!();

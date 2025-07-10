@@ -149,7 +149,7 @@
 //! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         |                                        |
-//! | getindexinfo                       | version         | TODO                                   |
+//! | getindexinfo                       | version         |                                        |
 //! | signmessagewithprivkey             | version + model |                                        |
 //! | validateaddress                    | version + model |                                        |
 //! | verifymessage                      | version         |                                        |
@@ -306,7 +306,10 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
-    v21::{GenerateBlock, GenerateBlockError, GetNetworkInfo, UnloadWallet},
+    v21::{
+        GenerateBlock, GenerateBlockError, GetIndexInfo, GetIndexInfoName, GetNetworkInfo,
+        UnloadWallet,
+    },
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{
         CreateMultisig, DecodeScript, DecodeScriptError, GetBlockchainInfo, Logging, SaveMempool,
