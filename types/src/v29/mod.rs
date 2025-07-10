@@ -322,7 +322,7 @@ pub use crate::{
         GlobalXpub, ListUnspent, ListUnspentItem, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
     },
-    v25::GetBlockStats,
+    v25::{GenerateBlock, GenerateBlockError, GetBlockStats},
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
         GetBalancesError, GetPrioritisedTransactions, GetTransactionError, GetTxOutSetInfo,

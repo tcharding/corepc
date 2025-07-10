@@ -306,7 +306,7 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
-    v21::{GetNetworkInfo, UnloadWallet},
+    v21::{GenerateBlock, GenerateBlockError, GetNetworkInfo, UnloadWallet},
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{
         CreateMultisig, DecodeScript, DecodeScriptError, GetBlockchainInfo, Logging, SaveMempool,

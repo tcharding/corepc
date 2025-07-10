@@ -4,6 +4,7 @@
 //!
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
+mod generating;
 mod wallet;
 
 use std::collections::BTreeMap;
@@ -61,6 +62,7 @@ crate::impl_client_v17__stop!();
 crate::impl_client_v17__uptime!();
 
 // == Generating ==
+crate::impl_client_v21__generate_block!();
 crate::impl_client_v17__generate_to_address!();
 crate::impl_client_v20__generate_to_descriptor!();
 crate::impl_client_v17__invalidate_block!();

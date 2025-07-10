@@ -242,12 +242,14 @@
 
 mod blockchain;
 mod control;
+mod generating;
 mod wallet;
 
 #[doc(inline)]
 pub use self::{
     blockchain::GetBlockStats,
     control::Logging,
+    generating::{GenerateBlock, GenerateBlockError},
     wallet::{CreateWallet, LoadWallet, UnloadWallet},
 };
 #[doc(inline)]

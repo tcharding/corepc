@@ -8,6 +8,38 @@ use integration_test::{Node, NodeExt as _, Wallet};
 use node::vtype::*;             // All the version specific types.
 use node::mtype;
 
+#[cfg(not(feature = "v20_and_below"))]
+#[test]
+fn generating__generate_block__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let mining_addr = node.client.new_address().expect("failed to get new address");
+    let dest_addr = node.client.new_address().expect("failed to get new address");
+    let amount = bitcoin::Amount::from_sat(1_000_000);
+    let txid = node
+        .client
+        .send_to_address_rbf(&dest_addr, amount)
+        .expect("sendtoaddressrbf")
+        .txid()
+        .expect("txid");
+    let transactions = vec![txid.to_string()];
+
+    let json: GenerateBlock;
+    #[cfg(feature = "v24_and_below")]
+    {
+        // No `submit` argument
+        json = node.client.generate_block(&mining_addr.to_string(), &transactions).expect("generateblock");
+    }
+
+    #[cfg(not(feature = "v24_and_below"))]
+    {
+        // Check with `submit = false` so that `hex` is returned. v25 and later only.
+        json = node.client.generate_block(&mining_addr.to_string(), &transactions, false).expect("generateblock");
+    }
+    let model: Result<mtype::GenerateBlock, GenerateBlockError> = json.into_model();
+    model.unwrap();
+}
+
 #[test]
 // The `generate` method was deprecated in Core v0.18 and was removed in v0.19.
 #[cfg(feature = "v17")]

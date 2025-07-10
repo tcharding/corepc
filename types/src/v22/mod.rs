@@ -73,7 +73,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | generateblock                      | version + model | TODO                                   |
+//! | generateblock                      | version + model |                                        |
 //! | generatetoaddress                  | version + model |                                        |
 //! | generatetodescriptor               | version + model |                                        |
 //!
@@ -306,8 +306,8 @@ pub use crate::{
     },
     v20::{CreateMultisig, GenerateToDescriptor, GetTransaction, GetTransactionDetail},
     v21::{
-        Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, GetNetworkInfo, Softfork,
-        SoftforkType, UnloadWallet,
+        Bip9SoftforkInfo, GenerateBlock, GenerateBlockError, GetBlockchainInfo, GetMempoolEntry,
+        GetNetworkInfo, Softfork, SoftforkType, UnloadWallet,
     },
     ScriptPubkey,
 };

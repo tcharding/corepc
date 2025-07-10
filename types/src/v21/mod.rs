@@ -73,7 +73,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | generateblock                      | version + model | TODO                                   |
+//! | generateblock                      | version + model |                                        |
 //! | generatetoaddress                  | version + model |                                        |
 //! | generatetodescriptor               | version + model |                                        |
 //!
@@ -233,6 +233,7 @@
 
 // JSON-RPC types by API section.
 mod blockchain;
+mod generating;
 mod network;
 mod wallet;
 
@@ -242,6 +243,7 @@ pub use self::{
         Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, GetMempoolInfo, Softfork,
         SoftforkType,
     },
+    generating::{GenerateBlock, GenerateBlockError},
     network::{GetNetworkInfo, GetPeerInfo},
     wallet::UnloadWallet,
 };
