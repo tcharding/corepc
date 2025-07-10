@@ -211,7 +211,7 @@
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
 //! | setlabel                           | returns nothing |                                        |
-//! | settxfee                           | returns boolean |                                        |
+//! | settxfee                           | version         |                                        |
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
@@ -282,7 +282,7 @@ pub use crate::{
         ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,
         ListTransactionsItemError, ListUnspentItemError, ListWallets, LoadWallet, LockUnspent,
         Locked, PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
-        RescanBlockchain, SendMany, SendRawTransaction, SendToAddress, SetNetworkActive,
+        RescanBlockchain, SendMany, SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee,
         SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
         SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
         ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,

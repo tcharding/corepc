@@ -201,7 +201,7 @@
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
 //! | setlabel                           | returns nothing |                                        |
-//! | settxfee                           | returns boolean |                                        |
+//! | settxfee                           | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
@@ -277,9 +277,9 @@ pub use crate::v17::{
     Logging, MapMempoolEntryError, MempoolAcceptance, MempoolEntryError, MempoolEntryFees,
     MempoolEntryFeesError, PruneBlockchain, PsbtInput, PsbtOutput, PsbtScript, RawTransaction,
     RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany,
-    SendRawTransaction, SendToAddress, SetNetworkActive, SignFail, SignFailError, SignMessage,
-    SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, Softfork, SoftforkReject,
-    TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError,
-    VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
+    SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignFail, SignFailError,
+    SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, Softfork,
+    SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
+    ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
     WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
 };

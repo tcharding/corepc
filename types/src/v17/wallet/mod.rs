@@ -994,6 +994,15 @@ impl SendToAddress {
     pub fn txid(self) -> Result<Txid, hex::HexToArrayError> { Ok(self.into_model()?.txid) }
 }
 
+/// Result of JSON-RPC method `settxfee`.
+///
+/// > settxfee
+/// >
+/// > Arguments:
+/// > 1. amount         (numeric or string, required) The transaction fee in BTC/kB
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SetTxFee(pub bool);
+
 /// Result of the JSON-RPC method `signmessage`.
 ///
 /// > signmessage "address" "message"

@@ -153,7 +153,7 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("sendtoaddress", "SendToAddress", "send_to_address"),
     Method::new_nothing("sethdseed", "set_hd_seed"),
     Method::new_nothing("setlabel", "set_label"),
-    Method::new_bool("settxfee", "set_tx_fee"),
+    Method::new_no_model("settxfee", "SetTxFee", "set_tx_fee"),
     Method::new_no_model("setwalletflag", "SetWalletFlag", "set_wallet_flag"),
     Method::new_modelled("signmessage", "SignMessage", "sign_message"),
     Method::new_modelled(

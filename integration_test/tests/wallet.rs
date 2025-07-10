@@ -6,7 +6,7 @@
 
 #[cfg(feature = "TODO")]
 use bitcoin::address::{Address, NetworkChecked};
-use bitcoin::{Amount, PrivateKey, PublicKey};
+use bitcoin::{Amount, FeeRate, PrivateKey, PublicKey};
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::{mtype, AddressType, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp};
 use node::vtype::*;             // All the version specific types.
@@ -556,6 +556,15 @@ fn wallet__send_to_address__modelled() {
         node.client.send_to_address(&address, Amount::from_sat(10_000)).expect("sendtddress");
     let model: Result<mtype::SendToAddress, _> = json.into_model();
     model.unwrap();
+}
+
+#[test]
+fn wallet__set_tx_fee() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    let fee_rate = FeeRate::from_sat_per_vb(2).expect("2 sat/vb is valid");
+
+    let json: SetTxFee = node.client.set_tx_fee(fee_rate).expect("settxfee");
+    assert!(json.0);
 }
 
 #[cfg(not(feature = "v18_and_below"))]
