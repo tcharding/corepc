@@ -1,12 +1,25 @@
 // SPDX-License-Identifier: CC0-1.0
 
-use super::{Send, SendError, UnloadWallet};
+use super::{PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UnloadWallet};
 use crate::model;
 
 impl UnloadWallet {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> model::UnloadWallet {
         model::UnloadWallet { warnings: vec![self.warning] }
+    }
+}
+
+impl PsbtBumpFee {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::PsbtBumpFee, PsbtBumpFeeError> {
+        use PsbtBumpFeeError as E;
+
+        let psbt = self.psbt.parse().map_err(E::Psbt)?;
+        let original_fee = bitcoin::Amount::from_btc(self.original_fee).map_err(E::OriginalFee)?;
+        let fee = bitcoin::Amount::from_btc(self.fee).map_err(E::Fee)?;
+        let errors = self.errors;
+        Ok(model::PsbtBumpFee { psbt, original_fee, fee, errors })
     }
 }
 

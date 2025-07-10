@@ -2,12 +2,50 @@
 
 use core::fmt;
 
+use bitcoin::amount::ParseAmountError;
 use bitcoin::consensus::encode;
 use bitcoin::hex;
 use bitcoin::psbt::PsbtParseError;
 
 use crate::error::write_err;
 use crate::NumericError;
+
+/// Error when converting a `BumpFee` type into the model type.
+#[derive(Debug)]
+pub enum PsbtBumpFeeError {
+    /// Conversion of the `psbt` field failed.
+    Psbt(PsbtParseError),
+    /// Conversion of the `original_fee` field failed.
+    OriginalFee(ParseAmountError),
+    /// Conversion of the `fee` field failed.
+    Fee(ParseAmountError),
+}
+
+impl fmt::Display for PsbtBumpFeeError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use PsbtBumpFeeError as E;
+
+        match *self {
+            E::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
+            E::OriginalFee(ref e) =>
+                write_err!(f, "conversion of the `original_fee` field failed"; e),
+            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for PsbtBumpFeeError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        use PsbtBumpFeeError as E;
+
+        match *self {
+            E::Psbt(ref e) => Some(e),
+            E::OriginalFee(ref e) => Some(e),
+            E::Fee(ref e) => Some(e),
+        }
+    }
+}
 
 /// Error when converting a `Send` type into the model type.
 #[derive(Debug)]

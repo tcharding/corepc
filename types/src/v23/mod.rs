@@ -193,7 +193,7 @@
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | newkeypool                         | version + model | TODO                                   |
-//! | psbtbumpfee                        | version + model | TODO                                   |
+//! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
@@ -307,7 +307,8 @@ pub use crate::{
     v20::{GenerateToDescriptor, GetTransactionDetail},
     v21::{
         GenerateBlock, GenerateBlockError, GetIndexInfo, GetIndexInfoName, GetNetworkInfo,
-        ImportDescriptors, ImportDescriptorsResult, Send, SendError, UnloadWallet,
+        ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
+        UnloadWallet,
     },
     v22::{Banned, GetMempoolInfo, ListBanned, ScriptPubkey},
 };

@@ -45,6 +45,18 @@ macro_rules! impl_client_v21__import_descriptors {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `psbtbumpfee`.
+#[macro_export]
+macro_rules! impl_client_v21__psbt_bump_fee {
+    () => {
+        impl Client {
+            pub fn psbt_bump_fee(&self, txid: &bitcoin::Txid) -> Result<PsbtBumpFee> {
+                self.call("psbtbumpfee", &[into_json(txid)?])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `send`.
 #[macro_export]
 macro_rules! impl_client_v21__send {

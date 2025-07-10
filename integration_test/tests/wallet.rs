@@ -541,6 +541,25 @@ fn wallet__lock_unspent() {
     assert!(json.0);
 }
 
+#[cfg(not(feature = "v20_and_below"))]
+#[test]
+fn wallet__psbt_bump_fee__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    let address = node.client.new_address().expect("failed to create new address");
+    let _ = node.client.generate_to_address(101, &address).expect("generatetoaddress");
+
+    let txid = node
+        .client
+        .send_to_address_rbf(&address, Amount::from_sat(10_000))
+        .expect("sendtoaddress")
+        .txid()
+        .unwrap();
+
+    let json: PsbtBumpFee = node.client.psbt_bump_fee(&txid).expect("psbtbumpfee");
+    let model: Result<mtype::PsbtBumpFee, PsbtBumpFeeError> = json.into_model();
+    model.unwrap();
+}
+
 #[test]
 fn wallet__remove_pruned_funds() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);

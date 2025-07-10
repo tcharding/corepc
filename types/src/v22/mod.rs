@@ -201,7 +201,7 @@
 //! | listdescriptors                    | version + model | TODO                                   |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | psbtbumpfee                        | version + model | TODO                                   |
+//! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
@@ -308,7 +308,8 @@ pub use crate::{
     v21::{
         Bip9SoftforkInfo, GenerateBlock, GenerateBlockError, GetBlockchainInfo, GetIndexInfo,
         GetIndexInfoName, GetMempoolEntry, GetNetworkInfo, ImportDescriptors,
-        ImportDescriptorsResult, Send, SendError, Softfork, SoftforkType, UnloadWallet,
+        ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError, Softfork,
+        SoftforkType, UnloadWallet,
     },
     ScriptPubkey,
 };

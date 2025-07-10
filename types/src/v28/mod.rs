@@ -206,7 +206,7 @@
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | migratewallet                      | version + model | TODO                                   |
 //! | newkeypool                         | version + model | TODO                                   |
-//! | psbtbumpfee                        | version + model | TODO                                   |
+//! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
@@ -318,7 +318,8 @@ pub use crate::{
     },
     v20::GenerateToDescriptor,
     v21::{
-        GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult, Send, SendError,
+        GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee,
+        PsbtBumpFeeError, Send, SendError,
     },
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, SaveMempool},

@@ -9,7 +9,7 @@ mod into;
 
 use serde::{Deserialize, Serialize};
 
-pub use self::error::SendError;
+pub use self::error::{PsbtBumpFeeError, SendError};
 
 /// Result of JSON-RPC method `importdescriptors`.
 ///
@@ -62,6 +62,28 @@ pub struct ImportDescriptorsResult {
     pub warnings: Option<Vec<String>>,
     /// Error object, if any.
     pub error: Option<serde_json::Value>,
+}
+
+/// Result of JSON-RPC method `psbtbumpfee`.
+///
+/// > Bumps the fee of an opt-in-RBF transaction T, replacing it with a new transaction B.
+/// > Returns a PSBT instead of creating and signing a new transaction.
+/// > See Bitcoin Core RPC documentation for full details.
+///
+/// Arguments:
+/// 1. txid    (string, required) The txid to be bumped
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct PsbtBumpFee {
+    /// The base64-encoded unsigned PSBT of the new transaction.
+    pub psbt: String,
+    /// The fee of the replaced transaction.
+    #[serde(rename = "origfee")]
+    pub original_fee: f64,
+    /// The fee of the new transaction.
+    pub fee: f64,
+    /// Errors encountered during processing (may be empty).
+    pub errors: Vec<String>,
 }
 
 /// Result of JSON-RPC method `send`.

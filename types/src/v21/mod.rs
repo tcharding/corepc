@@ -191,7 +191,7 @@
 //! | listaddressgroupings               | version + model | UNTESTED                               |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | psbtbumpfee                        | version + model | TODO                                   |
+//! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
@@ -247,7 +247,10 @@ pub use self::{
     generating::{GenerateBlock, GenerateBlockError},
     network::{GetNetworkInfo, GetPeerInfo},
     util::{GetIndexInfo, GetIndexInfoName},
-    wallet::{ImportDescriptors, ImportDescriptorsResult, Send, SendError, UnloadWallet},
+    wallet::{
+        ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
+        UnloadWallet,
+    },
 };
 #[doc(inline)]
 pub use crate::{
