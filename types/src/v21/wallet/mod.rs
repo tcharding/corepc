@@ -4,9 +4,9 @@
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
-use serde::{Deserialize, Serialize};
+mod into;
 
-use crate::model;
+use serde::{Deserialize, Serialize};
 
 /// Result of the JSON-RPC method `unloadwallet`.
 ///
@@ -19,11 +19,4 @@ use crate::model;
 pub struct UnloadWallet {
     /// Warning messages, if any, related to unloading the wallet.
     pub warning: String,
-}
-
-impl UnloadWallet {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::UnloadWallet {
-        model::UnloadWallet { warnings: vec![self.warning] }
-    }
 }
