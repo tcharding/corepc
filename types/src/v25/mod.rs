@@ -183,7 +183,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importdescriptors                  | version         | TODO                                   |
+//! | importdescriptors                  | version         |                                        |
 //! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
@@ -301,7 +301,9 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
-    v21::{GetIndexInfo, GetIndexInfoName, GetNetworkInfo},
+    v21::{
+        GetIndexInfo, GetIndexInfoName, GetNetworkInfo, ImportDescriptors, ImportDescriptorsResult,
+    },
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, GetBlockchainInfo, SaveMempool},
     v24::{

@@ -181,7 +181,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importdescriptors                  | version         | TODO                                   |
+//! | importdescriptors                  | version         |                                        |
 //! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
@@ -247,7 +247,7 @@ pub use self::{
     generating::{GenerateBlock, GenerateBlockError},
     network::{GetNetworkInfo, GetPeerInfo},
     util::{GetIndexInfo, GetIndexInfoName},
-    wallet::UnloadWallet,
+    wallet::{ImportDescriptors, ImportDescriptorsResult, UnloadWallet},
 };
 #[doc(inline)]
 pub use crate::{

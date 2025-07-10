@@ -30,6 +30,21 @@ macro_rules! impl_client_v21__create_wallet_with_descriptors {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `importdescriptors`
+#[macro_export]
+macro_rules! impl_client_v21__import_descriptors {
+    () => {
+        impl Client {
+            pub fn import_descriptors(
+                &self,
+                requests: &[ImportDescriptorsRequest],
+            ) -> Result<ImportDescriptors> {
+                self.call("importdescriptors", &[into_json(requests)?])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `unloadwallet`
 #[macro_export]
 macro_rules! impl_client_v21__unload_wallet {

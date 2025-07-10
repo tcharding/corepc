@@ -21,6 +21,7 @@ pub use crate::client_sync::{
         AddNodeCommand, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp, Input, Output, SetBanCommand, TemplateRequest, TemplateRules,
         WalletCreateFundedPsbtInput,
     },
+    v21::ImportDescriptorsRequest,
     v23::AddressType,
 };
 
@@ -145,6 +146,7 @@ crate::impl_client_v17__get_transaction!();
 crate::impl_client_v17__get_unconfirmed_balance!();
 crate::impl_client_v17__get_wallet_info!();
 crate::impl_client_v17__import_address!();
+crate::impl_client_v21__import_descriptors!();
 crate::impl_client_v17__import_multi!();
 crate::impl_client_v17__import_privkey!();
 crate::impl_client_v17__import_pruned_funds!();

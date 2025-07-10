@@ -181,7 +181,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importdescriptors                  | version         | TODO                                   |
+//! | importdescriptors                  | version         |                                        |
 //! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
@@ -307,7 +307,7 @@ pub use crate::{
     v20::{GenerateToDescriptor, GetTransactionDetail},
     v21::{
         GenerateBlock, GenerateBlockError, GetIndexInfo, GetIndexInfoName, GetNetworkInfo,
-        UnloadWallet,
+        ImportDescriptors, ImportDescriptorsResult, UnloadWallet,
     },
     v22::{Banned, GetMempoolInfo, ListBanned, ScriptPubkey},
 };

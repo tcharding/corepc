@@ -13,6 +13,7 @@ use std::path::Path;
 
 use bitcoin::address::{Address, NetworkChecked};
 use bitcoin::{sign_message, Amount, Block, BlockHash, PublicKey, Txid};
+use serde::{Deserialize, Serialize};
 
 use crate::client_sync::into_json;
 use crate::types::v21::*;
@@ -144,6 +145,7 @@ crate::impl_client_v17__get_transaction!();
 crate::impl_client_v17__get_unconfirmed_balance!();
 crate::impl_client_v17__get_wallet_info!();
 crate::impl_client_v17__import_address!();
+crate::impl_client_v21__import_descriptors!();
 crate::impl_client_v17__import_multi!();
 crate::impl_client_v17__import_privkey!();
 crate::impl_client_v17__import_pruned_funds!();
@@ -175,3 +177,13 @@ crate::impl_client_v21__unload_wallet!();
 crate::impl_client_v17__wallet_create_funded_psbt!();
 crate::impl_client_v17__wallet_lock!();
 crate::impl_client_v17__wallet_process_psbt!();
+
+/// Request object for the `importdescriptors` method.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ImportDescriptorsRequest {
+    /// Descriptor to import.
+    pub desc: String,
+    /// Time from which to start rescanning the blockchain for this descriptor, in UNIX epoch time or "now".
+    pub timestamp: serde_json::Value,
+}

@@ -311,6 +311,26 @@ fn wallet__import_address() {
 }
 
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
+fn wallet__import_descriptors() {
+    use node::{serde_json, ImportDescriptorsRequest};
+
+    let node = Node::with_wallet(Wallet::None, &[]);
+    let wallet_name = "desc_wallet";
+    node.client.create_wallet_with_descriptors(wallet_name).expect("create descriptor wallet");
+
+    let address = node.client.new_address().expect("failed to get new address");
+    let descriptor = format!("addr({})", address);
+
+    let request = ImportDescriptorsRequest {
+        desc: descriptor,
+        timestamp: serde_json::Value::String("now".to_string()),
+    };
+
+    let _: ImportDescriptors = node.client.import_descriptors(&[request]).expect("importdescriptors");
+}
+
+#[test]
 fn wallet__import_pruned_funds() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
     node.fund_wallet();

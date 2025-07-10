@@ -190,7 +190,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importdescriptors                  | version         | TODO                                   |
+//! | importdescriptors                  | version         |                                        |
 //! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
@@ -307,7 +307,8 @@ pub use crate::{
     v20::{CreateMultisig, GenerateToDescriptor, GetTransaction, GetTransactionDetail},
     v21::{
         Bip9SoftforkInfo, GenerateBlock, GenerateBlockError, GetBlockchainInfo, GetIndexInfo,
-        GetIndexInfoName, GetMempoolEntry, GetNetworkInfo, Softfork, SoftforkType, UnloadWallet,
+        GetIndexInfoName, GetMempoolEntry, GetNetworkInfo, ImportDescriptors,
+        ImportDescriptorsResult, Softfork, SoftforkType, UnloadWallet,
     },
     ScriptPubkey,
 };
