@@ -159,7 +159,7 @@
 //! | deriveaddresses                    | version + model | TODO                                   |
 //! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         |                                        |
-//! | getindexinfo                       | version         | TODO                                   |
+//! | getindexinfo                       | version         |                                        |
 //! | signmessagewithprivkey             | version + model |                                        |
 //! | validateaddress                    | version + model |                                        |
 //! | verifymessage                      | version         |                                        |
@@ -194,7 +194,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importdescriptors                  | version         | TODO                                   |
+//! | importdescriptors                  | version         |                                        |
 //! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
@@ -207,7 +207,7 @@
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | migratewallet                      | version + model | TODO                                   |
 //! | newkeypool                         | version + model | TODO                                   |
-//! | psbtbumpfee                        | version + model | TODO                                   |
+//! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
@@ -220,7 +220,7 @@
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | restorewallet                      | version + model | TODO                                   |
-//! | send                               | version + model | TODO                                   |
+//! | send                               | version + model |                                        |
 //! | sendall                            | version + model | TODO                                   |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
@@ -232,7 +232,7 @@
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | simulaterawtransaction             | version + model | TODO                                   |
 //! | unloadwallet                       | returns nothing |                                        |
-//! | upgradewallet                      | version         | TODO                                   |
+//! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
 //! | walletdisplayaddress               | version + model | TODO                                   |
 //! | walletlock                         | returns nothing |                                        |
@@ -315,6 +315,10 @@ pub use crate::{
         Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
+    v21::{
+        GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee,
+        PsbtBumpFeeError, Send, SendError, UpgradeWallet,
+    },
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, SaveMempool},
     v24::{
@@ -322,7 +326,7 @@ pub use crate::{
         GlobalXpub, ListUnspent, ListUnspentItem, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
     },
-    v25::GetBlockStats,
+    v25::{GenerateBlock, GenerateBlockError, GetBlockStats},
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
         GetBalancesError, GetPrioritisedTransactions, GetTransactionError, GetTxOutSetInfo,

@@ -73,7 +73,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | generateblock                      | version + model | TODO                                   |
+//! | generateblock                      | version + model |                                        |
 //! | generatetoaddress                  | version + model |                                        |
 //! | generatetodescriptor               | version + model |                                        |
 //!
@@ -148,7 +148,7 @@
 //! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         |                                        |
-//! | getindexinfo                       | version         | TODO                                   |
+//! | getindexinfo                       | version         |                                        |
 //! | signmessagewithprivkey             | version + model |                                        |
 //! | validateaddress                    | version + model |                                        |
 //! | verifymessage                      | version         |                                        |
@@ -181,7 +181,7 @@
 //! | getunconfirmedbalance              | version + model | UNTESTED                               |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
-//! | importdescriptors                  | version         | TODO                                   |
+//! | importdescriptors                  | version         |                                        |
 //! | importmulti                        | version         |                                        |
 //! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
@@ -191,7 +191,7 @@
 //! | listaddressgroupings               | version + model | UNTESTED                               |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | psbtbumpfee                        | version + model | TODO                                   |
+//! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
@@ -203,7 +203,7 @@
 //! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
-//! | send                               | version + model | TODO                                   |
+//! | send                               | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
@@ -213,7 +213,7 @@
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
-//! | upgradewallet                      | version         | TODO                                   |
+//! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
@@ -233,7 +233,9 @@
 
 // JSON-RPC types by API section.
 mod blockchain;
+mod generating;
 mod network;
+mod util;
 mod wallet;
 
 #[doc(inline)]
@@ -242,8 +244,13 @@ pub use self::{
         Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, GetMempoolInfo, Softfork,
         SoftforkType,
     },
+    generating::{GenerateBlock, GenerateBlockError},
     network::{GetNetworkInfo, GetPeerInfo},
-    wallet::UnloadWallet,
+    util::{GetIndexInfo, GetIndexInfoName},
+    wallet::{
+        ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
+        UnloadWallet, UpgradeWallet,
+    },
 };
 #[doc(inline)]
 pub use crate::{

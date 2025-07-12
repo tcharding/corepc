@@ -722,6 +722,35 @@ pub struct RescanBlockchain {
     pub stop_height: u32,
 }
 
+/// Models the result of JSON-RPC method `psbtbumpfee`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct PsbtBumpFee {
+    /// The base64-encoded unsigned PSBT of the new transaction.
+    pub psbt: Psbt,
+    /// The fee of the replaced transaction.
+    pub original_fee: Amount,
+    /// The fee of the new transaction.
+    pub fee: Amount,
+    /// Errors encountered during processing (may be empty).
+    pub errors: Vec<String>,
+}
+
+/// Models the result of JSON-RPC method `send`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Send {
+    /// If the transaction has a complete set of signatures.
+    pub complete: bool,
+    /// The transaction id for the send.
+    pub txid: Option<Txid>,
+    /// If add_to_wallet is false, the hex-encoded raw transaction with signature(s).
+    pub hex: Option<Transaction>,
+    /// If more signatures are needed, or if add_to_wallet is false, the base64-encoded (partially)
+    /// signed transaction.
+    pub psbt: Option<Psbt>,
+}
+
 /// Models the result of JSON-RPC method `sendmany`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]

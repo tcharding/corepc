@@ -21,6 +21,7 @@ pub use crate::client_sync::{
         AddNodeCommand, AddressType, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp, Input, Output, SetBanCommand, TemplateRequest,
         TemplateRules, WalletCreateFundedPsbtInput,
     },
+    v21::ImportDescriptorsRequest,
 };
 
 crate::define_jsonrpc_minreq_client!("v22");
@@ -61,6 +62,7 @@ crate::impl_client_v17__stop!();
 crate::impl_client_v17__uptime!();
 
 // == Generating ==
+crate::impl_client_v21__generate_block!();
 crate::impl_client_v17__generate_to_address!();
 crate::impl_client_v20__generate_to_descriptor!();
 crate::impl_client_v17__invalidate_block!();
@@ -113,6 +115,7 @@ crate::impl_client_v17__create_multisig!();
 crate::impl_client_v18__derive_addresses!();
 crate::impl_client_v17__estimate_smart_fee!();
 crate::impl_client_v18__get_descriptor_info!();
+crate::impl_client_v21__get_index_info!();
 crate::impl_client_v17__sign_message_with_priv_key!();
 crate::impl_client_v17__validate_address!();
 crate::impl_client_v17__verify_message!();
@@ -124,6 +127,7 @@ crate::impl_client_v17__add_multisig_address!();
 crate::impl_client_v17__backup_wallet!();
 crate::impl_client_v17__bump_fee!();
 crate::impl_client_v17__create_wallet!();
+crate::impl_client_v21__create_wallet_with_descriptors!();
 crate::impl_client_v17__dump_priv_key!();
 crate::impl_client_v17__dump_wallet!();
 crate::impl_client_v17__encrypt_wallet!();
@@ -139,6 +143,7 @@ crate::impl_client_v17__get_transaction!();
 crate::impl_client_v17__get_unconfirmed_balance!();
 crate::impl_client_v17__get_wallet_info!();
 crate::impl_client_v17__import_address!();
+crate::impl_client_v21__import_descriptors!();
 crate::impl_client_v17__import_multi!();
 crate::impl_client_v17__import_privkey!();
 crate::impl_client_v17__import_pruned_funds!();
@@ -157,8 +162,10 @@ crate::impl_client_v18__list_wallet_dir!();
 crate::impl_client_v17__list_wallets!();
 crate::impl_client_v17__load_wallet!();
 crate::impl_client_v17__lock_unspent!();
+crate::impl_client_v21__psbt_bump_fee!();
 crate::impl_client_v17__remove_pruned_funds!();
 crate::impl_client_v17__rescan_blockchain!();
+crate::impl_client_v21__send!();
 crate::impl_client_v17__send_many!();
 crate::impl_client_v17__send_to_address!();
 crate::impl_client_v17__set_hd_seed!();
@@ -167,6 +174,7 @@ crate::impl_client_v19__set_wallet_flag!();
 crate::impl_client_v17__sign_message!();
 crate::impl_client_v17__sign_raw_transaction_with_wallet!();
 crate::impl_client_v21__unload_wallet!();
+crate::impl_client_v21__upgrade_wallet!();
 crate::impl_client_v17__wallet_create_funded_psbt!();
 crate::impl_client_v17__wallet_lock!();
 crate::impl_client_v17__wallet_process_psbt!();

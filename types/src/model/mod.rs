@@ -30,7 +30,7 @@ pub use self::{
         GetRawMempool, GetRawMempoolVerbose, GetTxOut, GetTxOutSetInfo, MempoolEntry,
         MempoolEntryFees, ReceiveActivity, Softfork, SoftforkType, SpendActivity, VerifyTxOutProof,
     },
-    generating::{Generate, GenerateToAddress, GenerateToDescriptor},
+    generating::{Generate, GenerateBlock, GenerateToAddress, GenerateToDescriptor},
     mining::{
         BlockTemplateTransaction, GetBlockTemplate, GetMiningInfo, GetPrioritisedTransactions,
         NextBlockInfo, PrioritisedTransaction,
@@ -59,7 +59,7 @@ pub use self::{
         ListLockUnspent, ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem,
         ListReceivedByLabel, ListReceivedByLabelItem, ListSinceBlock, ListSinceBlockTransaction,
         ListTransactions, ListTransactionsItem, ListUnspent, ListUnspentItem, ListWallets,
-        LoadWallet, RescanBlockchain, ScriptType, SendMany, SendToAddress, SignMessage,
-        TransactionCategory, UnloadWallet, WalletCreateFundedPsbt, WalletProcessPsbt,
+        LoadWallet, PsbtBumpFee, RescanBlockchain, ScriptType, Send, SendMany, SendToAddress,
+        SignMessage, TransactionCategory, UnloadWallet, WalletCreateFundedPsbt, WalletProcessPsbt,
     },
 };

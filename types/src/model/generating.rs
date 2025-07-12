@@ -5,7 +5,7 @@
 //! These structs model the types returned by the JSON-RPC API but have concrete types
 //! and are not specific to a specific version of Bitcoin Core.
 
-use bitcoin::BlockHash;
+use bitcoin::{Block, BlockHash};
 use serde::{Deserialize, Serialize};
 
 /// Models the result of JSON-RPC method `generate`.
@@ -19,6 +19,16 @@ impl Generate {
 
     /// Returns true if 0 blocks were generated.
     pub fn is_empty(&self) -> bool { self.0.is_empty() }
+}
+
+/// Models the result of JSON-RPC method `generateblock`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GenerateBlock {
+    /// Hash of generated block.
+    pub hash: BlockHash,
+    /// Hex of generated block, only present when submit=false.
+    pub hex: Option<Block>,
 }
 
 /// Models the result of JSON-RPC method `generatetoaddress`.

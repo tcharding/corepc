@@ -63,6 +63,13 @@ fn util__get_descriptor_info() {
     let _: GetDescriptorInfo = node.client.get_descriptor_info(descriptor).expect("getdescriptorinfo");
 }
 
+#[cfg(not(feature = "v20_and_below"))]
+#[test]
+fn util__get_index_info() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    let _: GetIndexInfo = node.client.get_index_info().expect("getindexinfo");
+}
+
 #[test]
 fn util__sign_message_with_priv_key__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);

@@ -311,6 +311,26 @@ fn wallet__import_address() {
 }
 
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
+fn wallet__import_descriptors() {
+    use node::{serde_json, ImportDescriptorsRequest};
+
+    let node = Node::with_wallet(Wallet::None, &[]);
+    let wallet_name = "desc_wallet";
+    node.client.create_wallet_with_descriptors(wallet_name).expect("create descriptor wallet");
+
+    let address = node.client.new_address().expect("failed to get new address");
+    let descriptor = format!("addr({})", address);
+
+    let request = ImportDescriptorsRequest {
+        desc: descriptor,
+        timestamp: serde_json::Value::String("now".to_string()),
+    };
+
+    let _: ImportDescriptors = node.client.import_descriptors(&[request]).expect("importdescriptors");
+}
+
+#[test]
 fn wallet__import_pruned_funds() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
     node.fund_wallet();
@@ -521,6 +541,25 @@ fn wallet__lock_unspent() {
     assert!(json.0);
 }
 
+#[cfg(not(feature = "v20_and_below"))]
+#[test]
+fn wallet__psbt_bump_fee__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    let address = node.client.new_address().expect("failed to create new address");
+    let _ = node.client.generate_to_address(101, &address).expect("generatetoaddress");
+
+    let txid = node
+        .client
+        .send_to_address_rbf(&address, Amount::from_sat(10_000))
+        .expect("sendtoaddress")
+        .txid()
+        .unwrap();
+
+    let json: PsbtBumpFee = node.client.psbt_bump_fee(&txid).expect("psbtbumpfee");
+    let model: Result<mtype::PsbtBumpFee, PsbtBumpFeeError> = json.into_model();
+    model.unwrap();
+}
+
 #[test]
 fn wallet__remove_pruned_funds() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
@@ -544,6 +583,23 @@ fn wallet__sign_raw_transaction_with_wallet__modelled() {}
 #[test]
 fn wallet__unload_wallet() {
     create_load_unload_wallet();
+}
+
+#[cfg(not(feature = "v20_and_below"))]
+#[test]
+fn wallet__send__modelled() {
+    use std::collections::BTreeMap;
+
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let address = node.client.new_address().expect("failed to create new address");
+
+    let mut outputs = BTreeMap::new();
+    outputs.insert(address.to_string(), 0.001);
+
+    let json: Send = node.client.send(&outputs).expect("send");
+    let model: Result<mtype::Send, SendError> = json.into_model();
+    model.unwrap();
 }
 
 #[test]
@@ -640,4 +696,12 @@ fn create_load_unload_wallet() {
     }
 
     let _: LoadWallet = node.client.load_wallet(&wallet).expect("loadwallet");
+}
+
+#[cfg(not(feature = "v20_and_below"))]
+#[test]
+fn wallet__upgrade_wallet() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let _: UpgradeWallet = node.client.upgrade_wallet().expect("upgradewallet");
 }
