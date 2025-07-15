@@ -77,7 +77,7 @@ pub struct DescriptorInfo {
     pub internal: Option<bool>,
     /// Defined only for ranged descriptors.
     pub range: Option<[u64; 2]>,
-    /// The next index to generate addresses from; defined only for ranged descriptors.
+    /// Same as `next_index` field. Kept for compatibility reason.
     pub next: Option<u64>,
     /// The next index to generate addresses from; defined only for ranged descriptors.
     pub next_index: Option<u64>,

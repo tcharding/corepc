@@ -32,3 +32,15 @@ macro_rules! impl_client_v22__load_wallet {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `walletdisplayaddress`
+#[macro_export]
+macro_rules! impl_client_v22__wallet_display_address {
+    () => {
+        impl Client {
+            pub fn wallet_display_address(&self, address: &str) -> Result<WalletDisplayAddress> {
+                self.call("walletdisplayaddress", &[address.into()])
+            }
+        }
+    };
+}

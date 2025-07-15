@@ -233,7 +233,7 @@
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
-//! | walletdisplayaddress               | version + model | TODO                                   |
+//! | walletdisplayaddress               | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
 //! | walletpassphrasechange             | returns nothing |                                        |
@@ -321,7 +321,7 @@ pub use crate::{
         GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee,
         PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
-    v22::{Banned, EnumerateSigners, ListBanned, ScriptPubkey},
+    v22::{Banned, EnumerateSigners, ListBanned, ScriptPubkey, WalletDisplayAddress},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, SaveMempool},
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetTransactionDetail,

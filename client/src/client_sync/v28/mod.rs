@@ -183,6 +183,7 @@ crate::impl_client_v17__sign_raw_transaction_with_wallet!();
 crate::impl_client_v21__unload_wallet!();
 crate::impl_client_v21__upgrade_wallet!();
 crate::impl_client_v17__wallet_create_funded_psbt!();
+crate::impl_client_v22__wallet_display_address!();
 crate::impl_client_v17__wallet_lock!();
 crate::impl_client_v17__wallet_passphrase!();
 crate::impl_client_v17__wallet_passphrase_change!();

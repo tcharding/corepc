@@ -4,6 +4,8 @@
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
+mod into;
+
 use serde::{Deserialize, Serialize};
 
 /// Result of JSON-RPC method `listdescriptors`.
@@ -35,4 +37,14 @@ pub struct DescriptorInfo {
     pub range: Option<[u64; 2]>,
     /// The next index to generate addresses from; defined only for ranged descriptors.
     pub next: Option<u64>,
+}
+
+/// Result of JSON-RPC method `walletdisplayaddress`.
+///
+/// > Display address on an external signer for verification.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct WalletDisplayAddress {
+    /// The address as confirmed by the signer
+    pub address: String,
 }

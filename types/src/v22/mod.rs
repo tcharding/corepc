@@ -225,7 +225,7 @@
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
-//! | walletdisplayaddress               | version + model | TODO                                   |
+//! | walletdisplayaddress               | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
 //! | walletpassphrasechange             | returns nothing |                                        |
@@ -257,7 +257,7 @@ pub use self::{
     network::{Banned, GetPeerInfo, ListBanned},
     raw_transactions::{DecodeScript, DecodeScriptError},
     signer::EnumerateSigners,
-    wallet::ListDescriptors,
+    wallet::{ListDescriptors, WalletDisplayAddress},
 };
 #[doc(inline)]
 pub use crate::{

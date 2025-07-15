@@ -60,6 +60,7 @@ pub use self::{
         ListReceivedByLabel, ListReceivedByLabelItem, ListSinceBlock, ListSinceBlockTransaction,
         ListTransactions, ListTransactionsItem, ListUnspent, ListUnspentItem, ListWallets,
         LoadWallet, PsbtBumpFee, RescanBlockchain, ScriptType, Send, SendMany, SendToAddress,
-        SignMessage, TransactionCategory, UnloadWallet, WalletCreateFundedPsbt, WalletProcessPsbt,
+        SignMessage, TransactionCategory, UnloadWallet, WalletCreateFundedPsbt,
+        WalletDisplayAddress, WalletProcessPsbt,
     },
 };
