@@ -190,7 +190,7 @@
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
-//! | listdescriptors                    | version + model | TODO                                   |
+//! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | migratewallet                      | version + model | TODO                                   |
@@ -311,7 +311,7 @@ pub use crate::{
         ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
         UnloadWallet, UpgradeWallet,
     },
-    v22::{Banned, EnumerateSigners, ListBanned, ScriptPubkey},
+    v22::{Banned, EnumerateSigners, ListBanned, ListDescriptors, ScriptPubkey},
     v23::{
         CreateMultisig, DecodeScript, DecodeScriptError, GetBlockchainInfo, Logging, SaveMempool,
     },

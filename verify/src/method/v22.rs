@@ -131,7 +131,7 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("importwallet", "import_walet"),
     Method::new_nothing("keypoolrefill", "keypool_refill"),
     Method::new_modelled("listaddressgroupings", "ListAddressGroupings", "list_address_groupings"),
-    Method::new_modelled("listdescriptors", "ListDescriptors", "list_descriptors"),
+    Method::new_no_model("listdescriptors", "ListDescriptors", "list_descriptors"),
     Method::new_modelled("listlabels", "ListLabels", "list_labels"),
     Method::new_modelled("listlockunspent", "ListLockUnspent", "list_lock_unspent"),
     Method::new_modelled("psbtbumpfee", "PsbtBumpFee", "psbt_bump_fee"),

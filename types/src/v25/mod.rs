@@ -191,7 +191,7 @@
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
-//! | listdescriptors                    | version + model | TODO                                   |
+//! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | migratewallet                      | version + model | TODO                                   |
@@ -250,7 +250,7 @@ pub use self::{
     blockchain::GetBlockStats,
     control::Logging,
     generating::{GenerateBlock, GenerateBlockError},
-    wallet::{CreateWallet, LoadWallet, UnloadWallet},
+    wallet::{CreateWallet, ListDescriptors, LoadWallet, UnloadWallet},
 };
 #[doc(inline)]
 pub use crate::{

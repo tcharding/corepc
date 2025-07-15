@@ -201,7 +201,7 @@
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
-//! | listdescriptors                    | version + model | TODO                                   |
+//! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | migratewallet                      | version + model | TODO                                   |
@@ -328,7 +328,7 @@ pub use crate::{
         GlobalXpub, ListUnspent, ListUnspentItem, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
     },
-    v25::{GenerateBlock, GenerateBlockError, GetBlockStats},
+    v25::{GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors},
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
         GetBalancesError, GetPeerInfo, GetPrioritisedTransactions, GetTransactionError,

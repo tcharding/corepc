@@ -189,7 +189,7 @@
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
-//! | listdescriptors                    | version + model | TODO                                   |
+//! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | newkeypool                         | version + model | TODO                                   |
@@ -310,5 +310,5 @@ pub use crate::{
         ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
         UnloadWallet, UpgradeWallet,
     },
-    v22::{Banned, EnumerateSigners, GetMempoolInfo, ListBanned, ScriptPubkey},
+    v22::{Banned, EnumerateSigners, GetMempoolInfo, ListBanned, ListDescriptors, ScriptPubkey},
 };

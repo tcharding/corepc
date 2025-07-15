@@ -198,7 +198,7 @@
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
-//! | listdescriptors                    | version + model | TODO                                   |
+//! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | psbtbumpfee                        | version + model |                                        |
@@ -248,6 +248,7 @@ mod control;
 mod network;
 mod raw_transactions;
 mod signer;
+mod wallet;
 
 #[doc(inline)]
 pub use self::{
@@ -256,6 +257,7 @@ pub use self::{
     network::{Banned, GetPeerInfo, ListBanned},
     raw_transactions::{DecodeScript, DecodeScriptError},
     signer::EnumerateSigners,
+    wallet::ListDescriptors,
 };
 #[doc(inline)]
 pub use crate::{
