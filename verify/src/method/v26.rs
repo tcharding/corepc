@@ -74,6 +74,7 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("ping", "ping"),
     Method::new_nothing("setban", "set_ban"),
     Method::new_no_model("setnetworkactive", "SetNetworkActive", "set_network_active"),
+    // raw transactions
     Method::new_modelled("analyzepsbt", "AnalyzePsbt", "analyze_psbt"),
     Method::new_nothing("combinepsbt", "combine_psbt"),
     Method::new_nothing("combinerawtransaction", "combine_raw_transaction"),
