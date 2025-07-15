@@ -105,6 +105,8 @@ pub const METHODS: &[Method] = &[
     Method::new_string("signmessagewithprivkey", "sign_message_with_priv_key"),
     Method::new_modelled("validateaddress", "ValidateAddress", "validate_address"),
     Method::new_bool("verifymessage", "verify_message"),
+    // signer
+    Method::new_no_model("enumeratesigners", "EnumerateSigners", "enumerate_signers"),
     // wallet
     Method::new_nothing("abandontransaction", "abandon_transaction"),
     Method::new_no_model("abortrescan", "AbortRescan", "abort_rescan"),

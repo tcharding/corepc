@@ -87,7 +87,7 @@ pub const METHODS: &[Method] = &[
     Method::new_nothing("testmempoolaccept", "test_mempool_accept"),
     Method::new_modelled("utxoupdatepsbt", "UtxoUpdatePsbt", "utxo_update_psbt"),
     // signer
-    Method::new_modelled("enumeratesigners", "EnumerateSigners", "enumerate_signers"),
+    Method::new_no_model("enumeratesigners", "EnumerateSigners", "enumerate_signers"),
     // util
     Method::new_modelled("createmultisig", "CreateMultisig", "create_multisig"),
     Method::new_modelled("deriveaddresses", "DeriveAddresses", "derive_addresses"),

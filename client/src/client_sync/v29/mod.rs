@@ -113,6 +113,9 @@ crate::impl_client_v28__submit_package!();
 crate::impl_client_v17__test_mempool_accept!();
 crate::impl_client_v18__utxo_update_psbt!();
 
+// == Signer ==
+crate::impl_client_v22__enumerate_signers!();
+
 // == Util ==
 crate::impl_client_v17__create_multisig!();
 crate::impl_client_v18__derive_addresses!();

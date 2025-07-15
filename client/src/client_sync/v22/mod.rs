@@ -4,6 +4,7 @@
 //!
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
+mod signer;
 mod wallet;
 
 use std::collections::BTreeMap;
@@ -109,6 +110,9 @@ crate::impl_client_v17__sign_raw_transaction!();
 crate::impl_client_v17__sign_raw_transaction_with_key!();
 crate::impl_client_v17__test_mempool_accept!();
 crate::impl_client_v18__utxo_update_psbt!();
+
+// == Signer ==
+crate::impl_client_v22__enumerate_signers!();
 
 // == Util ==
 crate::impl_client_v17__create_multisig!();

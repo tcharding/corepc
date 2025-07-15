@@ -144,7 +144,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | enumeratesigners                   | version + model | TODO                                   |
+//! | enumeratesigners                   | version         | UNTESTED                               |
 //!
 //! </details>
 //!
@@ -247,6 +247,7 @@ mod blockchain;
 mod control;
 mod network;
 mod raw_transactions;
+mod signer;
 
 #[doc(inline)]
 pub use self::{
@@ -254,6 +255,7 @@ pub use self::{
     control::Logging,
     network::{Banned, GetPeerInfo, ListBanned},
     raw_transactions::{DecodeScript, DecodeScriptError},
+    signer::EnumerateSigners,
 };
 #[doc(inline)]
 pub use crate::{

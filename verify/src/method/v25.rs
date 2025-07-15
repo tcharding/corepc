@@ -96,6 +96,8 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("validateaddress", "ValidateAddress", "validate_address"),
     Method::new_bool("verifymessage", "verify_message"),
     Method::new_nothing("abandontransaction", "abandon_transaction"),
+    // signer
+    Method::new_no_model("enumeratesigners", "EnumerateSigners", "enumerate_signers"),
     // wallet
     Method::new_no_model("abortrescan", "AbortRescan", "abort_rescan"),
     Method::new_modelled("addmultisigaddress", "AddMultisigAddress", "add_multisig_address"),

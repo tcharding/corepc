@@ -146,7 +146,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | enumeratesigners                   | version + model | TODO                                   |
+//! | enumeratesigners                   | version         | UNTESTED                               |
 //!
 //! </details>
 //!
@@ -319,7 +319,7 @@ pub use crate::{
         GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee,
         PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
-    v22::{Banned, ListBanned, ScriptPubkey},
+    v22::{Banned, EnumerateSigners, ListBanned, ScriptPubkey},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, SaveMempool},
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetTransactionDetail,
