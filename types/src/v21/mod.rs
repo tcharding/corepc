@@ -244,7 +244,7 @@ pub use self::{
         Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, GetMempoolInfo, Softfork,
         SoftforkType,
     },
-    generating::{GenerateBlock, GenerateBlockError},
+    generating::GenerateBlock,
     network::{GetNetworkInfo, GetPeerInfo},
     util::{GetIndexInfo, GetIndexInfoName},
     wallet::{

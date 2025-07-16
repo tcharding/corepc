@@ -307,9 +307,9 @@ pub use crate::{
     },
     v20::GenerateToDescriptor,
     v21::{
-        GenerateBlock, GenerateBlockError, GetIndexInfo, GetIndexInfoName, GetNetworkInfo,
-        ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
-        UnloadWallet, UpgradeWallet,
+        GenerateBlock, GetIndexInfo, GetIndexInfoName, GetNetworkInfo, ImportDescriptors,
+        ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UnloadWallet,
+        UpgradeWallet,
     },
     v22::{Banned, ListBanned, ScriptPubkey},
     v23::{

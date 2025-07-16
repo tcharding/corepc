@@ -29,15 +29,17 @@ fn generating__generate_block__modelled() {
     {
         // No `submit` argument
         json = node.client.generate_block(&mining_addr.to_string(), &transactions).expect("generateblock");
+        let model: Result<mtype::GenerateBlock, _> = json.into_model();
+        model.unwrap();
     }
 
     #[cfg(not(feature = "v24_and_below"))]
     {
         // Check with `submit = false` so that `hex` is returned. v25 and later only.
         json = node.client.generate_block(&mining_addr.to_string(), &transactions, false).expect("generateblock");
+        let model: Result<mtype::GenerateBlock, GenerateBlockError> = json.into_model();
+        model.unwrap();
     }
-    let model: Result<mtype::GenerateBlock, GenerateBlockError> = json.into_model();
-    model.unwrap();
 }
 
 #[test]

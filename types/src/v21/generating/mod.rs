@@ -4,12 +4,9 @@
 //!
 //! Types for methods found under the `== Generating ==` section of the API docs.
 
-mod error;
 mod into;
 
 use serde::{Deserialize, Serialize};
-
-pub use self::error::GenerateBlockError;
 
 /// Result of JSON-RPC method `generateblock`.
 ///
