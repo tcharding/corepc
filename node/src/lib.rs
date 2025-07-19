@@ -31,16 +31,16 @@ pub use self::{
 };
 
 #[derive(Debug)]
-/// Struct representing the bitcoind process with related information
+/// Struct representing the bitcoind process with related information.
 pub struct Node {
-    /// Process child handle, used to terminate the process when this struct is dropped
+    /// Process child handle, used to terminate the process when this struct is dropped.
     process: Child,
-    /// Rpc client linked to this bitcoind process
+    /// Rpc client linked to this bitcoind process.
     pub client: Client,
     /// Work directory, where the node store blocks and other stuff.
     work_dir: DataDir,
 
-    /// Contains information to connect to this node
+    /// Contains information to connect to this node.
     pub params: ConnectParams,
 }
 
@@ -48,14 +48,14 @@ pub struct Node {
 /// The DataDir struct defining the kind of data directory the node
 /// will contain. Data directory can be either persistent, or temporary.
 pub enum DataDir {
-    /// Persistent Data Directory
+    /// Persistent Data Directory.
     Persistent(PathBuf),
-    /// Temporary Data Directory
+    /// Temporary Data Directory.
     Temporary(TempDir),
 }
 
 impl DataDir {
-    /// Return the data directory path
+    /// Return the data directory path.
     fn path(&self) -> PathBuf {
         match self {
             Self::Persistent(path) => path.to_owned(),
@@ -65,17 +65,17 @@ impl DataDir {
 }
 
 #[derive(Debug, Clone)]
-/// Contains all the information to connect to this node
+/// Contains all the information to connect to this node.
 pub struct ConnectParams {
-    /// Path to the node cookie file, useful for other client to connect to the node
+    /// Path to the node cookie file, useful for other client to connect to the node.
     pub cookie_file: PathBuf,
-    /// Url of the rpc of the node, useful for other client to connect to the node
+    /// Url of the rpc of the node, useful for other client to connect to the node.
     pub rpc_socket: SocketAddrV4,
-    /// p2p connection url, is some if the node started with p2p enabled
+    /// p2p connection url, is some if the node started with p2p enabled.
     pub p2p_socket: Option<SocketAddrV4>,
-    /// zmq pub raw block connection url
+    /// zmq pub raw block connection url.
     pub zmq_pub_raw_block_socket: Option<SocketAddrV4>,
-    /// zmq pub raw tx connection Url
+    /// zmq pub raw tx connection Url.
     pub zmq_pub_raw_tx_socket: Option<SocketAddrV4>,
 }
 
@@ -85,7 +85,7 @@ pub struct CookieValues {
 }
 
 impl ConnectParams {
-    /// Parses the cookie file content
+    /// Parses the cookie file content.
     fn parse_cookie(content: String) -> Option<CookieValues> {
         let values: Vec<_> = content.splitn(2, ':').collect();
         let user = values.first()?.to_string();
@@ -93,19 +93,19 @@ impl ConnectParams {
         Some(CookieValues { user, password })
     }
 
-    /// Return the user and password values from cookie file
+    /// Return the user and password values from cookie file.
     pub fn get_cookie_values(&self) -> Result<Option<CookieValues>, std::io::Error> {
         let cookie = std::fs::read_to_string(&self.cookie_file)?;
         Ok(self::ConnectParams::parse_cookie(cookie))
     }
 }
 
-/// Enum to specify p2p settings
+/// Enum to specify p2p settings.
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum P2P {
-    /// the node doesn't open a p2p port and work in standalone mode
+    /// the node doesn't open a p2p port and work in standalone mode.
     No,
-    /// the node open a p2p port
+    /// the node open a p2p port.
     Yes,
     /// The node open a p2p port and also connects to the url given as parameter, it's handy to
     /// initialize this with [Node::p2p_connect] of another node. The `bool` parameter indicates
@@ -113,27 +113,27 @@ pub enum P2P {
     Connect(SocketAddrV4, bool),
 }
 
-/// All the possible error in this crate
+/// All the possible error in this crate.
 pub enum Error {
-    /// Wrapper of io Error
+    /// Wrapper of io Error.
     Io(std::io::Error),
-    /// Wrapper of bitcoincore_rpc Error
+    /// Wrapper of bitcoincore_rpc Error.
     Rpc(client_sync::Error),
-    /// Returned when calling methods requiring a feature to be activated, but it's not
+    /// Returned when calling methods requiring a feature to be activated, but it's not.
     NoFeature,
-    /// Returned when calling methods requiring a env var to exist, but it's not
+    /// Returned when calling methods requiring a env var to exist, but it's not.
     NoEnvVar,
     /// Returned when calling methods requiring the bitcoind executable but none is found
-    /// (no feature, no `BITCOIND_EXE`, no `bitcoind` in `PATH` )
+    /// (no feature, no `BITCOIND_EXE`, no `bitcoind` in `PATH` ).
     NoBitcoindExecutableFound,
-    /// Wrapper of early exit status
+    /// Wrapper of early exit status.
     EarlyExit(ExitStatus),
-    /// Returned when both tmpdir and staticdir is specified in `Conf` options
+    /// Returned when both tmpdir and staticdir is specified in `Conf` options.
     BothDirsSpecified,
-    /// Returned when -rpcuser and/or -rpcpassword is used in `Conf` args
-    /// It will soon be deprecated, please use -rpcauth instead
+    /// Returned when -rpcuser and/or -rpcpassword is used in `Conf` args.
+    /// It will soon be deprecated, please use -rpcauth instead.
     RpcUserAndPasswordUsed,
-    /// Returned when expecting an auto-downloaded executable but `BITCOIND_SKIP_DOWNLOAD` env var is set
+    /// Returned when expecting an auto-downloaded executable but `BITCOIND_SKIP_DOWNLOAD` env var is set.
     SkipDownload,
     /// Returned when bitcoind could not be reached after multiple attempts.
     /// The attached string, if present, contains the error encountered when trying to connect.
@@ -214,14 +214,14 @@ pub struct Conf<'a> {
     /// cannot be used because they are automatically initialized.
     pub args: Vec<&'a str>,
 
-    /// if `true` bitcoind log output will not be suppressed
+    /// if `true` bitcoind log output will not be suppressed.
     pub view_stdout: bool,
 
-    /// Allows to specify options to open p2p port or connect to the another node
+    /// Allows to specify options to open p2p port or connect to the another node.
     pub p2p: P2P,
 
     /// Must match what specified in args without dashes, needed to locate the cookie file
-    /// directory with different/esoteric networks
+    /// directory with different/esoteric networks.
     pub network: &'a str,
 
     /// Temporary directory path.
@@ -239,10 +239,10 @@ pub struct Conf<'a> {
     /// mode, as it cause memory overflows.
     pub tmpdir: Option<PathBuf>,
 
-    /// Persistent directory path
+    /// Persistent directory path.
     pub staticdir: Option<PathBuf>,
 
-    /// Try to spawn the process `attempt` time
+    /// Try to spawn the process `attempt` time.
     ///
     /// The OS is giving available ports to use, however, they aren't booked, so it could rarely
     /// happen they are used at the time the process is spawn. When retrying other available ports
@@ -275,7 +275,7 @@ impl Default for Conf<'_> {
 impl Node {
     /// Launch the bitcoind process from the given `exe` executable with default args.
     ///
-    /// Waits for the node to be ready to accept connections before returning
+    /// Waits for the node to be ready to accept connections before returning.
     pub fn new<S: AsRef<OsStr>>(exe: S) -> anyhow::Result<Node> {
         Node::with_conf(exe, &Conf::default())
     }
@@ -435,8 +435,8 @@ impl Node {
     ///
     /// # Parameters
     /// * `enable_zmq` - If `true`, creates two ZMQ sockets:
-    ///     - `zmq_pub_raw_tx_socket`: for raw transaction publishing
-    ///     - `zmq_pub_raw_block_socket`: for raw block publishing
+    ///     - `zmq_pub_raw_tx_socket`: for raw transaction publishing.
+    ///     - `zmq_pub_raw_block_socket`: for raw block publishing.
     fn zmq_args(
         enable_zmq: bool,
     ) -> anyhow::Result<(Vec<String>, Option<SocketAddrV4>, Option<SocketAddrV4>)> {
@@ -522,31 +522,31 @@ impl Node {
         Err(Error::NoBitcoindInstance("Could not create or load wallet".to_string()).into())
     }
 
-    /// Returns the rpc URL including the schema eg. http://127.0.0.1:44842
+    /// Returns the rpc URL including the schema eg. http://127.0.0.1:44842.
     pub fn rpc_url(&self) -> String { format!("http://{}", self.params.rpc_socket) }
 
-    /// Returns the rpc URL including the schema and the given `wallet_name`
-    /// eg. http://127.0.0.1:44842/wallet/my_wallet
+    /// Returns the rpc URL including the schema and the given `wallet_name`.
+    /// eg. http://127.0.0.1:44842/wallet/my_wallet.
     pub fn rpc_url_with_wallet<T: AsRef<str>>(&self, wallet_name: T) -> String {
         format!("http://{}/wallet/{}", self.params.rpc_socket, wallet_name.as_ref())
     }
 
-    /// Return the current workdir path of the running node
+    /// Return the current workdir path of the running node.
     pub fn workdir(&self) -> PathBuf { self.work_dir.path() }
 
-    /// Returns the [P2P] enum to connect to this node p2p port
+    /// Returns the [P2P] enum to connect to this node p2p port.
     pub fn p2p_connect(&self, listen: bool) -> Option<P2P> {
         self.params.p2p_socket.map(|s| P2P::Connect(s, listen))
     }
 
-    /// Stop the node, waiting correct process termination
+    /// Stop the node, waiting correct process termination.
     pub fn stop(&mut self) -> anyhow::Result<ExitStatus> {
         self.client.stop()?;
         Ok(self.process.wait()?)
     }
 
     /// Create a new wallet in the running node, and return an RPC client connected to the just
-    /// created wallet
+    /// created wallet.
     pub fn create_wallet<T: AsRef<str>>(&self, wallet: T) -> anyhow::Result<Client> {
         let _ = self.client.create_wallet(wallet.as_ref())?;
         Ok(Client::new_with_auth(
@@ -578,7 +578,7 @@ impl Drop for Node {
 
 /// Returns a non-used local port if available.
 ///
-/// Note there is a race condition during the time the method check availability and the caller
+/// Note there is a race condition during the time the method check availability and the caller.
 pub fn get_available_port() -> anyhow::Result<u16> {
     // using 0 as port let the system assign a port available
     let t = TcpListener::bind(("127.0.0.1", 0))?; // 0 means the OS choose a free port
@@ -593,11 +593,11 @@ impl From<client_sync::Error> for Error {
     fn from(e: client_sync::Error) -> Self { Error::Rpc(e) }
 }
 
-/// Provide the bitcoind executable path if a version feature has been specified
+/// Provide the bitcoind executable path if a version feature has been specified.
 #[cfg(not(feature = "download"))]
 pub fn downloaded_exe_path() -> anyhow::Result<String> { Err(Error::NoFeature.into()) }
 
-/// Provide the bitcoind executable path if a version feature has been specified
+/// Provide the bitcoind executable path if a version feature has been specified.
 #[cfg(feature = "download")]
 pub fn downloaded_exe_path() -> anyhow::Result<String> {
     if std::env::var_os("BITCOIND_SKIP_DOWNLOAD").is_some() {
@@ -621,10 +621,10 @@ pub fn downloaded_exe_path() -> anyhow::Result<String> {
 
 /// Returns the daemon `bitcoind` executable with the following precedence:
 ///
-/// 1) If it's specified in the `BITCOIND_EXE` env var
+/// 1) If it's specified in the `BITCOIND_EXE` env var.
 /// 2) If there is no env var but the auto-download feature is enabled, returns the
-///    path of the downloaded executable
-/// 3) If neither of the precedent are available, the `bitcoind` executable is searched in the `PATH`
+///    path of the downloaded executable.
+/// 3) If neither of the precedent are available, the `bitcoind` executable is searched in the `PATH`.
 pub fn exe_path() -> anyhow::Result<String> {
     if let Ok(path) = std::env::var("BITCOIND_EXE") {
         return Ok(path);
@@ -637,7 +637,7 @@ pub fn exe_path() -> anyhow::Result<String> {
         .map(|p| p.display().to_string())
 }
 
-/// Validate the specified arg if there is any unavailable or deprecated one
+/// Validate the specified arg if there is any unavailable or deprecated one.
 pub fn validate_args(args: Vec<&str>) -> anyhow::Result<Vec<&str>> {
     args.iter().try_for_each(|arg| {
         // other kind of invalid arguments can be added into the list if needed
