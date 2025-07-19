@@ -306,10 +306,9 @@ pub use crate::{
     },
     v20::{CreateMultisig, GenerateToDescriptor, GetTransaction, GetTransactionDetail},
     v21::{
-        Bip9SoftforkInfo, GenerateBlock, GenerateBlockError, GetBlockchainInfo, GetIndexInfo,
-        GetIndexInfoName, GetMempoolEntry, GetNetworkInfo, ImportDescriptors,
-        ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError, Softfork,
-        SoftforkType, UnloadWallet, UpgradeWallet,
+        Bip9SoftforkInfo, GenerateBlock, GetBlockchainInfo, GetIndexInfo, GetIndexInfoName,
+        GetMempoolEntry, GetNetworkInfo, ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee,
+        PsbtBumpFeeError, Send, SendError, Softfork, SoftforkType, UnloadWallet, UpgradeWallet,
     },
     ScriptPubkey,
 };

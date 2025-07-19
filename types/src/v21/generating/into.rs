@@ -4,17 +4,15 @@
 //!
 //! Types for methods found under the `== Generating ==` section of the API docs.
 
-use bitcoin::BlockHash;
+use bitcoin::{hex, BlockHash};
 
-use super::{GenerateBlock, GenerateBlockError};
+use super::GenerateBlock;
 use crate::model;
 
 impl GenerateBlock {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> Result<model::GenerateBlock, GenerateBlockError> {
-        use GenerateBlockError as E;
-
-        let hash = self.hash.parse::<BlockHash>().map_err(E::Hash)?;
+    pub fn into_model(self) -> Result<model::GenerateBlock, hex::HexToArrayError> {
+        let hash = self.hash.parse::<BlockHash>()?;
         Ok(model::GenerateBlock {
             hash,
             hex: None, // v25 and later only.
