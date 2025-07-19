@@ -28,7 +28,7 @@ const DEFAULT_TIMEOUT_SECONDS: u64 = 1;
 pub struct MinreqHttpTransport {
     /// URL of the RPC server.
     url: String,
-    /// timeout only supports second granularity.
+    /// Timeout only supports second granularity.
     timeout: Duration,
     /// The value of the `Authorization` HTTP header, i.e., a base64 encoding of 'user:password'.
     basic_auth: Option<String>,

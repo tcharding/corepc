@@ -470,7 +470,7 @@ pub enum Error {
     },
     /// The HTTP response started with a HTTP/1.1 line which was not ASCII.
     HttpResponseNonAsciiHello(Vec<u8>),
-    /// The HTTP response did not start with HTTP/1.1
+    /// The HTTP response did not start with HTTP/1.1.
     HttpResponseBadHello {
         /// Actual HTTP-whatever string.
         actual: String,
@@ -488,7 +488,7 @@ pub enum Error {
         /// Our hard maximum on number of bytes we'll try to read.
         max: u64,
     },
-    /// The server is replying with chunked encoding which is not supported
+    /// The server is replying with chunked encoding which is not supported.
     HttpResponseChunked,
     /// Unexpected HTTP error code (non-200).
     HttpErrorCode(u16),
@@ -727,7 +727,7 @@ mod tests {
     }
 
     /// Test that the client will detect that a socket is closed and open a fresh one before sending
-    /// the request
+    /// the request.
     #[cfg(all(not(feature = "proxy"), not(jsonrpc_fuzz)))]
     #[test]
     fn request_to_closed_socket() {

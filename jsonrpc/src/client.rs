@@ -3,7 +3,7 @@
 //! # Client support
 //!
 //! Support for connecting to JSONRPC servers over HTTP, sending requests,
-//! and parsing responses
+//! and parsing responses.
 
 use std::borrow::Cow;
 use std::collections::HashMap;
@@ -44,7 +44,7 @@ impl Client {
 
     /// Builds a request.
     ///
-    /// To construct the arguments, one can use one of the shorthand methods
+    /// To construct the arguments, one can use one of the shorthand methods.
     /// [`crate::arg`] or [`crate::try_arg`].
     pub fn build_request<'a>(&self, method: &'a str, params: Option<&'a RawValue>) -> Request<'a> {
         let nonce = self.nonce.fetch_add(1, atomic::Ordering::Relaxed);
