@@ -113,6 +113,9 @@ crate::impl_client_v28__submit_package!();
 crate::impl_client_v17__test_mempool_accept!();
 crate::impl_client_v18__utxo_update_psbt!();
 
+// == Signer ==
+crate::impl_client_v22__enumerate_signers!();
+
 // == Util ==
 crate::impl_client_v17__create_multisig!();
 crate::impl_client_v18__derive_addresses!();
@@ -154,6 +157,7 @@ crate::impl_client_v17__import_pubkey!();
 crate::impl_client_v17__import_wallet!();
 crate::impl_client_v17__key_pool_refill!();
 crate::impl_client_v17__list_address_groupings!();
+crate::impl_client_v22__list_descriptors!();
 crate::impl_client_v18__list_received_by_label!();
 crate::impl_client_v17__list_labels!();
 crate::impl_client_v17__list_lock_unspent!();
@@ -179,6 +183,7 @@ crate::impl_client_v17__sign_raw_transaction_with_wallet!();
 crate::impl_client_v21__unload_wallet!();
 crate::impl_client_v21__upgrade_wallet!();
 crate::impl_client_v17__wallet_create_funded_psbt!();
+crate::impl_client_v22__wallet_display_address!();
 crate::impl_client_v17__wallet_lock!();
 crate::impl_client_v17__wallet_passphrase!();
 crate::impl_client_v17__wallet_passphrase_change!();

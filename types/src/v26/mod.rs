@@ -145,7 +145,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | enumeratesigners                   | version + model | TODO                                   |
+//! | enumeratesigners                   | version         | UNTESTED                               |
 //!
 //! </details>
 //!
@@ -199,7 +199,7 @@
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
-//! | listdescriptors                    | version + model | TODO                                   |
+//! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | migratewallet                      | version + model | TODO                                   |
@@ -231,7 +231,7 @@
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
-//! | walletdisplayaddress               | version + model | TODO                                   |
+//! | walletdisplayaddress               | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
 //! | walletpassphrasechange             | returns nothing |                                        |
@@ -323,12 +323,12 @@ pub use crate::{
         GetIndexInfo, GetIndexInfoName, GetNetworkInfo, ImportDescriptors, ImportDescriptorsResult,
         PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
-    v22::{Banned, ListBanned, ScriptPubkey},
+    v22::{Banned, EnumerateSigners, ListBanned, ScriptPubkey, WalletDisplayAddress},
     v23::{CreateMultisig, DecodeScript, DecodeScriptError, GetBlockchainInfo, SaveMempool},
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetTransactionDetail,
         GlobalXpub, ListUnspent, ListUnspentItem, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
     },
-    v25::{GenerateBlock, GenerateBlockError, GetBlockStats},
+    v25::{GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors},
 };
