@@ -608,16 +608,16 @@ pub struct SpendActivity {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ReceiveActivity {
-    /// The total amount in BTC of the new output, converted to `bitcoin::Amount`.
+    /// The total amount in BTC of the new output.
     pub amount: Amount,
-    /// The block that this receive is in (omitted if unconfirmed), parsed into `bitcoin::BlockHash`.
+    /// The block that this receive is in (omitted if unconfirmed).
     pub block_hash: Option<BlockHash>,
     /// The height of the receive (omitted if unconfirmed).
     pub height: Option<u32>,
-    /// The txid of the receiving transaction, parsed into `bitcoin::Txid`.
+    /// The txid of the receiving transaction.
     pub txid: Txid,
     /// The vout of the receiving output.
     pub vout: u32,
-    /// The ScriptPubKey, converted to `model::ScriptPubkey`.
+    /// The ScriptPubKey.
     pub output_spk: ScriptPubkey,
 }
