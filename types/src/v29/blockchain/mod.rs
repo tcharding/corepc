@@ -38,7 +38,7 @@ pub struct GetBlockVerboseOne {
     /// The block version formatted in hexadecimal.
     #[serde(rename = "versionHex")]
     pub version_hex: String,
-    /// The merkle root
+    /// The merkle root.
     #[serde(rename = "merkleroot")]
     pub merkle_root: String,
     /// The transaction ids.
@@ -118,7 +118,7 @@ pub struct GetBlockchainInfo {
     pub automatic_pruning: Option<bool>,
     /// The target size used by pruning (only present if automatic pruning is enabled).
     pub prune_target_size: Option<i64>,
-    /// The block challenge (aka. block script)
+    /// The block challenge (aka. block script).
     pub signet_challenge: Option<String>,
     /// Any network and blockchain warnings.
     pub warnings: Vec<String>,
@@ -165,7 +165,7 @@ pub struct GetBlockHeaderVerbose {
     pub nonce: i64,
     /// The bits.
     pub bits: String,
-    /// The difficulty target (hex-encoded). From v29+
+    /// The difficulty target (hex-encoded). From v29+.
     pub target: String,
     /// The difficulty.
     pub difficulty: f64,
@@ -238,19 +238,19 @@ pub struct SpendActivity {
 #[serde(deny_unknown_fields)]
 pub struct ReceiveActivity {
     // Note: 'type' field is used for deserialization tag, not included here explicitly.
-    /// The total amount in BTC of the new output
+    /// The total amount in BTC of the new output.
     pub amount: f64,
-    /// The block that this receive is in
+    /// The block that this receive is in.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(rename = "blockhash")]
     pub block_hash: Option<String>,
-    /// The height of the receive
+    /// The height of the receive.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub height: Option<i64>,
-    /// The txid of the receiving transaction
+    /// The txid of the receiving transaction.
     pub txid: String,
-    /// The vout of the receiving output
+    /// The vout of the receiving output.
     pub vout: u32,
-    /// The ScriptPubKey
+    /// The ScriptPubKey.
     pub output_spk: ScriptPubkey,
 }
