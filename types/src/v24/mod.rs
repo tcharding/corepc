@@ -47,7 +47,7 @@
 //! | gettxout                           | version + model |                                        |
 //! | gettxoutproof                      | returns string  |                                        |
 //! | gettxoutsetinfo                    | version + model |                                        |
-//! | gettxspendingprevout               | version + model | TODO                                   |
+//! | gettxspendingprevout               | version + model |                                        |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
@@ -247,7 +247,10 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::{GetMempoolEntry, GetMempoolInfo},
+    blockchain::{
+        GetMempoolEntry, GetMempoolInfo, GetTxSpendingPrevout, GetTxSpendingPrevoutError,
+        GetTxSpendingPrevoutItem,
+    },
     network::GetPeerInfo,
     raw_transactions::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,

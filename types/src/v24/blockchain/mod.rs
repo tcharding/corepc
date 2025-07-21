@@ -4,10 +4,12 @@
 //!
 //! Types for methods found under the `== Blockchain ==` section of the API docs.
 
+mod error;
 mod into;
 
 use serde::{Deserialize, Serialize};
 
+pub use self::error::GetTxSpendingPrevoutError;
 pub use super::{GetMempoolInfoError, MempoolEntryError, MempoolEntryFees};
 
 /// Result of JSON-RPC method `getmempoolentry`.
@@ -109,4 +111,29 @@ pub struct GetMempoolInfo {
     /// only.
     #[serde(rename = "fullrbf")]
     pub full_rbf: bool,
+}
+
+/// Result of JSON-RPC method `gettxspendingprevout`.
+///
+/// > gettxspendingprevout [{"txid":"hex","vout":n},...]
+/// >
+/// > Scans the mempool to find transactions spending any of the given outputs
+/// >
+/// > Arguments:
+/// > 1. outputs                 (json array, required) The transaction outputs that we want to check, and within each, the txid (string) vout (numeric).
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetTxSpendingPrevout(pub Vec<GetTxSpendingPrevoutItem>);
+
+/// An individual result item from `gettxspendingprevout`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetTxSpendingPrevoutItem {
+    /// The transaction id of the checked output
+    pub txid: String,
+    /// The vout value of the checked output
+    pub vout: u32,
+    /// The transaction id of the mempool transaction spending this output (omitted if unspent)
+    #[serde(rename = "spendingtxid")]
+    pub spending_txid: Option<String>,
 }

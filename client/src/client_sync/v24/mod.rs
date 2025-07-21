@@ -4,6 +4,8 @@
 //!
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
+pub mod blockchain;
+
 use std::collections::BTreeMap;
 use std::path::Path;
 
@@ -48,6 +50,7 @@ crate::impl_client_v17__get_raw_mempool!();
 crate::impl_client_v17__get_tx_out!();
 crate::impl_client_v17__get_tx_out_proof!();
 crate::impl_client_v17__get_tx_out_set_info!();
+crate::impl_client_v24__get_tx_spending_prevout!();
 crate::impl_client_v17__precious_block!();
 crate::impl_client_v17__prune_blockchain!();
 crate::impl_client_v23__save_mempool!();

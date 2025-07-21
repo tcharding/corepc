@@ -49,7 +49,7 @@
 //! | gettxout                           | version + model |                                        |
 //! | gettxoutproof                      | returns string  |                                        |
 //! | gettxoutsetinfo                    | version + model |                                        |
-//! | gettxspendingprevout               | version + model | TODO                                   |
+//! | gettxspendingprevout               | version + model |                                        |
 //! | importmempool                      | version + model | TODO                                   |
 //! | loadtxoutset                       | version + model | TODO                                   |
 //! | preciousblock                      | returns nothing |                                        |
@@ -309,6 +309,7 @@ pub use crate::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetTransactionDetail,
         GlobalXpub, ListUnspent, ListUnspentItem, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
+        GetTxSpendingPrevout, GetTxSpendingPrevoutError,
     },
     v25::{GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors},
     v26::{

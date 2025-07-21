@@ -47,7 +47,7 @@
 //! | gettxout                           | version + model |                                        |
 //! | gettxoutproof                      | returns string  |                                        |
 //! | gettxoutsetinfo                    | version + model |                                        |
-//! | gettxspendingprevout               | version + model | TODO                                   |
+//! | gettxspendingprevout               | version + model |                                        |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
@@ -314,6 +314,6 @@ pub use crate::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetPeerInfo, GetTransaction,
         GetTransactionDetail, GetTransactionError, GlobalXpub, ListUnspent, ListUnspentItem,
         Proprietary, PsbtInput, PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
-        TaprootScriptPathSig,
+        TaprootScriptPathSig, GetTxSpendingPrevout, GetTxSpendingPrevoutError,
     },
 };

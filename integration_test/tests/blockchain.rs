@@ -303,6 +303,35 @@ fn blockchain__get_tx_out_set_info__modelled() {
 }
 
 #[test]
+#[cfg(not(feature = "v23_and_below"))]
+fn blockchain__get_tx_spending_prevout__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let (_address1, txid_1) = node.create_mempool_transaction();
+    let (_address2, txid_2) = node.create_mempool_transaction();
+
+    let inputs = vec![
+        bitcoin::OutPoint {
+            txid: txid_1,
+            vout: 0,
+        },
+        bitcoin::OutPoint {
+            txid: txid_2,
+            vout: 0,
+        },
+    ];
+
+    let json: GetTxSpendingPrevout = node.client.get_tx_spending_prevout(&inputs).expect("gettxspendingprevout");
+    let model: Result<mtype::GetTxSpendingPrevout, GetTxSpendingPrevoutError> = json.into_model();
+    let spending_prevout = model.unwrap();
+
+    assert_eq!(spending_prevout.0.len(), 2);
+    assert_eq!(spending_prevout.0[0].outpoint.txid, txid_1);
+    assert_eq!(spending_prevout.0[0].outpoint.vout, 0);
+}
+
+#[test]
 fn blockchain__precious_block() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.mine_a_block();
