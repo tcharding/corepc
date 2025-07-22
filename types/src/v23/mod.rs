@@ -31,13 +31,13 @@
 //! | getblockchaininfo                  | version + model |                                        |
 //! | getblockcount                      | version + model |                                        |
 //! | getblockfilter                     | version         |                                        |
-//! | getblockfrompeer                   | version + model | TODO                                   |
+//! | getblockfrompeer                   | returns nothing |                                        |
 //! | getblockhash                       | version + model |                                        |
 //! | getblockheader                     | version + model | Includes additional 'verbose' type     |
 //! | getblockstats                      | version + model |                                        |
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
-//! | getdeploymentinfo                  | version + model | TODO                                   |
+//! | getdeploymentinfo                  | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
 //! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
 //! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
@@ -192,7 +192,7 @@
 //! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | newkeypool                         | version + model | TODO                                   |
+//! | newkeypool                         | returns nothing |                                        |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
 //! | listreceivedbylabel                | version + model |                                        |
@@ -205,7 +205,7 @@
 //! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
 //! | rescanblockchain                   | version + model | UNTESTED                               |
-//! | restorewallet                      | version + model | TODO                                   |
+//! | restorewallet                      | version         |                                        |
 //! | send                               | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
@@ -245,7 +245,10 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::{GetBlockchainInfo, GetMempoolEntry, SaveMempool},
+    blockchain::{
+        Bip9Info, Bip9Statistics, DeploymentInfo, GetBlockchainInfo, GetDeploymentInfo,
+        GetDeploymentInfoError, GetMempoolEntry, SaveMempool,
+    },
     control::Logging,
     network::GetPeerInfo,
     raw_transactions::{
@@ -253,7 +256,7 @@ pub use self::{
         PsbtInput, PsbtOutput,
     },
     util::CreateMultisig,
-    wallet::{GetTransaction, GetTransactionError},
+    wallet::{GetTransaction, GetTransactionError, RestoreWallet},
 };
 #[doc(inline)]
 pub use crate::{
