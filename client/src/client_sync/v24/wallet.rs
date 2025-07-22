@@ -32,3 +32,18 @@ macro_rules! impl_client_v24__send_all {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `simulaterawtransaction`.
+#[macro_export]
+macro_rules! impl_client_v24__simulate_raw_transaction {
+    () => {
+        impl Client {
+            pub fn simulate_raw_transaction(
+                &self,
+                rawtxs: &[String],
+            ) -> Result<SimulateRawTransaction> {
+                self.call("simulaterawtransaction", &[into_json(rawtxs)?])
+            }
+        }
+    };
+}

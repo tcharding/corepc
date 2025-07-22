@@ -218,7 +218,7 @@
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
-//! | simulaterawtransaction             | version + model | TODO                                   |
+//! | simulaterawtransaction             | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
@@ -258,7 +258,7 @@ pub use self::{
     },
     wallet::{
         GetTransaction, GetTransactionDetail, GetTransactionError, ListUnspent, ListUnspentItem,
-        MigrateWallet, SendAll, SendAllError,
+        MigrateWallet, SendAll, SendAllError, SimulateRawTransaction,
     },
 };
 #[doc(inline)]

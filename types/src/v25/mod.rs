@@ -219,7 +219,7 @@
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
-//! | simulaterawtransaction             | version + model | TODO                                   |
+//! | simulaterawtransaction             | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
@@ -314,6 +314,6 @@ pub use crate::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetPeerInfo, GetTransaction,
         GetTransactionDetail, GetTransactionError, GlobalXpub, ListUnspent, ListUnspentItem,
         Proprietary, PsbtInput, PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
-        TaprootScriptPathSig, GetTxSpendingPrevout, GetTxSpendingPrevoutError, SendAll, SendAllError, MigrateWallet,
+        TaprootScriptPathSig, GetTxSpendingPrevout, GetTxSpendingPrevoutError, SendAll, SendAllError, MigrateWallet, SimulateRawTransaction,
     },
 };

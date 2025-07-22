@@ -782,6 +782,15 @@ pub struct SendToAddress {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SignMessage(pub sign_message::MessageSignature);
 
+/// Models the result of JSON-RPC method `simulaterawtransaction`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SimulateRawTransaction {
+    /// The wallet balance change (negative means decrease).
+    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    pub balance_change: SignedAmount,
+}
+
 /// Models the result of JSON-RPC method `unloadwallet`.
 ///
 /// Core version v0.21 onwards.

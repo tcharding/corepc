@@ -187,6 +187,7 @@ crate::impl_client_v17__set_tx_fee!();
 crate::impl_client_v19__set_wallet_flag!();
 crate::impl_client_v17__sign_message!();
 crate::impl_client_v17__sign_raw_transaction_with_wallet!();
+crate::impl_client_v24__simulate_raw_transaction!();
 crate::impl_client_v21__unload_wallet!();
 crate::impl_client_v21__upgrade_wallet!();
 crate::impl_client_v17__wallet_create_funded_psbt!();

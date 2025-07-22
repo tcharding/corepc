@@ -222,3 +222,18 @@ pub struct SendAll {
     /// If more signatures are needed, or if add_to_wallet is false, the base64-encoded (partially) signed transaction.
     pub psbt: Option<String>,
 }
+
+/// Result of JSON-RPC method `simulaterawtransaction`.
+///
+/// > simulaterawtransaction ( ["rawtx",...] {"include_watchonly":bool,...} )
+/// >
+/// > Calculate the balance change resulting in the signing and broadcasting of the given transaction(s).
+/// >
+/// > Arguments:
+/// > 1. rawtxs                            (json array, optional) An array of hex strings of raw transactions.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SimulateRawTransaction {
+    /// The wallet balance change (negative means decrease).
+    pub balance_change: f64,
+}

@@ -63,6 +63,6 @@ pub use self::{
         ListTransactions, ListTransactionsItem, ListUnspent, ListUnspentItem, ListWallets,
         LoadWallet, PsbtBumpFee, RescanBlockchain, ScriptType, Send, SendAll, SendMany, SendToAddress,
         SignMessage, TransactionCategory, UnloadWallet, WalletCreateFundedPsbt,
-        WalletDisplayAddress, WalletProcessPsbt,
+        WalletDisplayAddress, WalletProcessPsbt, SimulateRawTransaction
     },
 };

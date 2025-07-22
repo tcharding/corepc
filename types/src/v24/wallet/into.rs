@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: CC0-1.0
 
+use bitcoin::amount::ParseAmountError;
 use bitcoin::consensus::encode;
 use bitcoin::{Address, BlockHash, ScriptBuf, SignedAmount, Transaction, Txid};
 
 use super::{
     GetTransaction, GetTransactionDetail, GetTransactionDetailError, GetTransactionError,
     ListUnspent, ListUnspentItem, ListUnspentItemError, SendAll, SendAllError,
+    SimulateRawTransaction,
 };
 use crate::model;
 
@@ -155,5 +157,13 @@ impl SendAll {
         let psbt = self.psbt.as_ref().map(|p| p.parse()).transpose().map_err(E::Psbt)?;
 
         Ok(model::SendAll { complete: self.complete, txid, hex, psbt })
+    }
+}
+
+impl SimulateRawTransaction {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::SimulateRawTransaction, ParseAmountError> {
+        let balance_change = SignedAmount::from_btc(self.balance_change)?;
+        Ok(model::SimulateRawTransaction { balance_change })
     }
 }
