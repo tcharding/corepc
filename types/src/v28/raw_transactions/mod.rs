@@ -62,7 +62,7 @@ pub struct SubmitPackageTxResult {
     pub vsize: Option<i64>,
     /// Transaction fees.
     pub fees: Option<SubmitPackageTxResultFees>,
-    /// The transaction error string, if it was rejected by the mempool
+    /// The transaction error string, if it was rejected by the mempool.
     pub error: Option<String>,
 }
 

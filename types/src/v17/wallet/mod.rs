@@ -24,7 +24,7 @@ pub use self::error::*;
 // - ListSinceBlockTransaction
 // - ListTransactionsItem
 
-/// Returned as part of `getaddressesbylabel` and `getaddressinfo`
+/// Returned as part of `getaddressesbylabel` and `getaddressinfo`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum AddressPurpose {
