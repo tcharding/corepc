@@ -202,7 +202,7 @@
 //! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | migratewallet                      | version + model | TODO                                   |
+//! | migratewallet                      | version         |                                        |
 //! | newkeypool                         | returns nothing |                                        |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
@@ -332,7 +332,7 @@ pub use crate::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetTransactionDetail,
         GlobalXpub, ListUnspent, ListUnspentItem, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
-        GetTxSpendingPrevout, GetTxSpendingPrevoutError, SendAll, SendAllError,
+        GetTxSpendingPrevout, GetTxSpendingPrevoutError, SendAll, SendAllError, MigrateWallet,
     },
     v25::{GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors},
 };

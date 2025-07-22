@@ -573,6 +573,18 @@ fn wallet__lock_unspent() {
     assert!(json.0);
 }
 
+#[cfg(not(feature = "v23_and_below"))]
+#[test]
+fn wallet__migrate_wallet() {
+    let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+    let wallet_name = "legacy_wallet";
+    node.client.create_legacy_wallet(wallet_name).expect("createlegacywallet");
+
+    let json: MigrateWallet = node.client.migrate_wallet(wallet_name).expect("migratewallet");
+
+    assert_eq!(json.wallet_name, wallet_name);
+}
+
 #[cfg(not(feature = "v22_and_below"))]
 #[test]
 fn wallet__new_keypool() {

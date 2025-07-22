@@ -9,6 +9,18 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
+/// Implements Bitcoin Core JSON-RPC API method `migratewallet`.
+#[macro_export]
+macro_rules! impl_client_v24__migrate_wallet {
+    () => {
+        impl Client {
+            pub fn migrate_wallet(&self, wallet_name: &str) -> Result<MigrateWallet> {
+                self.call("migratewallet", &[wallet_name.into()])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `sendall`.
 #[macro_export]
 macro_rules! impl_client_v24__send_all {

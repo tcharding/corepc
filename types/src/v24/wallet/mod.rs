@@ -167,6 +167,36 @@ pub struct ListUnspentItem {
     pub parent_descriptors: Option<Vec<String>>,
 }
 
+/// Result of JSON-RPC method `migratewallet`.
+///
+/// > migratewallet ( "wallet_name" "passphrase" )
+/// >
+/// > EXPERIMENTAL warning: This call may not work as expected and may be changed in future releases
+/// >
+/// > Migrate the wallet to a descriptor wallet.
+/// > A new wallet backup will need to be made.
+/// >
+/// > The migration process will create a backup of the wallet before migrating. This backup
+/// > file will be named {wallet name}-{timestamp}.legacy.bak and can be found in the directory
+/// > for this wallet. In the event of an incorrect migration, the backup can be restored using restorewallet.
+/// > Encrypted wallets must have the passphrase provided as an argument to this call.
+/// >
+/// > Arguments:
+/// > 1. wallet_name    (string, optional, default=the wallet name from the RPC endpoint) The name of the wallet to migrate. If provided both here and in the RPC endpoint, the two must be identical.
+/// > 2. passphrase     (string) The wallet passphrase
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct MigrateWallet {
+    /// The name of the primary migrated wallet
+    pub wallet_name: String,
+    /// The name of the migrated wallet containing the watchonly scripts
+    pub watchonly_name: Option<String>,
+    /// The name of the migrated wallet containing solvable but not watched scripts
+    pub solvables_name: Option<String>,
+    /// The location of the backup of the original wallet
+    pub backup_path: String,
+}
+
 /// Result of JSON-RPC method `sendall`.
 ///
 /// > sendall ["address",{"address":amount,...},...] ( conf_target "estimate_mode" fee_rate options )
