@@ -9,7 +9,7 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
-/// Implements Bitcoin Core JSON-RPC API method `createwallet` with descriptors=true (descriptor wallet)
+/// Implements Bitcoin Core JSON-RPC API method `createwallet` with descriptors=true (descriptor wallet).
 #[macro_export]
 macro_rules! impl_client_v21__create_wallet_with_descriptors {
     () => {
@@ -30,7 +30,7 @@ macro_rules! impl_client_v21__create_wallet_with_descriptors {
     };
 }
 
-/// Implements Bitcoin Core JSON-RPC API method `importdescriptors`
+/// Implements Bitcoin Core JSON-RPC API method `importdescriptors`.
 #[macro_export]
 macro_rules! impl_client_v21__import_descriptors {
     () => {
@@ -69,7 +69,7 @@ macro_rules! impl_client_v21__send {
     };
 }
 
-/// Implements Bitcoin Core JSON-RPC API method `unloadwallet`
+/// Implements Bitcoin Core JSON-RPC API method `unloadwallet`.
 #[macro_export]
 macro_rules! impl_client_v21__unload_wallet {
     () => {
