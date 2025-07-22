@@ -647,6 +647,18 @@ fn wallet__send__modelled() {
     model.unwrap();
 }
 
+#[cfg(not(feature = "v23_and_below"))]
+#[test]
+fn wallet__send_all__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let address = node.client.new_address().expect("failed to create new address");
+
+    let json: SendAll = node.client.send_all(&[address]).expect("sendall");
+    let model: Result<mtype::SendAll, SendAllError> = json.into_model();
+    model.unwrap();
+}
+
 #[test]
 fn wallet__send_to_address__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);

@@ -209,7 +209,7 @@
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | restorewallet                      | version         |                                        |
 //! | send                               | version + model |                                        |
-//! | sendall                            | version + model | TODO                                   |
+//! | sendall                            | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
@@ -258,6 +258,7 @@ pub use self::{
     },
     wallet::{
         GetTransaction, GetTransactionDetail, GetTransactionError, ListUnspent, ListUnspentItem,
+        SendAll, SendAllError,
     },
 };
 #[doc(inline)]

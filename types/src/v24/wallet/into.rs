@@ -5,7 +5,7 @@ use bitcoin::{Address, BlockHash, ScriptBuf, SignedAmount, Transaction, Txid};
 
 use super::{
     GetTransaction, GetTransactionDetail, GetTransactionDetailError, GetTransactionError,
-    ListUnspent, ListUnspentItem, ListUnspentItemError,
+    ListUnspent, ListUnspentItem, ListUnspentItemError, SendAll, SendAllError,
 };
 use crate::model;
 
@@ -139,5 +139,21 @@ impl ListUnspentItem {
             safe: self.safe,
             parent_descriptors: self.parent_descriptors,
         })
+    }
+}
+
+impl SendAll {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::SendAll, SendAllError> {
+        use SendAllError as E;
+
+        let txid = self.txid.as_ref().map(|s| s.parse()).transpose().map_err(E::Txid)?;
+
+        let hex =
+            self.hex.as_ref().map(|h| encode::deserialize_hex(h)).transpose().map_err(E::Hex)?;
+
+        let psbt = self.psbt.as_ref().map(|p| p.parse()).transpose().map_err(E::Psbt)?;
+
+        Ok(model::SendAll { complete: self.complete, txid, hex, psbt })
     }
 }

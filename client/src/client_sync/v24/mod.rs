@@ -5,6 +5,7 @@
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
 pub mod blockchain;
+pub mod wallet;
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -176,6 +177,7 @@ crate::impl_client_v17__remove_pruned_funds!();
 crate::impl_client_v17__rescan_blockchain!();
 crate::impl_client_v23__restore_wallet!();
 crate::impl_client_v21__send!();
+crate::impl_client_v24__send_all!();
 crate::impl_client_v17__send_many!();
 crate::impl_client_v17__send_to_address!();
 crate::impl_client_v17__set_hd_seed!();

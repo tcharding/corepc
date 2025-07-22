@@ -220,7 +220,7 @@
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | restorewallet                      | version         |                                        |
 //! | send                               | version + model |                                        |
-//! | sendall                            | version + model | TODO                                   |
+//! | sendall                            | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
@@ -330,7 +330,7 @@ pub use crate::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetTransactionDetail,
         GlobalXpub, ListUnspent, ListUnspentItem, Proprietary, PsbtInput, PsbtOutput,
         TaprootBip32Deriv, TaprootLeaf, TaprootScript, TaprootScriptPathSig,
-        GetTxSpendingPrevout, GetTxSpendingPrevoutError,
+        GetTxSpendingPrevout, GetTxSpendingPrevoutError, SendAll, SendAllError,
     },
     v25::{GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors},
     v26::{

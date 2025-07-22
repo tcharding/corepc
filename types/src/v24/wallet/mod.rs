@@ -10,7 +10,7 @@ mod into;
 use bitcoin::Transaction;
 use serde::{Deserialize, Serialize};
 
-pub use self::error::GetTransactionError;
+pub use self::error::{GetTransactionError, SendAllError};
 pub use super::{
     Bip125Replaceable, GetTransactionDetailError, ListUnspentItemError, TransactionCategory,
 };
@@ -165,4 +165,30 @@ pub struct ListUnspentItem {
     /// List of parent descriptors for the scriptPubKey of this coin. v24 and later only.
     #[serde(rename = "parent_descs")]
     pub parent_descriptors: Option<Vec<String>>,
+}
+
+/// Result of JSON-RPC method `sendall`.
+///
+/// > sendall ["address",{"address":amount,...},...] ( conf_target "estimate_mode" fee_rate options )
+/// >
+/// > EXPERIMENTAL warning: this call may be changed in future releases.
+/// >
+/// > Spend the value of all (or specific) confirmed UTXOs in the wallet to one or more recipients.
+/// > Unconfirmed inbound UTXOs and locked UTXOs will not be spent. Sendall will respect the avoid_reuse wallet flag.
+/// > If your wallet contains many small inputs, either because it received tiny payments or as a result of accumulating change, consider using `send_max` to exclude inputs that are worth less than the fees needed to spend them.
+/// >
+/// > Arguments:
+/// > 1. recipients                       (json array, required) The sendall destinations. Each address may only appear once.
+/// >                                     Optionally some recipients can be specified with an amount to perform payments, but at least one address must appear without a specified amount.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SendAll {
+    /// If the transaction has a complete set of signatures.
+    pub complete: bool,
+    /// The transaction id for the send. Only 1 transaction is created regardless of the number of addresses.
+    pub txid: Option<String>,
+    /// If add_to_wallet is false, the hex-encoded raw transaction with signature(s).
+    pub hex: Option<String>,
+    /// If more signatures are needed, or if add_to_wallet is false, the base64-encoded (partially) signed transaction.
+    pub psbt: Option<String>,
 }
