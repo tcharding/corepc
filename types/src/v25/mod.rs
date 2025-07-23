@@ -312,8 +312,9 @@ pub use crate::{
     },
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetPeerInfo, GetTransaction,
-        GetTransactionDetail, GetTransactionError, GlobalXpub, ListUnspent, ListUnspentItem,
-        Proprietary, PsbtInput, PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
-        TaprootScriptPathSig, GetTxSpendingPrevout, GetTxSpendingPrevoutError, SendAll, SendAllError, MigrateWallet, SimulateRawTransaction,
+        GetTransactionDetail, GetTransactionError, GetTxSpendingPrevout, GetTxSpendingPrevoutError,
+        GlobalXpub, ListUnspent, ListUnspentItem, MigrateWallet, Proprietary, PsbtInput,
+        PsbtOutput, SendAll, SendAllError, SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf,
+        TaprootScript, TaprootScriptPathSig,
     },
 };
