@@ -160,17 +160,26 @@ mod download {
             #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
             {
                 use std::process::Command;
-                let status = Command::new("codesign")
-                    .arg("-s")
-                    .arg("-")
-                    .arg(existing_filename.to_str().unwrap())
+
+                let signing_status = Command::new("codesign")
+                    .arg("-v")
+                    .arg(&existing_filename)
                     .status()
-                    .with_context(|| "failed to execute codesign")?;
-                if !status.success() {
-                    return Err(anyhow::anyhow!(
-                        "codesign failed with exit code {}",
-                        status.code().unwrap_or(-1)
-                    ));
+                    .with_context(|| "failed to verify bitcoind code signature")?;
+
+                if !signing_status.success() {
+                    let status = Command::new("codesign")
+                        .arg("-s")
+                        .arg("-")
+                        .arg(&existing_filename)
+                        .status()
+                        .with_context(|| "failed to sign bitcoind")?;
+                    if !status.success() {
+                        return Err(anyhow::anyhow!(
+                            "codesign failed with exit code {}",
+                            status.code().unwrap_or(-1)
+                        ));
+                    }
                 }
             }
         }
