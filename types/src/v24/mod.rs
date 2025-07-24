@@ -47,7 +47,7 @@
 //! | gettxout                           | version + model |                                        |
 //! | gettxoutproof                      | returns string  |                                        |
 //! | gettxoutsetinfo                    | version + model |                                        |
-//! | gettxspendingprevout               | version + model | TODO                                   |
+//! | gettxspendingprevout               | version + model |                                        |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
@@ -193,7 +193,7 @@
 //! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | migratewallet                      | version + model | TODO                                   |
+//! | migratewallet                      | version         |                                        |
 //! | newkeypool                         | returns nothing |                                        |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
@@ -209,7 +209,7 @@
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | restorewallet                      | version         |                                        |
 //! | send                               | version + model |                                        |
-//! | sendall                            | version + model | TODO                                   |
+//! | sendall                            | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
@@ -218,7 +218,7 @@
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
-//! | simulaterawtransaction             | version + model | TODO                                   |
+//! | simulaterawtransaction             | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
@@ -247,7 +247,10 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::{GetMempoolEntry, GetMempoolInfo},
+    blockchain::{
+        GetMempoolEntry, GetMempoolInfo, GetTxSpendingPrevout, GetTxSpendingPrevoutError,
+        GetTxSpendingPrevoutItem,
+    },
     network::GetPeerInfo,
     raw_transactions::{
         DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput, PsbtOutput,
@@ -255,6 +258,7 @@ pub use self::{
     },
     wallet::{
         GetTransaction, GetTransactionDetail, GetTransactionError, ListUnspent, ListUnspentItem,
+        MigrateWallet, SendAll, SendAllError, SimulateRawTransaction,
     },
 };
 #[doc(inline)]

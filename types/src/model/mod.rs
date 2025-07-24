@@ -28,8 +28,9 @@ pub use self::{
         GetChainTxStats, GetDeploymentInfo, GetDescriptorActivity, GetDifficulty,
         GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
         GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo, GetRawMempool,
-        GetRawMempoolVerbose, GetTxOut, GetTxOutSetInfo, MempoolEntry, MempoolEntryFees,
-        ReceiveActivity, Softfork, SoftforkType, SpendActivity, VerifyTxOutProof,
+        GetRawMempoolVerbose, GetTxOut, GetTxOutSetInfo, GetTxSpendingPrevout,
+        GetTxSpendingPrevoutItem, MempoolEntry, MempoolEntryFees, ReceiveActivity, Softfork,
+        SoftforkType, SpendActivity, VerifyTxOutProof,
     },
     generating::{Generate, GenerateBlock, GenerateToAddress, GenerateToDescriptor},
     mining::{
@@ -60,8 +61,8 @@ pub use self::{
         ListLockUnspent, ListLockUnspentItem, ListReceivedByAddress, ListReceivedByAddressItem,
         ListReceivedByLabel, ListReceivedByLabelItem, ListSinceBlock, ListSinceBlockTransaction,
         ListTransactions, ListTransactionsItem, ListUnspent, ListUnspentItem, ListWallets,
-        LoadWallet, PsbtBumpFee, RescanBlockchain, ScriptType, Send, SendMany, SendToAddress,
-        SignMessage, TransactionCategory, UnloadWallet, WalletCreateFundedPsbt,
-        WalletDisplayAddress, WalletProcessPsbt,
+        LoadWallet, PsbtBumpFee, RescanBlockchain, ScriptType, Send, SendAll, SendMany,
+        SendToAddress, SignMessage, SimulateRawTransaction, TransactionCategory, UnloadWallet,
+        WalletCreateFundedPsbt, WalletDisplayAddress, WalletProcessPsbt,
     },
 };

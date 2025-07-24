@@ -9,8 +9,8 @@ use alloc::collections::BTreeMap;
 
 use bitcoin::address::NetworkUnchecked;
 use bitcoin::{
-    block, Address, Amount, Block, BlockHash, CompactTarget, FeeRate, Network, ScriptBuf, Target,
-    TxMerkleNode, TxOut, Txid, Weight, Work, Wtxid,
+    block, Address, Amount, Block, BlockHash, CompactTarget, FeeRate, Network, OutPoint, ScriptBuf,
+    Target, TxMerkleNode, TxOut, Txid, Weight, Work, Wtxid,
 };
 use serde::{Deserialize, Serialize};
 
@@ -624,6 +624,21 @@ pub struct GetTxOutSetInfo {
     pub disk_size: u32,
     /// The total amount.
     pub total_amount: Amount,
+}
+
+/// Models the result of JSON-RPC method `gettxspendingprevout`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetTxSpendingPrevout(pub Vec<GetTxSpendingPrevoutItem>);
+
+/// An individual result item from `gettxspendingprevout`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetTxSpendingPrevoutItem {
+    /// The outpoint containing the transaction id and vout value of the checked output.
+    pub outpoint: OutPoint,
+    /// The transaction id of the mempool transaction spending this output (omitted if unspent).
+    pub spending_txid: Option<Txid>,
 }
 
 /// Models the result of JSON-RPC method `verifytxoutproof`.

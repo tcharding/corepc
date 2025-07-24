@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
 
-use bitcoin::{Txid, Wtxid};
+use bitcoin::{OutPoint, Txid, Wtxid};
 
 use super::{
-    GetMempoolEntry, GetMempoolInfo, GetMempoolInfoError, MempoolEntry, MempoolEntryError,
+    GetMempoolEntry, GetMempoolInfo, GetMempoolInfoError, GetTxSpendingPrevout,
+    GetTxSpendingPrevoutError, GetTxSpendingPrevoutItem, MempoolEntry, MempoolEntryError,
 };
 use crate::model;
 
@@ -88,5 +89,28 @@ impl GetMempoolInfo {
             unbroadcast_count,
             full_rbf: Some(self.full_rbf),
         })
+    }
+}
+
+impl GetTxSpendingPrevout {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetTxSpendingPrevout, GetTxSpendingPrevoutError> {
+        let items =
+            self.0.into_iter().map(|item| item.into_model()).collect::<Result<Vec<_>, _>>()?;
+        Ok(model::GetTxSpendingPrevout(items))
+    }
+}
+
+impl GetTxSpendingPrevoutItem {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetTxSpendingPrevoutItem, GetTxSpendingPrevoutError> {
+        use GetTxSpendingPrevoutError as E;
+
+        let txid = self.txid.parse::<Txid>().map_err(E::Txid)?;
+        let outpoint = OutPoint { txid, vout: self.vout };
+        let spending_txid =
+            self.spending_txid.map(|id| id.parse::<Txid>().map_err(E::SpendingTxid)).transpose()?;
+
+        Ok(model::GetTxSpendingPrevoutItem { outpoint, spending_txid })
     }
 }

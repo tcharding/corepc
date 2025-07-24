@@ -604,6 +604,18 @@ fn wallet__lock_unspent() {
     assert!(json.0);
 }
 
+#[cfg(not(feature = "v23_and_below"))]
+#[test]
+fn wallet__migrate_wallet() {
+    let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+    let wallet_name = "legacy_wallet";
+    node.client.create_legacy_wallet(wallet_name).expect("createlegacywallet");
+
+    let json: MigrateWallet = node.client.migrate_wallet(wallet_name).expect("migratewallet");
+
+    assert_eq!(json.wallet_name, wallet_name);
+}
+
 #[cfg(not(feature = "v22_and_below"))]
 #[test]
 fn wallet__new_keypool() {
@@ -678,6 +690,18 @@ fn wallet__send__modelled() {
     model.unwrap();
 }
 
+#[cfg(not(feature = "v23_and_below"))]
+#[test]
+fn wallet__send_all__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let address = node.client.new_address().expect("failed to create new address");
+
+    let json: SendAll = node.client.send_all(&[address]).expect("sendall");
+    let model: Result<mtype::SendAll, SendAllError> = json.into_model();
+    model.unwrap();
+}
+
 #[test]
 fn wallet__send_to_address__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -742,6 +766,45 @@ fn wallet__sign_message__modelled() {
         .expect("signmessage");
     let res: Result<mtype::SignMessage, _> = json.into_model();
     let _ = res.expect("SignMessage into model");
+}
+
+#[cfg(not(feature = "v23_and_below"))]
+#[test]
+fn wallet__simulate_raw_transaction() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let address = node.client.new_address().expect("failed to create new address");
+    let amount = Amount::from_sat(10_000);
+
+    let txid1 = node
+        .client
+        .send_to_address(&address, amount)
+        .expect("sendtoaddress")
+        .txid()
+        .unwrap();
+    let raw_tx1 = node.client.get_raw_transaction(txid1).expect("getrawtransaction");
+
+    let txid2 = node
+        .client
+        .send_to_address(&address, amount)
+        .expect("sendtoaddress")
+        .txid()
+        .unwrap();
+    let raw_tx2 = node.client.get_raw_transaction(txid2).expect("getrawtransaction");
+
+    // Simulate raw transaction with the 2 transactions
+    let rawtxs = vec![raw_tx1.0, raw_tx2.0];
+    let json: SimulateRawTransaction = node
+        .client
+        .simulate_raw_transaction(&rawtxs)
+        .expect("simulaterawtransaction");
+
+    let model: Result<mtype::SimulateRawTransaction, _> = json.into_model();
+    let model = model.unwrap();
+
+    // Should show a negative balance change since we're sending money
+    assert!(model.balance_change.is_negative());
 }
 
 #[test]

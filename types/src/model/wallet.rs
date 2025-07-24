@@ -751,6 +751,21 @@ pub struct Send {
     pub psbt: Option<Psbt>,
 }
 
+/// Models the result of JSON-RPC method `sendall`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SendAll {
+    /// If the transaction has a complete set of signatures.
+    pub complete: bool,
+    /// The transaction id for the send. Only 1 transaction is created regardless of the number of addresses.
+    pub txid: Option<Txid>,
+    /// If add_to_wallet is false, the hex-encoded raw transaction with signature(s).
+    pub hex: Option<Transaction>,
+    /// If more signatures are needed, or if add_to_wallet is false, the base64-encoded (partially)
+    /// signed transaction.
+    pub psbt: Option<Psbt>,
+}
+
 /// Models the result of JSON-RPC method `sendmany`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -766,6 +781,15 @@ pub struct SendToAddress {
 /// Models the result of JSON-RPC method `signmessage`.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SignMessage(pub sign_message::MessageSignature);
+
+/// Models the result of JSON-RPC method `simulaterawtransaction`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SimulateRawTransaction {
+    /// The wallet balance change (negative means decrease).
+    #[serde(default, with = "bitcoin::amount::serde::as_btc")]
+    pub balance_change: SignedAmount,
+}
 
 /// Models the result of JSON-RPC method `unloadwallet`.
 ///

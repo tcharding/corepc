@@ -47,7 +47,7 @@
 //! | gettxout                           | version + model |                                        |
 //! | gettxoutproof                      | returns string  |                                        |
 //! | gettxoutsetinfo                    | version + model |                                        |
-//! | gettxspendingprevout               | version + model | TODO                                   |
+//! | gettxspendingprevout               | version + model |                                        |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
@@ -194,7 +194,7 @@
 //! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version + model | UNTESTED                               |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | migratewallet                      | version + model | TODO                                   |
+//! | migratewallet                      | version         |                                        |
 //! | newkeypool                         | returns nothing |                                        |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
@@ -210,7 +210,7 @@
 //! | rescanblockchain                   | version + model | UNTESTED                               |
 //! | restorewallet                      | version         |                                        |
 //! | send                               | version + model |                                        |
-//! | sendall                            | version + model | TODO                                   |
+//! | sendall                            | version + model |                                        |
 //! | sendmany                           | version + model | UNTESTED                               |
 //! | sendtoaddress                      | version + model |                                        |
 //! | sethdseed                          | returns nothing |                                        |
@@ -219,7 +219,7 @@
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
-//! | simulaterawtransaction             | version + model | TODO                                   |
+//! | simulaterawtransaction             | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
@@ -312,8 +312,9 @@ pub use crate::{
     },
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetPeerInfo, GetTransaction,
-        GetTransactionDetail, GetTransactionError, GlobalXpub, ListUnspent, ListUnspentItem,
-        Proprietary, PsbtInput, PsbtOutput, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
-        TaprootScriptPathSig,
+        GetTransactionDetail, GetTransactionError, GetTxSpendingPrevout, GetTxSpendingPrevoutError,
+        GlobalXpub, ListUnspent, ListUnspentItem, MigrateWallet, Proprietary, PsbtInput,
+        PsbtOutput, SendAll, SendAllError, SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf,
+        TaprootScript, TaprootScriptPathSig,
     },
 };

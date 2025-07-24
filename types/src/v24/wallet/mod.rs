@@ -10,7 +10,7 @@ mod into;
 use bitcoin::Transaction;
 use serde::{Deserialize, Serialize};
 
-pub use self::error::GetTransactionError;
+pub use self::error::{GetTransactionError, SendAllError};
 pub use super::{
     Bip125Replaceable, GetTransactionDetailError, ListUnspentItemError, TransactionCategory,
 };
@@ -165,4 +165,75 @@ pub struct ListUnspentItem {
     /// List of parent descriptors for the scriptPubKey of this coin. v24 and later only.
     #[serde(rename = "parent_descs")]
     pub parent_descriptors: Option<Vec<String>>,
+}
+
+/// Result of JSON-RPC method `migratewallet`.
+///
+/// > migratewallet ( "wallet_name" "passphrase" )
+/// >
+/// > EXPERIMENTAL warning: This call may not work as expected and may be changed in future releases
+/// >
+/// > Migrate the wallet to a descriptor wallet.
+/// > A new wallet backup will need to be made.
+/// >
+/// > The migration process will create a backup of the wallet before migrating. This backup
+/// > file will be named {wallet name}-{timestamp}.legacy.bak and can be found in the directory
+/// > for this wallet. In the event of an incorrect migration, the backup can be restored using restorewallet.
+/// > Encrypted wallets must have the passphrase provided as an argument to this call.
+/// >
+/// > Arguments:
+/// > 1. wallet_name    (string, optional, default=the wallet name from the RPC endpoint) The name of the wallet to migrate. If provided both here and in the RPC endpoint, the two must be identical.
+/// > 2. passphrase     (string) The wallet passphrase
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct MigrateWallet {
+    /// The name of the primary migrated wallet
+    pub wallet_name: String,
+    /// The name of the migrated wallet containing the watchonly scripts
+    pub watchonly_name: Option<String>,
+    /// The name of the migrated wallet containing solvable but not watched scripts
+    pub solvables_name: Option<String>,
+    /// The location of the backup of the original wallet
+    pub backup_path: String,
+}
+
+/// Result of JSON-RPC method `sendall`.
+///
+/// > sendall ["address",{"address":amount,...},...] ( conf_target "estimate_mode" fee_rate options )
+/// >
+/// > EXPERIMENTAL warning: this call may be changed in future releases.
+/// >
+/// > Spend the value of all (or specific) confirmed UTXOs in the wallet to one or more recipients.
+/// > Unconfirmed inbound UTXOs and locked UTXOs will not be spent. Sendall will respect the avoid_reuse wallet flag.
+/// > If your wallet contains many small inputs, either because it received tiny payments or as a result of accumulating change, consider using `send_max` to exclude inputs that are worth less than the fees needed to spend them.
+/// >
+/// > Arguments:
+/// > 1. recipients                       (json array, required) The sendall destinations. Each address may only appear once.
+/// >                                     Optionally some recipients can be specified with an amount to perform payments, but at least one address must appear without a specified amount.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SendAll {
+    /// If the transaction has a complete set of signatures.
+    pub complete: bool,
+    /// The transaction id for the send. Only 1 transaction is created regardless of the number of addresses.
+    pub txid: Option<String>,
+    /// If add_to_wallet is false, the hex-encoded raw transaction with signature(s).
+    pub hex: Option<String>,
+    /// If more signatures are needed, or if add_to_wallet is false, the base64-encoded (partially) signed transaction.
+    pub psbt: Option<String>,
+}
+
+/// Result of JSON-RPC method `simulaterawtransaction`.
+///
+/// > simulaterawtransaction ( ["rawtx",...] {"include_watchonly":bool,...} )
+/// >
+/// > Calculate the balance change resulting in the signing and broadcasting of the given transaction(s).
+/// >
+/// > Arguments:
+/// > 1. rawtxs                            (json array, optional) An array of hex strings of raw transactions.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SimulateRawTransaction {
+    /// The wallet balance change (negative means decrease).
+    pub balance_change: f64,
 }

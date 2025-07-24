@@ -5,6 +5,7 @@ use core::fmt;
 use bitcoin::amount::ParseAmountError;
 use bitcoin::consensus::encode;
 use bitcoin::hex;
+use bitcoin::psbt::PsbtParseError;
 
 use super::GetTransactionDetailError;
 use crate::error::write_err;
@@ -88,4 +89,40 @@ impl std::error::Error for GetTransactionError {
 
 impl From<NumericError> for GetTransactionError {
     fn from(e: NumericError) -> Self { Self::Numeric(e) }
+}
+
+/// Error when converting a `SendAll` type into the model type.
+#[derive(Debug)]
+pub enum SendAllError {
+    /// Conversion of the `txid` field failed.
+    Txid(hex::HexToArrayError),
+    /// Conversion of the `hex` field failed.
+    Hex(encode::FromHexError),
+    /// Conversion of the `psbt` field failed.
+    Psbt(PsbtParseError),
+}
+
+impl fmt::Display for SendAllError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use SendAllError as E;
+
+        match *self {
+            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            E::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for SendAllError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        use SendAllError as E;
+
+        match *self {
+            E::Txid(ref e) => Some(e),
+            E::Hex(ref e) => Some(e),
+            E::Psbt(ref e) => Some(e),
+        }
+    }
 }

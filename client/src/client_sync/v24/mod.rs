@@ -4,6 +4,9 @@
 //!
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
+pub mod blockchain;
+pub mod wallet;
+
 use std::collections::BTreeMap;
 use std::path::Path;
 
@@ -48,6 +51,7 @@ crate::impl_client_v17__get_raw_mempool!();
 crate::impl_client_v17__get_tx_out!();
 crate::impl_client_v17__get_tx_out_proof!();
 crate::impl_client_v17__get_tx_out_set_info!();
+crate::impl_client_v24__get_tx_spending_prevout!();
 crate::impl_client_v17__precious_block!();
 crate::impl_client_v17__prune_blockchain!();
 crate::impl_client_v23__save_mempool!();
@@ -166,12 +170,14 @@ crate::impl_client_v18__list_wallet_dir!();
 crate::impl_client_v17__list_wallets!();
 crate::impl_client_v22__load_wallet!();
 crate::impl_client_v17__lock_unspent!();
+crate::impl_client_v24__migrate_wallet!();
 crate::impl_client_v23__new_keypool!();
 crate::impl_client_v21__psbt_bump_fee!();
 crate::impl_client_v17__remove_pruned_funds!();
 crate::impl_client_v17__rescan_blockchain!();
 crate::impl_client_v23__restore_wallet!();
 crate::impl_client_v21__send!();
+crate::impl_client_v24__send_all!();
 crate::impl_client_v17__send_many!();
 crate::impl_client_v17__send_to_address!();
 crate::impl_client_v17__set_hd_seed!();
@@ -179,6 +185,7 @@ crate::impl_client_v17__set_tx_fee!();
 crate::impl_client_v19__set_wallet_flag!();
 crate::impl_client_v17__sign_message!();
 crate::impl_client_v17__sign_raw_transaction_with_wallet!();
+crate::impl_client_v24__simulate_raw_transaction!();
 crate::impl_client_v21__unload_wallet!();
 crate::impl_client_v21__upgrade_wallet!();
 crate::impl_client_v17__wallet_create_funded_psbt!();
