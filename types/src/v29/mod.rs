@@ -311,8 +311,8 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetChainTxStats,
         GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
         GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError, MempoolEntry,
-        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo, SetWalletFlag,
-        Softfork, SoftforkType,
+        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag, Softfork,
+        SoftforkType,
     },
     v20::GenerateToDescriptor,
     v21::{
@@ -334,12 +334,12 @@ pub use crate::{
     v25::{GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors},
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
-        GetBalancesError, GetPrioritisedTransactions, GetTransactionError, GetTxOutSetInfo,
-        GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError, LoadWallet,
-        PrioritisedTransaction, UnloadWallet,
+        GetBalancesError, GetPeerInfo, GetPrioritisedTransactions, GetTransactionError,
+        GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
+        LoadWallet, PeerInfo, PrioritisedTransaction, UnloadWallet,
     },
     v28::{
-        GetNetworkInfo, GetPeerInfo, GetTransaction, Logging, SubmitPackage, SubmitPackageError,
+        GetNetworkInfo, GetTransaction, Logging, SubmitPackage, SubmitPackageError,
         SubmitPackageTxResult, SubmitPackageTxResultError, SubmitPackageTxResultFees,
         SubmitPackageTxResultFeesError,
     },

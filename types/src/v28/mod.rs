@@ -313,8 +313,8 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
         GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
-        SetWalletFlag, Softfork, SoftforkType,
+        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
+        Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
     v21::{
@@ -338,6 +338,6 @@ pub use crate::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
         GetBalancesError, GetPeerInfo, GetPrioritisedTransactions, GetTransactionError,
         GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
-        LoadWallet, PrioritisedTransaction, UnloadWallet,
+        LoadWallet, PeerInfo, PrioritisedTransaction, UnloadWallet,
     },
 };

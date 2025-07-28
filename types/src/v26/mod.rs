@@ -260,7 +260,7 @@ pub use self::{
     blockchain::{GetTxOutSetInfo, GetTxOutSetInfoError},
     control::Logging,
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
-    network::GetPeerInfo,
+    network::{GetPeerInfo, PeerInfo},
     raw_transactions::{
         DescriptorProcessPsbt, DescriptorProcessPsbtError, SubmitPackage, SubmitPackageError,
         SubmitPackageTxResult, SubmitPackageTxResultError, SubmitPackageTxResultFees,
@@ -315,8 +315,8 @@ pub use crate::{
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
         GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, PeerInfo,
-        SetWalletFlag, Softfork, SoftforkType,
+        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
+        Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
     v21::{
