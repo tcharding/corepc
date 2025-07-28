@@ -54,6 +54,7 @@ crate::impl_client_v24__get_tx_spending_prevout!();
 crate::impl_client_v17__precious_block!();
 crate::impl_client_v17__prune_blockchain!();
 crate::impl_client_v23__save_mempool!();
+crate::impl_client_v25__scan_blocks!();
 crate::impl_client_v17__verify_chain!();
 crate::impl_client_v17__verify_tx_out_proof!();
 

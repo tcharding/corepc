@@ -2,7 +2,8 @@
 
 use bitcoin::{Amount, BlockHash, FeeRate, Weight};
 
-use super::{GetBlockStats, GetBlockStatsError};
+use super::error::ScanBlocksStartError;
+use super::{GetBlockStats, GetBlockStatsError, ScanBlocksStart};
 use crate::model;
 
 impl GetBlockStats {
@@ -57,6 +58,23 @@ impl GetBlockStats {
             utxo_size_increase: self.utxo_size_increase,
             utxo_increase_actual: self.utxo_increase_actual,
             utxo_size_increase_actual: self.utxo_size_increase_actual,
+        })
+    }
+}
+
+impl ScanBlocksStart {
+    pub fn into_model(self) -> Result<model::ScanBlocksStart, ScanBlocksStartError> {
+        let relevant_blocks = self
+            .relevant_blocks
+            .iter()
+            .map(|s| s.parse())
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(ScanBlocksStartError::RelevantBlocks)?;
+
+        Ok(model::ScanBlocksStart {
+            from_height: crate::to_u32(self.from_height, "from_height")?,
+            to_height: crate::to_u32(self.to_height, "to_height")?,
+            relevant_blocks,
         })
     }
 }

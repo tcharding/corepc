@@ -51,7 +51,7 @@
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
-//! | scanblocks                         | version + model | TODO                                   |
+//! | scanblocks                         | version + model |                                        |
 //! | scantxoutset                       | omitted         | API marked as experimental             |
 //! | verifychain                        | version         |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
@@ -247,7 +247,9 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::GetBlockStats,
+    blockchain::{
+        GetBlockStats, ScanBlocksAbort, ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus,
+    },
     control::Logging,
     generating::{GenerateBlock, GenerateBlockError},
     wallet::{CreateWallet, ListDescriptors, LoadWallet, UnloadWallet},
