@@ -31,6 +31,7 @@ crate::define_jsonrpc_minreq_client!("v26");
 crate::impl_client_check_expected_server_version!({ [260000, 260100, 260200] });
 
 // == Blockchain ==
+crate::impl_client_v26__dump_tx_out_set!();
 crate::impl_client_v17__get_best_block_hash!();
 crate::impl_client_v17__get_block!();
 crate::impl_client_v17__get_blockchain_info!();

@@ -10,6 +10,30 @@ use node::vtype::*;             // All the version specific types.
 use node::mtype;
 
 #[test]
+#[cfg(not(feature = "v25_and_below"))]
+fn blockchain__dump_tx_out_set__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let (_address, _tx) = node.create_mined_transaction();
+
+    let temp_path = integration_test::random_tmp_file();
+    let path = temp_path.to_str().expect("temp path should be valid UTF-8");
+    let json: DumpTxOutSet;
+    #[cfg(feature = "v28_and_below")]
+    {
+        json = node.client.dump_tx_out_set(path).expect("dumptxoutset");
+    }
+    #[cfg(not(feature = "v28_and_below"))]
+    {
+        json = node.client.dump_tx_out_set(path, "latest").expect("dumptxoutset");
+    }
+    let model: Result<mtype::DumpTxOutSet, DumpTxOutSetError> = json.into_model();
+    let dump = model.unwrap();
+
+    assert!(dump.coins_written.to_sat() > 0);
+}
+
+#[test]
 fn blockchain__get_best_block_hash__modelled() {
     let node = Node::with_wallet(Wallet::None, &[]);
 

@@ -9,6 +9,18 @@
 //!
 //! See or use the `define_jsonrpc_minreq_client!` macro to define a `Client`.
 
+/// Implements Bitcoin Core JSON-RPC API method `dumptxoutset`.
+#[macro_export]
+macro_rules! impl_client_v29__dump_tx_out_set {
+    () => {
+        impl Client {
+            pub fn dump_tx_out_set(&self, path: &str, snapshot_type: &str) -> Result<DumpTxOutSet> {
+                self.call("dumptxoutset", &[path.into(), snapshot_type.into()])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `getdescriptoractivity`.
 #[macro_export]
 macro_rules! impl_client_v29__get_descriptor_activity {

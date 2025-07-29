@@ -7,6 +7,52 @@ use bitcoin::{amount, hex};
 use crate::error::write_err;
 use crate::NumericError;
 
+/// Error when converting a `DumpTxOutSet` type into the model type.
+#[derive(Debug)]
+pub enum DumpTxOutSetError {
+    /// Conversion of the `coins_written` field to Amount failed.
+    CoinsWritten(amount::ParseAmountError),
+    /// Conversion of the `base_hash` field failed.
+    BaseHash(hex::HexToArrayError),
+    /// Conversion of the `txoutset_hash` field failed.
+    TxOutSetHash(hex::HexToArrayError),
+    /// Conversion of numeric type to expected type failed.
+    Numeric(NumericError),
+}
+
+impl fmt::Display for DumpTxOutSetError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use DumpTxOutSetError::*;
+
+        match *self {
+            CoinsWritten(ref e) =>
+                write_err!(f, "conversion of the `coins_written` field failed"; e),
+            BaseHash(ref e) => write_err!(f, "conversion of the `base_hash` field failed"; e),
+            TxOutSetHash(ref e) =>
+                write_err!(f, "conversion of the `txoutset_hash` field failed"; e),
+            Numeric(ref e) => write_err!(f, "numeric"; e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for DumpTxOutSetError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        use DumpTxOutSetError::*;
+
+        match *self {
+            CoinsWritten(ref e) => Some(e),
+            BaseHash(ref e) => Some(e),
+            TxOutSetHash(ref e) => Some(e),
+            Numeric(ref e) => Some(e),
+        }
+    }
+}
+
+impl From<NumericError> for DumpTxOutSetError {
+    fn from(e: NumericError) -> Self { Self::Numeric(e) }
+}
+
 /// Error when converting a `GetTxOut` type into the model type.
 #[derive(Debug)]
 pub enum GetTxOutSetInfoError {

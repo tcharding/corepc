@@ -7,7 +7,7 @@ use super::Method;
 /// Data for the JSON RPC methods provided by Bitcoin Core v29.
 pub const METHODS: &[Method] = &[
     // blockchain
-    Method::new_no_model("dumptxoutset", "DumpTxOutSet", "dump_tx_out_set"),
+    Method::new_modelled("dumptxoutset", "DumpTxOutSet", "dump_tx_out_set"),
     Method::new_modelled("getbestblockhash", "GetBestBlockHash", "get_best_block_hash"),
     Method::new_modelled("getblock", "GetBlockVerboseZero", "get_block"), // We only check one of the types.
     Method::new_modelled("getblockchaininfo", "GetBlockchainInfo", "get_blockchain_info"),

@@ -26,7 +26,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | dumptxoutset                       | version + model | TODO                                   |
+//! | dumptxoutset                       | version + model |                                        |
 //! | getbestblockhash                   | version + model |                                        |
 //! | getblock                           | version + model | Includes additional 'verbose' type     |
 //! | getblockchaininfo                  | version + model |                                        |
@@ -323,5 +323,6 @@ pub use crate::{
         LastProcessedBlockError, LoadWallet, Logging, PeerInfo, PrioritisedTransaction,
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError, UnloadWallet,
+        DumpTxOutSet, DumpTxOutSetError,
     },
 };

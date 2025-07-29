@@ -26,7 +26,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | dumptxoutset                       | version + model | TODO                                   |
+//! | dumptxoutset                       | version + model |                                        |
 //! | getbestblockhash                   | version + model |                                        |
 //! | getblock                           | version + model | Includes additional 'verbose' type     |
 //! | getblockchaininfo                  | version + model |                                        |
@@ -257,7 +257,7 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::{GetTxOutSetInfo, GetTxOutSetInfoError},
+    blockchain::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError},
     control::Logging,
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
     network::{GetPeerInfo, PeerInfo},

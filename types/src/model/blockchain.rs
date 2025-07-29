@@ -8,6 +8,7 @@
 use alloc::collections::BTreeMap;
 
 use bitcoin::address::NetworkUnchecked;
+use bitcoin::hashes::sha256;
 use bitcoin::{
     block, Address, Amount, Block, BlockHash, CompactTarget, FeeRate, Network, OutPoint, ScriptBuf,
     Target, TxMerkleNode, TxOut, Txid, Weight, Work, Wtxid,
@@ -15,6 +16,24 @@ use bitcoin::{
 use serde::{Deserialize, Serialize};
 
 use crate::ScriptPubkey;
+
+/// Models the result of JSON-RPC method `dumptxoutset`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct DumpTxOutSet {
+    /// The number of coins written in the snapshot.
+    pub coins_written: Amount,
+    /// The hash of the base of the snapshot.
+    pub base_hash: BlockHash,
+    /// The height of the base of the snapshot.
+    pub base_height: u32,
+    /// The absolute path that the snapshot was written to.
+    pub path: String,
+    /// The hash of the UTXO set contents.
+    pub tx_out_set_hash: sha256::Hash,
+    /// The number of transactions in the chain up to and including the base block.
+    pub n_chain_tx: u32,
+}
 
 /// Models the result of JSON-RPC method `getbestblockhash`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
