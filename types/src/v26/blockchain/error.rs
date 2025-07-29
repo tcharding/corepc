@@ -92,3 +92,43 @@ impl std::error::Error for GetTxOutSetInfoError {
 impl From<NumericError> for GetTxOutSetInfoError {
     fn from(e: NumericError) -> Self { Self::Numeric(e) }
 }
+
+/// Error when converting a `LoadTxOutSet` type into the model type.
+#[derive(Debug)]
+pub enum LoadTxOutSetError {
+    /// Conversion of the `coins_loaded` field to Amount failed.
+    CoinsLoaded(amount::ParseAmountError),
+    /// Conversion of the `tip_hash` field failed.
+    TipHash(hex::HexToArrayError),
+    /// Conversion of numeric type to expected type failed.
+    Numeric(NumericError),
+}
+
+impl fmt::Display for LoadTxOutSetError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use LoadTxOutSetError::*;
+
+        match *self {
+            CoinsLoaded(ref e) => write_err!(f, "conversion of the `coins_loaded` field failed"; e),
+            TipHash(ref e) => write_err!(f, "conversion of the `tip_hash` field failed"; e),
+            Numeric(ref e) => write_err!(f, "numeric"; e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for LoadTxOutSetError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        use LoadTxOutSetError::*;
+
+        match *self {
+            CoinsLoaded(ref e) => Some(e),
+            TipHash(ref e) => Some(e),
+            Numeric(ref e) => Some(e),
+        }
+    }
+}
+
+impl From<NumericError> for LoadTxOutSetError {
+    fn from(e: NumericError) -> Self { Self::Numeric(e) }
+}

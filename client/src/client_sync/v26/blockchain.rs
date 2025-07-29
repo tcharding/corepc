@@ -32,3 +32,15 @@ macro_rules! impl_client_v26__get_tx_out_set_info {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `loadtxoutset`.
+#[macro_export]
+macro_rules! impl_client_v26__load_tx_out_set {
+    () => {
+        impl Client {
+            pub fn load_tx_out_set(&self, path: &str) -> Result<LoadTxOutSet> {
+                self.call("loadtxoutset", &[path.into()])
+            }
+        }
+    };
+}

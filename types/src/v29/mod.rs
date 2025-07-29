@@ -52,7 +52,7 @@
 //! | gettxoutsetinfo                    | version + model |                                        |
 //! | gettxspendingprevout               | version + model |                                        |
 //! | importmempool                      | version + model | TODO                                   |
-//! | loadtxoutset                       | version + model | TODO                                   |
+//! | loadtxoutset                       | version + model | UNTESTED                               |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
@@ -340,6 +340,7 @@ pub use crate::{
         GetBalancesError, GetPeerInfo, GetPrioritisedTransactions, GetTransactionError,
         GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
         LoadWallet, PeerInfo, PrioritisedTransaction, UnloadWallet, DumpTxOutSet, DumpTxOutSetError,
+        LoadTxOutSet, LoadTxOutSetError,
     },
     v28::{
         GetNetworkInfo, GetTransaction, Logging, SubmitPackage, SubmitPackageError,

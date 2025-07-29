@@ -51,7 +51,7 @@
 //! | gettxoutsetinfo                    | version + model |                                        |
 //! | gettxspendingprevout               | version + model |                                        |
 //! | importmempool                      | version + model | TODO                                   |
-//! | loadtxoutset                       | version + model | TODO                                   |
+//! | loadtxoutset                       | version + model | UNTESTED                               |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
@@ -257,7 +257,7 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError},
+    blockchain::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError},
     control::Logging,
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
     network::{GetPeerInfo, PeerInfo},

@@ -9,7 +9,7 @@ mod into;
 
 use serde::{Deserialize, Serialize};
 
-pub use self::error::{DumpTxOutSetError, GetTxOutSetInfoError};
+pub use self::error::{DumpTxOutSetError, GetTxOutSetInfoError, LoadTxOutSetError};
 
 /// Result of JSON-RPC method `dumptxoutset`.
 ///
@@ -67,4 +67,26 @@ pub struct GetTxOutSetInfo {
     /// The serialized hash (only present if 'hash_serialized_3' hash_type is chosen).
     /// v26 and later only.
     pub hash_serialized_3: Option<String>,
+}
+
+/// Result of JSON-RPC method `loadtxoutset`.
+///
+/// > loadtxoutset "path"
+/// >
+/// > Load the serialized UTXO set from a file.
+/// > Once this snapshot is loaded, its contents will be deserialized into a second chainstate data structure, which is then used to sync to the network's tip.
+/// >
+/// > Arguments:
+/// > 1. path    (string, required) path to the snapshot file. If relative, will be prefixed by datadir.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct LoadTxOutSet {
+    /// The number of coins loaded from the snapshot.
+    pub coins_loaded: f64,
+    /// The hash of the base of the snapshot.
+    pub tip_hash: String,
+    /// The height of the base of the snapshot.
+    pub base_height: i64,
+    /// The absolute path that the snapshot was loaded from.
+    pub path: String,
 }

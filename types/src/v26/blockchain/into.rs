@@ -3,7 +3,7 @@
 use bitcoin::hashes::sha256;
 use bitcoin::{Amount, BlockHash};
 
-use super::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError};
+use super::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError};
 use crate::model;
 
 impl DumpTxOutSet {
@@ -53,5 +53,18 @@ impl GetTxOutSetInfo {
             disk_size,
             total_amount,
         })
+    }
+}
+
+impl LoadTxOutSet {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::LoadTxOutSet, LoadTxOutSetError> {
+        use LoadTxOutSetError as E;
+
+        let tip_hash = self.tip_hash.parse::<BlockHash>().map_err(E::TipHash)?;
+        let base_height = crate::to_u32(self.base_height, "base_height")?;
+        let coins_loaded = Amount::from_btc(self.coins_loaded).map_err(E::CoinsLoaded)?;
+
+        Ok(model::LoadTxOutSet { coins_loaded, tip_hash, base_height, path: self.path })
     }
 }

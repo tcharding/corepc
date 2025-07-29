@@ -722,6 +722,20 @@ pub struct ReceiveActivity {
     pub output_spk: ScriptPubkey,
 }
 
+/// Models the result of JSON-RPC method `loadtxoutset`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct LoadTxOutSet {
+    /// The number of coins loaded from the snapshot.
+    pub coins_loaded: Amount,
+    /// The hash of the base of the snapshot.
+    pub tip_hash: BlockHash,
+    /// The height of the base of the snapshot.
+    pub base_height: u32,
+    /// The absolute path that the snapshot was loaded from.
+    pub path: String,
+}
+
 /// Models the result of the JSON-RPC method `scanblocks` start.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct ScanBlocksStart {
