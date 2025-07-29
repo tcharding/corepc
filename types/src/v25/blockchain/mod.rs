@@ -4,10 +4,12 @@
 //!
 //! Types for methods found under the `== Blockchain ==` section of the API docs.
 
+mod error;
 mod into;
 
 use serde::{Deserialize, Serialize};
 
+pub use self::error::ScanBlocksStartError;
 pub use super::GetBlockStatsError;
 
 /// Result of JSON-RPC method `getblockstats`.
@@ -114,4 +116,41 @@ pub struct GetBlockStats {
     /// v25 and later only.
     #[serde(rename = "utxo_size_inc_actual")]
     pub utxo_size_increase_actual: Option<i32>,
+}
+
+/// Result of JSON-RPC method `scanblocks` with action "abort".
+///
+/// > scanblocks "abort"
+/// >
+/// > Aborts the current scan and returns whether an abort was successful.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ScanBlocksAbort(pub bool);
+
+/// Result of JSON-RPC method `scanblocks` with action "start".
+///
+/// > scanblocks "start" [scanobjects,...] ( start_height stop_height "filtertype" "options" )
+/// >
+/// > Arguments:
+/// > 1. scanobjects                            (json array, required) Array of scan objects
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ScanBlocksStart {
+    /// The height we started the scan from
+    pub from_height: i64,
+    /// The height we ended the scan at
+    pub to_height: i64,
+    /// Blocks that may have matched a scanobject
+    pub relevant_blocks: Vec<String>,
+}
+
+/// Result of JSON-RPC method `scanblocks` with action "status".
+///
+/// > scanblocks "status"
+/// >
+/// > Returns progress report (in %) of the current scan.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ScanBlocksStatus {
+    /// Approximate percent complete
+    pub progress: f64,
+    /// Height of the block currently being scanned
+    pub current_height: i64,
 }

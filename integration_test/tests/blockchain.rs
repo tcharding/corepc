@@ -373,6 +373,23 @@ fn blockchain__savemempool() {
     }
 }
 
+#[cfg(not(feature = "v24_and_below"))]
+#[test]
+fn blockchain__scan_blocks_modelled() {
+    let node = Node::with_wallet(Wallet::None, &["-blockfilterindex=1"]);
+
+    // Arbitrary scan descriptor
+    let scan_desc = "pkh(022afc20bf379bc96a2f4e9e63ffceb8652b2b6a097f63fbee6ecec2a49a48010e)";
+
+    let json: ScanBlocksStart = node.client.scan_blocks_start(&[scan_desc]).expect("scanblocks start");
+    let model: Result<mtype::ScanBlocksStart, ScanBlocksStartError> = json.into_model();
+    model.unwrap();
+
+    let _: Option<ScanBlocksStatus> = node.client.scan_blocks_status().expect("scanblocks status");
+
+    let _: ScanBlocksAbort = node.client.scan_blocks_abort().expect("scanblocks abort");
+}
+
 #[test]
 fn blockchain__verify_tx_out_proof__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);

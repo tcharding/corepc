@@ -702,3 +702,14 @@ pub struct ReceiveActivity {
     /// The ScriptPubKey.
     pub output_spk: ScriptPubkey,
 }
+
+/// Models the result of the JSON-RPC method `scanblocks` start.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct ScanBlocksStart {
+    /// The height we started the scan from
+    pub from_height: u32,
+    /// The height we ended the scan at
+    pub to_height: u32,
+    /// Blocks that may have matched a scanobject
+    pub relevant_blocks: Vec<BlockHash>,
+}

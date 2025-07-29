@@ -56,7 +56,7 @@
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
-//! | scanblocks                         | version + model | TODO                                   |
+//! | scanblocks                         | version + model |                                        |
 //! | scantxoutset                       | omitted         | API marked as experimental             |
 //! | verifychain                        | version         |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
@@ -331,7 +331,10 @@ pub use crate::{
         SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
         TaprootScriptPathSig,
     },
-    v25::{GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors},
+    v25::{
+        GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, ScanBlocksAbort,
+        ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus,
+    },
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
         GetBalancesError, GetPrioritisedTransactions, GetTransactionError, GetTxOutSetInfo,
