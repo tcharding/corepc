@@ -89,6 +89,7 @@ crate::impl_client_v17__add_node!();
 crate::impl_client_v17__clear_banned!();
 crate::impl_client_v17__disconnect_node!();
 crate::impl_client_v17__get_added_node_info!();
+crate::impl_client_v26__get_addr_man_info!();
 crate::impl_client_v17__get_connection_count!();
 crate::impl_client_v17__get_net_totals!();
 crate::impl_client_v17__get_network_info!();

@@ -100,7 +100,7 @@
 //! | clearbanned                        | returns nothing |                                        |
 //! | disconnectnode                     | returns nothing |                                        |
 //! | getaddednodeinfo                   | version         |                                        |
-//! | getaddrmaninfo                     | version + model | TODO                                   |
+//! | getaddrmaninfo                     | version         |                                        |
 //! | getconnectioncount                 | version         |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
@@ -343,6 +343,7 @@ pub use crate::{
         GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
         LoadWallet, PeerInfo, UnloadWallet, DumpTxOutSet, DumpTxOutSetError,
         LoadTxOutSet, LoadTxOutSetError, GetChainStates, GetChainStatesError, ChainState,
+        AddrManInfoNetwork, GetAddrManInfo,
     },
     v27::{GetPrioritisedTransactions, PrioritisedTransaction},
 };

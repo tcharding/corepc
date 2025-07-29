@@ -100,7 +100,7 @@
 //! | clearbanned                        | returns nothing |                                        |
 //! | disconnectnode                     | returns nothing |                                        |
 //! | getaddednodeinfo                   | version         |                                        |
-//! | getaddrmaninfo                     | version + model | TODO                                   |
+//! | getaddrmaninfo                     | version         |                                        |
 //! | getconnectioncount                 | version         |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
@@ -260,7 +260,7 @@ pub use self::{
     blockchain::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError, GetChainStates, GetChainStatesError, ChainState},
     control::Logging,
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
-    network::{GetPeerInfo, PeerInfo},
+    network::{AddrManInfoNetwork, GetAddrManInfo, GetPeerInfo, PeerInfo},
     raw_transactions::{
         DescriptorProcessPsbt, DescriptorProcessPsbtError, SubmitPackage, SubmitPackageError,
         SubmitPackageTxResult, SubmitPackageTxResultError, SubmitPackageTxResultFees,
