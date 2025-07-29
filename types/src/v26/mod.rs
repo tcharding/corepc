@@ -50,7 +50,7 @@
 //! | gettxoutproof                      | returns string  |                                        |
 //! | gettxoutsetinfo                    | version + model |                                        |
 //! | gettxspendingprevout               | version + model |                                        |
-//! | importmempool                      | version + model | TODO                                   |
+//! | importmempool                      | returns nothing |                                        |
 //! | loadtxoutset                       | version + model | UNTESTED                               |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |

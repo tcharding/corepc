@@ -36,7 +36,7 @@ pub const METHODS: &[Method] = &[
     Method::new_string("gettxoutproof", "get_tx_out_proof"),
     Method::new_modelled("gettxoutsetinfo", "GetTxOutSetInfo", "get_tx_out_set_info"),
     Method::new_modelled("gettxspendingprevout", "GetTxSpendingPrevout", "get_tx_spending_prevout"),
-    Method::new_modelled("importmempool", "ImportMempool", "import_mempool"),
+    Method::new_nothing("importmempool", "ImportMempool", "import_mempool"),
     Method::new_modelled("loadtxoutset", "LoadTxOutSet", "load_tx_out_set"),
     Method::new_nothing("preciousblock", "precious_block"),
     Method::new_no_model("pruneblockchain", "PruneBlockchain", "prune_blockchain"),

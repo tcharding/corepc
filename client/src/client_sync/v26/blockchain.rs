@@ -45,6 +45,22 @@ macro_rules! impl_client_v26__get_tx_out_set_info {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `importmempool`.
+#[macro_export]
+macro_rules! impl_client_v26__import_mempool {
+    () => {
+        impl Client {
+            pub fn import_mempool(&self, filepath: &str) -> Result<()> {
+                match self.call("importmempool", &[filepath.into()]) {
+                    Ok(serde_json::Value::Object(ref map)) if map.is_empty() => Ok(()),
+                    Ok(res) => Err(Error::Returned(res.to_string())),
+                    Err(err) => Err(err.into()),
+                }
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `loadtxoutset`.
 #[macro_export]
 macro_rules! impl_client_v26__load_tx_out_set {

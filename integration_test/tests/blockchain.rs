@@ -370,6 +370,18 @@ fn blockchain__get_tx_spending_prevout__modelled() {
 }
 
 #[test]
+#[cfg(not(feature = "v25_and_below"))]
+fn blockchain__import_mempool() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let (_address, _tx) = node.create_mined_transaction();
+
+    let mempool_path = node.client.save_mempool().expect("savemempool");
+
+    let _: () = node.client.import_mempool(&mempool_path.filename).expect("importmempool");
+}
+
+#[test]
 fn blockchain__precious_block() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.mine_a_block();
