@@ -36,7 +36,7 @@
 //! | getblockhash                       | version + model |                                        |
 //! | getblockheader                     | version + model | Includes additional 'verbose' type     |
 //! | getblockstats                      | version + model |                                        |
-//! | getchainstates                     | version + model | TODO                                   |
+//! | getchainstates                     | version + model |                                        |
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdeploymentinfo                  | version + model |                                        |
@@ -257,7 +257,7 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError},
+    blockchain::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError, GetChainStates, GetChainStatesError, ChainState},
     control::Logging,
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
     network::{GetPeerInfo, PeerInfo},

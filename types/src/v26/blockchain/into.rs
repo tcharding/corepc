@@ -3,8 +3,40 @@
 use bitcoin::hashes::sha256;
 use bitcoin::{Amount, BlockHash};
 
-use super::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError};
+use super::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError, GetChainStatesError, GetChainStates};
 use crate::model;
+
+impl GetChainStates {
+    /// Converts v26 GetChainStates (and its ChainState subtypes) to model::GetChainStates
+    pub fn into_model(self) -> Result<model::GetChainStates, GetChainStatesError> {
+        use GetChainStatesError as E;
+
+        Ok(model::GetChainStates {
+            headers: crate::to_u32(self.headers, "headers").map_err(E::Numeric)?,
+            chain_states: self
+                .chain_states
+                .into_iter()
+                .map(|s| {
+                    Ok(model::ChainState {
+                        blocks: crate::to_u32(s.blocks, "blocks").map_err(E::Numeric)?,
+                        best_block_hash: s.best_block_hash.parse().map_err(E::BestBlockHash)?,
+                        bits: None,   // v29 and later only.
+                        target: None, // v29 and later only.
+                        difficulty: s.difficulty,
+                        verification_progress: s.verification_progress,
+                        snapshot_block_hash: match s.snapshot_block_hash {
+                            Some(s) => Some(s.parse().map_err(E::SnapshotBlockHash)?),
+                            None => None,
+                        },
+                        coins_db_cache_bytes: s.coins_db_cache_bytes,
+                        coins_tip_cache_bytes: s.coins_tip_cache_bytes,
+                        validated: s.validated,
+                    })
+                })
+                .collect::<Result<_, E>>()?,
+        })
+    }
+}
 
 impl DumpTxOutSet {
     /// Converts version specific type to a version nonspecific, more strongly typed type.

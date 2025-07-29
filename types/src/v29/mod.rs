@@ -36,7 +36,7 @@
 //! | getblockhash                       | version + model |                                        |
 //! | getblockheader                     | version + model | Includes additional 'verbose' type     |
 //! | getblockstats                      | version + model |                                        |
-//! | getchainstates                     | version + model | TODO                                   |
+//! | getchainstates                     | version + model |                                        |
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdeploymentinfo                  | version + model |                                        |
@@ -261,7 +261,7 @@ pub use self::{
         ActivityEntry, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
         GetBlockHeaderVerboseError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockchainInfo,
         GetBlockchainInfoError, GetDescriptorActivity, GetDescriptorActivityError, ReceiveActivity,
-        SpendActivity,
+        SpendActivity, GetChainStates, ChainState, GetChainStatesError,
     },
     mining::{
         BlockTemplateTransaction, GetMiningInfo, GetMiningInfoError, NextBlockInfo,

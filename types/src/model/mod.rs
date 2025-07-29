@@ -31,6 +31,7 @@ pub use self::{
         GetRawMempoolVerbose, GetTxOut, GetTxOutSetInfo, GetTxSpendingPrevout,
         GetTxSpendingPrevoutItem, MempoolEntry, MempoolEntryFees, ReceiveActivity, ScanBlocksStart,
         Softfork, SoftforkType, SpendActivity, VerifyTxOutProof, DumpTxOutSet, LoadTxOutSet,
+        GetChainStates, ChainState,
     },
     generating::{Generate, GenerateBlock, GenerateToAddress, GenerateToDescriptor},
     mining::{

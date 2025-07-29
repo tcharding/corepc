@@ -7,6 +7,48 @@ use bitcoin::{amount, hex};
 use crate::error::write_err;
 use crate::NumericError;
 
+/// Error when converting a `ChainState` type into the model type.
+#[derive(Debug)]
+pub enum GetChainStatesError {
+    /// Conversion of the `best_block_hash` field failed.
+    BestBlockHash(hex::HexToArrayError),
+    /// Conversion of the `snapshot_block_hash` field failed.
+    SnapshotBlockHash(hex::HexToArrayError),
+    /// Conversion of numeric type to expected type failed.
+    Numeric(NumericError),
+}
+
+impl fmt::Display for GetChainStatesError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use GetChainStatesError::*;
+
+        match *self {
+            BestBlockHash(ref e) =>
+                write_err!(f, "conversion of the `best_block_hash` field failed"; e),
+            SnapshotBlockHash(ref e) =>
+                write_err!(f, "conversion of the `snapshot_block_hash` field failed"; e),
+            Numeric(ref e) => write_err!(f, "numeric"; e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for GetChainStatesError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        use GetChainStatesError::*;
+
+        match *self {
+            BestBlockHash(ref e) => Some(e),
+            SnapshotBlockHash(ref e) => Some(e),
+            Numeric(ref e) => Some(e),
+        }
+    }
+}
+
+impl From<NumericError> for GetChainStatesError {
+    fn from(e: NumericError) -> Self { Self::Numeric(e) }
+}
+
 /// Error when converting a `DumpTxOutSet` type into the model type.
 #[derive(Debug)]
 pub enum DumpTxOutSetError {

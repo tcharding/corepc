@@ -228,6 +228,56 @@ impl From<NumericError> for GetBlockHeaderVerboseError {
     fn from(e: NumericError) -> Self { Self::Numeric(e) }
 }
 
+/// Error when converting a `ChainState` type into the model type.
+#[derive(Debug)]
+pub enum GetChainStatesError {
+    /// Conversion of the `best_block_hash` field failed.
+    BestBlockHash(hex::HexToArrayError),
+    /// Conversion of the transaction `bits` field failed.
+    Bits(UnprefixedHexError),
+    /// Conversion of the `target` field failed.
+    Target(UnprefixedHexError),
+    /// Conversion of the `snapshot_block_hash` field failed.
+    SnapshotBlockHash(hex::HexToArrayError),
+    /// Conversion of numeric type to expected type failed.
+    Numeric(NumericError),
+}
+
+impl fmt::Display for GetChainStatesError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use GetChainStatesError::*;
+
+        match *self {
+            BestBlockHash(ref e) =>
+                write_err!(f, "conversion of the `best_block_hash` field failed"; e),
+            Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
+            Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
+            SnapshotBlockHash(ref e) =>
+                write_err!(f, "conversion of the `snapshot_block_hash` field failed"; e),
+            Numeric(ref e) => write_err!(f, "numeric"; e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for GetChainStatesError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        use GetChainStatesError::*;
+
+        match *self {
+            BestBlockHash(ref e) => Some(e),
+            Bits(ref e) => Some(e),
+            Target(ref e) => Some(e),
+            SnapshotBlockHash(ref e) => Some(e),
+            Numeric(ref e) => Some(e),
+        }
+    }
+}
+
+impl From<NumericError> for GetChainStatesError {
+    fn from(e: NumericError) -> Self { Self::Numeric(e) }
+}
+
 /// Error when converting a `GetDescriptorActivity` type into the model type.
 #[derive(Debug)]
 pub enum GetDescriptorActivityError {

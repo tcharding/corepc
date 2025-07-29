@@ -36,7 +36,7 @@
 //! | getblockhash                       | version + model |                                        |
 //! | getblockheader                     | version + model | Includes additional 'verbose' type     |
 //! | getblockstats                      | version + model |                                        |
-//! | getchainstates                     | version + model | TODO                                   |
+//! | getchainstates                     | version + model |                                        |
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdeploymentinfo                  | version + model |                                        |
@@ -342,6 +342,6 @@ pub use crate::{
         GetBalancesError, GetPeerInfo, GetPrioritisedTransactions, GetTransactionError,
         GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
         LoadWallet, PeerInfo, PrioritisedTransaction, UnloadWallet, DumpTxOutSet, DumpTxOutSetError,
-        LoadTxOutSet, LoadTxOutSetError,
+        LoadTxOutSet, LoadTxOutSetError, GetChainStates, GetChainStatesError, ChainState,
     },
 };

@@ -21,6 +21,18 @@ macro_rules! impl_client_v26__dump_tx_out_set {
     };
 }
 
+/// Implements Bitcoin Core JSON-RPC API method `getchainstates`.
+#[macro_export]
+macro_rules! impl_client_v26__get_chain_states {
+    () => {
+        impl Client {
+            pub fn get_chain_states(&self) -> Result<GetChainStates> {
+                self.call("getchainstates", &[])
+            }
+        }
+    };
+}
+
 /// Implements Bitcoin Core JSON-RPC API method `gettxoutsetinfo`.
 #[macro_export]
 macro_rules! impl_client_v26__get_tx_out_set_info {

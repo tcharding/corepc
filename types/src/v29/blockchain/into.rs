@@ -170,6 +170,40 @@ impl GetBlockHeaderVerbose {
     pub fn block_header(self) -> Result<block::Header, hex::HexToArrayError> { todo!() }
 }
 
+impl GetChainStates {
+    /// Converts v26 GetChainStates (and its ChainState subtypes) to model::GetChainStates
+    pub fn into_model(self) -> Result<model::GetChainStates, GetChainStatesError> {
+        use GetChainStatesError as E;
+
+        Ok(model::GetChainStates {
+            headers: crate::to_u32(self.headers, "headers").map_err(E::Numeric)?,
+            chain_states: self
+                .chain_states
+                .into_iter()
+                .map(|s| {
+                    Ok(model::ChainState {
+                        blocks: crate::to_u32(s.blocks, "blocks").map_err(E::Numeric)?,
+                        best_block_hash: s.best_block_hash.parse().map_err(E::BestBlockHash)?,
+                        bits: Some(CompactTarget::from_unprefixed_hex(&s.bits).map_err(E::Bits)?),
+                        target: Some(
+                            Target::from_unprefixed_hex(s.target.as_ref()).map_err(E::Target)?,
+                        ),
+                        difficulty: s.difficulty,
+                        verification_progress: s.verification_progress,
+                        snapshot_block_hash: match s.snapshot_block_hash {
+                            Some(s) => Some(s.parse().map_err(E::SnapshotBlockHash)?),
+                            None => None,
+                        },
+                        coins_db_cache_bytes: s.coins_db_cache_bytes,
+                        coins_tip_cache_bytes: s.coins_tip_cache_bytes,
+                        validated: s.validated,
+                    })
+                })
+                .collect::<Result<_, E>>()?,
+        })
+    }
+}
+
 impl GetDescriptorActivity {
     /// Converts the raw JSON-RPC `GetDescriptorActivity` type into the strongly-typed model version.
     pub fn into_model(self) -> Result<model::GetDescriptorActivity, GetDescriptorActivityError> {

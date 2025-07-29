@@ -39,6 +39,7 @@ crate::impl_client_v23__get_block_from_peer!();
 crate::impl_client_v17__get_block_hash!();
 crate::impl_client_v17__get_block_header!();
 crate::impl_client_v17__get_block_stats!();
+crate::impl_client_v26__get_chain_states!();
 crate::impl_client_v17__get_chain_tips!();
 crate::impl_client_v17__get_chain_tx_stats!();
 crate::impl_client_v23__get_deployment_info!();

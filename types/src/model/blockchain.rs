@@ -346,6 +346,42 @@ pub struct GetBlockStats {
     pub utxo_size_increase_actual: Option<i32>,
 }
 
+/// Models the result of JSON-RPC method `getchainstates`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetChainStates {
+    /// The number of headers seen so far.
+    pub headers: u32,
+    /// List of the chainstates ordered by work, with the most-work (active) chainstate last.
+    pub chain_states: Vec<ChainState>,
+}
+
+/// A single chainstate returned as part of `getchainstates`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ChainState {
+    /// Number of blocks in this chainstate.
+    pub blocks: u32,
+    /// Blockhash of the tip.
+    pub best_block_hash: BlockHash,
+    /// nBits: compact representation of the block difficulty target.
+    pub bits: Option<CompactTarget>, // v29 and later only.
+    /// The difficulty target.
+    pub target: Option<Target>, // v29 and later only.
+    /// Difficulty of the tip.
+    pub difficulty: f64,
+    /// Progress towards the network tip (0..=1).
+    pub verification_progress: f64,
+    /// The base block of the snapshot this chainstate is based on, if any.
+    pub snapshot_block_hash: Option<BlockHash>,
+    /// Size of the coinsdb cache.
+    pub coins_db_cache_bytes: u64,
+    /// Size of the coinstip cache.
+    pub coins_tip_cache_bytes: u64,
+    /// Whether the chainstate is fully validated.
+    pub validated: bool,
+}
+
 /// Models the result of JSON-RPC method `getchaintips`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]

@@ -185,6 +185,20 @@ fn getblockstats_txindex() {
 }
 
 #[test]
+#[cfg(not(feature = "v25_and_below"))]
+fn blockchain__get_chain_states__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let (_address, _tx) = node.create_mined_transaction();
+
+    let json: GetChainStates = node.client.get_chain_states().expect("getchainstates");
+    let model: Result<mtype::GetChainStates, _> = json.into_model();
+    let chain_states = model.unwrap();
+
+    assert!(chain_states.chain_states[0].blocks > 0);
+}
+
+#[test]
 fn blockchain__get_chain_tips__modelled() {
     let node = Node::with_wallet(Wallet::None, &[]);
 
