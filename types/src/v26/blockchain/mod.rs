@@ -9,7 +9,9 @@ mod into;
 
 use serde::{Deserialize, Serialize};
 
-pub use self::error::{GetChainStatesError, DumpTxOutSetError, GetTxOutSetInfoError, LoadTxOutSetError};
+pub use self::error::{
+    DumpTxOutSetError, GetChainStatesError, GetTxOutSetInfoError, LoadTxOutSetError,
+};
 
 /// Result of JSON-RPC method `dumptxoutset`.
 ///

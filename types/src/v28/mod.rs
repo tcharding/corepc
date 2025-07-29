@@ -84,7 +84,7 @@
 //! | getblocktemplate                   | version + model |                                        |
 //! | getmininginfo                      | version + model |                                        |
 //! | getnetworkhashps                   | returns boolean |                                        |
-//! | getprioritisedtransactions         | version + model | TODO                                   |
+//! | getprioritisedtransactions         | version + model |                                        |
 //! | prioritisetransaction              | returns boolean |                                        |
 //! | submitblock                        | returns nothing |                                        |
 //! | submitheader                       | returns nothing |                                        |
@@ -339,9 +339,10 @@ pub use crate::{
     },
     v26::{
         CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
-        GetBalancesError, GetPeerInfo, GetPrioritisedTransactions, GetTransactionError,
+        GetBalancesError, GetPeerInfo, GetTransactionError,
         GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
-        LoadWallet, PeerInfo, PrioritisedTransaction, UnloadWallet, DumpTxOutSet, DumpTxOutSetError,
+        LoadWallet, PeerInfo, UnloadWallet, DumpTxOutSet, DumpTxOutSetError,
         LoadTxOutSet, LoadTxOutSetError, GetChainStates, GetChainStatesError, ChainState,
     },
+    v27::{GetPrioritisedTransactions, PrioritisedTransaction},
 };

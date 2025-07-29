@@ -84,7 +84,7 @@
 //! | getblocktemplate                   | version + model |                                        |
 //! | getmininginfo                      | version + model |                                        |
 //! | getnetworkhashps                   | returns boolean |                                        |
-//! | getprioritisedtransactions         | version + model | TODO                                   |
+//! | getprioritisedtransactions         | version + model |                                        |
 //! | prioritisetransaction              | returns boolean |                                        |
 //! | submitblock                        | returns nothing |                                        |
 //! | submitheader                       | returns nothing |                                        |
