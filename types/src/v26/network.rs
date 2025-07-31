@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core `v23` - network.
+//! The JSON-RPC API for Bitcoin Core `v26` - network.
 //!
 //! Types for methods found under the `== Network ==` section of the API docs.
 
@@ -32,8 +32,10 @@ pub struct PeerInfo {
     /// Local address as reported by the peer.
     #[serde(rename = "addrlocal")]
     pub address_local: Option<String>,
-    /// Network (ipv4, ipv6, or onion) the peer connected through.
-    pub network: Option<String>,
+    /// Network (ipv4, ipv6, onion, i2p, cjdns, not_publicly_routable) the peer connected through.
+    pub network: String,
+    /// Mapped AS (Autonomous System) number at the end of the BGP route to the peer, used for diversifying peer selection (only displayed if the -asmap config option is set).
+    pub mapped_as: Option<u32>,
     /// The services offered.
     pub services: String,
     /// The services offered, in human-readable form. v0.19 and later only.
