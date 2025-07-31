@@ -8,6 +8,7 @@
 use alloc::collections::BTreeMap;
 
 use bitcoin::address::NetworkUnchecked;
+use bitcoin::hashes::sha256;
 use bitcoin::{
     block, Address, Amount, Block, BlockHash, CompactTarget, FeeRate, Network, OutPoint, ScriptBuf,
     Target, TxMerkleNode, TxOut, Txid, Weight, Work, Wtxid,
@@ -15,6 +16,24 @@ use bitcoin::{
 use serde::{Deserialize, Serialize};
 
 use crate::ScriptPubkey;
+
+/// Models the result of JSON-RPC method `dumptxoutset`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct DumpTxOutSet {
+    /// The number of coins written in the snapshot.
+    pub coins_written: Amount,
+    /// The hash of the base of the snapshot.
+    pub base_hash: BlockHash,
+    /// The height of the base of the snapshot.
+    pub base_height: u32,
+    /// The absolute path that the snapshot was written to.
+    pub path: String,
+    /// The hash of the UTXO set contents.
+    pub tx_out_set_hash: sha256::Hash,
+    /// The number of transactions in the chain up to and including the base block.
+    pub n_chain_tx: u32,
+}
 
 /// Models the result of JSON-RPC method `getbestblockhash`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -325,6 +344,42 @@ pub struct GetBlockStats {
     /// The increase/decrease in size for the utxo index, not counting unspendables.
     /// v25 and later only.
     pub utxo_size_increase_actual: Option<i32>,
+}
+
+/// Models the result of JSON-RPC method `getchainstates`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetChainStates {
+    /// The number of headers seen so far.
+    pub headers: u32,
+    /// List of the chainstates ordered by work, with the most-work (active) chainstate last.
+    pub chain_states: Vec<ChainState>,
+}
+
+/// A single chainstate returned as part of `getchainstates`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ChainState {
+    /// Number of blocks in this chainstate.
+    pub blocks: u32,
+    /// Blockhash of the tip.
+    pub best_block_hash: BlockHash,
+    /// nBits: compact representation of the block difficulty target.
+    pub bits: Option<CompactTarget>, // v29 and later only.
+    /// The difficulty target.
+    pub target: Option<Target>, // v29 and later only.
+    /// Difficulty of the tip.
+    pub difficulty: f64,
+    /// Progress towards the network tip (0..=1).
+    pub verification_progress: f64,
+    /// The base block of the snapshot this chainstate is based on, if any.
+    pub snapshot_block_hash: Option<BlockHash>,
+    /// Size of the coinsdb cache.
+    pub coins_db_cache_bytes: u64,
+    /// Size of the coinstip cache.
+    pub coins_tip_cache_bytes: u64,
+    /// Whether the chainstate is fully validated.
+    pub validated: bool,
 }
 
 /// Models the result of JSON-RPC method `getchaintips`.
@@ -701,6 +756,20 @@ pub struct ReceiveActivity {
     pub vout: u32,
     /// The ScriptPubKey.
     pub output_spk: ScriptPubkey,
+}
+
+/// Models the result of JSON-RPC method `loadtxoutset`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct LoadTxOutSet {
+    /// The number of coins loaded from the snapshot.
+    pub coins_loaded: Amount,
+    /// The hash of the base of the snapshot.
+    pub tip_hash: BlockHash,
+    /// The height of the base of the snapshot.
+    pub base_height: u32,
+    /// The absolute path that the snapshot was loaded from.
+    pub path: String,
 }
 
 /// Models the result of the JSON-RPC method `scanblocks` start.

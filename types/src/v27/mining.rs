@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core `v0.17` - mining.
+//! The JSON-RPC API for Bitcoin Core `v27` - mining.
 //!
 //! Types for methods found under the `== Mining ==` section of the API docs.
 
@@ -30,6 +30,8 @@ pub struct PrioritisedTransaction {
     pub fee_delta: i64,
     /// Whether this transaction is currently in mempool.
     pub in_mempool: bool,
+    /// Modified fee in satoshis. Only returned if in_mempool=true.
+    pub modified_fee: Option<u64>,
 }
 
 impl GetPrioritisedTransactions {
@@ -50,7 +52,7 @@ impl PrioritisedTransaction {
         model::PrioritisedTransaction {
             fee_delta: Amount::from_sat(self.fee_delta as u64),
             in_mempool: self.in_mempool,
-            modified_fee: None,
+            modified_fee: self.modified_fee.map(Amount::from_sat),
         }
     }
 }

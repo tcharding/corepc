@@ -50,6 +50,19 @@ fn network__get_added_node_info() {
 }
 
 #[test]
+#[cfg(not(feature = "v25_and_below"))]
+fn network__get_addr_man_info() {
+    let node = Node::with_wallet(Wallet::None, &[]);
+    let json: GetAddrManInfo = node.client.get_addr_man_info().expect("getaddrmaninfo");
+    assert!(!json.0.is_empty());
+
+    for (network_name, network_info) in &json.0 {
+        assert!(!network_name.is_empty());
+        assert_eq!(network_info.total, network_info.new + network_info.tried);
+    };
+}
+
+#[test]
 fn network__get_connection_count() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let _: GetConnectionCount = node.client.get_connection_count().expect("getconnectioncount");

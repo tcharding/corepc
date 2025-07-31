@@ -6,6 +6,7 @@
 
 pub mod blockchain;
 pub mod mining;
+pub mod network;
 pub mod raw_transactions;
 
 use std::collections::BTreeMap;
@@ -31,6 +32,7 @@ crate::define_jsonrpc_minreq_client!("v26");
 crate::impl_client_check_expected_server_version!({ [260000, 260100, 260200] });
 
 // == Blockchain ==
+crate::impl_client_v26__dump_tx_out_set!();
 crate::impl_client_v17__get_best_block_hash!();
 crate::impl_client_v17__get_block!();
 crate::impl_client_v17__get_blockchain_info!();
@@ -40,6 +42,7 @@ crate::impl_client_v23__get_block_from_peer!();
 crate::impl_client_v17__get_block_hash!();
 crate::impl_client_v17__get_block_header!();
 crate::impl_client_v17__get_block_stats!();
+crate::impl_client_v26__get_chain_states!();
 crate::impl_client_v17__get_chain_tips!();
 crate::impl_client_v17__get_chain_tx_stats!();
 crate::impl_client_v23__get_deployment_info!();
@@ -53,6 +56,8 @@ crate::impl_client_v17__get_tx_out!();
 crate::impl_client_v17__get_tx_out_proof!();
 crate::impl_client_v26__get_tx_out_set_info!();
 crate::impl_client_v24__get_tx_spending_prevout!();
+crate::impl_client_v26__import_mempool!();
+crate::impl_client_v26__load_tx_out_set!();
 crate::impl_client_v17__precious_block!();
 crate::impl_client_v17__prune_blockchain!();
 crate::impl_client_v23__save_mempool!();
@@ -88,6 +93,7 @@ crate::impl_client_v17__add_node!();
 crate::impl_client_v17__clear_banned!();
 crate::impl_client_v17__disconnect_node!();
 crate::impl_client_v17__get_added_node_info!();
+crate::impl_client_v26__get_addr_man_info!();
 crate::impl_client_v17__get_connection_count!();
 crate::impl_client_v17__get_net_totals!();
 crate::impl_client_v17__get_network_info!();

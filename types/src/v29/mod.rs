@@ -26,7 +26,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | dumptxoutset                       | version + model | TODO                                   |
+//! | dumptxoutset                       | version + model |                                        |
 //! | getbestblockhash                   | version + model |                                        |
 //! | getblock                           | version + model | Includes additional 'verbose' type     |
 //! | getblockchaininfo                  | version + model |                                        |
@@ -36,7 +36,7 @@
 //! | getblockhash                       | version + model |                                        |
 //! | getblockheader                     | version + model | Includes additional 'verbose' type     |
 //! | getblockstats                      | version + model |                                        |
-//! | getchainstates                     | version + model | TODO                                   |
+//! | getchainstates                     | version + model |                                        |
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdeploymentinfo                  | version + model |                                        |
@@ -51,8 +51,8 @@
 //! | gettxoutproof                      | returns string  |                                        |
 //! | gettxoutsetinfo                    | version + model |                                        |
 //! | gettxspendingprevout               | version + model |                                        |
-//! | importmempool                      | version + model | TODO                                   |
-//! | loadtxoutset                       | version + model | TODO                                   |
+//! | importmempool                      | returns nothing |                                        |
+//! | loadtxoutset                       | version + model | UNTESTED                               |
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | version         |                                        |
@@ -85,7 +85,7 @@
 //! | getblocktemplate                   | version + model |                                        |
 //! | getmininginfo                      | version + model |                                        |
 //! | getnetworkhashps                   | returns boolean |                                        |
-//! | getprioritisedtransactions         | version + model | TODO                                   |
+//! | getprioritisedtransactions         | version + model |                                        |
 //! | prioritisetransaction              | returns boolean |                                        |
 //! | submitblock                        | returns nothing |                                        |
 //! | submitheader                       | returns nothing |                                        |
@@ -101,7 +101,7 @@
 //! | clearbanned                        | returns nothing |                                        |
 //! | disconnectnode                     | returns nothing |                                        |
 //! | getaddednodeinfo                   | version         |                                        |
-//! | getaddrmaninfo                     | version + model | TODO                                   |
+//! | getaddrmaninfo                     | version         |                                        |
 //! | getconnectioncount                 | version         |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
@@ -258,10 +258,10 @@ mod util;
 #[doc(inline)]
 pub use self::{
     blockchain::{
-        ActivityEntry, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
+        ActivityEntry, ChainState, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
         GetBlockHeaderVerboseError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockchainInfo,
-        GetBlockchainInfoError, GetDescriptorActivity, GetDescriptorActivityError, ReceiveActivity,
-        SpendActivity,
+        GetBlockchainInfoError, GetChainStates, GetChainStatesError, GetDescriptorActivity,
+        GetDescriptorActivityError, ReceiveActivity, SpendActivity,
     },
     mining::{
         BlockTemplateTransaction, GetMiningInfo, GetMiningInfoError, NextBlockInfo,
@@ -336,11 +336,13 @@ pub use crate::{
         ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus,
     },
     v26::{
-        CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
-        GetBalancesError, GetPeerInfo, GetPrioritisedTransactions, GetTransactionError,
-        GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
-        LoadWallet, PeerInfo, PrioritisedTransaction, UnloadWallet,
+        AddrManInfoNetwork, CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
+        DumpTxOutSet, DumpTxOutSetError, GetAddrManInfo, GetBalances, GetBalancesError,
+        GetPeerInfo, GetTransactionError, GetTxOutSetInfo, GetTxOutSetInfoError,
+        LastProcessedBlock, LastProcessedBlockError, LoadTxOutSet, LoadTxOutSetError, LoadWallet,
+        PeerInfo, UnloadWallet,
     },
+    v27::{GetPrioritisedTransactions, PrioritisedTransaction},
     v28::{
         GetNetworkInfo, GetTransaction, Logging, SubmitPackage, SubmitPackageError,
         SubmitPackageTxResult, SubmitPackageTxResultError, SubmitPackageTxResultFees,

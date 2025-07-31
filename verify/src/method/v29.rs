@@ -7,7 +7,7 @@ use super::Method;
 /// Data for the JSON RPC methods provided by Bitcoin Core v29.
 pub const METHODS: &[Method] = &[
     // blockchain
-    Method::new_no_model("dumptxoutset", "DumpTxOutSet", "dump_tx_out_set"),
+    Method::new_modelled("dumptxoutset", "DumpTxOutSet", "dump_tx_out_set"),
     Method::new_modelled("getbestblockhash", "GetBestBlockHash", "get_best_block_hash"),
     Method::new_modelled("getblock", "GetBlockVerboseZero", "get_block"), // We only check one of the types.
     Method::new_modelled("getblockchaininfo", "GetBlockchainInfo", "get_blockchain_info"),
@@ -36,8 +36,8 @@ pub const METHODS: &[Method] = &[
     Method::new_string("gettxoutproof", "get_tx_out_proof"),
     Method::new_modelled("gettxoutsetinfo", "GetTxOutSetInfo", "get_tx_out_set_info"),
     Method::new_modelled("gettxspendingprevout", "GetTxSpendingPrevout", "get_tx_spending_prevout"),
-    Method::new_modelled("importmempool", "ImportMempool", "import_mempool"),
-    Method::new_no_model("loadtxoutset", "LoadTxOutSet", "load_tx_out_set"),
+    Method::new_nothing("importmempool", "import_mempool"),
+    Method::new_modelled("loadtxoutset", "LoadTxOutSet", "load_tx_out_set"),
     Method::new_nothing("preciousblock", "precious_block"),
     Method::new_no_model("pruneblockchain", "PruneBlockchain", "prune_blockchain"),
     Method::new_no_model("savemempool", "SaveMempool", "save_mempool"),

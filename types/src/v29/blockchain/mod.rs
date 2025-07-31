@@ -12,7 +12,7 @@ use bitcoin::{Network, TxMerkleNode};
 
 pub use self::error::{
     GetBlockHeaderError, GetBlockHeaderVerboseError, GetBlockVerboseOneError,
-    GetBlockchainInfoError, GetDescriptorActivityError,
+    GetBlockchainInfoError, GetChainStatesError, GetDescriptorActivityError,
 };
 use crate::{model, ScriptPubkey};
 
@@ -181,6 +181,50 @@ pub struct GetBlockHeaderVerbose {
     /// The hash of the next block (if available).
     #[serde(rename = "nextblockhash")]
     pub next_block_hash: Option<String>,
+}
+
+/// Result of JSON-RPC method `getchainstates`.
+///
+/// > getchainstates
+/// >
+/// > Return information about chainstates.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetChainStates {
+    /// The number of headers seen so far.
+    pub headers: i64,
+    /// List of the chainstates ordered by work, with the most-work (active) chainstate last.
+    #[serde(rename = "chainstates")]
+    pub chain_states: Vec<ChainState>,
+}
+
+/// A single chainstate returned as part of `getchainstates`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ChainState {
+    /// Number of blocks in this chainstate.
+    pub blocks: i64,
+    /// Blockhash of the tip.
+    #[serde(rename = "bestblockhash")]
+    pub best_block_hash: String,
+    /// nBits: compact representation of the block difficulty target.
+    pub bits: String,
+    /// The difficulty target.
+    pub target: String,
+    /// Difficulty of the tip.
+    pub difficulty: f64,
+    /// Progress towards the network tip.
+    #[serde(rename = "verificationprogress")]
+    pub verification_progress: f64,
+    /// The base block of the snapshot this chainstate is based on, if any.
+    #[serde(rename = "snapshot_blockhash")]
+    pub snapshot_block_hash: Option<String>,
+    /// Size of the coinsdb cache.
+    pub coins_db_cache_bytes: u64,
+    /// Size of the coinstip cache.
+    pub coins_tip_cache_bytes: u64,
+    /// Whether the chainstate is fully validated.
+    pub validated: bool,
 }
 
 /// Result of JSON-RPC method `getdescriptoractivity`.
