@@ -3,7 +3,10 @@
 use bitcoin::hashes::sha256;
 use bitcoin::{Amount, BlockHash};
 
-use super::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError, GetChainStatesError, GetChainStates};
+use super::{
+    DumpTxOutSet, DumpTxOutSetError, GetChainStates, GetChainStatesError, GetTxOutSetInfo,
+    GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError,
+};
 use crate::model;
 
 impl GetChainStates {

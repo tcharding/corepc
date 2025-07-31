@@ -338,12 +338,11 @@ pub use crate::{
         ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus,
     },
     v26::{
-        CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
-        GetBalancesError, GetPeerInfo, GetTransactionError,
+        AddrManInfoNetwork, ChainState, CreateWallet, DescriptorProcessPsbt,
+        DescriptorProcessPsbtError, DumpTxOutSet, DumpTxOutSetError, GetAddrManInfo, GetBalances,
+        GetBalancesError, GetChainStates, GetChainStatesError, GetPeerInfo, GetTransactionError,
         GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
-        LoadWallet, PeerInfo, UnloadWallet, DumpTxOutSet, DumpTxOutSetError,
-        LoadTxOutSet, LoadTxOutSetError, GetChainStates, GetChainStatesError, ChainState,
-        AddrManInfoNetwork, GetAddrManInfo,
+        LoadTxOutSet, LoadTxOutSetError, LoadWallet, PeerInfo, UnloadWallet,
     },
     v27::{GetPrioritisedTransactions, PrioritisedTransaction},
 };

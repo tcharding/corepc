@@ -258,10 +258,10 @@ mod util;
 #[doc(inline)]
 pub use self::{
     blockchain::{
-        ActivityEntry, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
+        ActivityEntry, ChainState, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
         GetBlockHeaderVerboseError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockchainInfo,
-        GetBlockchainInfoError, GetDescriptorActivity, GetDescriptorActivityError, ReceiveActivity,
-        SpendActivity, GetChainStates, ChainState, GetChainStatesError,
+        GetBlockchainInfoError, GetChainStates, GetChainStatesError, GetDescriptorActivity,
+        GetDescriptorActivityError, ReceiveActivity, SpendActivity,
     },
     mining::{
         BlockTemplateTransaction, GetMiningInfo, GetMiningInfoError, NextBlockInfo,
@@ -336,12 +336,11 @@ pub use crate::{
         ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus,
     },
     v26::{
-        CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
-        GetBalancesError, GetPeerInfo, GetTransactionError,
-        GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
-        LoadWallet, PeerInfo, UnloadWallet, DumpTxOutSet, DumpTxOutSetError,
-        LoadTxOutSet, LoadTxOutSetError,
-        AddrManInfoNetwork, GetAddrManInfo,
+        AddrManInfoNetwork, CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
+        DumpTxOutSet, DumpTxOutSetError, GetAddrManInfo, GetBalances, GetBalancesError,
+        GetPeerInfo, GetTransactionError, GetTxOutSetInfo, GetTxOutSetInfoError,
+        LastProcessedBlock, LastProcessedBlockError, LoadTxOutSet, LoadTxOutSetError, LoadWallet,
+        PeerInfo, UnloadWallet,
     },
     v27::{GetPrioritisedTransactions, PrioritisedTransaction},
     v28::{

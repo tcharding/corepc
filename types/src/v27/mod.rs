@@ -251,9 +251,7 @@
 mod mining;
 
 #[doc(inline)]
-pub use self::{
-    mining::{GetPrioritisedTransactions, PrioritisedTransaction},
-};
+pub use self::mining::{GetPrioritisedTransactions, PrioritisedTransaction};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -323,14 +321,12 @@ pub use crate::{
         ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus,
     },
     v26::{
-        CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError, GetBalances,
-        GetBalancesError, GetPeerInfo, GetTransaction,
+        AddrManInfoNetwork, ChainState, CreateWallet, DescriptorProcessPsbt,
+        DescriptorProcessPsbtError, DumpTxOutSet, DumpTxOutSetError, GetAddrManInfo, GetBalances,
+        GetBalancesError, GetChainStates, GetChainStatesError, GetPeerInfo, GetTransaction,
         GetTransactionError, GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock,
-        LastProcessedBlockError, LoadWallet, Logging, PeerInfo,
+        LastProcessedBlockError, LoadTxOutSet, LoadTxOutSetError, LoadWallet, Logging, PeerInfo,
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError, UnloadWallet,
-        DumpTxOutSet, DumpTxOutSetError, LoadTxOutSet, LoadTxOutSetError,
-        GetChainStates, GetChainStatesError, ChainState,
-        AddrManInfoNetwork, GetAddrManInfo,
     },
 };

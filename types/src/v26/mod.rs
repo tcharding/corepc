@@ -257,7 +257,10 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::{DumpTxOutSet, DumpTxOutSetError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError, GetChainStates, GetChainStatesError, ChainState},
+    blockchain::{
+        ChainState, DumpTxOutSet, DumpTxOutSetError, GetChainStates, GetChainStatesError,
+        GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError,
+    },
     control::Logging,
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
     network::{AddrManInfoNetwork, GetAddrManInfo, GetPeerInfo, PeerInfo},
