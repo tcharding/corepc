@@ -55,6 +55,14 @@ main() {
     local cmd="${1:-usage}"
     local version="${2:-}"
 
+    # Handle 'run all' or 'start all' the same as 'all'
+    if [ "$cmd" = "start" ] || [ "$cmd" = "run" ]; then
+        if [ "$version" = "all" ]; then
+            cmd="all"
+            version=""
+        fi
+    fi
+
     # FIXME: This is a hackish way to get the help flag.
     if [ "$cmd" = "usage" ] || [ "$cmd" = "-h" ] || [ "$cmd" = "--help" ] || [ "$cmd" = "help" ]; then
         usage
