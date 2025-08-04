@@ -142,6 +142,7 @@ crate::impl_client_v17__add_multisig_address!();
 crate::impl_client_v17__backup_wallet!();
 crate::impl_client_v17__bump_fee!();
 crate::impl_client_v23__create_wallet!();
+crate::impl_client_v28__create_wallet_descriptor!();
 crate::impl_client_v17__dump_priv_key!();
 crate::impl_client_v17__dump_wallet!();
 crate::impl_client_v17__encrypt_wallet!();

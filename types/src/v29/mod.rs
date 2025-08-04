@@ -177,7 +177,7 @@
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
-//! | createwalletdescriptor             | version + model | TODO                                   |
+//! | createwalletdescriptor             | version         |                                        |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
@@ -345,6 +345,6 @@ pub use crate::{
     v28::{
         GetAddressInfo, GetAddressInfoEmbedded, GetNetworkInfo, GetTransaction, Logging,
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
-        SubmitPackageTxResultFees, SubmitPackageTxResultFeesError, GetHdKeys, HdKey, HdKeyDescriptor, GetHdKeysError,
+        SubmitPackageTxResultFees, SubmitPackageTxResultFeesError, GetHdKeys, HdKey, HdKeyDescriptor, GetHdKeysError, CreateWalletDescriptor,
     },
 };

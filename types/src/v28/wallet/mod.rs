@@ -146,6 +146,23 @@ pub struct GetAddressInfoEmbedded {
     pub labels: Option<Vec<String>>,
 }
 
+/// Result of the JSON-RPC method `createwalletdescriptor`.
+///
+/// > createwalletdescriptor "type" ( {"internal":bool,"hdkey":"str",...} )
+/// >
+/// > Creates the wallet's descriptor for the given address type. The address type must be one that the wallet does not already have a descriptor for.
+/// > Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.
+/// >
+/// > Arguments:
+/// > 1. type       (string, required) The address type the descriptor will produce. Options are "legacy", "p2sh-segwit", "bech32", and "bech32m".
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct CreateWalletDescriptor {
+    /// The public descriptors that were added to the wallet.
+    #[serde(rename = "descs")]
+    pub descriptors: Vec<String>,
+}
+
 /// Result of the JSON-RPC method `gethdkeys`.
 ///
 /// > gethdkeys ( {"active_only":bool,"private":bool,...} )

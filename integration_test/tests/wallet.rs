@@ -6,6 +6,7 @@
 #![allow(unused_imports)] // Some imports are only used in specific versions.
 
 use bitcoin::address::{Address, KnownHrp, NetworkChecked};
+use bitcoin::bip32::{Xpriv, Xpub};
 use bitcoin::{secp256k1, Amount, CompressedPublicKey, FeeRate, Network, PrivateKey, PublicKey};
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::{mtype, AddressType, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp};
@@ -116,6 +117,40 @@ fn wallet__bump_fee__modelled() {
 fn wallet__create_wallet__modelled() {
     // Implicitly tests `createwallet` because we create the default wallet.
     let _ = Node::with_wallet(Wallet::Default, &[]);
+}
+
+#[test]
+#[cfg(not(feature = "v27_and_below"))]
+fn wallet__create_wallet_descriptor() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    // BIP32 HD xprv/xpub for the creation of a descriptor with a private key that is in the wallet.
+    let secp = secp256k1::Secp256k1::new();
+    let seed = [0u8; 32];
+    let xprv = Xpriv::new_master(Network::Regtest, &seed).unwrap();
+    let xpub = Xpub::from_priv(&secp, &xprv);
+    let hdkey = xpub.to_string();
+
+    // Import the private key into the wallet.
+    let privkey = bitcoin::PrivateKey {
+        compressed: true,
+        network: Network::Regtest.into(),
+        inner: xprv.private_key,
+    };
+    let wif = privkey.to_wif();
+    let raw_descriptor = format!("wpkh({})", wif);
+    let info = node.client.get_descriptor_info(&raw_descriptor).expect("get_descriptor_info");
+    let descriptor = format!("{}#{}", raw_descriptor, info.checksum);
+
+    let import_req = ImportDescriptorsRequest::new(descriptor, 0);
+    node.client.import_descriptors(&[import_req]).expect("importdescriptors");
+
+    let json = node.client.create_wallet_descriptor("bech32", &hdkey)
+        .expect("createwalletdescriptor");
+
+    // Check that a SigWit descriptor was created.
+    let prefix = &json.descriptors[0][0..4];
+    assert_eq!(prefix, "wpkh");
 }
 
 #[test]

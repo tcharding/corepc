@@ -18,3 +18,16 @@ macro_rules! impl_client_v28__get_hd_keys {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `createwalletdescriptor`.
+#[macro_export]
+macro_rules! impl_client_v28__create_wallet_descriptor {
+    () => {
+        impl Client {
+            pub fn create_wallet_descriptor(&self, address_type: &str, hdkey: &str) -> Result<CreateWalletDescriptor> {
+                let hdkey = serde_json::json!({ "hdkey": hdkey });
+                self.call("createwalletdescriptor", &[address_type.into(), hdkey.into()])
+            }
+        }
+    };
+}

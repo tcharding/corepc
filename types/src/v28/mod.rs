@@ -176,7 +176,7 @@
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
-//! | createwalletdescriptor             | version + model | TODO                                   |
+//! | createwalletdescriptor             | version         |                                        |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
@@ -267,7 +267,7 @@ pub use self::{
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
     },
-    wallet::{GetAddressInfo, GetAddressInfoEmbedded, GetHdKeys, HdKey, HdKeyDescriptor, GetHdKeysError, GetTransaction},
+    wallet::{GetAddressInfo, GetAddressInfoEmbedded, CreateWalletDescriptor, GetHdKeys, HdKey, HdKeyDescriptor, GetHdKeysError, GetTransaction},
 };
 #[doc(inline)]
 pub use crate::{
