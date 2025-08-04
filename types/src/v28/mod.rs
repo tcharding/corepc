@@ -184,7 +184,7 @@
 //! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
-//! | gethdkeys                          | version + model | TODO                                   |
+//! | gethdkeys                          | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
 //! | getreceivedbyaddress               | version + model |                                        |
@@ -267,7 +267,7 @@ pub use self::{
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
     },
-    wallet::{GetAddressInfo, GetAddressInfoEmbedded, GetTransaction},
+    wallet::{GetAddressInfo, GetAddressInfoEmbedded, GetHdKeys, HdKey, HdKeyDescriptor, GetHdKeysError, GetTransaction},
 };
 #[doc(inline)]
 pub use crate::{

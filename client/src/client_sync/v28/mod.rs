@@ -5,6 +5,7 @@
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
 pub mod raw_transactions;
+pub mod wallet;
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -148,6 +149,7 @@ crate::impl_client_v17__get_addresses_by_label!();
 crate::impl_client_v17__get_address_info!();
 crate::impl_client_v17__get_balance!();
 crate::impl_client_v19__get_balances!();
+crate::impl_client_v28__get_hd_keys!();
 crate::impl_client_v18__get_received_by_label!();
 crate::impl_client_v17__get_new_address!();
 crate::impl_client_v17__get_raw_change_address!();

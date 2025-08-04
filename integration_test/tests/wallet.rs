@@ -248,6 +248,19 @@ fn wallet__get_balances() {
 }
 
 #[test]
+#[cfg(not(feature = "v27_and_below"))]
+fn wallet__get_hd_keys__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let json: GetHdKeys = node.client.get_hd_keys().expect("gethdkeys");
+    let model: Result<mtype::GetHdKeys, _> = json.into_model();
+    let hdkey = model.unwrap().0;
+
+    let descriptor_type = hdkey[0].descriptors[0].descriptor[..3].to_string();
+    assert_eq!(descriptor_type, "pkh");
+}
+
+#[test]
 fn wallet__get_new_address__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 

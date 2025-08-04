@@ -185,7 +185,7 @@
 //! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
-//! | gethdkeys                          | version + model | TODO                                   |
+//! | gethdkeys                          | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
 //! | getreceivedbyaddress               | version + model |                                        |
@@ -345,6 +345,6 @@ pub use crate::{
     v28::{
         GetAddressInfo, GetAddressInfoEmbedded, GetNetworkInfo, GetTransaction, Logging,
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
-        SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
+        SubmitPackageTxResultFees, SubmitPackageTxResultFeesError, GetHdKeys, HdKey, HdKeyDescriptor, GetHdKeysError,
     },
 };
