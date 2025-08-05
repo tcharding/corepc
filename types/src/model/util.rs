@@ -48,6 +48,14 @@ pub struct DeriveAddresses {
     pub addresses: Vec<Address<NetworkUnchecked>>,
 }
 
+/// Models the result of JSON-RPC method `deriveaddresses` for multipath descriptors.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct DeriveAddressesMultipath {
+    /// The derived addresses for each of the multipath expansions of the descriptor, in multipath specifier order.
+    pub addresses: Vec<DeriveAddresses>,
+}
+
 /// Models the result of JSON-RPC method `signmessagewithprivkey`.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SignMessageWithPrivKey(pub sign_message::MessageSignature);

@@ -156,7 +156,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | createmultisig                     | version + model |                                        |
-//! | deriveaddresses                    | version + model | TODO                                   |
+//! | deriveaddresses                    | version + model |                                        |
 //! | estimatesmartfee                   | version + model |                                        |
 //! | getdescriptorinfo                  | version         |                                        |
 //! | getindexinfo                       | version         |                                        |
@@ -267,7 +267,7 @@ pub use self::{
         BlockTemplateTransaction, GetMiningInfo, GetMiningInfoError, NextBlockInfo,
         NextBlockInfoError,
     },
-    util::GetDescriptorInfo,
+    util::{DeriveAddressesMultipath, GetDescriptorInfo},
 };
 #[doc(inline)]
 pub use crate::{
