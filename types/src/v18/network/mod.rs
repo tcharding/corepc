@@ -4,8 +4,6 @@
 //!
 //! Types for methods found under the `== Network ==` section of the API docs.
 
-mod into;
-
 use alloc::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};

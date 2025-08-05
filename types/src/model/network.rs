@@ -5,8 +5,7 @@
 //! These structs model the types returned by the JSON-RPC API but have concrete types
 //! and are not specific to a specific version of Bitcoin Core.
 
-use bitcoin::address::NetworkUnchecked;
-use bitcoin::{Address, FeeRate};
+use bitcoin::FeeRate;
 use serde::{Deserialize, Serialize};
 
 /// Models the result of JSON-RPC method `getnetworkinfo`.
@@ -73,27 +72,4 @@ pub struct GetNetworkInfoAddress {
     pub port: u16,
     /// Relative score.
     pub score: u32,
-}
-
-/// Result of JSON-RPC method `getnodeaddresses`.
-///
-/// > getnodeaddresses ( count )
-/// >
-/// > Return known addresses which can potentially be used to find new nodes in the network.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct GetNodeAddresses(pub Vec<NodeAddress>);
-
-/// An item from the list returned by the JSON-RPC method `getnodeaddresses`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct NodeAddress {
-    /// Timestamp in seconds since epoch (Jan 1 1970 GMT) when the node was last seen.
-    pub time: u64,
-    /// The services offered.
-    pub services: u64,
-    /// The address of the node.
-    pub address: Address<NetworkUnchecked>,
-    /// The port of the node.
-    pub port: u16,
 }

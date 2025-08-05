@@ -98,7 +98,7 @@
 //! | getconnectioncount                 | version         |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
-//! | getnodeaddresses                   | version + model |                                        |
+//! | getnodeaddresses                   | version         |                                        |
 //! | getpeerinfo                        | version         |                                        |
 //! | listbanned                         | version         |                                        |
 //! | ping                               | returns nothing |                                        |

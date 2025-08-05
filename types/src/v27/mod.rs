@@ -104,7 +104,7 @@
 //! | getconnectioncount                 | version         |                                        |
 //! | getnettotals                       | version         |                                        |
 //! | getnetworkinfo                     | version + model |                                        |
-//! | getnodeaddresses                   | version + model | TODO                                   |
+//! | getnodeaddresses                   | version         | TODO                                   |
 //! | getpeerinfo                        | version         |                                        |
 //! | listbanned                         | version         |                                        |
 //! | ping                               | returns nothing |                                        |

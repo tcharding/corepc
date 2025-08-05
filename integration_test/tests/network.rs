@@ -86,18 +86,15 @@ fn network__get_network_info__modelled() {
 }
 
 #[test]
-// Core version 18 onwards.
 #[cfg(not(feature = "v17"))]
 fn network__get_node_addresses() {
-    let node = Node::with_wallet(Wallet::None, &[]);
-    let json: GetNodeAddresses = node.client.get_node_addresses().expect("getnodeaddresses");
-    let res: Result<mtype::GetNodeAddresses, _> = json.into_model();
-    let model = res.expect("GetNodeAddresses into model");
-    assert!(model.0.len() <= 2500);
-    if let Some(addr) = model.0.first() {
-        assert!(addr.port > 0);
-        assert!(addr.time > 1231006505);
-    }
+    let (node1, node2, node3) = integration_test::three_node_network();
+
+    node1.mine_a_block();
+    node2.mine_a_block();
+    node3.mine_a_block();
+
+    let _: GetNodeAddresses = node1.client.get_node_addresses().expect("getnodeaddresses");
 }
 
 #[test]
