@@ -182,7 +182,7 @@
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
-//! | getaddressinfo                     | version + model | UNTESTED                               |
+//! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
 //! | gethdkeys                          | version + model | TODO                                   |
@@ -277,9 +277,9 @@ pub use crate::{
         CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
         CreateRawTransaction, DecodeRawTransaction, DumpPrivKey, DumpWallet, EncryptWallet,
         EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
-        FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo, GetAddressInfo,
-        GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
-        GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
+        FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
+        GetAddressInfoEmbeddedError,
+        GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
         GetBlockHash, GetBlockStatsError, GetBlockTemplate, GetBlockTemplateError,
         GetBlockVerboseZero, GetChainTips, GetChainTxStatsError, GetConnectionCount, GetDifficulty,
         GetMemoryInfoStats, GetMempoolInfoError, GetNetTotals, GetNetworkInfoAddress,
@@ -298,13 +298,13 @@ pub use crate::{
         SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
         TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
         ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, ScriptType,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetReceivedByLabel, ImportMulti,
         ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel, ListReceivedByLabelError,
-        ListWalletDir, ListWalletDirWallet, UtxoUpdatePsbt,
+        ListWalletDir, ListWalletDirWallet, UtxoUpdatePsbt, GetAddressInfoError,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,
@@ -346,6 +346,6 @@ pub use crate::{
     v28::{
         GetNetworkInfo, GetTransaction, Logging, SubmitPackage, SubmitPackageError,
         SubmitPackageTxResult, SubmitPackageTxResultError, SubmitPackageTxResultFees,
-        SubmitPackageTxResultFeesError,
+        SubmitPackageTxResultFeesError, GetAddressInfo, GetAddressInfoEmbedded,
     },
 };

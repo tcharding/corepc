@@ -170,7 +170,7 @@
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
-//! | getaddressinfo                     | version + model | UNTESTED                               |
+//! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
@@ -267,8 +267,8 @@ pub use crate::{
         CreatePsbt, CreateRawTransaction, CreateWallet, DecodeRawTransaction, DumpPrivKey,
         DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
-        GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
-        GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
+        GetAddressInfoEmbeddedError,
+        GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
         GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
         GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
         GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockVerboseZero,
@@ -289,14 +289,14 @@ pub use crate::{
         SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
         SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
         ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, ScriptType,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
         ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
         ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
-        NodeAddress, UtxoUpdatePsbt,
+        NodeAddress, UtxoUpdatePsbt, GetAddressInfoError,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
@@ -315,6 +315,6 @@ pub use crate::{
     },
     v22::{
         Banned, EnumerateSigners, GetMempoolInfo, ListBanned, ListDescriptors, ScriptPubkey,
-        WalletDisplayAddress,
+        WalletDisplayAddress, GetAddressInfo, GetAddressInfoEmbedded,
     },
 };

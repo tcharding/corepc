@@ -273,11 +273,9 @@ pub struct GetAddressInfo {
     pub embedded: Option<GetAddressInfoEmbedded>,
     /// If the address is compressed.
     #[serde(rename = "iscompressed")]
-    pub is_compressed: bool,
+    pub is_compressed: Option<bool>,
     /// The label associated with the address, "" is the default account.
     pub label: String,
-    /// DEPRECATED. The account associated with the address, "" is the default account.
-    pub account: String,
     /// The creation time of the key if available in seconds since epoch (Jan 1 1970 GMT).
     pub timestamp: Option<u32>,
     /// The HD keypath if the key is HD and available.
@@ -342,7 +340,7 @@ pub struct GetAddressInfoEmbedded {
     pub script_pubkey: String,
     /// If the key is a script.
     #[serde(rename = "isscript")]
-    pub is_script: bool,
+    pub is_script: Option<bool>,
     /// If the address is a witness address.
     #[serde(rename = "iswitness")]
     pub is_witness: bool,
@@ -356,8 +354,6 @@ pub struct GetAddressInfoEmbedded {
     pub script: Option<ScriptType>,
     /// The redeemscript for the p2sh address.
     pub hex: Option<String>,
-    /// Array of pubkeys associated with the known redeemscript (only if "script" is "multisig").
-    pub pubkeys: Vec<String>,
     /// Number of signatures required to spend multisig output (only if "script" is "multisig").
     #[serde(rename = "sigsrequired")]
     pub sigs_required: Option<i64>,
@@ -365,11 +361,11 @@ pub struct GetAddressInfoEmbedded {
     pub pubkey: Option<String>,
     /// If the address is compressed.
     #[serde(rename = "iscompressed")]
-    pub is_compressed: bool,
+    pub is_compressed: Option<bool>,
     /// The label associated with the address, "" is the default account.
-    pub label: String,
+    pub label: Option<String>,
     /// Array of labels associated with the address.
-    pub labels: Vec<GetAddressInfoLabel>,
+    pub labels: Option<Vec<GetAddressInfoLabel>>,
 }
 
 /// The `label` field of `GetAddressInfo` (and `GetAddressInfoEmbedded`).

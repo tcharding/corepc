@@ -167,7 +167,7 @@
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
-//! | getaddressinfo                     | version + model | UNTESTED                               |
+//! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
@@ -258,7 +258,7 @@ pub use crate::v17::{
     DecodePsbt, DecodePsbtError, DecodeRawTransaction, DecodeScript, DecodeScriptError,
     DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
     FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
-    GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
+    GetAddressInfoEmbeddedError,
     GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
     GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
     GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
@@ -280,7 +280,7 @@ pub use crate::v17::{
     SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget,
     ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo, ScriptType,
 };
 #[doc(inline)]
 pub use crate::v18::{
@@ -288,5 +288,5 @@ pub use crate::v18::{
     AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
     ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
     ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
-    NodeAddress, UtxoUpdatePsbt,
+    NodeAddress, UtxoUpdatePsbt, GetAddressInfo, GetAddressInfoError, GetAddressInfoEmbedded,
 };

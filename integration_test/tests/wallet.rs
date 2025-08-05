@@ -6,7 +6,7 @@
 #![allow(unused_imports)] // Some imports are only used in specific versions.
 
 use bitcoin::address::{Address, KnownHrp, NetworkChecked};
-use bitcoin::{secp256k1, Amount, CompressedPublicKey, FeeRate, PrivateKey, PublicKey};
+use bitcoin::{secp256k1, Amount, CompressedPublicKey, FeeRate, Network, PrivateKey, PublicKey};
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::{mtype, AddressType, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp};
 
@@ -192,15 +192,34 @@ fn wallet__get_addresses_by_label__modelled() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]        // FIXME: The types are broken.
-// TODO: Consider testing a few different address types.
 fn wallet__get_address_info__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
-    let address = node.client.new_address().expect("failed to create new address");
 
-    let json: GetAddressInfo = node.client.get_address_info(&address).expect("getaddressinfo");
+    // Test an address with a label.
+    let label_name = "test-label";
+    let addr = node.client.new_address_with_label(label_name).unwrap().assume_checked();
+    let json: GetAddressInfo = node.client.get_address_info(&addr).expect("getaddressinfo legacy");
     let model: Result<mtype::GetAddressInfo, GetAddressInfoError> = json.into_model();
-    model.unwrap();
+    let model = model.unwrap();
+    assert_eq!(model.address.assume_checked(), addr);
+    assert_eq!(model.labels[0], label_name);
+
+    // Test a SegWit address with embedded information.
+    let addr_p2sh = node.client.new_address_with_type(AddressType::P2shSegwit).unwrap();
+    let json: GetAddressInfo = node.client.get_address_info(&addr_p2sh).expect("getaddressinfo p2sh-segwit");
+    let model: Result<mtype::GetAddressInfo, GetAddressInfoError> = json.into_model();
+    let model = model.unwrap();
+    let embedded = model.embedded.unwrap();
+    assert_eq!(model.address.assume_checked(), addr_p2sh);
+    assert_eq!(model.script.unwrap(), mtype::ScriptType::WitnessV0KeyHash);
+    assert!(embedded.address.is_valid_for_network(Network::Regtest));
+
+    // Test a Bech32 address.
+    let addr_bech32 = node.client.new_address_with_type(AddressType::Bech32).unwrap();
+    let json: GetAddressInfo = node.client.get_address_info(&addr_bech32).expect("getaddressinfo bech32");
+    let model: Result<mtype::GetAddressInfo, GetAddressInfoError> = json.into_model();
+    let model = model.unwrap();
+    assert_eq!(model.address.assume_checked(), addr_bech32);
 }
 
 #[test]

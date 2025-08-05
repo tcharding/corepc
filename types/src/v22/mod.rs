@@ -179,7 +179,7 @@
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
-//! | getaddressinfo                     | version + model | UNTESTED                               |
+//! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
@@ -257,7 +257,7 @@ pub use self::{
     network::{Banned, GetPeerInfo, ListBanned, PeerInfo},
     raw_transactions::{DecodeScript, DecodeScriptError},
     signer::EnumerateSigners,
-    wallet::{ListDescriptors, WalletDisplayAddress},
+    wallet::{GetAddressInfo, GetAddressInfoEmbedded, ListDescriptors, WalletDisplayAddress},
 };
 #[doc(inline)]
 pub use crate::{
@@ -268,8 +268,8 @@ pub use crate::{
         CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction,
         DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
-        GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
-        GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
+        GetAddressInfoEmbeddedError,
+        GetAddressesByLabel, GetBalance, GetBestBlockHash, GetBlockCount,
         GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
         GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
         GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockVerboseZero,
@@ -291,14 +291,14 @@ pub use crate::{
         SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo,
+        WitnessUtxo, ScriptType,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetNodeAddresses, GetReceivedByLabel,
         ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
         ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
-        NodeAddress, UtxoUpdatePsbt,
+        NodeAddress, UtxoUpdatePsbt, GetAddressInfoError,
     },
     v19::{
         Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesError, GetBalancesMine,

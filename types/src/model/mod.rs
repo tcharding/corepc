@@ -51,7 +51,7 @@ pub use self::{
         SignMessageWithPrivKey, ValidateAddress,
     },
     wallet::{
-        AddMultisigAddress, AddressInformation, AddressLabel, AddressPurpose, Bip125Replaceable,
+        AddMultisigAddress, AddressInformation, AddressPurpose, Bip125Replaceable,
         BumpFee, CreateWallet, DumpPrivKey, GetAddressInfo, GetAddressInfoEmbedded,
         GetAddressesByLabel, GetBalance, GetBalances, GetBalancesMine, GetBalancesWatchOnly,
         GetNewAddress, GetRawChangeAddress, GetReceivedByAddress, GetReceivedByLabel,
