@@ -41,6 +41,24 @@ fn util__derive_addresses__modelled() {
     let json: DeriveAddresses = node.client.derive_addresses(descriptor).expect("deriveaddresses");
     let res: Result<mtype::DeriveAddresses, _> = json.into_model();
     let _ = res.expect("DeriveAddresses into model");
+
+    // For v29 and above test a multipath descriptor.
+    #[cfg(not(feature = "v28_and_below"))]
+    {
+        // Create a multipath descriptor taken from running `listdescriptors` on the node. With 2 derivation paths.
+        let multipath_descriptor = "wpkh([26b4ed16/84h/1h/0h]tpubDDe7JUw2CGU1rYZxupmNrhDXuE1fv25gs4je3BBuWCFwTW9QHGgyh5cjAEugd14ysJXTVshPvnUVABfD66HZKCS9gp5AYFd5K2WN2oVFp8t/<0;1>/*)#grvmsm8m";
+
+        let range = (0, 3);
+        let json: DeriveAddressesMultipath = node.client.derive_addresses_multipath(multipath_descriptor, range)
+            .expect("deriveaddresses");
+        let res: Result<mtype::DeriveAddressesMultipath, _> = json.into_model();
+        let derived = res.expect("DeriveAddressesMultipath into model");
+
+        // Should return 2 `DeriveAddresses`, one for each derivation path (0 and 1).
+        assert_eq!(derived.addresses.len(), 2);
+        // Each `DeriveAddresses` should contain 4 addresses for range [0, 3].
+        assert_eq!(derived.addresses[0].addresses.len(), 4);
+    }
 }
 
 #[test]

@@ -5,6 +5,7 @@
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
 pub mod blockchain;
+pub mod util;
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -126,7 +127,7 @@ crate::impl_client_v22__enumerate_signers!();
 
 // == Util ==
 crate::impl_client_v17__create_multisig!();
-crate::impl_client_v18__derive_addresses!();
+crate::impl_client_v29__derive_addresses!();
 crate::impl_client_v17__estimate_smart_fee!();
 crate::impl_client_v18__get_descriptor_info!();
 crate::impl_client_v21__get_index_info!();

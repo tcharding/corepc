@@ -47,7 +47,8 @@ pub use self::{
         TestMempoolAccept, UtxoUpdatePsbt,
     },
     util::{
-        CreateMultisig, DeriveAddresses, EstimateSmartFee, SignMessageWithPrivKey, ValidateAddress,
+        CreateMultisig, DeriveAddresses, DeriveAddressesMultipath, EstimateSmartFee,
+        SignMessageWithPrivKey, ValidateAddress,
     },
     wallet::{
         AddMultisigAddress, AddressInformation, AddressLabel, AddressPurpose, Bip125Replaceable,
