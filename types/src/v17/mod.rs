@@ -283,9 +283,9 @@ pub use self::{
         ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError,
         ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
-        ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, RescanBlockchain, SendMany,
-        SendToAddress, SetTxFee, SignMessage, TransactionCategory, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt, ScriptType,
+        ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, RescanBlockchain, ScriptType,
+        SendMany, SendToAddress, SetTxFee, SignMessage, TransactionCategory,
+        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
     },
     zmq::GetZmqNotifications,
 };
