@@ -163,7 +163,7 @@
 //! | getaccountaddress                  | returns nothing |                                        |
 //! | getaddressbyaccount                | returns nothing |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
-//! | getaddressinfo                     | version + model | UNTESTED                               |
+//! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
@@ -283,9 +283,9 @@ pub use self::{
         ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError,
         ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
         ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
-        ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, RescanBlockchain, SendMany,
-        SendToAddress, SetTxFee, SignMessage, TransactionCategory, WalletCreateFundedPsbt,
-        WalletCreateFundedPsbtError, WalletProcessPsbt,
+        ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, RescanBlockchain, ScriptType,
+        SendMany, SendToAddress, SetTxFee, SignMessage, TransactionCategory,
+        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
     },
     zmq::GetZmqNotifications,
 };

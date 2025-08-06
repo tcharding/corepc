@@ -167,7 +167,7 @@
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
-//! | getaddressinfo                     | version + model | UNTESTED                               |
+//! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
@@ -241,8 +241,9 @@ pub use self::{
     },
     util::{DeriveAddresses, GetDescriptorInfo},
     wallet::{
-        GetReceivedByLabel, ImportMulti, ImportMultiEntry, JsonRpcError, ListReceivedByLabel,
-        ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+        GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoError, GetReceivedByLabel,
+        ImportMulti, ImportMultiEntry, JsonRpcError, ListReceivedByLabel, ListReceivedByLabelError,
+        ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
     },
 };
 #[doc(inline)]
@@ -254,17 +255,16 @@ pub use crate::v17::{
     CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction, DecodeScript,
     DecodeScriptError, DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt,
     FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress,
-    GetAddedNodeInfo, GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError,
-    GetAddressInfoError, GetAddressInfoLabel, GetAddressesByLabel, GetBalance, GetBestBlockHash,
-    GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
-    GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
-    GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError, GetBlockVerboseZero,
-    GetBlockchainInfo, GetBlockchainInfoError, GetChainTips, GetChainTxStats, GetChainTxStatsError,
-    GetConnectionCount, GetDifficulty, GetMemoryInfoStats, GetMempoolAncestors,
-    GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-    GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals, GetNetworkInfo,
-    GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress,
-    GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetRawTransaction,
+    GetAddedNodeInfo, GetAddressInfoEmbeddedError, GetAddressInfoLabel, GetAddressesByLabel,
+    GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError,
+    GetBlockHeaderVerbose, GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError,
+    GetBlockTemplate, GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError,
+    GetBlockVerboseZero, GetBlockchainInfo, GetBlockchainInfoError, GetChainTips, GetChainTxStats,
+    GetChainTxStatsError, GetConnectionCount, GetDifficulty, GetMemoryInfoStats,
+    GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+    GetMempoolDescendantsVerbose, GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals,
+    GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
+    GetNewAddress, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetRawTransaction,
     GetRawTransactionVerbose, GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction,
     GetTransactionDetail, GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError,
     GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo,
@@ -276,10 +276,11 @@ pub use crate::v17::{
     ListTransactionsItemError, ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, Locked,
     Logging, MapMempoolEntryError, MempoolAcceptance, MempoolEntryError, MempoolEntryFees,
     MempoolEntryFeesError, PruneBlockchain, PsbtInput, PsbtOutput, PsbtScript, RawTransaction,
-    RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, SendMany,
-    SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignFail, SignFailError,
-    SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, Softfork,
-    SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
-    ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
-    WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain, ScriptType,
+    SendMany, SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignFail,
+    SignFailError, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
+    SignRawTransactionError, Softfork, SoftforkReject, TestMempoolAccept, TransactionCategory,
+    UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
+    VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
+    WitnessUtxo,
 };

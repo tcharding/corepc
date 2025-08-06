@@ -169,14 +169,18 @@ impl GetAddressInfo {
             .map_err(E::HdKeyPath)?;
         let hd_seed_id =
             self.hd_seed_id.map(|s| s.parse::<hash160::Hash>()).transpose().map_err(E::HdSeedId)?;
-        let labels = self.labels.into_iter().map(|label| label.into_model()).collect();
+        let labels = self.labels.into_iter().map(|label| label.name).collect();
 
         Ok(model::GetAddressInfo {
             address,
             script_pubkey,
             is_mine: self.is_mine,
             is_watch_only: self.is_watch_only,
-            is_script: self.is_script,
+            solvable: None,          // v18 and above only.
+            descriptor: None,        // v18 and above only.
+            parent_descriptor: None, // v22 and above only.
+            is_script: Some(self.is_script),
+            is_change: None, // v18 and above only.
             is_witness: self.is_witness,
             witness_version,
             witness_program,
@@ -187,10 +191,11 @@ impl GetAddressInfo {
             pubkey,
             embedded,
             is_compressed: self.is_compressed,
-            label: self.label,
+            label: Some(self.label),
             timestamp: self.timestamp,
             hd_key_path,
             hd_seed_id,
+            hd_master_fingerprint: None, // v18 and above only.
             labels,
         })
     }
@@ -243,21 +248,20 @@ impl GetAddressInfoEmbedded {
         let script = self.script.map(|s| s.into_model());
         let redeem_script =
             self.hex.map(|hex| ScriptBuf::from_hex(&hex).map_err(E::Hex)).transpose()?;
-        let pubkeys = self
-            .pubkeys
-            .iter()
-            .map(|s| s.parse::<PublicKey>())
-            .collect::<Result<Vec<_>, _>>()
-            .map_err(E::Pubkeys)?;
+        let pubkeys = None;
         let sigs_required =
             self.sigs_required.map(|s| crate::to_u32(s, "sigs_required")).transpose()?;
         let pubkey = self.pubkey.map(|s| s.parse::<PublicKey>()).transpose().map_err(E::Pubkey)?;
-        let labels = self.labels.into_iter().map(|label| label.into_model()).collect();
+        let labels = self.labels.map(|labels| labels.into_iter().map(|label| label.name).collect());
 
         Ok(model::GetAddressInfoEmbedded {
             address,
             script_pubkey,
+            solvable: None,          // v18 and above only.
+            descriptor: None,        // v18 and above only.
+            parent_descriptor: None, // v22 and above only.
             is_script: self.is_script,
+            is_change: None, // v18 and above only.
             is_witness: self.is_witness,
             witness_version,
             witness_program,
@@ -270,13 +274,6 @@ impl GetAddressInfoEmbedded {
             label: self.label,
             labels,
         })
-    }
-}
-
-impl GetAddressInfoLabel {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(self) -> model::AddressLabel {
-        model::AddressLabel { name: self.name, purpose: self.purpose.into_model() }
     }
 }
 
