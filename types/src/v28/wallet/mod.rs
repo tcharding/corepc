@@ -4,9 +4,11 @@
 //!
 //! Types for methods found under the `== Wallet ==` section of the API docs.
 
+mod error;
 mod into;
 
 use bitcoin::Transaction;
+pub use error::GetHdKeysError;
 use serde::{Deserialize, Serialize};
 
 pub use super::{
@@ -142,6 +144,58 @@ pub struct GetAddressInfoEmbedded {
     pub is_compressed: Option<bool>,
     /// Array of labels associated with the address.
     pub labels: Option<Vec<String>>,
+}
+
+/// Result of the JSON-RPC method `createwalletdescriptor`.
+///
+/// > createwalletdescriptor "type" ( {"internal":bool,"hdkey":"str",...} )
+/// >
+/// > Creates the wallet's descriptor for the given address type. The address type must be one that the wallet does not already have a descriptor for.
+/// > Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.
+/// >
+/// > Arguments:
+/// > 1. type       (string, required) The address type the descriptor will produce. Options are "legacy", "p2sh-segwit", "bech32", and "bech32m".
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct CreateWalletDescriptor {
+    /// The public descriptors that were added to the wallet.
+    #[serde(rename = "descs")]
+    pub descriptors: Vec<String>,
+}
+
+/// Result of the JSON-RPC method `gethdkeys`.
+///
+/// > gethdkeys ( {"active_only":bool,"private":bool,...} )
+/// >
+/// > List all BIP 32 HD keys in the wallet and which descriptors use them.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetHdKeys(pub Vec<HdKey>);
+
+/// HD key entry returned as part of `gethdkeys`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct HdKey {
+    /// The extended public key.
+    pub xpub: String,
+    /// Whether the wallet has the private key for this xpub.
+    pub has_private: bool,
+    /// The extended private key if "private" is true.
+    #[serde(rename = "xprv")]
+    pub xpriv: Option<String>,
+    /// Array of descriptor objects that use this HD key.
+    pub descriptors: Vec<HdKeyDescriptor>,
+}
+
+/// Descriptor object returned as part of `gethdkeys`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct HdKeyDescriptor {
+    /// Descriptor string representation.
+    #[serde(rename = "desc")]
+    pub descriptor: String,
+    /// Whether this descriptor is currently used to generate new addresses.
+    pub active: bool,
 }
 
 /// Result of the JSON-RPC method `gettransaction`.

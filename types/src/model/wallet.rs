@@ -8,6 +8,7 @@
 use alloc::collections::BTreeMap;
 
 use bitcoin::address::NetworkUnchecked;
+use bitcoin::bip32::{Xpriv, Xpub};
 use bitcoin::hashes::hash160;
 use bitcoin::{
     bip32, sign_message, Address, Amount, BlockHash, FeeRate, PrivateKey, Psbt, PublicKey,
@@ -282,6 +283,35 @@ pub struct GetBalancesWatchOnly {
     pub untrusted_pending: Amount,
     /// Balance from immature coinbase outputs.
     pub immature: Amount,
+}
+
+/// Models the result of JSON-RPC method `gethdkeys`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetHdKeys(pub Vec<HdKey>);
+
+/// An HD key entry returned by `gethdkeys`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct HdKey {
+    /// The extended public key.
+    pub xpub: Xpub,
+    /// Whether the wallet has the private key for this xpub.
+    pub has_private: bool,
+    /// The extended private key if "private" is true.
+    pub xpriv: Option<Xpriv>,
+    /// Array of descriptor objects that use this HD key.
+    pub descriptors: Vec<HdKeyDescriptor>,
+}
+
+/// Descriptor object used in `gethdkeys` result.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct HdKeyDescriptor {
+    /// Descriptor string representation.
+    pub descriptor: String,
+    /// Whether this descriptor is currently used to generate new addresses.
+    pub active: bool,
 }
 
 /// Models the result of JSON-RPC method `getnewaddress`.

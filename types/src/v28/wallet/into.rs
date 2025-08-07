@@ -11,7 +11,7 @@ use bitcoin::{
 
 use super::{
     GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
-    GetTransaction, GetTransactionError,
+    GetHdKeys, GetHdKeysError, GetTransaction, GetTransactionError,
 };
 use crate::model;
 
@@ -152,6 +152,33 @@ impl GetAddressInfoEmbedded {
             label: None,
             labels: self.labels,
         })
+    }
+}
+
+impl GetHdKeys {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetHdKeys, GetHdKeysError> {
+        let keys = self
+            .0
+            .into_iter()
+            .map(|item| {
+                let xpub = item.xpub.parse().map_err(GetHdKeysError::Xpub)?;
+                let xpriv = match item.xpriv {
+                    Some(xpriv) => Some(xpriv.parse().map_err(GetHdKeysError::Xpriv)?),
+                    None => None,
+                };
+                let descriptors = item
+                    .descriptors
+                    .into_iter()
+                    .map(|desc| model::HdKeyDescriptor {
+                        descriptor: desc.descriptor,
+                        active: desc.active,
+                    })
+                    .collect();
+                Ok(model::HdKey { xpub, has_private: item.has_private, xpriv, descriptors })
+            })
+            .collect::<Result<Vec<_>, GetHdKeysError>>()?;
+        Ok(model::GetHdKeys(keys))
     }
 }
 

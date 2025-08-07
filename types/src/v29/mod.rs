@@ -177,7 +177,7 @@
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
-//! | createwalletdescriptor             | version + model | TODO                                   |
+//! | createwalletdescriptor             | version         |                                        |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
@@ -185,7 +185,7 @@
 //! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
-//! | gethdkeys                          | version + model | TODO                                   |
+//! | gethdkeys                          | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
 //! | getreceivedbyaddress               | version + model |                                        |
@@ -343,8 +343,9 @@ pub use crate::{
     },
     v27::{GetNodeAddresses, GetPrioritisedTransactions, NodeAddress, PrioritisedTransaction},
     v28::{
-        GetAddressInfo, GetAddressInfoEmbedded, GetNetworkInfo, GetTransaction, Logging,
-        SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
+        CreateWalletDescriptor, GetAddressInfo, GetAddressInfoEmbedded, GetHdKeys, GetHdKeysError,
+        GetNetworkInfo, GetTransaction, HdKey, HdKeyDescriptor, Logging, SubmitPackage,
+        SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
     },
 };

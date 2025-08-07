@@ -176,7 +176,7 @@
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
-//! | createwalletdescriptor             | version + model | TODO                                   |
+//! | createwalletdescriptor             | version         |                                        |
 //! | dumpprivkey                        | version + model |                                        |
 //! | dumpwallet                         | version + model |                                        |
 //! | encryptwallet                      | version         |                                        |
@@ -184,7 +184,7 @@
 //! | getaddressinfo                     | version + model |                                        |
 //! | getbalance                         | version + model |                                        |
 //! | getbalances                        | version + model |                                        |
-//! | gethdkeys                          | version + model | TODO                                   |
+//! | gethdkeys                          | version + model |                                        |
 //! | getnewaddress                      | version + model |                                        |
 //! | getrawchangeaddress                | version + model |                                        |
 //! | getreceivedbyaddress               | version + model |                                        |
@@ -267,7 +267,10 @@ pub use self::{
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
     },
-    wallet::{GetAddressInfo, GetAddressInfoEmbedded, GetTransaction},
+    wallet::{
+        CreateWalletDescriptor, GetAddressInfo, GetAddressInfoEmbedded, GetHdKeys, GetHdKeysError,
+        GetTransaction, HdKey, HdKeyDescriptor,
+    },
 };
 #[doc(inline)]
 pub use crate::{
