@@ -267,7 +267,10 @@ pub use self::{
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
     },
-    wallet::{GetAddressInfo, GetAddressInfoEmbedded, CreateWalletDescriptor, GetHdKeys, HdKey, HdKeyDescriptor, GetHdKeysError, GetTransaction},
+    wallet::{
+        CreateWalletDescriptor, GetAddressInfo, GetAddressInfoEmbedded, GetHdKeys, GetHdKeysError,
+        GetTransaction, HdKey, HdKeyDescriptor,
+    },
 };
 #[doc(inline)]
 pub use crate::{

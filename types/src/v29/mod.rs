@@ -343,8 +343,9 @@ pub use crate::{
     },
     v27::{GetNodeAddresses, GetPrioritisedTransactions, NodeAddress, PrioritisedTransaction},
     v28::{
-        GetAddressInfo, GetAddressInfoEmbedded, GetNetworkInfo, GetTransaction, Logging,
-        SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
-        SubmitPackageTxResultFees, SubmitPackageTxResultFeesError, GetHdKeys, HdKey, HdKeyDescriptor, GetHdKeysError, CreateWalletDescriptor,
+        CreateWalletDescriptor, GetAddressInfo, GetAddressInfoEmbedded, GetHdKeys, GetHdKeysError,
+        GetNetworkInfo, GetTransaction, HdKey, HdKeyDescriptor, Logging, SubmitPackage,
+        SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
+        SubmitPackageTxResultFees, SubmitPackageTxResultFeesError,
     },
 };
