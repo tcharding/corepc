@@ -299,7 +299,7 @@ pub use crate::{
         GetBalancesError, GetBalancesMine, GetBalancesWatchOnly, GetBlockFilter,
         GetBlockFilterError, GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo,
         GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError, MempoolEntry,
+        GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
         MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag, Softfork,
         SoftforkType,
     },
@@ -319,7 +319,7 @@ pub use crate::{
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetPeerInfo, GetTransaction,
         GetTransactionDetail, GetTransactionError, GetTxSpendingPrevout, GetTxSpendingPrevoutError,
-        GlobalXpub, ListUnspent, ListUnspentItem, MigrateWallet, PeerInfo, Proprietary, PsbtInput,
+        GlobalXpub, ListUnspent, ListUnspentItem, MempoolEntry, MigrateWallet, PeerInfo, Proprietary, PsbtInput,
         PsbtOutput, SendAll, SendAllError, SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf,
         TaprootScript, TaprootScriptPathSig,
     },
