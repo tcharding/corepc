@@ -5,10 +5,10 @@ use alloc::collections::BTreeMap;
 use bitcoin::{hex, OutPoint, Txid, Wtxid};
 
 use super::{
-    GetMempoolEntry, GetMempoolInfo, GetMempoolInfoError, GetTxSpendingPrevout,
-    GetTxSpendingPrevoutError, GetTxSpendingPrevoutItem, MempoolEntry, MempoolEntryError,
     GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-    GetMempoolDescendantsVerbose, MapMempoolEntryError,
+    GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo, GetMempoolInfoError,
+    GetTxSpendingPrevout, GetTxSpendingPrevoutError, GetTxSpendingPrevoutItem,
+    MapMempoolEntryError, MempoolEntry, MempoolEntryError,
 };
 use crate::model;
 

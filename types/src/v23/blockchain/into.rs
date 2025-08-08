@@ -6,8 +6,9 @@ use bitcoin::{hex, BlockHash, Network, Txid, Work, Wtxid};
 
 use super::{
     Bip9Info, Bip9Statistics, DeploymentInfo, GetBlockchainInfo, GetBlockchainInfoError,
-    GetDeploymentInfo, GetDeploymentInfoError, GetMempoolEntry, MempoolEntry, MempoolEntryError,
-    GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose, MapMempoolEntryError,
+    GetDeploymentInfo, GetDeploymentInfoError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+    GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError,
+    MempoolEntry, MempoolEntryError,
 };
 use crate::model;
 

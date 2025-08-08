@@ -302,16 +302,16 @@ pub use crate::{
     v19::{
         Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesError, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
-        GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError,
-        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
+        GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError, MempoolEntryError,
+        MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
     },
     v20::{CreateMultisig, GenerateToDescriptor, GetTransaction, GetTransactionDetail},
     v21::{
         Bip9SoftforkInfo, GenerateBlock, GetBlockchainInfo, GetIndexInfo, GetIndexInfoName,
-        GetMempoolEntry, GetNetworkInfo, ImportDescriptors, ImportDescriptorsResult, MempoolEntry, PsbtBumpFee,
-        PsbtBumpFeeError, Send, SendError, Softfork, SoftforkType, UnloadWallet, UpgradeWallet,
         GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose,
+        GetMempoolDescendantsVerbose, GetMempoolEntry, GetNetworkInfo, ImportDescriptors,
+        ImportDescriptorsResult, MempoolEntry, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
+        Softfork, SoftforkType, UnloadWallet, UpgradeWallet,
     },
     ScriptPubkey,
 };

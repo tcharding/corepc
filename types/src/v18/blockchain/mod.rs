@@ -10,7 +10,7 @@ use alloc::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-use super::{MempoolEntryError, MempoolEntryFees, MapMempoolEntryError};
+use super::{MapMempoolEntryError, MempoolEntryError, MempoolEntryFees};
 
 /// Result of JSON-RPC method `getmempoolancestors` with verbose set to `false`.
 ///

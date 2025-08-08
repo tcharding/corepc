@@ -241,9 +241,9 @@ mod wallet;
 #[doc(inline)]
 pub use self::{
     blockchain::{
-        Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, GetMempoolInfo, MempoolEntry, Softfork,
-        SoftforkType, GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose,
+        Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
+        MempoolEntry, Softfork, SoftforkType,
     },
     generating::GenerateBlock,
     network::{GetNetworkInfo, GetPeerInfo, PeerInfo},
@@ -297,8 +297,8 @@ pub use crate::{
     v19::{
         Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesError, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
-        GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError,
-        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
+        GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError, MempoolEntryError,
+        MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
     },
     v20::{
         Banned, CreateMultisig, GenerateToDescriptor, GetAddressInfo, GetAddressInfoEmbedded,

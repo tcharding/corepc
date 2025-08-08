@@ -12,7 +12,9 @@ use alloc::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 
 pub use self::error::GetDeploymentInfoError;
-pub use super::{GetBlockchainInfoError, MapMempoolEntryError, MempoolEntryError, MempoolEntryFees, Softfork};
+pub use super::{
+    GetBlockchainInfoError, MapMempoolEntryError, MempoolEntryError, MempoolEntryFees, Softfork,
+};
 
 /// Result of JSON-RPC method `getblockchaininfo`.
 ///

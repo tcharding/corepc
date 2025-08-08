@@ -4,7 +4,11 @@ use alloc::collections::BTreeMap;
 
 use bitcoin::{hex, Txid, Wtxid};
 
-use super::{GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MempoolEntry, MempoolEntryError, MapMempoolEntryError};
+use super::{
+    GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+    GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError, MempoolEntry,
+    MempoolEntryError,
+};
 use crate::model;
 
 impl GetMempoolAncestors {

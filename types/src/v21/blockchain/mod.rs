@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 
 pub use super::{
     Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBlockchainInfoError, GetMempoolInfoError,
-    MempoolEntryError, MempoolEntryFees, MapMempoolEntryError,
+    MapMempoolEntryError, MempoolEntryError, MempoolEntryFees,
 };
 
 /// Result of JSON-RPC method `getblockchaininfo`.

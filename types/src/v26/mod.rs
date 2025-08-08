@@ -317,9 +317,8 @@ pub use crate::{
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
-        GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError,
-        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
-        Softfork, SoftforkType,
+        GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError, MempoolEntryError,
+        MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag, Softfork, SoftforkType,
     },
     v20::GenerateToDescriptor,
     v21::{
@@ -335,12 +334,12 @@ pub use crate::{
         GetBlockchainInfo, GetDeploymentInfo, GetDeploymentInfoError, RestoreWallet, SaveMempool,
     },
     v24::{
-        DecodePsbt, DecodePsbtError, GetMempoolEntry, GetMempoolInfo, GetTransactionDetail,
-        GetTxSpendingPrevout, GetTxSpendingPrevoutError, GlobalXpub, ListUnspent, ListUnspentItem,
-        MempoolEntry, MigrateWallet, Proprietary, PsbtInput, PsbtOutput, SendAll, SendAllError,
-        SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
-        TaprootScriptPathSig, GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose,
+        DecodePsbt, DecodePsbtError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
+        GetTransactionDetail, GetTxSpendingPrevout, GetTxSpendingPrevoutError, GlobalXpub,
+        ListUnspent, ListUnspentItem, MempoolEntry, MigrateWallet, Proprietary, PsbtInput,
+        PsbtOutput, SendAll, SendAllError, SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf,
+        TaprootScript, TaprootScriptPathSig,
     },
     v25::{
         GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, ScanBlocksAbort,
