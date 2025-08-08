@@ -137,7 +137,7 @@ pub struct DescriptorProcessPsbt {
 #[serde(deny_unknown_fields)]
 pub struct FinalizePsbt {
     /// The partially signed transaction if not extracted.
-    pub psbt: Psbt,
+    pub psbt: Option<Psbt>,
     /// The transaction if extracted.
     pub tx: Option<Transaction>,
     /// If the transaction has a complete set of signatures.

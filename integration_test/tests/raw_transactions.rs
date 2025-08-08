@@ -247,60 +247,19 @@ fn arbitrary_multisig_script() -> ScriptBuf {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
 fn raw_transactions__finalize_psbt__modelled() {
-    let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
+    let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
 
-    let (addr, _tx, txid, tx_out, vout) = create_utxo(&node);
-
-    // Assumes tx_out has a million sats in it.
-    let spend_amount = Amount::from_sat(100_000);
-    let fee = Amount::from_sat(1000);
-    let change_amount = tx_out.value - spend_amount - fee;
-
-    let inputs = vec![Input { txid, vout, sequence: None }];
-
-    let mut outputs = vec![];
-
-    // Just send back to ourself.
-    let spend_address = node.client.new_address().expect("failed to create new address");
-    outputs.push(Output::new(spend_address, spend_amount));
-
-    let change_address = node
-        .client
-        .get_raw_change_address()
-        .expect("getrawchangeaddress")
-        .into_model()
-        .expect("GetRawChangeAddress into model")
-        .0
-        .assume_checked();
-    outputs.push(Output::new(change_address, change_amount));
-
-    let json: CreatePsbt = node.client.create_psbt(&inputs, &outputs).expect("createpsbt");
-    let res: Result<mtype::CreatePsbt, _> = json.clone().into_model();
-    let psbt = res.expect("CreatePsbt into model");
-    let psbt = psbt.0;
-
-    let json: DumpPrivKey = node.client.dump_priv_key(&addr).expect("dumpprivkey");
-    let model: mtype::DumpPrivKey = json.into_model().expect("DumpPrivKey");
-    let key = model.0;
-
-    let json: SignRawTransaction = node
-        .client
-        .sign_raw_transaction_with_key(&psbt.unsigned_tx, &[key])
-        .expect("signrawtransactionwithkey");
-    let res: Result<mtype::SignRawTransaction, SignRawTransactionError> = json.into_model();
-    let model = res.expect("SignRawTransaction into model");
-
-    // FIXME: Core errors here with: code: -22, message: "TX decode failed"
-    let json: ConvertToPsbt = node.client.convert_to_psbt(&model.tx).expect("converttopsbt");
-    let model: Result<mtype::ConvertToPsbt, _> = json.into_model();
-    let psbt = model.expect("ConvertToPsbt into model").0;
-
+    // Create a PSBT and call finalizepsbt directly without signing.
+    // This still exercises the RPC and model; it should report complete=false and return the PSBT.
+    let psbt = create_a_psbt(&node);
     let json: FinalizePsbt = node.client.finalize_psbt(&psbt).expect("finalizepsbt");
-    let model: Result<mtype::FinalizePsbt, _> = json.into_model();
-    let _ = model.expect("FinalizePsbt into model");
+    let model: Result<mtype::FinalizePsbt, FinalizePsbtError> = json.into_model();
+    let finalized = model.unwrap();
+
+    assert!(!finalized.complete);
+    assert_eq!(finalized.psbt, Some(psbt));
 }
 
 #[test]

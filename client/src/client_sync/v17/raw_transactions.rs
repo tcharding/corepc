@@ -101,7 +101,8 @@ macro_rules! impl_client_v17__finalize_psbt {
         impl Client {
             pub fn finalize_psbt(&self, psbt: &bitcoin::Psbt) -> Result<FinalizePsbt> {
                 let psbt = format!("{}", psbt);
-                self.call("finalizepsbt", &[psbt.into()])
+                // Pass extract=false so Core returns the PSBT field in the response.
+                self.call("finalizepsbt", &[psbt.into(), false.into()])
             }
         }
     };

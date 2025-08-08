@@ -319,7 +319,7 @@ impl FinalizePsbt {
     pub fn into_model(self) -> Result<model::FinalizePsbt, FinalizePsbtError> {
         use FinalizePsbtError as E;
 
-        let psbt = self.psbt.parse::<Psbt>().map_err(E::Psbt)?;
+        let psbt = self.psbt.map(|s| s.parse::<Psbt>()).transpose().map_err(E::Psbt)?;
         let tx = match self.hex {
             Some(hex) => Some(consensus::encode::deserialize_hex(&hex).map_err(E::Hex)?),
             None => None,
