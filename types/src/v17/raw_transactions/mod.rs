@@ -270,7 +270,7 @@ pub struct DecodeScriptSegwit {
 #[serde(deny_unknown_fields)]
 pub struct FinalizePsbt {
     /// The base64-encoded partially signed transaction if not extracted.
-    pub psbt: String,
+    pub psbt: Option<String>,
     /// The hex-encoded network transaction if extracted.
     pub hex: Option<String>,
     /// If the transaction has a complete set of signatures.

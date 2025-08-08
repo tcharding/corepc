@@ -121,7 +121,7 @@
 //! | decodepsbt                         | version + model |                                        |
 //! | decoderawtransaction               | version + model |                                        |
 //! | decodescript                       | version + model |                                        |
-//! | finalizepsbt                       | version + model | UNTESTED                               |
+//! | finalizepsbt                       | version + model |                                        |
 //! | fundrawtransaction                 | version + model |                                        |
 //! | getrawtransaction                  | version + model | Includes additional 'verbose' type     |
 //! | joinpsbts                          | version + model | UNTESTED                               |
