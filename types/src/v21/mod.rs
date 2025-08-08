@@ -37,8 +37,8 @@
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
-//! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
-//! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
+//! | getmempoolancestors                | version + model |                                        |
+//! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
 //! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
@@ -241,8 +241,9 @@ mod wallet;
 #[doc(inline)]
 pub use self::{
     blockchain::{
-        Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolEntry, GetMempoolInfo, Softfork,
-        SoftforkType,
+        Bip9SoftforkInfo, GetBlockchainInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
+        MempoolEntry, Softfork, SoftforkType,
     },
     generating::GenerateBlock,
     network::{GetNetworkInfo, GetPeerInfo, PeerInfo},
@@ -296,9 +297,8 @@ pub use crate::{
     v19::{
         Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesError, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
-        GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
-        MempoolEntry, MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
+        GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError, MempoolEntryError,
+        MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
     },
     v20::{
         Banned, CreateMultisig, GenerateToDescriptor, GetAddressInfo, GetAddressInfoEmbedded,

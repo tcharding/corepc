@@ -39,8 +39,8 @@
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdeploymentinfo                  | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
-//! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
-//! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
+//! | getmempoolancestors                | version + model |                                        |
+//! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
 //! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
@@ -247,7 +247,9 @@ mod wallet;
 pub use self::{
     blockchain::{
         Bip9Info, Bip9Statistics, DeploymentInfo, GetBlockchainInfo, GetDeploymentInfo,
-        GetDeploymentInfoError, GetMempoolEntry, SaveMempool,
+        GetDeploymentInfoError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MempoolEntry,
+        SaveMempool,
     },
     control::Logging,
     network::{GetPeerInfo, PeerInfo},
@@ -302,10 +304,8 @@ pub use crate::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
         GetBalancesError, GetBalancesMine, GetBalancesWatchOnly, GetBlockFilter,
         GetBlockFilterError, GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo,
-        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError, MempoolEntry,
-        MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag, Softfork,
-        SoftforkType,
+        GetRpcInfo, MapMempoolEntryError, MempoolEntryError, MempoolEntryFees,
+        MempoolEntryFeesError, SetWalletFlag, Softfork, SoftforkType,
     },
     v20::{GenerateToDescriptor, GetTransactionDetail},
     v21::{

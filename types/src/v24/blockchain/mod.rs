@@ -7,10 +7,50 @@
 mod error;
 mod into;
 
+use alloc::collections::BTreeMap;
+
 use serde::{Deserialize, Serialize};
 
 pub use self::error::GetTxSpendingPrevoutError;
-pub use super::{GetMempoolInfoError, MempoolEntryError, MempoolEntryFees};
+pub use super::{GetMempoolInfoError, MapMempoolEntryError, MempoolEntryError, MempoolEntryFees};
+
+/// Result of JSON-RPC method `getmempoolancestors` with verbose set to `false`.
+///
+/// > getmempoolancestors txid (verbose)
+/// >
+/// > If txid is in the mempool, returns all in-mempool ancestors.
+/// >
+/// > Arguments:
+/// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetMempoolAncestors(pub Vec<String>);
+
+/// Result of JSON-RPC method `getmempoolancestors` with verbose set to true.
+///
+/// Map of txid to `MempoolEntry` i.e., an ancestor.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetMempoolAncestorsVerbose(pub BTreeMap<String, MempoolEntry>);
+
+/// Result of JSON-RPC method `getmempooldescendants` with verbose set to `false`.
+///
+/// > getmempooldescendants txid (verbose)
+/// >
+/// > If txid is in the mempool, returns all in-mempool descendants.
+/// >
+/// > Arguments:
+/// > 1. "txid"                 (string, required) The transaction id (must be in mempool)
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetMempoolDescendants(pub Vec<String>);
+
+/// Result of JSON-RPC method `getmempooldescendants` with verbose set to true.
+///
+/// Map of txid to [`MempoolEntry`] i.e., a descendant.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 
 /// Result of JSON-RPC method `getmempoolentry`.
 ///
