@@ -37,8 +37,8 @@
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
-//! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
-//! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
+//! | getmempoolancestors                | version + model |                                        |
+//! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
 //! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |

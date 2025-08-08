@@ -42,8 +42,8 @@
 //! | getdeploymentinfo                  | version + model |                                        |
 //! | getdescriptoractivity              | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
-//! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
-//! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
+//! | getmempoolancestors                | version + model |                                        |
+//! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
 //! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
@@ -308,8 +308,7 @@ pub use crate::{
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetChainTxStats,
-        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
+        GetRpcInfo, MapMempoolEntryError,
         MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag, Softfork,
         SoftforkType,
     },
@@ -328,7 +327,8 @@ pub use crate::{
         GetTxSpendingPrevout, GetTxSpendingPrevoutError, GlobalXpub, ListUnspent, ListUnspentItem,
         MempoolEntry, MigrateWallet, Proprietary, PsbtInput, PsbtOutput, SendAll, SendAllError,
         SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
-        TaprootScriptPathSig,
+        TaprootScriptPathSig, GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        GetMempoolDescendantsVerbose,
     },
     v25::{
         GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, ScanBlocksAbort,

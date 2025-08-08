@@ -8,6 +8,7 @@ use integration_test::{Node, NodeExt as _, Wallet};
 use node::client::client_sync;
 use node::vtype::*;             // All the version specific types.
 use node::mtype;
+use node::{Input, Output};
 
 #[test]
 #[cfg(not(feature = "v25_and_below"))]
@@ -246,17 +247,67 @@ fn blockchain__get_difficulty__modelled() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
 fn blockchain__get_mempool_ancestors__modelled() {
-    // We can probably get away with not testing this because it returns the same type as
-    // `getmempoolentry` which is tested below (for verbose=true). For verbose=false it
-    // just returns a txid.
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let (_address, parent_txid) = node.create_mempool_transaction();
+    let child_txid = create_child_spending_parent(&node, parent_txid);
+
+    let json: GetMempoolAncestors =
+        node.client.get_mempool_ancestors(child_txid).expect("getmempoolancestors");
+    let model: Result<mtype::GetMempoolAncestors, _> = json.into_model();
+    let ancestors = model.unwrap();
+
+    assert!(ancestors.0.contains(&parent_txid));
 }
 
 #[test]
-#[cfg(feature = "TODO")]
+fn blockchain__get_mempool_ancestors_verbose__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let (_address, parent_txid) = node.create_mempool_transaction();
+    let child_txid = create_child_spending_parent(&node, parent_txid);
+
+    let json: GetMempoolAncestorsVerbose = node
+        .client
+        .get_mempool_ancestors_verbose(child_txid)
+        .expect("getmempoolancestors verbose");
+    let model: Result<mtype::GetMempoolAncestorsVerbose, _> = json.into_model();
+    let ancestors = model.unwrap();
+
+    assert!(ancestors.0.contains_key(&parent_txid));
+}
+
+#[test]
 fn blockchain__get_mempool_descendants__modelled() {
-    // Same justification as for `blockchain__get_mempool_ancestors__modelled`
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let (_address, parent_txid) = node.create_mempool_transaction();
+    let child_txid = create_child_spending_parent(&node, parent_txid);
+
+    let json: GetMempoolDescendants =
+        node.client.get_mempool_descendants(parent_txid).expect("getmempooldescendants");
+    let model: Result<mtype::GetMempoolDescendants, _> = json.into_model();
+    let descendants = model.unwrap();
+
+    assert!(descendants.0.contains(&child_txid));
+}
+
+#[test]
+fn blockchain__get_mempool_descendants_verbose__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let (_address, parent_txid) = node.create_mempool_transaction();
+    let child_txid = create_child_spending_parent(&node, parent_txid);
+
+    let json: GetMempoolDescendantsVerbose = node
+        .client
+        .get_mempool_descendants_verbose(parent_txid)
+        .expect("getmempooldescendants verbose");
+    let model: Result<mtype::GetMempoolDescendantsVerbose, _> = json.into_model();
+    let descendants = model.unwrap();
+
+    assert!(descendants.0.contains_key(&child_txid));
 }
 
 #[test]
@@ -475,4 +526,30 @@ fn verify_tx_out_proof(node: &Node) -> Result<(), client_sync::Error> {
     assert_eq!(txids.0.len(), 1);
 
     Ok(())
+}
+
+/// Create and broadcast a child transaction spending vout 0 of the given parent mempool txid.
+/// Returns the child's txid.
+fn create_child_spending_parent(node: &Node, parent_txid: bitcoin::Txid) -> bitcoin::Txid {
+    let inputs = vec![Input { txid: parent_txid, vout: 0, sequence: None }];
+    let spend_address = node.client.new_address().expect("newaddress");
+    let outputs = vec![Output::new(spend_address, bitcoin::Amount::from_sat(100_000))];
+
+    let raw: CreateRawTransaction =
+        node.client.create_raw_transaction(&inputs, &outputs).expect("createrawtransaction");
+    let unsigned = raw.transaction().expect("raw.transaction");
+
+    let funded: FundRawTransaction =
+        node.client.fund_raw_transaction(&unsigned).expect("fundrawtransaction");
+    let funded_tx = funded.transaction().expect("funded.transaction");
+
+    let signed: SignRawTransaction = node
+        .client
+        .sign_raw_transaction_with_wallet(&funded_tx)
+        .expect("signrawtransactionwithwallet");
+    let model = signed.into_model().expect("SignRawTransactionWithWallet into model");
+    let child_txid = model.tx.compute_txid();
+    let _ = node.client.send_raw_transaction(&model.tx).expect("sendrawtransaction");
+
+    child_txid
 }

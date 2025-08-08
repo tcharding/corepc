@@ -36,8 +36,8 @@
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
-//! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
-//! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
+//! | getmempoolancestors                | version + model |                                        |
+//! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
 //! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
@@ -232,7 +232,8 @@ mod wallet;
 
 #[doc(inline)]
 pub use self::{
-    blockchain::{GetMempoolEntry, MempoolEntry},
+    blockchain::{GetMempoolEntry, MempoolEntry, GetMempoolAncestors, GetMempoolAncestorsVerbose,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose,},
     control::{ActiveCommand, GetRpcInfo},
     network::{GetNodeAddresses, GetPeerInfo, NodeAddress, PeerInfo},
     raw_transactions::{
@@ -261,8 +262,7 @@ pub use crate::v17::{
     GetBlockTemplate, GetBlockTemplateError, GetBlockVerboseOne, GetBlockVerboseOneError,
     GetBlockVerboseZero, GetBlockchainInfo, GetBlockchainInfoError, GetChainTips, GetChainTxStats,
     GetChainTxStatsError, GetConnectionCount, GetDifficulty, GetMemoryInfoStats,
-    GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-    GetMempoolDescendantsVerbose, GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals,
+    GetMempoolInfo, GetMempoolInfoError, GetMiningInfo, GetNetTotals,
     GetNetworkInfo, GetNetworkInfoAddress, GetNetworkInfoError, GetNetworkInfoNetwork,
     GetNewAddress, GetRawChangeAddress, GetRawMempool, GetRawMempoolVerbose, GetRawTransaction,
     GetRawTransactionVerbose, GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction,

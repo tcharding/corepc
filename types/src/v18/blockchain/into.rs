@@ -1,9 +1,57 @@
 // SPDX-License-Identifier: CC0-1.0
 
-use bitcoin::{Txid, Wtxid};
+use alloc::collections::BTreeMap;
 
-use super::{GetMempoolEntry, MempoolEntry, MempoolEntryError};
+use bitcoin::{hex, Txid, Wtxid};
+
+use super::{GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, MempoolEntry, MempoolEntryError, MapMempoolEntryError};
 use crate::model;
+
+impl GetMempoolAncestors {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetMempoolAncestors, hex::HexToArrayError> {
+        let v = self.0.iter().map(|t| t.parse::<Txid>()).collect::<Result<Vec<_>, _>>()?;
+        Ok(model::GetMempoolAncestors(v))
+    }
+}
+
+impl GetMempoolAncestorsVerbose {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetMempoolAncestorsVerbose, MapMempoolEntryError> {
+        use MapMempoolEntryError as E;
+
+        let mut map = BTreeMap::new();
+        for (k, v) in self.0.into_iter() {
+            let txid = k.parse::<Txid>().map_err(E::Txid)?;
+            let relative = v.into_model().map_err(E::MempoolEntry)?;
+            map.insert(txid, relative);
+        }
+        Ok(model::GetMempoolAncestorsVerbose(map))
+    }
+}
+
+impl GetMempoolDescendants {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetMempoolDescendants, hex::HexToArrayError> {
+        let v = self.0.iter().map(|t| t.parse::<Txid>()).collect::<Result<Vec<_>, _>>()?;
+        Ok(model::GetMempoolDescendants(v))
+    }
+}
+
+impl GetMempoolDescendantsVerbose {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetMempoolDescendantsVerbose, MapMempoolEntryError> {
+        use MapMempoolEntryError as E;
+
+        let mut map = BTreeMap::new();
+        for (k, v) in self.0.into_iter() {
+            let txid = k.parse::<Txid>().map_err(E::Txid)?;
+            let relative = v.into_model().map_err(E::MempoolEntry)?;
+            map.insert(txid, relative);
+        }
+        Ok(model::GetMempoolDescendantsVerbose(map))
+    }
+}
 
 impl GetMempoolEntry {
     /// Converts version specific type to a version nonspecific, more strongly typed type.

@@ -37,8 +37,8 @@
 //! | getchaintips                       | version + model |                                        |
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
-//! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
-//! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
+//! | getmempoolancestors                | version + model |                                        |
+//! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
 //! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
@@ -302,8 +302,7 @@ pub use crate::{
     v19::{
         Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesError, GetBalancesMine,
         GetBalancesWatchOnly, GetBlockFilter, GetBlockFilterError, GetBlockchainInfoError,
-        GetChainTxStats, GetDescriptorInfo, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
+        GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError,
         MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
     },
     v20::{CreateMultisig, GenerateToDescriptor, GetTransaction, GetTransactionDetail},
@@ -311,6 +310,8 @@ pub use crate::{
         Bip9SoftforkInfo, GenerateBlock, GetBlockchainInfo, GetIndexInfo, GetIndexInfoName,
         GetMempoolEntry, GetNetworkInfo, ImportDescriptors, ImportDescriptorsResult, MempoolEntry, PsbtBumpFee,
         PsbtBumpFeeError, Send, SendError, Softfork, SoftforkType, UnloadWallet, UpgradeWallet,
+        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        GetMempoolDescendantsVerbose,
     },
     ScriptPubkey,
 };

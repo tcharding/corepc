@@ -39,8 +39,8 @@
 //! | getchaintxstats                    | version + model |                                        |
 //! | getdeploymentinfo                  | version + model |                                        |
 //! | getdifficulty                      | version + model |                                        |
-//! | getmempoolancestors                | version + model | UNTESTED (incl. verbose type)          |
-//! | getmempooldescendants              | version + model | UNTESTED (incl. verbose type)          |
+//! | getmempoolancestors                | version + model |                                        |
+//! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
 //! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
@@ -248,6 +248,8 @@ pub use self::{
     blockchain::{
         Bip9Info, Bip9Statistics, DeploymentInfo, GetBlockchainInfo, GetDeploymentInfo,
         GetDeploymentInfoError, GetMempoolEntry, MempoolEntry, SaveMempool,
+        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        GetMempoolDescendantsVerbose,
     },
     control::Logging,
     network::{GetPeerInfo, PeerInfo},
@@ -302,8 +304,7 @@ pub use crate::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
         GetBalancesError, GetBalancesMine, GetBalancesWatchOnly, GetBlockFilter,
         GetBlockFilterError, GetBlockchainInfoError, GetChainTxStats, GetDescriptorInfo,
-        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-        GetMempoolDescendantsVerbose, GetRpcInfo, MapMempoolEntryError,
+        GetRpcInfo, MapMempoolEntryError,
         MempoolEntryError, MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag, Softfork,
         SoftforkType,
     },
