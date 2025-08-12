@@ -284,10 +284,9 @@ pub use crate::{
         PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
         RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress,
         SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
-        SignRawTransactionError, SoftforkReject, TransactionCategory,
-        UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo,
+        SignRawTransactionError, SoftforkReject, TransactionCategory, UploadTarget,
+        ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
+        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
@@ -323,8 +322,9 @@ pub use crate::{
         TaprootScript, TaprootScriptPathSig,
     },
     v25::{
-        GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, ScanBlocksAbort,
-        ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus, MempoolAcceptance, MempoolAcceptanceError, TestMempoolAccept, TestMempoolAcceptError,
+        GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, MempoolAcceptance,
+        MempoolAcceptanceError, ScanBlocksAbort, ScanBlocksStart, ScanBlocksStartError,
+        ScanBlocksStatus, TestMempoolAccept, TestMempoolAcceptError,
     },
     v26::{
         AddrManInfoNetwork, ChainState, CreateWallet, DescriptorProcessPsbt,

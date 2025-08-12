@@ -290,10 +290,9 @@ pub use crate::{
         Locked, PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
         RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress,
         SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
-        SignRawTransactionError, SoftforkReject, TransactionCategory,
-        UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo,
+        SignRawTransactionError, SoftforkReject, TransactionCategory, UploadTarget,
+        ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
+        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
@@ -317,8 +316,8 @@ pub use crate::{
     },
     v22::{
         Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned,
-        ListDescriptors, ScriptPubkey, WalletDisplayAddress, MempoolAcceptance,
-        MempoolAcceptanceError, TestMempoolAccept, TestMempoolAcceptError,
+        ListDescriptors, MempoolAcceptance, MempoolAcceptanceError, ScriptPubkey,
+        TestMempoolAccept, TestMempoolAcceptError, WalletDisplayAddress,
     },
     v23::{
         Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript, DecodeScriptError, DeploymentInfo,
