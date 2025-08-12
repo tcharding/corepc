@@ -382,8 +382,34 @@ fn raw_transactions__submit_package__modelled() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
-fn raw_transactions__test_mempool_accept__modelled() {}
+fn raw_transactions__test_mempool_accept__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let tx = create_a_raw_transaction(&node);
+
+    // Sign (but don't broadcast).
+    let signed: SignRawTransaction = node
+        .client
+        .sign_raw_transaction_with_wallet(&tx)
+        .expect("signrawtransactionwithwallet");
+    let signed_model: mtype::SignRawTransaction = signed
+        .into_model()
+        .expect("SignRawTransaction into model");
+    let signed_tx = signed_model.tx;
+
+    // Call testmempoolaccept with the valid (not yet broadcast) transaction.
+    let json: TestMempoolAccept = node
+        .client
+        .test_mempool_accept(&[signed_tx.clone()])
+        .expect("testmempoolaccept");
+    let model: mtype::TestMempoolAccept = json
+        .into_model()
+        .expect("TestMempoolAccept into model");
+    assert_eq!(model.results.len(), 1);
+    let res = &model.results[0];
+    assert_eq!(res.txid, signed_tx.compute_txid());
+    assert!(res.allowed, "fresh signed tx should be allowed");
+}
 
 #[test]
 #[cfg(not(feature = "v17"))]    // utxoupdatepsbt was added in v0.18.

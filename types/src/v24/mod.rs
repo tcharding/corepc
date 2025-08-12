@@ -126,7 +126,7 @@
 //! | joinpsbts                          | version + model | UNTESTED                               |
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
-//! | testmempoolaccept                  | version + model | UNTESTED                               |
+//! | testmempoolaccept                  | version + model |                                        |
 //! | utxoupdatepsbt                     | version + model | UNTESTED                               |
 //!
 //! </details>
@@ -290,7 +290,7 @@ pub use crate::{
         Locked, PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
         RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress,
         SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
-        SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
+        SignRawTransactionError, SoftforkReject, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
         WitnessUtxo,
@@ -317,7 +317,8 @@ pub use crate::{
     },
     v22::{
         Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned,
-        ListDescriptors, ScriptPubkey, WalletDisplayAddress,
+        ListDescriptors, ScriptPubkey, WalletDisplayAddress, MempoolAcceptance,
+        MempoolAcceptanceError, TestMempoolAccept, TestMempoolAcceptError,
     },
     v23::{
         Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript, DecodeScriptError, DeploymentInfo,

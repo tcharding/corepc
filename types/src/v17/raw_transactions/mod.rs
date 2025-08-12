@@ -451,14 +451,9 @@ pub struct SignFail {
 /// > 2. allowhighfees    (boolean, optional, default=false) Allow high fees
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
-pub struct TestMempoolAccept {
-    /// Array of test results for each raw transaction in the input array.
-    ///
-    /// Length is exactly one for now.
-    pub results: Vec<MempoolAcceptance>,
-}
+pub struct TestMempoolAccept(pub Vec<MempoolAcceptance>);
 
-/// Represents a single mempool acceptance test result.
+/// Represents a single mempool acceptance test result, returned as part of `testmempoolaccept`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolAcceptance {

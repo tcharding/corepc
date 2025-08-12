@@ -44,7 +44,7 @@ pub use self::{
         DecodeScript, DescriptorProcessPsbt, FinalizePsbt, FundRawTransaction, GetRawTransaction,
         GetRawTransactionVerbose, JoinPsbts, MempoolAcceptance, SendRawTransaction, SignFail,
         SignRawTransaction, SubmitPackage, SubmitPackageTxResult, SubmitPackageTxResultFees,
-        TestMempoolAccept, UtxoUpdatePsbt,
+        TestMempoolAccept, UtxoUpdatePsbt, MempoolAcceptanceFees
     },
     util::{
         CreateMultisig, DeriveAddresses, DeriveAddressesMultipath, EstimateSmartFee,

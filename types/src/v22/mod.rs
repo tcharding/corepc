@@ -134,7 +134,7 @@
 //! | joinpsbts                          | version + model | UNTESTED                               |
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
-//! | testmempoolaccept                  | version + model | UNTESTED                               |
+//! | testmempoolaccept                  | version + model |                                        |
 //! | utxoupdatepsbt                     | version + model | UNTESTED                               |
 //!
 //! </details>
@@ -255,7 +255,9 @@ pub use self::{
     blockchain::GetMempoolInfo,
     control::Logging,
     network::{Banned, GetPeerInfo, ListBanned, PeerInfo},
-    raw_transactions::{DecodeScript, DecodeScriptError},
+    raw_transactions::{
+        DecodeScript, DecodeScriptError, MempoolAcceptance, MempoolAcceptanceError, TestMempoolAccept, TestMempoolAcceptError,
+    },
     signer::EnumerateSigners,
     wallet::{GetAddressInfo, GetAddressInfoEmbedded, ListDescriptors, WalletDisplayAddress},
 };
@@ -287,7 +289,7 @@ pub use crate::{
         LoadWallet, LockUnspent, Locked, PruneBlockchain, RawTransactionError, RawTransactionInput,
         RawTransactionOutput, RescanBlockchain, ScriptType, SendMany, SendRawTransaction,
         SendToAddress, SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey,
-        SignRawTransaction, SignRawTransactionError, SoftforkReject, TestMempoolAccept,
+        SignRawTransaction, SignRawTransactionError, SoftforkReject,
         TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
         VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
         WalletProcessPsbt, WitnessUtxo,
