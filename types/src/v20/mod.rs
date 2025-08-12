@@ -160,7 +160,7 @@
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
 //! | abortrescan                        | version         |                                        |
-//! | addmultisigaddress                 | version + model | UNTESTED                               |
+//! | addmultisigaddress                 | version + model |                                        |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
@@ -238,12 +238,12 @@ pub use self::{
     generating::GenerateToDescriptor,
     network::{Banned, ListBanned},
     util::CreateMultisig,
-    wallet::{GetAddressInfo, GetAddressInfoEmbedded, GetTransaction, GetTransactionDetail},
+    wallet::{AddMultisigAddress, GetAddressInfo, GetAddressInfoEmbedded, GetTransaction, GetTransactionDetail},
 };
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
+        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress,
         AddressInformation, Bip125Replaceable, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
         ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError,
         CreatePsbt, CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError,

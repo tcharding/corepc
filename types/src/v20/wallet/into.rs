@@ -9,10 +9,28 @@ use bitcoin::{
 };
 
 use super::{
-    GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
-    GetTransaction, GetTransactionDetail, GetTransactionDetailError, GetTransactionError,
+    AddMultisigAddress, AddMultisigAddressError, GetAddressInfo, GetAddressInfoEmbedded,
+    GetAddressInfoEmbeddedError, GetAddressInfoError, GetTransaction, GetTransactionDetail,
+    GetTransactionDetailError, GetTransactionError,
 };
 use crate::model;
+
+impl AddMultisigAddress {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::AddMultisigAddress, AddMultisigAddressError> {
+        use AddMultisigAddressError as E;
+
+        let address = self.address.parse::<Address<_>>().map_err(E::Address)?;
+        let redeem_script = ScriptBuf::from_hex(&self.redeem_script).map_err(E::RedeemScript)?;
+
+        Ok(model::AddMultisigAddress {
+            address,
+            redeem_script,
+            descriptor: Some(self.descriptor),
+            warnings: None, // v23 and later only.
+        })
+    }
+}
 
 impl GetAddressInfo {
     /// Converts version specific type to a version nonspecific, more strongly typed type.

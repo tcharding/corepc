@@ -1,10 +1,27 @@
 // SPDX-License-Identifier: CC0-1.0
 
 use bitcoin::consensus::encode;
-use bitcoin::{BlockHash, SignedAmount, Transaction, Txid};
+use bitcoin::{Address, BlockHash, ScriptBuf, SignedAmount, Transaction, Txid};
 
-use super::{GetTransaction, GetTransactionError};
+use super::{AddMultisigAddress, AddMultisigAddressError, GetTransaction, GetTransactionError};
 use crate::model;
+
+impl AddMultisigAddress {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::AddMultisigAddress, AddMultisigAddressError> {
+        use AddMultisigAddressError as E;
+
+        let address = self.address.parse::<Address<_>>().map_err(E::Address)?;
+        let redeem_script = ScriptBuf::from_hex(&self.redeem_script).map_err(E::RedeemScript)?;
+
+        Ok(model::AddMultisigAddress {
+            address,
+            redeem_script,
+            descriptor: Some(self.descriptor),
+            warnings: self.warnings,
+        })
+    }
+}
 
 impl GetTransaction {
     /// Converts version specific type to a version nonspecific, more strongly typed type.

@@ -66,7 +66,12 @@ impl AddMultisigAddress {
         let address = self.address.parse::<Address<_>>().map_err(E::Address)?;
         let redeem_script = ScriptBuf::from_hex(&self.redeem_script).map_err(E::RedeemScript)?;
 
-        Ok(model::AddMultisigAddress { address, redeem_script })
+        Ok(model::AddMultisigAddress {
+            address,
+            redeem_script,
+            descriptor: None, // v20 and later only.
+            warnings: None,   // v23 and later only.
+        })
     }
 }
 
