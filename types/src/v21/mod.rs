@@ -260,9 +260,9 @@ pub use self::{
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
+        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
+        BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt,
+        CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
         CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction,
         DecodeScript, DecodeScriptError, DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee,
         FinalizePsbt, FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate,
@@ -304,7 +304,7 @@ pub use crate::{
         MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
     },
     v20::{
-        Banned, CreateMultisig, GenerateToDescriptor, GetAddressInfo, GetAddressInfoEmbedded,
-        GetTransaction, GetTransactionDetail, ListBanned, Logging, AddMultisigAddress,
+        AddMultisigAddress, Banned, CreateMultisig, GenerateToDescriptor, GetAddressInfo,
+        GetAddressInfoEmbedded, GetTransaction, GetTransactionDetail, ListBanned, Logging,
     },
 };

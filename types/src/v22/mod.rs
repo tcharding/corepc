@@ -265,9 +265,9 @@ pub use self::{
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
+        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
+        BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt,
+        CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
         CreateRawTransaction, CreateWallet, DecodePsbt, DecodePsbtError, DecodeRawTransaction,
         DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
         FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
@@ -308,7 +308,10 @@ pub use crate::{
         GetChainTxStats, GetDescriptorInfo, GetRpcInfo, MapMempoolEntryError, MempoolEntryError,
         MempoolEntryFees, MempoolEntryFeesError, SetWalletFlag,
     },
-    v20::{AddMultisigAddress, CreateMultisig, GenerateToDescriptor, GetTransaction, GetTransactionDetail},
+    v20::{
+        AddMultisigAddress, CreateMultisig, GenerateToDescriptor, GetTransaction,
+        GetTransactionDetail,
+    },
     v21::{
         Bip9SoftforkInfo, GenerateBlock, GetBlockchainInfo, GetIndexInfo, GetIndexInfoName,
         GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,

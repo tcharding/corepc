@@ -259,9 +259,9 @@ pub use self::{
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
-        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
+        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
+        BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt,
+        CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
         CreateRawTransaction, DecodeRawTransaction, DumpPrivKey, DumpWallet, EncryptWallet,
         EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
         FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
@@ -310,8 +310,9 @@ pub use crate::{
         WalletDisplayAddress,
     },
     v23::{
-        AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript, DecodeScriptError, DeploymentInfo,
-        GetBlockchainInfo, GetDeploymentInfo, GetDeploymentInfoError, RestoreWallet, SaveMempool,
+        AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,
+        DecodeScriptError, DeploymentInfo, GetBlockchainInfo, GetDeploymentInfo,
+        GetDeploymentInfoError, RestoreWallet, SaveMempool,
     },
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
