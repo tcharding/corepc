@@ -134,7 +134,7 @@
 //! | joinpsbts                          | version + model | UNTESTED                               |
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
-//! | testmempoolaccept                  | version + model | UNTESTED                               |
+//! | testmempoolaccept                  | version + model |                                        |
 //! | utxoupdatepsbt                     | version + model | UNTESTED                               |
 //!
 //! </details>
@@ -235,6 +235,7 @@
 mod blockchain;
 mod generating;
 mod network;
+mod raw_transactions;
 mod util;
 mod wallet;
 
@@ -247,6 +248,9 @@ pub use self::{
     },
     generating::GenerateBlock,
     network::{GetNetworkInfo, GetPeerInfo, PeerInfo},
+    raw_transactions::{
+        MempoolAcceptance, MempoolAcceptanceError, TestMempoolAccept, TestMempoolAcceptError,
+    },
     util::{GetIndexInfo, GetIndexInfoName},
     wallet::{
         ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
@@ -282,10 +286,9 @@ pub use crate::{
         Locked, PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
         RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress,
         SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
-        SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
-        UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo,
+        SignRawTransactionError, SoftforkReject, TransactionCategory, UploadTarget,
+        ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
+        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

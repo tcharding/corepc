@@ -272,16 +272,37 @@ pub struct TestMempoolAccept {
     pub results: Vec<MempoolAcceptance>,
 }
 
-/// Represents a single mempool acceptance test result.
+/// Models a single mempool acceptance test result. Returned as part of `testmempoolaccept`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolAcceptance {
     /// The transaction ID.
     pub txid: Txid,
+    /// The transaction witness hash in hex.
+    pub wtxid: Option<Wtxid>,
     /// If the mempool allows this transaction to be inserted.
     pub allowed: bool,
+    /// Virtual transaction size as defined in BIP 141 (only present when 'allowed' is true).
+    pub vsize: Option<u32>,
+    /// Transaction fee in BTC (only present if 'allowed' is true).
+    pub fees: Option<MempoolAcceptanceFees>,
     /// Rejection string (only present when 'allowed' is false).
     pub reject_reason: Option<String>,
+    /// Rejection details (only present when 'allowed' is false and rejection details exist)
+    pub reject_details: Option<String>,
+}
+
+/// Models the fees field. Returned as part of `testmempoolaccept`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct MempoolAcceptanceFees {
+    /// Transaction fee in BTC.
+    pub base: Amount,
+    /// The effective feerate in BTC per KvB. May differ from the base feerate if, for example, there
+    /// are modified fees from `prioritisetransaction` or a package feerate was used.
+    pub effective_feerate: Option<FeeRate>,
+    /// Transactions whose fees and vsizes are included in `effective_feerate`.
+    pub effective_includes: Option<Vec<Wtxid>>,
 }
 
 /// Models the result of JSON-RPC method `utxoupdatepsbt;`.

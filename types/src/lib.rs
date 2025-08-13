@@ -89,11 +89,11 @@ impl std::error::Error for NumericError {}
 
 /// Converts `fee_rate` in BTC/kB to `FeeRate`.
 fn btc_per_kb(btc_per_kb: f64) -> Result<Option<FeeRate>, ParseAmountError> {
-    let btc_per_byte = btc_per_kb / 1000_f64;
-    let sats_per_byte = Amount::from_btc(btc_per_byte)?;
+    let sats_per_kb = Amount::from_btc(btc_per_kb)?;
+    let sats_per_byte = sats_per_kb.to_sat() / 1000;
 
     // Virtual bytes equal bytes before segwit.
-    let rate = FeeRate::from_sat_per_vb(sats_per_byte.to_sat());
+    let rate = FeeRate::from_sat_per_vb(sats_per_byte);
 
     Ok(rate)
 }

@@ -449,7 +449,7 @@ impl SignFail {
 impl TestMempoolAccept {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::TestMempoolAccept, hex::HexToArrayError> {
-        let results = self.results.into_iter().map(|r| r.into_model()).collect::<Result<_, _>>()?;
+        let results = self.0.into_iter().map(|r| r.into_model()).collect::<Result<_, _>>()?;
 
         Ok(model::TestMempoolAccept { results })
     }
@@ -462,8 +462,12 @@ impl MempoolAcceptance {
 
         Ok(model::MempoolAcceptance {
             txid,
+            wtxid: None, // v22 and later only.
             allowed: self.allowed,
+            vsize: None, // v21 and later only.
+            fees: None,  // v21 and later only.
             reject_reason: self.reject_reason,
+            reject_details: None, // v29 and later only.
         })
     }
 }

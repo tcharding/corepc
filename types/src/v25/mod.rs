@@ -127,7 +127,7 @@
 //! | joinpsbts                          | version + model | UNTESTED                               |
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
-//! | testmempoolaccept                  | version + model | UNTESTED                               |
+//! | testmempoolaccept                  | version + model |                                        |
 //! | utxoupdatepsbt                     | version + model | UNTESTED                               |
 //!
 //! </details>
@@ -243,6 +243,7 @@
 mod blockchain;
 mod control;
 mod generating;
+mod raw_transactions;
 mod wallet;
 
 #[doc(inline)]
@@ -252,6 +253,9 @@ pub use self::{
     },
     control::Logging,
     generating::{GenerateBlock, GenerateBlockError},
+    raw_transactions::{
+        MempoolAcceptance, MempoolAcceptanceError, TestMempoolAccept, TestMempoolAcceptError,
+    },
     wallet::{CreateWallet, ListDescriptors, LoadWallet, UnloadWallet},
 };
 #[doc(inline)]
@@ -282,10 +286,9 @@ pub use crate::{
         PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
         RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress,
         SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
-        SignRawTransactionError, SoftforkReject, TestMempoolAccept, TransactionCategory,
-        UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo,
+        SignRawTransactionError, SoftforkReject, TransactionCategory, UploadTarget,
+        ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
+        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

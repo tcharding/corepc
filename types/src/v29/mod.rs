@@ -136,7 +136,7 @@
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
 //! | submitpackage                      | version + model |                                        |
-//! | testmempoolaccept                  | version + model | UNTESTED                               |
+//! | testmempoolaccept                  | version + model |                                        |
 //! | utxoupdatepsbt                     | version + model | UNTESTED                               |
 //!
 //! </details>
@@ -253,6 +253,7 @@
 
 mod blockchain;
 mod mining;
+mod raw_transactions;
 mod util;
 
 #[doc(inline)]
@@ -267,6 +268,7 @@ pub use self::{
         BlockTemplateTransaction, GetMiningInfo, GetMiningInfoError, NextBlockInfo,
         NextBlockInfoError,
     },
+    raw_transactions::{MempoolAcceptance, TestMempoolAccept},
     util::{DeriveAddressesMultipath, GetDescriptorInfo},
 };
 #[doc(inline)]
@@ -295,9 +297,9 @@ pub use crate::{
         PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
         RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress,
         SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
-        SignRawTransactionError, TestMempoolAccept, TransactionCategory, UploadTarget,
-        ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+        SignRawTransactionError, TransactionCategory, UploadTarget, ValidateAddress,
+        ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
+        WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
@@ -330,8 +332,9 @@ pub use crate::{
         TaprootScript, TaprootScriptPathSig,
     },
     v25::{
-        GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, ScanBlocksAbort,
-        ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus,
+        GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, MempoolAcceptanceError,
+        ScanBlocksAbort, ScanBlocksStart, ScanBlocksStartError, ScanBlocksStatus,
+        TestMempoolAcceptError,
     },
     v26::{
         AddrManInfoNetwork, CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,

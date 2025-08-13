@@ -128,7 +128,7 @@
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
-//! | testmempoolaccept                  | version + model | UNTESTED                               |
+//! | testmempoolaccept                  | version + model |                                        |
 //!
 //! </details>
 //!
