@@ -186,7 +186,7 @@
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
-//! | listlabels                         | version + model | UNTESTED                               |
+//! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
 //! | listreceivedbylabel                | version + model |                                        |

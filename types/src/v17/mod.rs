@@ -181,7 +181,7 @@
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaccounts                       | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
-//! | listlabels                         | version + model | UNTESTED                               |
+//! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | listreceivedbyaccount              | returns nothing |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |

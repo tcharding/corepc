@@ -190,7 +190,7 @@
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
 //! | listdescriptors                    | version         |                                        |
-//! | listlabels                         | version + model | UNTESTED                               |
+//! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | newkeypool                         | returns nothing |                                        |
 //! | psbtbumpfee                        | version + model |                                        |

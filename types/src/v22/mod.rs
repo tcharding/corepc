@@ -199,7 +199,7 @@
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
 //! | listdescriptors                    | version         |                                        |
-//! | listlabels                         | version + model | UNTESTED                               |
+//! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model | UNTESTED                               |
