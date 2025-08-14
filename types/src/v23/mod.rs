@@ -162,7 +162,7 @@
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
 //! | abortrescan                        | version         |                                        |
-//! | addmultisigaddress                 | version + model | UNTESTED                               |
+//! | addmultisigaddress                 | version + model |                                        |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
@@ -258,17 +258,17 @@ pub use self::{
         PsbtInput, PsbtOutput,
     },
     util::CreateMultisig,
-    wallet::{GetTransaction, GetTransactionError, RestoreWallet},
+    wallet::{AddMultisigAddress, GetTransaction, GetTransactionError, RestoreWallet},
 };
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, Bip125Replaceable, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
-        ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError,
-        CreatePsbt, CreateRawTransaction, CreateWallet, DecodeRawTransaction, DumpPrivKey,
-        DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
-        FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
+        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
+        Bip125Replaceable, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
+        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
+        CreateRawTransaction, CreateWallet, DecodeRawTransaction, DumpPrivKey, DumpWallet,
+        EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
+        FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfoEmbeddedError, GetAddressesByLabel, GetBalance, GetBestBlockHash,
         GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
         GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,

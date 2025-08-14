@@ -59,6 +59,10 @@ pub struct AddMultisigAddress {
     pub address: Address<NetworkUnchecked>,
     /// The redemption script.
     pub redeem_script: ScriptBuf,
+    /// The descriptor for this multisig.
+    pub descriptor: Option<String>,
+    /// Any warnings resulting from the creation of this multisig.
+    pub warnings: Option<Vec<String>>,
 }
 
 /// Models the result of JSON-RPC method `bumpfee`.

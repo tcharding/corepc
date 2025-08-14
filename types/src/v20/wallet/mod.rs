@@ -10,9 +10,34 @@ use bitcoin::Transaction;
 use serde::{Deserialize, Serialize};
 
 pub use super::{
-    Bip125Replaceable, GetAddressInfoEmbeddedError, GetAddressInfoError, GetTransactionDetailError,
-    GetTransactionError, ScriptType, TransactionCategory,
+    AddMultisigAddressError, Bip125Replaceable, GetAddressInfoEmbeddedError, GetAddressInfoError,
+    GetTransactionDetailError, GetTransactionError, ScriptType, TransactionCategory,
 };
+
+/// Result of the JSON-RPC method `addmultisigaddress`.
+///
+/// > addmultisigaddress nrequired ["key",...] ( "label" "address_type" )
+/// >
+/// > Add a nrequired-to-sign multisignature address to the wallet. Requires a new wallet backup.
+/// > Each key is a Bitcoin address or hex-encoded public key.
+/// > This functionality is only intended for use with non-watchonly addresses.
+/// > See `importaddress` for watchonly p2sh address support.
+/// > If 'label' is specified, assign address to that label.
+///
+/// > Arguments:
+/// > 1. nrequired                      (numeric, required) The number of required signatures out of the n keys or addresses.
+/// > 2. "keys"                         (string, required) A json array of bitcoin addresses or hex-encoded public keys
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct AddMultisigAddress {
+    /// The value of the new multisig address.
+    pub address: String,
+    /// The string value of the hex-encoded redemption script.
+    #[serde(rename = "redeemScript")]
+    pub redeem_script: String,
+    /// The descriptor for this multisig.
+    pub descriptor: String,
+}
 
 /// Result of the JSON-RPC method `getaddressinfo`.
 ///

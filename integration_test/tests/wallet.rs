@@ -52,20 +52,28 @@ fn wallet__abort_rescan() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]
 fn wallet__add_multisig_address__modelled() {
-    let nrequired = 1; // 1-of-2 multisig.
+    let nrequired = 2;
 
-    let add1: Address<NetworkChecked> =
-        "32iVBEu4dxkUQk9dJbZUiBiQdmypcEyJRf".parse::<Address<_>>().unwrap().assume_checked();
-    let add2: Address<NetworkChecked> =
-        "132F25rTsvBdp9JzLLBHP5mvGY66i1xdiM".parse::<Address<_>>().unwrap().assume_checked();
+    let node = match () {
+        #[cfg(feature = "v22_and_below")]
+        () => Node::with_wallet(Wallet::Default, &[]),
+        #[cfg(not(feature = "v22_and_below"))]
+        () => {
+            let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
+            node.client.create_legacy_wallet("wallet_name").expect("createlegacywallet");
+            node
+        }
+    };
 
-    let node = Node::with_wallet(Wallet::Default, &[]);
+    let addr1 = node.client.new_address().expect("new_address");
+    let addr2 = node.client.new_address().expect("new_address");
+
     let json: AddMultisigAddress = node
         .client
-        .add_multisig_address_with_addresses(nrequired, vec![add1, add2])
+        .add_multisig_address_with_addresses(nrequired, vec![addr1, addr2])
         .expect("addmultisigaddress");
+
     let model: Result<mtype::AddMultisigAddress, AddMultisigAddressError> = json.into_model();
     model.unwrap();
 }

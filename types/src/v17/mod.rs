@@ -152,7 +152,7 @@
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
 //! | abortrescan                        | version         |                                        |
-//! | addmultisigaddress                 | version + model | UNTESTED                               |
+//! | addmultisigaddress                 | version + model |                                        |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |

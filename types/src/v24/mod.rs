@@ -163,7 +163,7 @@
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
 //! | abortrescan                        | version         |                                        |
-//! | addmultisigaddress                 | version + model | UNTESTED                               |
+//! | addmultisigaddress                 | version + model |                                        |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
@@ -265,12 +265,12 @@ pub use self::{
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-        AddressInformation, Bip125Replaceable, BumpFee, BumpFeeError, ChainTips, ChainTipsError,
-        ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError,
-        CreatePsbt, CreateRawTransaction, CreateWallet, DecodeRawTransaction, DumpPrivKey,
-        DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
-        FundRawTransaction, FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
+        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
+        Bip125Replaceable, BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus,
+        CombinePsbt, CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
+        CreateRawTransaction, CreateWallet, DecodeRawTransaction, DumpPrivKey, DumpWallet,
+        EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
+        FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfoEmbeddedError, GetAddressesByLabel, GetBalance, GetBestBlockHash,
         GetBlockCount, GetBlockHash, GetBlockHeader, GetBlockHeaderError, GetBlockHeaderVerbose,
         GetBlockHeaderVerboseError, GetBlockStats, GetBlockStatsError, GetBlockTemplate,
@@ -320,8 +320,8 @@ pub use crate::{
         TestMempoolAccept, TestMempoolAcceptError, WalletDisplayAddress,
     },
     v23::{
-        Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript, DecodeScriptError, DeploymentInfo,
-        GetBlockchainInfo, GetDeploymentInfo, GetDeploymentInfoError, Logging, RestoreWallet,
-        SaveMempool,
+        AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,
+        DecodeScriptError, DeploymentInfo, GetBlockchainInfo, GetDeploymentInfo,
+        GetDeploymentInfoError, Logging, RestoreWallet, SaveMempool,
     },
 };
