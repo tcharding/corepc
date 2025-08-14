@@ -612,16 +612,17 @@ pub struct JsonRpcError {
 pub struct ListAddressGroupings(pub Vec<Vec<ListAddressGroupingsItem>>);
 
 /// List item type returned as part of `listaddressgroupings`.
-// FIXME: The Core docs seem wrong, not sure what shape this should be?
+///
+/// Core encodes items as a JSON array with either 2 elements `[address, amount]` when there is no
+/// label or 3 elements `[address, amount, label]` when a label is present. Represent this as an
+/// untagged enum of tuple variants so Serde can match either length without custom code.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct ListAddressGroupingsItem {
-    /// The bitcoin address.
-    pub address: String,
-    /// The amount in BTC.
-    pub amount: f64,
-    /// The label.
-    pub label: Option<String>,
+#[serde(untagged)]
+pub enum ListAddressGroupingsItem {
+    /// Entry without label.
+    Two(String, f64),
+    /// Entry with label.
+    Three(String, f64, String),
 }
 
 /// Result of the JSON-RPC method `listlabels`.

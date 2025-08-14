@@ -500,6 +500,24 @@ fn wallet__keypool_refill() {
     let _: () = node.client.key_pool_refill().expect("keypoolrefill");
 }
 
+#[test]
+fn wallet__list_address_groupings__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let address = node.client.new_address().expect("failed to create new address");
+    let amount = Amount::from_sat(10_000);
+    node.client.send_to_address(&address, amount).expect("sendtoaddress").txid().unwrap();
+    node.mine_a_block();
+
+    let json: ListAddressGroupings =
+        node.client.list_address_groupings().expect("listaddressgroupings");
+    let model: Result<mtype::ListAddressGroupings, _> = json.into_model();
+    let groupings = model.unwrap();
+
+    assert!(!groupings.0.is_empty());
+}
+
 #[cfg(not(feature = "v17"))]
 #[test]
 fn wallet__list_received_by_label__modelled() {

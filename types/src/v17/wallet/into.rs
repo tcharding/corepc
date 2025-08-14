@@ -455,7 +455,14 @@ impl GetWalletInfo {
 impl ListAddressGroupings {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::ListAddressGroupings, ListAddressGroupingsError> {
-        todo!() // Don't do this till we work out what the docs mean.
+        let groups = self
+            .0
+            .into_iter()
+            .map(|group| {
+                group.into_iter().map(|item| item.into_model()).collect::<Result<Vec<_>, _>>()
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        Ok(model::ListAddressGroupings(groups))
     }
 }
 
@@ -463,11 +470,18 @@ impl ListAddressGroupingsItem {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::ListAddressGroupingsItem, ListAddressGroupingsError> {
         use ListAddressGroupingsError as E;
-
-        let address = self.address.parse::<Address<_>>().map_err(E::Address)?;
-        let amount = Amount::from_btc(self.amount).map_err(E::Amount)?;
-
-        Ok(model::ListAddressGroupingsItem { address, amount, label: self.label })
+        match self {
+            ListAddressGroupingsItem::Two(addr, amt) => {
+                let address = addr.parse::<Address<_>>().map_err(E::Address)?;
+                let amount = Amount::from_btc(amt).map_err(E::Amount)?;
+                Ok(model::ListAddressGroupingsItem { address, amount, label: None })
+            }
+            ListAddressGroupingsItem::Three(addr, amt, label) => {
+                let address = addr.parse::<Address<_>>().map_err(E::Address)?;
+                let amount = Amount::from_btc(amt).map_err(E::Amount)?;
+                Ok(model::ListAddressGroupingsItem { address, amount, label: Some(label) })
+            }
+        }
     }
 }
 
