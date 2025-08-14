@@ -372,6 +372,14 @@ fn wallet__get_transaction__modelled() {
 }
 
 #[test]
+fn wallet__get_unconfirmed_balance__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    let json: GetUnconfirmedBalance = node.client.get_unconfirmed_balance().expect("getunconfirmedbalance");
+    let model: Result<mtype::GetUnconfirmedBalance, _> = json.into_model();
+    model.unwrap();
+}
+
+#[test]
 fn wallet__import_address() {
     let node = match () {
         #[cfg(feature = "v22_and_below")]
