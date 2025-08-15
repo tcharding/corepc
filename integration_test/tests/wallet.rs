@@ -518,6 +518,17 @@ fn wallet__list_address_groupings__modelled() {
     assert!(!groupings.0.is_empty());
 }
 
+#[test]
+fn wallet__list_labels__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    let label = "list-label-test";
+    let _ = node.client.new_address_with_label(label).expect("newaddress");
+
+    let json: ListLabels = node.client.list_labels().expect("listlabels");
+
+    assert!(json.0.iter().any(|s| s == label));
+}
+
 #[cfg(not(feature = "v17"))]
 #[test]
 fn wallet__list_received_by_label__modelled() {

@@ -202,7 +202,7 @@
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model | UNTESTED                               |
 //! | listdescriptors                    | version         |                                        |
-//! | listlabels                         | version + model | UNTESTED                               |
+//! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model | UNTESTED                               |
 //! | migratewallet                      | version         |                                        |
 //! | newkeypool                         | returns nothing |                                        |

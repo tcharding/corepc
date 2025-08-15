@@ -499,11 +499,6 @@ pub struct ListAddressGroupingsItem {
     pub label: Option<String>,
 }
 
-/// Models the result of JSON-RPC method `listlabels`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct ListLabels(pub Vec<String>);
-
 /// Models the result of JSON-RPC method `listlockunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]

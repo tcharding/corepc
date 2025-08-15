@@ -485,10 +485,6 @@ impl ListAddressGroupingsItem {
     }
 }
 
-impl ListLabels {
-    pub fn into_model(self) -> model::ListLabels { model::ListLabels(self.0) }
-}
-
 impl ListLockUnspent {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::ListLockUnspent, ListLockUnspentItemError> {
