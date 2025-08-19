@@ -88,13 +88,23 @@ fn network__get_network_info__modelled() {
 #[test]
 #[cfg(not(feature = "v17"))]
 fn network__get_node_addresses() {
-    let (node1, node2, node3) = integration_test::three_node_network();
+    let node = Node::with_wallet(Wallet::None, &[]);
 
-    node1.mine_a_block();
-    node2.mine_a_block();
-    node3.mine_a_block();
+    #[cfg(feature = "v20_and_below")]
+    {
+        let _: GetNodeAddresses = node.client.get_node_addresses().expect("getnodeaddresses");
+    }
+    #[cfg(not(feature = "v20_and_below"))]
+    {
+        let peer_address = "1.2.3.4";
+        let peer_port = 1234;
+        node.client.add_peer_address(peer_address, peer_port).expect("addpeeraddress node2");
 
-    let _: GetNodeAddresses = node1.client.get_node_addresses().expect("getnodeaddresses");
+        let json: GetNodeAddresses = node.client.get_node_addresses().expect("getnodeaddresses");
+
+        assert_eq!(json.0[0].address, peer_address);
+        assert_eq!(json.0[0].port, peer_port);
+    }
 }
 
 #[test]
