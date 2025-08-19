@@ -322,7 +322,8 @@ pub use crate::{
         PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
     v22::{
-        Banned, EnumerateSigners, ListBanned, ScriptPubkey, WalletDisplayAddress, GetNodeAddresses, NodeAddress
+        Banned, EnumerateSigners, GetNodeAddresses, ListBanned, NodeAddress, ScriptPubkey,
+        WalletDisplayAddress,
     },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,

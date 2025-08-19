@@ -294,10 +294,10 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError,
-        GetReceivedByLabel, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
-        ListReceivedByLabel, ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir,
-        ListWalletDirWallet, UtxoUpdatePsbt,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
+        ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
+        ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+        UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
@@ -314,8 +314,7 @@ pub use crate::{
     },
     v22::{
         Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, GetMempoolInfo,
-        ListBanned, ListDescriptors, MempoolAcceptance, MempoolAcceptanceError, ScriptPubkey,
-        TestMempoolAccept, TestMempoolAcceptError, WalletDisplayAddress, GetNodeAddresses,
-        NodeAddress,
+        GetNodeAddresses, ListBanned, ListDescriptors, MempoolAcceptance, MempoolAcceptanceError,
+        NodeAddress, ScriptPubkey, TestMempoolAccept, TestMempoolAcceptError, WalletDisplayAddress,
     },
 };

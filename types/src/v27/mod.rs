@@ -251,9 +251,7 @@
 mod mining;
 
 #[doc(inline)]
-pub use self::{
-    mining::{GetPrioritisedTransactions, PrioritisedTransaction},
-};
+pub use self::mining::{GetPrioritisedTransactions, PrioritisedTransaction};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -304,8 +302,8 @@ pub use crate::{
         ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
     v22::{
-        Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned, ScriptPubkey,
-        WalletDisplayAddress, GetNodeAddresses, NodeAddress,
+        Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, GetNodeAddresses,
+        ListBanned, NodeAddress, ScriptPubkey, WalletDisplayAddress,
     },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,

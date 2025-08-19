@@ -296,10 +296,9 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError,
-        GetReceivedByLabel, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
-        ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet,
-        UtxoUpdatePsbt,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
+        ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
+        ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
@@ -315,10 +314,9 @@ pub use crate::{
         UnloadWallet, UpgradeWallet,
     },
     v22::{
-        Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned,
-        ListDescriptors, MempoolAcceptance, MempoolAcceptanceError, ScriptPubkey,
-        TestMempoolAccept, TestMempoolAcceptError, WalletDisplayAddress,
-        GetNodeAddresses, NodeAddress,
+        Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, GetNodeAddresses,
+        ListBanned, ListDescriptors, MempoolAcceptance, MempoolAcceptanceError, NodeAddress,
+        ScriptPubkey, TestMempoolAccept, TestMempoolAcceptError, WalletDisplayAddress,
     },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,
