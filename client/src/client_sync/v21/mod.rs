@@ -5,6 +5,7 @@
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
 mod generating;
+mod hidden;
 mod util;
 mod wallet;
 
@@ -68,6 +69,9 @@ crate::impl_client_v21__generate_block!();
 crate::impl_client_v17__generate_to_address!();
 crate::impl_client_v20__generate_to_descriptor!();
 crate::impl_client_v17__invalidate_block!();
+
+// == Hidden ==
+crate::impl_client_v21_add_peer_address!();
 
 // == Mining ==
 crate::impl_client_v17__get_block_template!();

@@ -234,6 +234,7 @@
 // JSON-RPC types by API section.
 mod blockchain;
 mod generating;
+mod hidden;
 mod network;
 mod raw_transactions;
 mod util;
@@ -247,6 +248,7 @@ pub use self::{
         MempoolEntry, Softfork, SoftforkType,
     },
     generating::GenerateBlock,
+    hidden::AddPeerAddress,
     network::{GetNetworkInfo, GetPeerInfo, PeerInfo},
     raw_transactions::{
         MempoolAcceptance, MempoolAcceptanceError, TestMempoolAccept, TestMempoolAcceptError,

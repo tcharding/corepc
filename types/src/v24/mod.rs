@@ -310,9 +310,9 @@ pub use crate::{
     },
     v20::GenerateToDescriptor,
     v21::{
-        GenerateBlock, GetIndexInfo, GetIndexInfoName, GetNetworkInfo, ImportDescriptors,
-        ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UnloadWallet,
-        UpgradeWallet,
+        AddPeerAddress, GenerateBlock, GetIndexInfo, GetIndexInfoName, GetNetworkInfo,
+        ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
+        UnloadWallet, UpgradeWallet,
     },
     v22::{
         Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned,

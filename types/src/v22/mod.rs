@@ -313,8 +313,8 @@ pub use crate::{
         GetTransactionDetail,
     },
     v21::{
-        Bip9SoftforkInfo, GenerateBlock, GetBlockchainInfo, GetIndexInfo, GetIndexInfoName,
-        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        AddPeerAddress, Bip9SoftforkInfo, GenerateBlock, GetBlockchainInfo, GetIndexInfo,
+        GetIndexInfoName, GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
         GetMempoolDescendantsVerbose, GetMempoolEntry, GetNetworkInfo, ImportDescriptors,
         ImportDescriptorsResult, MempoolEntry, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
         Softfork, SoftforkType, UnloadWallet, UpgradeWallet,

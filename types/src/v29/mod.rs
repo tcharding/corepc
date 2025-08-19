@@ -315,8 +315,8 @@ pub use crate::{
     },
     v20::GenerateToDescriptor,
     v21::{
-        GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee,
-        PsbtBumpFeeError, Send, SendError, UpgradeWallet,
+        AddPeerAddress, GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult,
+        PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
     v22::{Banned, EnumerateSigners, ListBanned, ScriptPubkey, WalletDisplayAddress},
     v23::{

@@ -72,6 +72,9 @@ crate::impl_client_v17__generate_to_address!();
 crate::impl_client_v20__generate_to_descriptor!();
 crate::impl_client_v17__invalidate_block!();
 
+// == Hidden ==
+crate::impl_client_v21_add_peer_address!();
+
 // == Mining ==
 crate::impl_client_v17__get_block_template!();
 crate::impl_client_v17__get_mining_info!();
