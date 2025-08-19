@@ -254,7 +254,7 @@ mod wallet;
 pub use self::{
     blockchain::GetMempoolInfo,
     control::Logging,
-    network::{Banned, GetPeerInfo, ListBanned, PeerInfo},
+    network::{Banned, GetPeerInfo, ListBanned, PeerInfo, GetNodeAddresses, NodeAddress},
     raw_transactions::{
         DecodeScript, DecodeScriptError, MempoolAcceptance, MempoolAcceptanceError,
         TestMempoolAccept, TestMempoolAcceptError,
@@ -297,10 +297,10 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetNodeAddresses,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError,
         GetReceivedByLabel, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
         ListReceivedByLabel, ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir,
-        ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+        ListWalletDirWallet, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesError, GetBalancesMine,

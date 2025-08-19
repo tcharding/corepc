@@ -321,7 +321,9 @@ pub use crate::{
         AddPeerAddress, GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult,
         PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
-    v22::{Banned, EnumerateSigners, ListBanned, ScriptPubkey, WalletDisplayAddress},
+    v22::{
+        Banned, EnumerateSigners, ListBanned, ScriptPubkey, WalletDisplayAddress, GetNodeAddresses, NodeAddress
+    },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,
         DecodeScriptError, DeploymentInfo, GetDeploymentInfo, GetDeploymentInfoError,
@@ -347,5 +349,5 @@ pub use crate::{
         GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
         LoadTxOutSet, LoadTxOutSetError, LoadWallet, PeerInfo, UnloadWallet,
     },
-    v27::{GetNodeAddresses, GetPrioritisedTransactions, NodeAddress, PrioritisedTransaction},
+    v27::{GetPrioritisedTransactions, PrioritisedTransaction},
 };

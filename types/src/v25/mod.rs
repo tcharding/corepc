@@ -292,10 +292,10 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetNodeAddresses,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError,
         GetReceivedByLabel, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
         ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet,
-        NodeAddress, UtxoUpdatePsbt,
+        UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
@@ -311,7 +311,7 @@ pub use crate::{
     },
     v22::{
         Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned, ScriptPubkey,
-        WalletDisplayAddress,
+        WalletDisplayAddress, GetNodeAddresses, NodeAddress,
     },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,

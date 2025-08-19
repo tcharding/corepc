@@ -249,12 +249,10 @@
 //! </details>
 
 mod mining;
-mod network;
 
 #[doc(inline)]
 pub use self::{
     mining::{GetPrioritisedTransactions, PrioritisedTransaction},
-    network::{GetNodeAddresses, NodeAddress},
 };
 #[doc(inline)]
 pub use crate::{
@@ -307,7 +305,7 @@ pub use crate::{
     },
     v22::{
         Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned, ScriptPubkey,
-        WalletDisplayAddress,
+        WalletDisplayAddress, GetNodeAddresses, NodeAddress,
     },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,
