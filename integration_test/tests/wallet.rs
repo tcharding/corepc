@@ -794,6 +794,20 @@ fn wallet__remove_pruned_funds() {
     let _: () = node.client.remove_pruned_funds(txid).expect("removeprunedfunds");
 }
 
+#[test]
+fn wallet__rescan_blockchain__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let mining_addr = node.client.new_address().expect("newaddress");
+    let _ = node.client.generate_to_address(3, &mining_addr).expect("generatetoaddress");
+
+    let json: RescanBlockchain = node.client.rescan_blockchain().expect("rescanblockchain");
+    let model: Result<mtype::RescanBlockchain, _> = json.into_model();
+    let rescan = model.unwrap();
+
+    assert!(rescan.stop_height >= rescan.start_height);
+}
+
 // This is tested in `backup_and_restore_wallet()`, called by wallet__backup_wallet()
 #[cfg(not(feature = "v22_and_below"))]
 #[test]

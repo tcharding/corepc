@@ -207,7 +207,7 @@
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |
-//! | rescanblockchain                   | version + model | UNTESTED                               |
+//! | rescanblockchain                   | version + model |                                        |
 //! | restorewallet                      | version         |                                        |
 //! | send                               | version + model |                                        |
 //! | sendall                            | version + model |                                        |
