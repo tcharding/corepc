@@ -549,6 +549,23 @@ fn wallet__list_received_by_label__modelled() {
 }
 
 #[test]
+fn wallet__list_received_by_address__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+    let address = node.client.new_address().expect("failed to create new address");
+    let amount = Amount::from_sat(10_000);
+    let _ = node.client.send_to_address(&address, amount).expect("sendtoaddress");
+    node.mine_a_block();
+
+    let json: ListReceivedByAddress = node.client.list_received_by_address().expect("listreceivedbyaddress");
+    let model: Result<mtype::ListReceivedByAddress, _> = json.into_model();
+    let model = model.unwrap();
+
+    let unchecked_addr = address.as_unchecked();
+    assert!(model.0.iter().any(|item| &item.address == unchecked_addr));
+}
+
+#[test]
 fn wallet__import_multi() {
     let node = match () {
         #[cfg(feature = "v22_and_below")]

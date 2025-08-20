@@ -186,7 +186,7 @@
 //! | listaddressgroupings               | version + model | UNTESTED                               |
 //! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | listreceivedbyaddress              | version + model | UNTESTED                               |
+//! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
 //! | listtransactions                   | version + model | UNTESTED                               |
@@ -246,7 +246,8 @@ pub use self::{
     wallet::{
         GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoError, GetReceivedByLabel,
         ImportMulti, ImportMultiEntry, JsonRpcError, ListReceivedByLabel, ListReceivedByLabelError,
-        ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+        ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet, ListReceivedByAddress,
+        ListReceivedByAddressItem,
     },
 };
 #[doc(inline)]
@@ -272,7 +273,7 @@ pub use crate::v17::{
     GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
     GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
     ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
-    ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock,
+    ListReceivedByAddressError, ListSinceBlock,
     ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
     ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError,
     ListWallets, LoadWallet, LockUnspent, Locked, Logging, MapMempoolEntryError, MempoolAcceptance,

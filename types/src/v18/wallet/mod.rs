@@ -11,7 +11,8 @@ use serde::{Deserialize, Serialize};
 
 pub use self::error::{GetAddressInfoError, ListReceivedByLabelError};
 pub use super::{
-    GetAddressInfoEmbeddedError, GetAddressInfoLabel, ListUnspentItemError, ScriptType,
+    GetAddressInfoEmbeddedError, GetAddressInfoLabel, ListReceivedByAddressError,
+    ListUnspentItemError, ScriptType,
 };
 
 /// Result of the JSON-RPC method `getaddressinfo`.
@@ -188,6 +189,34 @@ pub struct JsonRpcError {
     pub message: String,
     /// The error data.
     pub data: Option<serde_json::Value>, // Can hold arbitrary extra information
+}
+
+/// Result of the JSON-RPC method `listreceivedbyaddress`.
+///
+/// > listreceivedbyaddress ( minconf include_empty include_watchonly address_filter )
+/// >
+/// > List balances by receiving address.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ListReceivedByAddress(pub Vec<ListReceivedByAddressItem>);
+
+/// List item returned as part of of `listreceivedByaddress`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ListReceivedByAddressItem {
+    /// Only returned if imported addresses were involved in transaction.
+    #[serde(rename = "involvesWatchonly")]
+    pub involves_watch_only: Option<bool>,
+    /// The receiving address.
+    pub address: String,
+    /// The total amount in BTC received by the address.
+    pub amount: f64,
+    /// The number of confirmations of the most recent transaction included.
+    pub confirmations: i64,
+    /// The label of the receiving address. The default label is "".
+    pub label: String,
+    /// The ids of transactions received with the address.
+    pub txids: Vec<String>,
 }
 
 /// Result of the JSON-RPC method `listreceivedbylabel`.

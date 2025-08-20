@@ -11,7 +11,7 @@ use bitcoin::{
 use super::{
     GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
     GetReceivedByLabel, ListReceivedByLabel, ListReceivedByLabelError, ListReceivedByLabelItem,
-    ListUnspent, ListUnspentItem, ListUnspentItemError,
+    ListUnspent, ListUnspentItem, ListUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem,
 };
 use crate::model;
 
@@ -162,6 +162,47 @@ impl GetReceivedByLabel {
     pub fn into_model(self) -> Result<model::GetReceivedByLabel, ParseAmountError> {
         let amount = bitcoin::Amount::from_btc(self.0)?;
         Ok(model::GetReceivedByLabel(amount))
+    }
+}
+
+impl ListReceivedByAddress {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::ListReceivedByAddress, ListReceivedByAddressError> {
+        let balances = self
+            .0
+            .into_iter()
+            .map(|balance| balance.into_model())
+            .collect::<Result<Vec<_>, _>>()?;
+        Ok(model::ListReceivedByAddress(balances))
+    }
+}
+
+impl ListReceivedByAddressItem {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(
+        self,
+    ) -> Result<model::ListReceivedByAddressItem, ListReceivedByAddressError> {
+        use ListReceivedByAddressError as E;
+
+        let address = self.address.parse::<Address<_>>().map_err(E::Address)?;
+        let amount = Amount::from_btc(self.amount).map_err(E::Amount)?;
+        let txids = self
+            .txids
+            .iter()
+            .enumerate()
+            .map(|(i, txid)| {
+                txid.parse::<Txid>().map_err(|e| ListReceivedByAddressError::Txids(i, e))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+
+        Ok(model::ListReceivedByAddressItem {
+            involves_watch_only: self.involves_watch_only,
+            address,
+            amount,
+            confirmations: self.confirmations,
+            label: self.label,
+            txids,
+        })
     }
 }
 

@@ -187,7 +187,7 @@
 //! | listaddressgroupings               | version + model | UNTESTED                               |
 //! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | listreceivedbyaddress              | version + model | UNTESTED                               |
+//! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
 //! | listtransactions                   | version + model | UNTESTED                               |
@@ -271,7 +271,7 @@ pub use crate::v17::{
     GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
     GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
     ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
-    ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock,
+    ListReceivedByAddressError, ListSinceBlock,
     ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
     ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError,
     ListWallets, LoadWallet, LockUnspent, Locked, Logging, PruneBlockchain, RawTransactionError,
@@ -289,4 +289,5 @@ pub use crate::v18::{
     GetAddressInfoError, GetNodeAddresses, GetReceivedByLabel, ImportMulti, ImportMultiEntry,
     JoinPsbts, JsonRpcError, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
     ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+    ListReceivedByAddress, ListReceivedByAddressItem,
 };

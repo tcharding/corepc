@@ -524,7 +524,7 @@ pub struct ListReceivedByAddress(pub Vec<ListReceivedByAddressItem>);
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddressItem {
     /// Only returned if imported addresses were involved in transaction.
-    pub involves_watch_only: bool,
+    pub involves_watch_only: Option<bool>,
     /// The receiving address.
     pub address: Address<NetworkUnchecked>,
     /// The total amount received by the address.
