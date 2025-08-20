@@ -188,7 +188,7 @@
 //! | listsinceblock                     | version + model | UNTESTED                               |
 //! | listtransactions                   | version + model | UNTESTED                               |
 //! | listunspent                        | version + model |                                        |
-//! | listwallets                        | version + model | UNTESTED                               |
+//! | listwallets                        | version + model |                                        |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | version         |                                        |
 //! | move                               | returns boolean |                                        |

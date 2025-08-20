@@ -208,7 +208,7 @@
 //! | listtransactions                   | version + model | UNTESTED                               |
 //! | listunspent                        | version + model |                                        |
 //! | listwalletdir                      | version         |                                        |
-//! | listwallets                        | version + model | UNTESTED                               |
+//! | listwallets                        | version + model |                                        |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |

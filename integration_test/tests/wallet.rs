@@ -718,6 +718,21 @@ fn wallet__list_wallet_dir() {
 }
 
 #[test]
+fn wallet__list_wallets__modelled() {
+    let node = Node::with_wallet(Wallet::None, &[]);
+
+    let wallet_1 = "test_wallet_1";
+    let wallet_2 = "test_wallet_2";
+    node.client.create_wallet(wallet_1).expect("createwallet w1");
+    node.client.create_wallet(wallet_2).expect("createwallet w2");
+
+    let json: ListWallets = node.client.list_wallets().expect("listwallets");
+
+    assert!(json.0.iter().any(|w| w == wallet_1));
+    assert!(json.0.iter().any(|w| w == wallet_2));
+}
+
+#[test]
 fn wallet__load_wallet__modelled() {
     create_load_unload_wallet();
 }
