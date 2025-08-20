@@ -249,13 +249,9 @@
 //! </details>
 
 mod mining;
-mod network;
 
 #[doc(inline)]
-pub use self::{
-    mining::{GetPrioritisedTransactions, PrioritisedTransaction},
-    network::{GetNodeAddresses, NodeAddress},
-};
+pub use self::mining::{GetPrioritisedTransactions, PrioritisedTransaction};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -302,12 +298,12 @@ pub use crate::{
     },
     v20::GenerateToDescriptor,
     v21::{
-        GetIndexInfo, GetIndexInfoName, GetNetworkInfo, ImportDescriptors, ImportDescriptorsResult,
-        PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
+        AddPeerAddress, GetIndexInfo, GetIndexInfoName, GetNetworkInfo, ImportDescriptors,
+        ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
     v22::{
-        Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned, ScriptPubkey,
-        WalletDisplayAddress,
+        Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, GetNodeAddresses,
+        ListBanned, NodeAddress, ScriptPubkey, WalletDisplayAddress,
     },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,

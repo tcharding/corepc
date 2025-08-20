@@ -254,7 +254,7 @@ mod wallet;
 pub use self::{
     blockchain::GetMempoolInfo,
     control::Logging,
-    network::{Banned, GetPeerInfo, ListBanned, PeerInfo},
+    network::{Banned, GetNodeAddresses, GetPeerInfo, ListBanned, NodeAddress, PeerInfo},
     raw_transactions::{
         DecodeScript, DecodeScriptError, MempoolAcceptance, MempoolAcceptanceError,
         TestMempoolAccept, TestMempoolAcceptError,
@@ -297,10 +297,10 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetNodeAddresses,
-        GetReceivedByLabel, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
-        ListReceivedByLabel, ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir,
-        ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
+        ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
+        ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+        UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances, GetBalancesError, GetBalancesMine,
@@ -313,8 +313,8 @@ pub use crate::{
         GetTransactionDetail,
     },
     v21::{
-        Bip9SoftforkInfo, GenerateBlock, GetBlockchainInfo, GetIndexInfo, GetIndexInfoName,
-        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        AddPeerAddress, Bip9SoftforkInfo, GenerateBlock, GetBlockchainInfo, GetIndexInfo,
+        GetIndexInfoName, GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
         GetMempoolDescendantsVerbose, GetMempoolEntry, GetNetworkInfo, ImportDescriptors,
         ImportDescriptorsResult, MempoolEntry, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
         Softfork, SoftforkType, UnloadWallet, UpgradeWallet,

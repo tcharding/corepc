@@ -296,10 +296,9 @@ pub use crate::{
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
-        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetNodeAddresses,
-        GetReceivedByLabel, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
-        ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet,
-        NodeAddress, UtxoUpdatePsbt,
+        AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
+        ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByLabel,
+        ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
@@ -310,14 +309,14 @@ pub use crate::{
     },
     v20::GenerateToDescriptor,
     v21::{
-        GenerateBlock, GetIndexInfo, GetIndexInfoName, GetNetworkInfo, ImportDescriptors,
-        ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UnloadWallet,
-        UpgradeWallet,
+        AddPeerAddress, GenerateBlock, GetIndexInfo, GetIndexInfoName, GetNetworkInfo,
+        ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee, PsbtBumpFeeError, Send, SendError,
+        UnloadWallet, UpgradeWallet,
     },
     v22::{
-        Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, ListBanned,
-        ListDescriptors, MempoolAcceptance, MempoolAcceptanceError, ScriptPubkey,
-        TestMempoolAccept, TestMempoolAcceptError, WalletDisplayAddress,
+        Banned, EnumerateSigners, GetAddressInfo, GetAddressInfoEmbedded, GetNodeAddresses,
+        ListBanned, ListDescriptors, MempoolAcceptance, MempoolAcceptanceError, NodeAddress,
+        ScriptPubkey, TestMempoolAccept, TestMempoolAcceptError, WalletDisplayAddress,
     },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,

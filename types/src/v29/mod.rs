@@ -315,10 +315,13 @@ pub use crate::{
     },
     v20::GenerateToDescriptor,
     v21::{
-        GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult, PsbtBumpFee,
-        PsbtBumpFeeError, Send, SendError, UpgradeWallet,
+        AddPeerAddress, GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult,
+        PsbtBumpFee, PsbtBumpFeeError, Send, SendError, UpgradeWallet,
     },
-    v22::{Banned, EnumerateSigners, ListBanned, ScriptPubkey, WalletDisplayAddress},
+    v22::{
+        Banned, EnumerateSigners, GetNodeAddresses, ListBanned, NodeAddress, ScriptPubkey,
+        WalletDisplayAddress,
+    },
     v23::{
         AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,
         DecodeScriptError, DeploymentInfo, GetDeploymentInfo, GetDeploymentInfoError,
@@ -344,7 +347,7 @@ pub use crate::{
         LastProcessedBlock, LastProcessedBlockError, LoadTxOutSet, LoadTxOutSetError, LoadWallet,
         PeerInfo, UnloadWallet,
     },
-    v27::{GetNodeAddresses, GetPrioritisedTransactions, NodeAddress, PrioritisedTransaction},
+    v27::{GetPrioritisedTransactions, PrioritisedTransaction},
     v28::{
         CreateWalletDescriptor, GetAddressInfo, GetAddressInfoEmbedded, GetHdKeys, GetHdKeysError,
         GetNetworkInfo, GetTransaction, HdKey, HdKeyDescriptor, Logging, SubmitPackage,
