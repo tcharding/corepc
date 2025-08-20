@@ -187,7 +187,7 @@
 //! | getreceivedbyaddress               | version + model |                                        |
 //! | getreceivedbylabel                 | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
-//! | getunconfirmedbalance              | version + model | UNTESTED                               |
+//! | getunconfirmedbalance              | version + model |                                        |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
 //! | importdescriptors                  | version         |                                        |

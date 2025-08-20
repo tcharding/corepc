@@ -170,7 +170,7 @@
 //! | getreceivedbyaccount               | returns nothing |                                        |
 //! | getreceivedbyaddress               | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
-//! | getunconfirmedbalance              | version + model | UNTESTED                               |
+//! | getunconfirmedbalance              | version + model |                                        |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
 //! | importmulti                        | version         |                                        |
