@@ -11,7 +11,7 @@
 
 /// Implements Bitcoin Core JSON-RPC API method `addpeeraddress`.
 #[macro_export]
-macro_rules! impl_client_v21_add_peer_address {
+macro_rules! impl_client_v21__add_peer_address {
     () => {
         impl Client {
             pub fn add_peer_address(&self, address: &str, port: u16) -> Result<AddPeerAddress> {
