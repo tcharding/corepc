@@ -10,8 +10,9 @@ use bitcoin::{
 
 use super::{
     GetAddressInfo, GetAddressInfoEmbedded, GetAddressInfoEmbeddedError, GetAddressInfoError,
-    GetReceivedByLabel, ListReceivedByLabel, ListReceivedByLabelError, ListReceivedByLabelItem,
-    ListUnspent, ListUnspentItem, ListUnspentItemError, ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem,
+    GetReceivedByLabel, ListReceivedByAddress, ListReceivedByAddressError,
+    ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError,
+    ListReceivedByLabelItem, ListUnspent, ListUnspentItem, ListUnspentItemError,
 };
 use crate::model;
 
