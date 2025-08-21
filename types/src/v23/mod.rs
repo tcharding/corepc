@@ -178,7 +178,7 @@
 //! | getreceivedbyaddress               | version + model |                                        |
 //! | getreceivedbylabel                 | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
-//! | getunconfirmedbalance              | version + model | UNTESTED                               |
+//! | getunconfirmedbalance              | version + model |                                        |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
 //! | importdescriptors                  | version         |                                        |
@@ -200,7 +200,7 @@
 //! | listtransactions                   | version + model | UNTESTED                               |
 //! | listunspent                        | version + model |                                        |
 //! | listwalletdir                      | version         |                                        |
-//! | listwallets                        | version + model | UNTESTED                               |
+//! | listwallets                        | version + model |                                        |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | version         |                                        |
 //! | removeprunedfunds                  | returns nothing |                                        |

@@ -170,7 +170,7 @@
 //! | getreceivedbyaccount               | returns nothing |                                        |
 //! | getreceivedbyaddress               | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
-//! | getunconfirmedbalance              | version + model | UNTESTED                               |
+//! | getunconfirmedbalance              | version + model |                                        |
 //! | getwalletinfo                      | version + model | UNTESTED                               |
 //! | importaddress                      | returns nothing |                                        |
 //! | importmulti                        | version         |                                        |
@@ -188,7 +188,7 @@
 //! | listsinceblock                     | version + model | UNTESTED                               |
 //! | listtransactions                   | version + model | UNTESTED                               |
 //! | listunspent                        | version + model |                                        |
-//! | listwallets                        | version + model | UNTESTED                               |
+//! | listwallets                        | version + model |                                        |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | version         |                                        |
 //! | move                               | returns boolean |                                        |
