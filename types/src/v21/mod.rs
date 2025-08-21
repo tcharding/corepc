@@ -188,9 +188,9 @@
 //! | importpubkey                       | returns nothing |                                        |
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
-//! | listaddressgroupings               | version + model | UNTESTED                               |
+//! | listaddressgroupings               | version + model |                                        |
 //! | listlabels                         | version         |                                        |
-//! | listlockunspent                    | version + model | UNTESTED                               |
+//! | listlockunspent                    | version + model |                                        |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
