@@ -271,8 +271,7 @@ pub use self::{
     },
     wallet::{
         CreateWallet, GetBalances, GetBalancesError, GetTransaction, GetTransactionError,
-        LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet,
-        WalletProcessPsbt,
+        LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet, WalletProcessPsbt,
     },
 };
 #[doc(inline)]
@@ -304,8 +303,7 @@ pub use crate::{
         SendToAddress, SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey,
         SignRawTransaction, SignRawTransactionError, SoftforkReject, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WitnessUtxo,
+        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

@@ -10,7 +10,9 @@ mod into;
 use bitcoin::Transaction;
 use serde::{Deserialize, Serialize};
 
-pub use self::error::{GetBalancesError, GetTransactionError, LastProcessedBlockError, WalletProcessPsbtError};
+pub use self::error::{
+    GetBalancesError, GetTransactionError, LastProcessedBlockError, WalletProcessPsbtError,
+};
 pub use super::{
     Bip125Replaceable, GetBalancesMine, GetBalancesWatchOnly, GetTransactionDetail,
     GetTransactionDetailError,

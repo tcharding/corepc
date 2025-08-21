@@ -301,8 +301,7 @@ pub use crate::{
         SendToAddress, SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey,
         SignRawTransaction, SignRawTransactionError, SoftforkReject, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WitnessUtxo,
+        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
@@ -349,8 +348,7 @@ pub use crate::{
         DescriptorProcessPsbtError, DumpTxOutSet, DumpTxOutSetError, GetAddrManInfo, GetBalances,
         GetBalancesError, GetChainStates, GetChainStatesError, GetPeerInfo, GetTransactionError,
         GetTxOutSetInfo, GetTxOutSetInfoError, LastProcessedBlock, LastProcessedBlockError,
-        LoadTxOutSet, LoadTxOutSetError, LoadWallet, PeerInfo, UnloadWallet,
-        WalletProcessPsbt,
+        LoadTxOutSet, LoadTxOutSetError, LoadWallet, PeerInfo, UnloadWallet, WalletProcessPsbt,
     },
     v27::{GetPrioritisedTransactions, PrioritisedTransaction},
 };

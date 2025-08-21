@@ -5,8 +5,8 @@ use bitcoin::{BlockHash, Psbt, SignedAmount, Transaction, Txid};
 
 use super::{
     CreateWallet, GetBalances, GetBalancesError, GetTransaction, GetTransactionError,
-    LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet,
-    WalletProcessPsbt, WalletProcessPsbtError,
+    LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet, WalletProcessPsbt,
+    WalletProcessPsbtError,
 };
 use crate::model;
 
@@ -143,10 +143,6 @@ impl WalletProcessPsbt {
         let psbt = self.psbt.parse::<Psbt>().map_err(E::Psbt)?;
         let hex =
             self.hex.as_ref().map(|h| encode::deserialize_hex(h)).transpose().map_err(E::Hex)?;
-        Ok(model::WalletProcessPsbt {
-            psbt,
-            complete: self.complete,
-            hex,
-        })
+        Ok(model::WalletProcessPsbt { psbt, complete: self.complete, hex })
     }
 }
