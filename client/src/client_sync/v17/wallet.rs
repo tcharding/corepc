@@ -706,7 +706,16 @@ macro_rules! impl_client_v17__wallet_create_funded_psbt {
                 inputs: Vec<WalletCreateFundedPsbtInput>,
                 outputs: Vec<BTreeMap<Address, Amount>>,
             ) -> Result<WalletCreateFundedPsbt> {
-                self.call("walletcreatefundedpsbt", &[into_json(inputs)?, into_json(outputs)?])
+                // Convert outputs: Vec<BTreeMap<Address, Amount>> to Vec<BTreeMap<String, f64>>
+                let outputs_json: Vec<_> = outputs
+                    .into_iter()
+                    .map(|map| {
+                        map.into_iter()
+                            .map(|(addr, amt)| (addr.to_string(), amt.to_btc()))
+                            .collect::<BTreeMap<_, _>>()
+                    })
+                    .collect();
+                self.call("walletcreatefundedpsbt", &[into_json(inputs)?, into_json(outputs_json)?])
             }
         }
     };
@@ -756,7 +765,11 @@ macro_rules! impl_client_v17__wallet_process_psbt {
     () => {
         impl Client {
             pub fn wallet_process_psbt(&self, psbt: &bitcoin::Psbt) -> Result<WalletProcessPsbt> {
-                self.call("walletprocesspsbt", &[into_json(psbt)?])
+                // Core expects the PSBT as a base64 string argument (same representation
+                // used by `finalizepsbt`). Serializing the struct with `into_json` produced
+                // an object which Core rejected ("Expected type string, got object").
+                let psbt = format!("{}", psbt);
+                self.call("walletprocesspsbt", &[psbt.into()])
             }
         }
     };

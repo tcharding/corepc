@@ -233,12 +233,12 @@
 //! | simulaterawtransaction             | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
-//! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
+//! | walletcreatefundedpsbt             | version + model |                                        |
 //! | walletdisplayaddress               | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
 //! | walletpassphrasechange             | returns nothing |                                        |
-//! | walletprocesspsbt                  | version + model | UNTESTED                               |
+//! | walletprocesspsbt                  | version + model |                                        |
 //!
 //! </details>
 //!
@@ -298,7 +298,7 @@ pub use crate::{
         SendToAddress, SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey,
         SignRawTransaction, SignRawTransactionError, TransactionCategory, UploadTarget,
         ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
@@ -345,7 +345,7 @@ pub use crate::{
         DumpTxOutSet, DumpTxOutSetError, GetAddrManInfo, GetBalances, GetBalancesError,
         GetPeerInfo, GetTransactionError, GetTxOutSetInfo, GetTxOutSetInfoError,
         LastProcessedBlock, LastProcessedBlockError, LoadTxOutSet, LoadTxOutSetError, LoadWallet,
-        PeerInfo, UnloadWallet,
+        PeerInfo, UnloadWallet, WalletProcessPsbt,
     },
     v27::{GetPrioritisedTransactions, PrioritisedTransaction},
     v28::{

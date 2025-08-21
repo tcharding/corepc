@@ -230,12 +230,12 @@
 //! | simulaterawtransaction             | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
-//! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
+//! | walletcreatefundedpsbt             | version + model |                                        |
 //! | walletdisplayaddress               | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
 //! | walletpassphrasechange             | returns nothing |                                        |
-//! | walletprocesspsbt                  | version + model | UNTESTED                               |
+//! | walletprocesspsbt                  | version + model |                                        |
 //!
 //! </details>
 //!
@@ -271,7 +271,7 @@ pub use self::{
     },
     wallet::{
         CreateWallet, GetBalances, GetBalancesError, GetTransaction, GetTransactionError,
-        LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet,
+        LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet, WalletProcessPsbt,
     },
 };
 #[doc(inline)]
@@ -303,8 +303,7 @@ pub use crate::{
         SendToAddress, SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey,
         SignRawTransaction, SignRawTransactionError, SoftforkReject, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-        WitnessUtxo,
+        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

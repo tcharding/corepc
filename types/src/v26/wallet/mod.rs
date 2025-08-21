@@ -10,7 +10,9 @@ mod into;
 use bitcoin::Transaction;
 use serde::{Deserialize, Serialize};
 
-pub use self::error::{GetBalancesError, GetTransactionError, LastProcessedBlockError};
+pub use self::error::{
+    GetBalancesError, GetTransactionError, LastProcessedBlockError, WalletProcessPsbtError,
+};
 pub use super::{
     Bip125Replaceable, GetBalancesMine, GetBalancesWatchOnly, GetTransactionDetail,
     GetTransactionDetailError,
@@ -178,4 +180,25 @@ pub struct LoadWallet {
 pub struct UnloadWallet {
     /// Warning messages, if any, related to loading the wallet.
     pub warnings: Option<Vec<String>>,
+}
+
+/// Result of the JSON-RPC method `walletprocesspsbt`.
+///
+/// > walletprocesspsbt "psbt" ( sign "sighashtype" bip32derivs )
+/// >
+/// > Update a PSBT with input information from our wallet and then sign inputs
+/// > that we can sign for.
+/// >
+/// >
+/// > Arguments:
+/// > 1. "psbt"                      (string, required) The transaction base64 string
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct WalletProcessPsbt {
+    /// The base64-encoded partially signed transaction.
+    pub psbt: String,
+    /// If the transaction has a complete set of signatures.
+    pub complete: bool,
+    /// The hex-encoded network transaction if complete.
+    pub hex: Option<String>,
 }

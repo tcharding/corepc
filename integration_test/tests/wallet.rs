@@ -9,12 +9,15 @@ use bitcoin::address::{Address, KnownHrp, NetworkChecked};
 use bitcoin::bip32::{Xpriv, Xpub};
 use bitcoin::{secp256k1, Amount, CompressedPublicKey, FeeRate, Network, PrivateKey, PublicKey};
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::{mtype, AddressType, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp};
+use node::{
+    mtype, AddressType, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp, WalletCreateFundedPsbtInput
+};
 
 #[cfg(not(feature = "v20_and_below"))]
 use node::ImportDescriptorsRequest;
 
 use node::vtype::*;             // All the version specific types.
+use std::collections::BTreeMap;
 use std::fs;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -986,6 +989,47 @@ fn wallet__simulate_raw_transaction() {
 
     // Should show a negative balance change since we're sending money
     assert!(model.balance_change.is_negative());
+}
+
+#[test]
+fn wallet__wallet_create_funded_psbt__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let addr = node.client.new_address().expect("newaddress");
+    let outputs = BTreeMap::from([(addr, Amount::from_sat(100_000))]);
+    let json: WalletCreateFundedPsbt = node
+        .client
+        .wallet_create_funded_psbt(vec![], vec![outputs])
+        .expect("walletcreatefundedpsbt");
+
+    let model: Result<mtype::WalletCreateFundedPsbt, WalletCreateFundedPsbtError> = json.into_model();
+    let psbt = model.unwrap();
+
+    assert!(!psbt.psbt.inputs.is_empty());
+}
+
+#[test]
+fn wallet__wallet_process_psbt__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let addr = node.client.new_address().expect("newaddress");
+    let outputs = BTreeMap::from([(addr, Amount::from_sat(50_000))]);
+    let funded_psbt: WalletCreateFundedPsbt = node
+        .client
+        .wallet_create_funded_psbt(vec![], vec![outputs])
+        .expect("walletcreatefundedpsbt");
+    let funded_psbt_model: mtype::WalletCreateFundedPsbt = funded_psbt.into_model().unwrap();
+
+    let json: WalletProcessPsbt = node
+        .client
+        .wallet_process_psbt(&funded_psbt_model.psbt)
+        .expect("walletprocesspsbt");
+    let model: Result<mtype::WalletProcessPsbt, _> = json.into_model();
+    let processed = model.unwrap();
+
+    assert_eq!(processed.psbt.inputs.len(), funded_psbt_model.psbt.inputs.len());
 }
 
 #[test]

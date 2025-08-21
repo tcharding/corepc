@@ -4,7 +4,7 @@ use core::fmt;
 
 use bitcoin::amount::ParseAmountError;
 use bitcoin::consensus::encode;
-use bitcoin::hex;
+use bitcoin::{hex, psbt};
 
 use super::GetTransactionDetailError;
 use crate::error::write_err;
@@ -166,4 +166,32 @@ impl std::error::Error for LastProcessedBlockError {
 
 impl From<NumericError> for LastProcessedBlockError {
     fn from(e: NumericError) -> Self { Self::Height(e) }
+}
+
+/// Error when converting a `WalletProcessPsbt` type into the model type.
+#[derive(Debug)]
+pub enum WalletProcessPsbtError {
+    /// Conversion of the `psbt` field failed.
+    Psbt(psbt::PsbtParseError),
+    /// Conversion of the `hex` field failed.
+    Hex(encode::FromHexError),
+}
+
+impl fmt::Display for WalletProcessPsbtError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            WalletProcessPsbtError::Psbt(e) => write!(f, "psbt parse error: {}", e),
+            WalletProcessPsbtError::Hex(e) => write!(f, "hex decode error: {}", e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for WalletProcessPsbtError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            WalletProcessPsbtError::Psbt(e) => Some(e),
+            WalletProcessPsbtError::Hex(e) => Some(e),
+        }
+    }
 }

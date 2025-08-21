@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: CC0-1.0
 
 use bitcoin::consensus::encode;
-use bitcoin::{BlockHash, SignedAmount, Transaction, Txid};
+use bitcoin::{BlockHash, Psbt, SignedAmount, Transaction, Txid};
 
 use super::{
     CreateWallet, GetBalances, GetBalancesError, GetTransaction, GetTransactionError,
-    LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet,
+    LastProcessedBlock, LastProcessedBlockError, LoadWallet, UnloadWallet, WalletProcessPsbt,
+    WalletProcessPsbtError,
 };
 use crate::model;
 
@@ -131,5 +132,17 @@ impl UnloadWallet {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> model::UnloadWallet {
         model::UnloadWallet { warnings: self.warnings.unwrap_or_default() }
+    }
+}
+
+impl WalletProcessPsbt {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::WalletProcessPsbt, WalletProcessPsbtError> {
+        use WalletProcessPsbtError as E;
+
+        let psbt = self.psbt.parse::<Psbt>().map_err(E::Psbt)?;
+        let hex =
+            self.hex.as_ref().map(|h| encode::deserialize_hex(h)).transpose().map_err(E::Hex)?;
+        Ok(model::WalletProcessPsbt { psbt, complete: self.complete, hex })
     }
 }
