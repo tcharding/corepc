@@ -763,6 +763,10 @@ impl WalletProcessPsbt {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
     pub fn into_model(self) -> Result<model::WalletProcessPsbt, PsbtParseError> {
         let psbt = self.psbt.parse::<Psbt>()?;
-        Ok(model::WalletProcessPsbt { psbt, complete: self.complete })
+        Ok(model::WalletProcessPsbt {
+            psbt,
+            complete: self.complete,
+            hex: None, // v26 and later only.
+        })
     }
 }

@@ -1010,6 +1010,29 @@ fn wallet__wallet_create_funded_psbt__modelled() {
 }
 
 #[test]
+fn wallet__wallet_process_psbt__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let addr = node.client.new_address().expect("newaddress");
+    let outputs = BTreeMap::from([(addr, Amount::from_sat(50_000))]);
+    let funded_psbt: WalletCreateFundedPsbt = node
+        .client
+        .wallet_create_funded_psbt(vec![], vec![outputs])
+        .expect("walletcreatefundedpsbt");
+    let funded_psbt_model: mtype::WalletCreateFundedPsbt = funded_psbt.into_model().unwrap();
+
+    let json: WalletProcessPsbt = node
+        .client
+        .wallet_process_psbt(&funded_psbt_model.psbt)
+        .expect("walletprocesspsbt");
+    let model: Result<mtype::WalletProcessPsbt, _> = json.into_model();
+    let processed = model.unwrap();
+
+    assert_eq!(processed.psbt.inputs.len(), funded_psbt_model.psbt.inputs.len());
+}
+
+#[test]
 fn wallet__wallet_lock() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 

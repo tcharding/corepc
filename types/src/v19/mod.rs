@@ -211,7 +211,7 @@
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
 //! | walletpassphrasechange             | returns nothing |                                        |
-//! | walletprocesspsbt                  | version + model | UNTESTED                               |
+//! | walletprocesspsbt                  | version + model |                                        |
 //!
 //! </details>
 //!

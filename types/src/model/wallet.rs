@@ -867,4 +867,6 @@ pub struct WalletProcessPsbt {
     pub psbt: Psbt,
     /// If the transaction has a complete set of signatures.
     pub complete: bool,
+    /// The hex-encoded network transaction if complete.
+    pub hex: Option<Transaction>,
 }

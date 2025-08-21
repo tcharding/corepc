@@ -235,7 +235,7 @@
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
 //! | walletpassphrasechange             | returns nothing |                                        |
-//! | walletprocesspsbt                  | version + model | UNTESTED                               |
+//! | walletprocesspsbt                  | version + model |                                        |
 //!
 //! </details>
 //!
@@ -281,7 +281,7 @@ pub use crate::{
         SendToAddress, SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey,
         SignRawTransaction, SignRawTransactionError, SoftforkReject, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
-        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
+        VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
         WitnessUtxo,
     },
     v18::{
@@ -332,5 +332,6 @@ pub use crate::{
         LastProcessedBlockError, LoadTxOutSet, LoadTxOutSetError, LoadWallet, Logging, PeerInfo,
         SubmitPackage, SubmitPackageError, SubmitPackageTxResult, SubmitPackageTxResultError,
         SubmitPackageTxResultFees, SubmitPackageTxResultFeesError, UnloadWallet,
+        WalletProcessPsbt,
     },
 };

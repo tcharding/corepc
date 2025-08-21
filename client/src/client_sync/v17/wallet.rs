@@ -765,7 +765,11 @@ macro_rules! impl_client_v17__wallet_process_psbt {
     () => {
         impl Client {
             pub fn wallet_process_psbt(&self, psbt: &bitcoin::Psbt) -> Result<WalletProcessPsbt> {
-                self.call("walletprocesspsbt", &[into_json(psbt)?])
+                // Core expects the PSBT as a base64 string argument (same representation
+                // used by `finalizepsbt`). Serializing the struct with `into_json` produced
+                // an object which Core rejected ("Expected type string, got object").
+                let psbt = format!("{}", psbt);
+                self.call("walletprocesspsbt", &[psbt.into()])
             }
         }
     };
