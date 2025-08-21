@@ -214,7 +214,7 @@
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
-//! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
+//! | walletcreatefundedpsbt             | version + model |                                        |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
 //! | walletpassphrasechange             | returns nothing |                                        |

@@ -233,7 +233,7 @@
 //! | simulaterawtransaction             | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
 //! | upgradewallet                      | version         |                                        |
-//! | walletcreatefundedpsbt             | version + model | UNTESTED                               |
+//! | walletcreatefundedpsbt             | version + model |                                        |
 //! | walletdisplayaddress               | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
 //! | walletpassphrase                   | returns nothing |                                        |
