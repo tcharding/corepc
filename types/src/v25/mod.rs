@@ -190,10 +190,10 @@
 //! | importpubkey                       | returns nothing |                                        |
 //! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
-//! | listaddressgroupings               | version + model | UNTESTED                               |
+//! | listaddressgroupings               | version + model |                                        |
 //! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version         |                                        |
-//! | listlockunspent                    | version + model | UNTESTED                               |
+//! | listlockunspent                    | version + model |                                        |
 //! | migratewallet                      | version         |                                        |
 //! | newkeypool                         | returns nothing |                                        |
 //! | psbtbumpfee                        | version + model |                                        |
