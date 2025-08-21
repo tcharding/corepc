@@ -669,7 +669,7 @@ pub struct ListReceivedByAddress(pub Vec<ListReceivedByAddressItem>);
 pub struct ListReceivedByAddressItem {
     /// Only returned if imported addresses were involved in transaction.
     #[serde(rename = "involvesWatchonly")]
-    pub involves_watch_only: bool,
+    pub involves_watch_only: Option<bool>,
     /// The receiving address.
     pub address: String,
     /// DEPRECATED. Backwards compatible alias for label.

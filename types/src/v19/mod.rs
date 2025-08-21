@@ -187,7 +187,7 @@
 //! | listaddressgroupings               | version + model | UNTESTED                               |
 //! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model | UNTESTED                               |
-//! | listreceivedbyaddress              | version + model | UNTESTED                               |
+//! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model | UNTESTED                               |
 //! | listtransactions                   | version + model | UNTESTED                               |
@@ -271,15 +271,14 @@ pub use crate::v17::{
     GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
     GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
     ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
-    ListReceivedByAddress, ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock,
-    ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
-    ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError,
-    ListWallets, LoadWallet, LockUnspent, Locked, Logging, PruneBlockchain, RawTransactionError,
-    RawTransactionInput, RawTransactionOutput, RescanBlockchain, ScriptType, SendMany,
-    SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignMessage,
-    SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, SoftforkReject,
-    TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError,
-    VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
+    ListReceivedByAddressError, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
+    ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,
+    ListTransactionsItemError, ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, Locked,
+    Logging, PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
+    RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress, SetNetworkActive,
+    SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
+    SoftforkReject, TestMempoolAccept, TransactionCategory, UploadTarget, ValidateAddress,
+    ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
     WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
 };
 #[doc(inline)]
@@ -287,6 +286,7 @@ pub use crate::v18::{
     ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
     AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfo, GetAddressInfoEmbedded,
     GetAddressInfoError, GetNodeAddresses, GetReceivedByLabel, ImportMulti, ImportMultiEntry,
-    JoinPsbts, JsonRpcError, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
-    ListUnspentItem, ListWalletDir, ListWalletDirWallet, NodeAddress, UtxoUpdatePsbt,
+    JoinPsbts, JsonRpcError, ListReceivedByAddress, ListReceivedByAddressItem, ListReceivedByLabel,
+    ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+    NodeAddress, UtxoUpdatePsbt,
 };
