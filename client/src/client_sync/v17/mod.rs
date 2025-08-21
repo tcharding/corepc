@@ -241,6 +241,11 @@ pub struct WalletCreateFundedPsbtInput {
     vout: u32,
 }
 
+impl WalletCreateFundedPsbtInput {
+    /// Create a new walletcreatefundedpsbt input entry.
+    pub fn new(txid: Txid, vout: u32) -> Self { Self { txid, vout } }
+}
+
 /// Args for the `addnode` method.
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
