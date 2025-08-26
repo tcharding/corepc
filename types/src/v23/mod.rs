@@ -295,9 +295,10 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
-        ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByAddress,
-        ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
-        ListUnspentItem, ListWalletDir, ListWalletDirWallet, UtxoUpdatePsbt, GetZmqNotifications,
+        GetZmqNotifications, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
+        ListReceivedByAddress, ListReceivedByAddressItem, ListReceivedByLabel,
+        ListReceivedByLabelError, ListUnspent, ListUnspentItem, ListWalletDir, ListWalletDirWallet,
+        UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,
