@@ -310,6 +310,24 @@ fn raw_transactions__get_raw_transaction__modelled() {
 }
 
 #[test]
+#[cfg(not(feature = "v17"))]
+fn raw_transactions__join_psbts__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let psbt1 = create_a_psbt(&node);
+    let psbt2 = create_a_psbt(&node);
+
+    let json: JoinPsbts = node
+        .client
+        .join_psbts(&[psbt1.clone(), psbt2.clone()])
+        .expect("joinpsbts");
+    let model: mtype::JoinPsbts = json.into_model().expect("JoinPsbts into model");
+
+    assert_eq!(model.0.inputs.len(), psbt1.inputs.len() + psbt2.inputs.len());
+}
+
+#[test]
 fn raw_transactions__sign_raw_transaction__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
