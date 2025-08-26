@@ -128,7 +128,7 @@
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
 //! | testmempoolaccept                  | version + model |                                        |
-//! | utxoupdatepsbt                     | version + model | UNTESTED                               |
+//! | utxoupdatepsbt                     | version + model |                                        |
 //!
 //! </details>
 //!

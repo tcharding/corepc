@@ -137,7 +137,7 @@
 //! | signrawtransactionwithkey          | version + model |                                        |
 //! | submitpackage                      | version + model |                                        |
 //! | testmempoolaccept                  | version + model |                                        |
-//! | utxoupdatepsbt                     | version + model | UNTESTED                               |
+//! | utxoupdatepsbt                     | version + model |                                        |
 //!
 //! </details>
 //!
