@@ -218,7 +218,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | getzmqnotifications                | version         | UNTESTED                               |
+//! | getzmqnotifications                | version         |                                        |
 //!
 //! </details>
 
@@ -229,6 +229,7 @@ mod network;
 mod raw_transactions;
 mod util;
 mod wallet;
+mod zmq;
 
 #[doc(inline)]
 pub use self::{
@@ -249,6 +250,7 @@ pub use self::{
         ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError, ListUnspent,
         ListUnspentItem, ListWalletDir, ListWalletDirWallet,
     },
+    zmq::GetZmqNotifications,
 };
 #[doc(inline)]
 pub use crate::v17::{
@@ -271,7 +273,7 @@ pub use crate::v17::{
     GetRawTransactionVerboseError, GetReceivedByAddress, GetTransaction, GetTransactionDetail,
     GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
     GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo, GetWalletInfoError,
-    GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
+    ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem,
     ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
     ListReceivedByAddressError, ListSinceBlock, ListSinceBlockError, ListSinceBlockTransaction,
     ListSinceBlockTransactionError, ListTransactions, ListTransactionsItem,

@@ -194,6 +194,9 @@ crate::impl_client_v17__wallet_passphrase!();
 crate::impl_client_v17__wallet_passphrase_change!();
 crate::impl_client_v17__wallet_process_psbt!();
 
+// == Zmq ==
+crate::impl_client_v17__get_zmq_notifications!();
+
 /// Argument to the `Client::get_new_address_with_type` function.
 ///
 /// For Core v23 and onwards. For earlier versions use `v17::AddressType`.
