@@ -131,11 +131,11 @@
 //! | finalizepsbt                       | version + model |                                        |
 //! | fundrawtransaction                 | version + model |                                        |
 //! | getrawtransaction                  | version + model | Includes additional 'verbose' type     |
-//! | joinpsbts                          | version + model | UNTESTED                               |
+//! | joinpsbts                          | version + model |                                        |
 //! | sendrawtransaction                 | version + model |                                        |
 //! | signrawtransactionwithkey          | version + model |                                        |
 //! | testmempoolaccept                  | version + model |                                        |
-//! | utxoupdatepsbt                     | version + model | UNTESTED                               |
+//! | utxoupdatepsbt                     | version + model |                                        |
 //!
 //! </details>
 //!

@@ -310,6 +310,24 @@ fn raw_transactions__get_raw_transaction__modelled() {
 }
 
 #[test]
+#[cfg(not(feature = "v17"))]
+fn raw_transactions__join_psbts__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let psbt1 = create_a_psbt(&node);
+    let psbt2 = create_a_psbt(&node);
+
+    let json: JoinPsbts = node
+        .client
+        .join_psbts(&[psbt1.clone(), psbt2.clone()])
+        .expect("joinpsbts");
+    let model: mtype::JoinPsbts = json.into_model().expect("JoinPsbts into model");
+
+    assert_eq!(model.0.inputs.len(), psbt1.inputs.len() + psbt2.inputs.len());
+}
+
+#[test]
 fn raw_transactions__sign_raw_transaction__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -412,8 +430,20 @@ fn raw_transactions__test_mempool_accept__modelled() {
 }
 
 #[test]
-#[cfg(not(feature = "v17"))]    // utxoupdatepsbt was added in v0.18.
-fn raw_transactions__utxo_update_psbt() {}
+#[cfg(not(feature = "v17"))]
+fn raw_transactions__utxo_update_psbt__modelled() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    let psbt = create_a_psbt(&node);
+    let json: UtxoUpdatePsbt = node
+        .client
+        .utxo_update_psbt(&psbt)
+        .expect("utxoupdatepsbt");
+    let model: mtype::UtxoUpdatePsbt = json.into_model().expect("UtxoUpdatePsbt into model");
+
+    assert!(model.0.inputs.len() >= psbt.inputs.len());
+}
 
 // Manipulates raw transactions.
 //

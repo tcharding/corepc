@@ -35,14 +35,14 @@ macro_rules! impl_client_v18__join_psbts {
     };
 }
 
-/// Implements Bitcoin Core JSON-RPC API method `uxtoupdatepsbt`.
+/// Implements Bitcoin Core JSON-RPC API method `utxoupdatepsbt`.
 #[macro_export]
 macro_rules! impl_client_v18__utxo_update_psbt {
     () => {
         impl Client {
-            pub fn utxo_update_psbt(&self, psbt: &bitcoin::Psbt) -> Result<JoinPsbts> {
+            pub fn utxo_update_psbt(&self, psbt: &bitcoin::Psbt) -> Result<UtxoUpdatePsbt> {
                 let psbt = format!("{}", psbt);
-                self.call("uxtoupdatepsbt", &[psbt.into()])
+                self.call("utxoupdatepsbt", &[psbt.into()])
             }
         }
     };
