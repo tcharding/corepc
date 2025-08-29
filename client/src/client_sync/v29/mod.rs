@@ -207,6 +207,9 @@ crate::impl_client_v17__wallet_passphrase!();
 crate::impl_client_v17__wallet_passphrase_change!();
 crate::impl_client_v17__wallet_process_psbt!();
 
+// == Zmq ==
+crate::impl_client_v17__get_zmq_notifications!();
+
 /// Arg for the `getblocktemplate` method. (v29+).
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Default)]
 pub struct TemplateRequest {

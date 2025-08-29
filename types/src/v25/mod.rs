@@ -236,7 +236,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | getzmqnotifications                | version         | UNTESTED                               |
+//! | getzmqnotifications                | version         |                                        |
 //!
 //! </details>
 
@@ -277,7 +277,7 @@ pub use crate::{
         GetRawMempool, GetRawMempoolVerbose, GetRawTransaction, GetRawTransactionVerbose,
         GetRawTransactionVerboseError, GetReceivedByAddress, GetTransactionDetailError, GetTxOut,
         GetTxOutError, GetTxOutSetInfo, GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfo,
-        GetWalletInfoError, GetZmqNotifications, ListAddressGroupings, ListAddressGroupingsError,
+        GetWalletInfoError, ListAddressGroupings, ListAddressGroupingsError,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
         ListLockUnspentItemError, ListReceivedByAddressError, ListSinceBlock, ListSinceBlockError,
         ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
@@ -293,9 +293,9 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
-        ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError, ListReceivedByAddress,
-        ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir,
-        ListWalletDirWallet, UtxoUpdatePsbt,
+        GetZmqNotifications, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
+        ListReceivedByAddress, ListReceivedByAddressItem, ListReceivedByLabel,
+        ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalances,

@@ -216,7 +216,7 @@
 //!
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
-//! | getzmqnotifications                | version         | UNTESTED                               |
+//! | getzmqnotifications                | version         |                                        |
 //!
 //! </details>
 
