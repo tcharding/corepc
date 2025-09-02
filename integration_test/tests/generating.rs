@@ -4,6 +4,7 @@
 
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
 
+use bitcoin::hex;
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::vtype::*;             // All the version specific types.
 use node::mtype;
@@ -29,7 +30,7 @@ fn generating__generate_block__modelled() {
     {
         // No `submit` argument
         json = node.client.generate_block(&mining_addr.to_string(), &transactions).expect("generateblock");
-        let model: Result<mtype::GenerateBlock, _> = json.into_model();
+        let model: Result<mtype::GenerateBlock, hex::HexToArrayError> = json.into_model();
         model.unwrap();
     }
 
@@ -51,7 +52,7 @@ fn generating__generate__modelled() {
 
     let json: Generate = node.client.generate(NBLOCKS).expect("generate");
 
-    let model: Result<mtype::Generate, _> = json.into_model();
+    let model: Result<mtype::Generate, hex::HexToArrayError> = json.into_model();
     model.unwrap();
 }
 
@@ -64,8 +65,8 @@ fn generating__generate_to_address__modelled() {
 
     let json: GenerateToAddress = node.client.generate_to_address(NBLOCKS, &address).expect("generatetoaddress");
 
-    let model: Result<mtype::GenerateToAddress, _>  = json.into_model();
-    let _ = model.unwrap();
+    let model: Result<mtype::GenerateToAddress, hex::HexToArrayError>  = json.into_model();
+    model.unwrap();
 }
 
 #[cfg(not(feature = "v19_and_below"))]
@@ -78,8 +79,8 @@ fn generating__generate_to_descriptor__modelled() {
     let descriptor = format!("addr({})", address);
 
     let json: GenerateToDescriptor = node.client.generate_to_descriptor(NBLOCKS, &descriptor).expect("generatetodescriptor");
-    let model: Result<mtype::GenerateToDescriptor, _> = json.into_model();
-    let _ = model.unwrap();
+    let model: Result<mtype::GenerateToDescriptor, hex::HexToArrayError> = json.into_model();
+    model.unwrap();
 }
 
 // This method does not appear in the output of `bitcoin-cli help`.
@@ -103,7 +104,10 @@ fn generating__invalidate_block() {
     assert_ne!(old_best_block, new_best_block);
 
     node.client.invalidate_block(new_best_block).expect("invalidateblock");
-    let best_block =
-        node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
-    assert_eq!(old_best_block, best_block);
+
+    let json: GetBestBlockHash = node.client.get_best_block_hash().expect("getbestblockhash");
+    let model: Result<mtype::GetBestBlockHash, hex::HexToArrayError> = json.into_model();
+    let best_block = model.unwrap();
+
+    assert_eq!(old_best_block, best_block.0);
 }

@@ -273,6 +273,7 @@ pub use self::{
         CreateWallet, GetBalances, GetBalancesError, GetTransaction, GetTransactionError,
         GetWalletInfo, GetWalletInfoError, GetWalletInfoScanning, LastProcessedBlock,
         LastProcessedBlockError, LoadWallet, UnloadWallet, WalletProcessPsbt,
+        WalletProcessPsbtError,
     },
 };
 #[doc(inline)]
@@ -296,12 +297,13 @@ pub use crate::{
         GetTxOutError, GetUnconfirmedBalance, ListAddressGroupings, ListAddressGroupingsError,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
         ListLockUnspentItemError, ListReceivedByAddressError, ListUnspentItemError, ListWallets,
-        LockUnspent, Locked, PruneBlockchain, RawTransactionError, RawTransactionInput,
-        RawTransactionOutput, RescanBlockchain, ScriptType, SendRawTransaction, SendToAddress,
-        SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
-        SignRawTransactionError, SoftforkReject, TransactionCategory, UploadTarget,
-        ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-        WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WitnessUtxo,
+        LockUnspent, Locked, NumericError, PruneBlockchain, RawTransactionError,
+        RawTransactionInput, RawTransactionOutput, RescanBlockchain, ScriptType,
+        SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignMessage,
+        SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, SoftforkReject,
+        TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
+        VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
+        WitnessUtxo,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

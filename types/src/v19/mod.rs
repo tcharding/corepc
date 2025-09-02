@@ -272,13 +272,13 @@ pub use crate::v17::{
     ListAddressGroupingsError, ListAddressGroupingsItem, ListBanned, ListLabels, ListLockUnspent,
     ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddressError, ListSinceBlock,
     ListSinceBlockError, ListTransactions, ListUnspentItemError, ListWallets, LoadWallet,
-    LockUnspent, Locked, Logging, PruneBlockchain, RawTransactionError, RawTransactionInput,
-    RawTransactionOutput, RescanBlockchain, ScriptType, SendMany, SendRawTransaction,
-    SendToAddress, SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey,
-    SignRawTransaction, SignRawTransactionError, SoftforkReject, TestMempoolAccept,
-    TransactionCategory, TransactionItem, TransactionItemError, UploadTarget, ValidateAddress,
-    ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
-    WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    LockUnspent, Locked, Logging, NumericError, PruneBlockchain, RawTransactionError,
+    RawTransactionInput, RawTransactionOutput, RescanBlockchain, ScriptType, SendMany,
+    SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignMessage,
+    SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, SoftforkReject,
+    TestMempoolAccept, TransactionCategory, TransactionItem, TransactionItemError, UploadTarget,
+    ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
 };
 #[doc(inline)]
 pub use crate::v18::{
