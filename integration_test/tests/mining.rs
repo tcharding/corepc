@@ -62,7 +62,6 @@ fn mining__get_network_hash_ps() {
 }
 
 #[test]
-// Core version 26 onwards.
 #[cfg(not(feature = "v25_and_below"))]
 fn mining__get_prioritised_transactions() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -212,8 +211,8 @@ fn mining__submit_block_with_dummy_coinbase(node: &Node, bt: &mtype::GetBlockTem
     let _: () = node.client.submit_block(&block).expect("submitblock");
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn mining__submit_header() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();

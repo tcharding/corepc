@@ -479,8 +479,8 @@ fn blockchain__savemempool() {
     }
 }
 
-#[cfg(not(feature = "v24_and_below"))]
 #[test]
+#[cfg(not(feature = "v24_and_below"))]
 fn blockchain__scan_blocks_modelled() {
     let node = Node::with_wallet(Wallet::None, &["-blockfilterindex=1"]);
 

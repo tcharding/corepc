@@ -31,8 +31,8 @@ fn util__create_multisig__modelled() {
     model.unwrap();
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn util__derive_addresses__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
@@ -72,8 +72,8 @@ fn util__estimate_smart_fee__modelled() {
     model.unwrap();
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn util__get_descriptor_info() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
@@ -82,8 +82,8 @@ fn util__get_descriptor_info() {
     let _: GetDescriptorInfo = node.client.get_descriptor_info(descriptor).expect("getdescriptorinfo");
 }
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn util__get_index_info() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
     let index_info: GetIndexInfo = node.client.get_index_info().expect("getindexinfo");

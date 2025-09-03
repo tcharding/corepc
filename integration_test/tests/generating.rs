@@ -9,8 +9,8 @@ use integration_test::{Node, NodeExt as _, Wallet};
 use node::vtype::*;             // All the version specific types.
 use node::mtype;
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn generating__generate_block__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -44,7 +44,6 @@ fn generating__generate_block__modelled() {
 }
 
 #[test]
-// The `generate` method was deprecated in Core v0.18 and was removed in v0.19.
 #[cfg(feature = "v17")]
 fn generating__generate__modelled() {
     const NBLOCKS: usize = 10;
@@ -69,8 +68,8 @@ fn generating__generate_to_address__modelled() {
     model.unwrap();
 }
 
-#[cfg(not(feature = "v19_and_below"))]
 #[test]
+#[cfg(not(feature = "v19_and_below"))]
 fn generating__generate_to_descriptor__modelled() {
     const NBLOCKS: usize = 1;
 

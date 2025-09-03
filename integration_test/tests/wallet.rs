@@ -348,8 +348,8 @@ fn wallet__get_received_by_address__modelled() {
     assert_eq!(received_by_address.0, amount);
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn wallet__get_received_by_label__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -560,8 +560,8 @@ fn wallet__list_labels__modelled() {
     assert!(json.0.iter().any(|s| s == label));
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn wallet__list_received_by_label__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -787,8 +787,8 @@ fn wallet__list_unspent__modelled() {
     model.unwrap();
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn wallet__list_wallet_dir() {
     let wallet_name = "test-wallet";
     let node = Node::with_wallet(Wallet::None, &[]);
@@ -837,8 +837,8 @@ fn wallet__lock_unspent() {
     assert!(unlocked.0, "unlock_unspent");
 }
 
-#[cfg(not(feature = "v23_and_below"))]
 #[test]
+#[cfg(not(feature = "v23_and_below"))]
 fn wallet__migrate_wallet() {
     let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
     let wallet_name = "legacy_wallet";
@@ -849,16 +849,16 @@ fn wallet__migrate_wallet() {
     assert_eq!(json.wallet_name, wallet_name);
 }
 
-#[cfg(not(feature = "v22_and_below"))]
 #[test]
+#[cfg(not(feature = "v22_and_below"))]
 fn wallet__new_keypool() {
     let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
     node.client.create_legacy_wallet("legacy_wallet").expect("createlegacywallet");
     let _: () = node.client.new_keypool().expect("newkeypool");
 }
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn wallet__psbt_bump_fee__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let address = node.client.new_address().expect("failed to create new address");
@@ -907,8 +907,8 @@ fn wallet__rescan_blockchain__modelled() {
 }
 
 // This is tested in `backup_and_restore_wallet()`, called by wallet__backup_wallet()
-#[cfg(not(feature = "v22_and_below"))]
 #[test]
+#[cfg(not(feature = "v22_and_below"))]
 fn wallet__restore_wallet() {}
 
 // This is tested in raw_transactions.rs `create_sign_send()`.
@@ -948,8 +948,8 @@ fn wallet__send_many__modelled() {
     }
 }
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn wallet__send__modelled() {
     use std::collections::BTreeMap;
 
@@ -965,8 +965,8 @@ fn wallet__send__modelled() {
     model.unwrap();
 }
 
-#[cfg(not(feature = "v23_and_below"))]
 #[test]
+#[cfg(not(feature = "v23_and_below"))]
 fn wallet__send_all__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -998,8 +998,8 @@ fn wallet__set_tx_fee() {
     assert!(json.0);
 }
 
-#[cfg(not(feature = "v18_and_below"))]
 #[test]
+#[cfg(not(feature = "v18_and_below"))]
 fn wallet__set_wallet_flag() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
@@ -1043,8 +1043,8 @@ fn wallet__sign_message__modelled() {
     model.unwrap();
 }
 
-#[cfg(not(feature = "v23_and_below"))]
 #[test]
+#[cfg(not(feature = "v23_and_below"))]
 fn wallet__simulate_raw_transaction() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -1180,8 +1180,8 @@ fn create_load_unload_wallet() {
     let _: LoadWallet = node.client.load_wallet(&wallet).expect("loadwallet");
 }
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn wallet__upgrade_wallet() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
