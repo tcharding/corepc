@@ -185,8 +185,8 @@
 //! | listlockunspent                    | version + model |                                        |
 //! | listreceivedbyaccount              | returns nothing |                                        |
 //! | listreceivedbyaddress              | version + model |                                        |
-//! | listsinceblock                     | version + model | UNTESTED                               |
-//! | listtransactions                   | version + model | UNTESTED                               |
+//! | listsinceblock                     | version + model |                                        |
+//! | listtransactions                   | version + model |                                        |
 //! | listunspent                        | version + model |                                        |
 //! | listwallets                        | version + model |                                        |
 //! | loadwallet                         | version + model |                                        |
@@ -281,10 +281,9 @@ pub use self::{
         ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels, ListLockUnspent,
         ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddress,
         ListReceivedByAddressError, ListReceivedByAddressItem, ListSinceBlock, ListSinceBlockError,
-        ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
-        ListTransactionsItem, ListTransactionsItemError, ListUnspent, ListUnspentItem,
-        ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, RescanBlockchain, ScriptType,
-        SendMany, SendToAddress, SetTxFee, SignMessage, TransactionCategory,
+        ListTransactions, ListUnspent, ListUnspentItem, ListUnspentItemError, ListWallets,
+        LoadWallet, LockUnspent, RescanBlockchain, ScriptType, SendMany, SendToAddress, SetTxFee,
+        SignMessage, TransactionCategory, TransactionItem, TransactionItemError,
         WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
     },
     zmq::GetZmqNotifications,

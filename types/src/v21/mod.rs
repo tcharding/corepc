@@ -194,8 +194,8 @@
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
-//! | listsinceblock                     | version + model | UNTESTED                               |
-//! | listtransactions                   | version + model | UNTESTED                               |
+//! | listsinceblock                     | version + model |                                        |
+//! | listtransactions                   | version + model |                                        |
 //! | listunspent                        | version + model |                                        |
 //! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model |                                        |
@@ -281,12 +281,10 @@ pub use crate::{
         GetTransactionDetailError, GetTransactionError, GetTxOut, GetTxOutError, GetTxOutSetInfo,
         GetTxOutSetInfoError, GetUnconfirmedBalance, GetWalletInfoError, ListAddressGroupings,
         ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels, ListLockUnspent,
-        ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddressError, ListSinceBlock,
-        ListSinceBlockError, ListSinceBlockTransaction, ListSinceBlockTransactionError,
-        ListTransactions, ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError,
-        ListWallets, LoadWallet, LockUnspent, Locked, PruneBlockchain, RawTransactionError,
-        RawTransactionInput, RawTransactionOutput, RescanBlockchain, ScriptType,
-        SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignMessage,
+        ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddressError,
+        ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, Locked, PruneBlockchain,
+        RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain,
+        ScriptType, SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignMessage,
         SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, SoftforkReject,
         TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
         VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
@@ -308,6 +306,7 @@ pub use crate::{
     },
     v20::{
         AddMultisigAddress, Banned, CreateMultisig, GenerateToDescriptor, GetAddressInfo,
-        GetAddressInfoEmbedded, GetTransaction, GetTransactionDetail, ListBanned, Logging,
+        GetAddressInfoEmbedded, GetTransaction, GetTransactionDetail, ListBanned, ListSinceBlock,
+        ListSinceBlockError, ListTransactions, Logging, TransactionItem, TransactionItemError,
     },
 };

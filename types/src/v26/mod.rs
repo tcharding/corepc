@@ -207,8 +207,8 @@
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
-//! | listsinceblock                     | version + model | UNTESTED                               |
-//! | listtransactions                   | version + model | UNTESTED                               |
+//! | listsinceblock                     | version + model |                                        |
+//! | listtransactions                   | version + model |                                        |
 //! | listunspent                        | version + model |                                        |
 //! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model |                                        |
@@ -295,9 +295,7 @@ pub use crate::{
         GetRawTransactionVerboseError, GetReceivedByAddress, GetTransactionDetailError, GetTxOut,
         GetTxOutError, GetUnconfirmedBalance, ListAddressGroupings, ListAddressGroupingsError,
         ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
-        ListLockUnspentItemError, ListReceivedByAddressError, ListSinceBlock, ListSinceBlockError,
-        ListSinceBlockTransaction, ListSinceBlockTransactionError, ListTransactions,
-        ListTransactionsItem, ListTransactionsItemError, ListUnspentItemError, ListWallets,
+        ListLockUnspentItemError, ListReceivedByAddressError, ListUnspentItemError, ListWallets,
         LockUnspent, Locked, PruneBlockchain, RawTransactionError, RawTransactionInput,
         RawTransactionOutput, RescanBlockchain, ScriptType, SendRawTransaction, SendToAddress,
         SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
@@ -337,9 +335,10 @@ pub use crate::{
         DecodePsbt, DecodePsbtError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
         GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
         GetTransactionDetail, GetTxSpendingPrevout, GetTxSpendingPrevoutError, GlobalXpub,
-        ListUnspent, ListUnspentItem, MempoolEntry, MigrateWallet, Proprietary, PsbtInput,
-        PsbtOutput, SendAll, SendAllError, SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf,
-        TaprootScript, TaprootScriptPathSig,
+        ListSinceBlock, ListSinceBlockError, ListTransactions, ListUnspent, ListUnspentItem,
+        MempoolEntry, MigrateWallet, Proprietary, PsbtInput, PsbtOutput, SendAll, SendAllError,
+        SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
+        TaprootScriptPathSig, TransactionItem, TransactionItemError,
     },
     v25::{
         GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, MempoolAcceptance,
