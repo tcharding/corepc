@@ -5,9 +5,9 @@
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
 #![allow(unused_imports)] // Some imports are only used in specific versions.
 
-use bitcoin::address::{Address, KnownHrp, NetworkChecked};
+use bitcoin::address::{self, Address, KnownHrp, NetworkChecked};
 use bitcoin::bip32::{Xpriv, Xpub};
-use bitcoin::{secp256k1, Amount, CompressedPublicKey, FeeRate, Network, PrivateKey, PublicKey};
+use bitcoin::{amount, key, hex, psbt, sign_message, secp256k1, Amount, CompressedPublicKey, FeeRate, Network, PrivateKey, PublicKey};
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::{
     mtype, AddressType, ImportMultiRequest, ImportMultiScriptPubKey, ImportMultiTimestamp, WalletCreateFundedPsbtInput
@@ -26,7 +26,7 @@ fn wallet__abandon_transaction() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
     let mining_addr = node.client.new_address().expect("newaddress");
-    let json = node.client.generate_to_address(101, &mining_addr).expect("generatetoaddress");
+    let json: GenerateToAddress = node.client.generate_to_address(101, &mining_addr).expect("generatetoaddress");
     let block_hashes = json.into_model();
 
     let block_hash = block_hashes.expect("blockhash").0[0];
@@ -156,7 +156,7 @@ fn wallet__create_wallet_descriptor() {
     let import_req = ImportDescriptorsRequest::new(descriptor, 0);
     node.client.import_descriptors(&[import_req]).expect("importdescriptors");
 
-    let json = node.client.create_wallet_descriptor("bech32", &hdkey)
+    let json: CreateWalletDescriptor = node.client.create_wallet_descriptor("bech32", &hdkey)
         .expect("createwalletdescriptor");
 
     // Check that a SigWit descriptor was created.
@@ -174,10 +174,11 @@ fn wallet__dump_priv_key__modelled() {
 
         node.client.create_legacy_wallet("legacy_wallet").expect("legacy create_wallet");
         let address = node.client.get_new_address(Some("label"), Some(AddressType::Legacy)).expect("legacy get_new_address");
-        let address = address.into_model().unwrap().0.assume_checked();
+        let model: Result<mtype::GetNewAddress, address::ParseError> = address.into_model();
+        let address = model.unwrap().0.assume_checked();
 
         let json: DumpPrivKey = node.client.dump_priv_key(&address).expect("dumpprivkey");
-        let model: Result<mtype::DumpPrivKey, _> = json.into_model();
+        let model: Result<mtype::DumpPrivKey, key::FromWifError> = json.into_model();
         model.unwrap();
     }
 
@@ -187,7 +188,7 @@ fn wallet__dump_priv_key__modelled() {
         let address = node.client.new_address().expect("failed to get new address");
 
         let json: DumpPrivKey = node.client.dump_priv_key(&address).expect("dumpprivkey");
-        let model: Result<mtype::DumpPrivKey, _> = json.into_model();
+        let model: Result<mtype::DumpPrivKey, key::FromWifError> = json.into_model();
         model.unwrap();
     }
 }
@@ -229,7 +230,7 @@ fn wallet__get_addresses_by_label__modelled() {
     let addr = node.client.new_address_with_label(label).expect("failed to get new address");
 
     let json: GetAddressesByLabel = node.client.get_addresses_by_label(label).expect("getaddressesbylabel");
-    let model: Result<mtype::GetAddressesByLabel, _> = json.into_model();
+    let model: Result<mtype::GetAddressesByLabel, address::ParseError> = json.into_model();
     let map = model.unwrap();
 
     // sanity checks.
@@ -246,26 +247,26 @@ fn wallet__get_address_info__modelled() {
     let addr = node.client.new_address_with_label(label_name).unwrap().assume_checked();
     let json: GetAddressInfo = node.client.get_address_info(&addr).expect("getaddressinfo legacy");
     let model: Result<mtype::GetAddressInfo, GetAddressInfoError> = json.into_model();
-    let model = model.unwrap();
-    assert_eq!(model.address.assume_checked(), addr);
-    assert_eq!(model.labels[0], label_name);
+    let address_info = model.unwrap();
+    assert_eq!(address_info.address.assume_checked(), addr);
+    assert_eq!(address_info.labels[0], label_name);
 
     // Test a SegWit address with embedded information.
     let addr_p2sh = node.client.new_address_with_type(AddressType::P2shSegwit).unwrap();
     let json: GetAddressInfo = node.client.get_address_info(&addr_p2sh).expect("getaddressinfo p2sh-segwit");
     let model: Result<mtype::GetAddressInfo, GetAddressInfoError> = json.into_model();
-    let model = model.unwrap();
-    let embedded = model.embedded.unwrap();
-    assert_eq!(model.address.assume_checked(), addr_p2sh);
-    assert_eq!(model.script.unwrap(), mtype::ScriptType::WitnessV0KeyHash);
+    let address_info = model.unwrap();
+    let embedded = address_info.embedded.unwrap();
+    assert_eq!(address_info.address.assume_checked(), addr_p2sh);
+    assert_eq!(address_info.script.unwrap(), mtype::ScriptType::WitnessV0KeyHash);
     assert!(embedded.address.is_valid_for_network(Network::Regtest));
 
     // Test a Bech32 address.
     let addr_bech32 = node.client.new_address_with_type(AddressType::Bech32).unwrap();
     let json: GetAddressInfo = node.client.get_address_info(&addr_bech32).expect("getaddressinfo bech32");
     let model: Result<mtype::GetAddressInfo, GetAddressInfoError> = json.into_model();
-    let model = model.unwrap();
-    assert_eq!(model.address.assume_checked(), addr_bech32);
+    let address_info = model.unwrap();
+    assert_eq!(address_info.address.assume_checked(), addr_bech32);
 }
 
 #[test]
@@ -273,13 +274,14 @@ fn wallet__get_balance__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
     let json: GetBalance = node.client.get_balance().expect("getbalance");
-    let model: Result<mtype::GetBalance, _> = json.into_model();
+    let model: Result<mtype::GetBalance, amount::ParseAmountError> = json.into_model();
     model.unwrap();
 
     // Check non-zero balance just for giggles.
     node.fund_wallet();
-    let json = node.client.get_balance().expect("getbalance");
-    json.into_model().unwrap();
+    let json: GetBalance = node.client.get_balance().expect("getbalance");
+    let model: Result<mtype::GetBalance, amount::ParseAmountError> = json.into_model();
+    model.unwrap();
 }
 
 #[test]
@@ -289,7 +291,7 @@ fn wallet__get_balances() {
     node.fund_wallet();
 
     let json: GetBalances = node.client.get_balances().expect("getbalances");
-    let model: Result<mtype::GetBalances, _> = json.into_model();
+    let model: Result<mtype::GetBalances, GetBalancesError> = json.into_model();
     model.unwrap();
 }
 
@@ -299,7 +301,7 @@ fn wallet__get_hd_keys__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
     let json: GetHdKeys = node.client.get_hd_keys().expect("gethdkeys");
-    let model: Result<mtype::GetHdKeys, _> = json.into_model();
+    let model: Result<mtype::GetHdKeys, GetHdKeysError> = json.into_model();
     let hdkey = model.unwrap().0;
 
     let descriptor_type = hdkey[0].descriptors[0].descriptor[..3].to_string();
@@ -323,7 +325,7 @@ fn wallet__get_new_address__modelled() {
 fn wallet__get_raw_change_address__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let json: GetRawChangeAddress = node.client.get_raw_change_address().expect("getrawchangeaddress");
-    let model: Result<mtype::GetRawChangeAddress, _> = json.into_model();
+    let model: Result<mtype::GetRawChangeAddress, address::ParseError> = json.into_model();
     model.unwrap();
 }
 
@@ -340,14 +342,14 @@ fn wallet__get_received_by_address__modelled() {
     node.mine_a_block();
 
     let json: GetReceivedByAddress = node.client.get_received_by_address(&address).expect("getreceivedbyaddress");
-    let model: Result<mtype::GetReceivedByAddress, _> = json.into_model();
-    let model = model.unwrap();
+    let model: Result<mtype::GetReceivedByAddress, amount::ParseAmountError> = json.into_model();
+    let received_by_address = model.unwrap();
 
-    assert_eq!(model.0, amount);
+    assert_eq!(received_by_address.0, amount);
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn wallet__get_received_by_label__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -360,8 +362,9 @@ fn wallet__get_received_by_label__modelled() {
     node.mine_a_block();
 
     let json: GetReceivedByLabel = node.client.get_received_by_label(label).expect("getreceivedbylabel");
-    let model: Result<mtype::GetReceivedByLabel, _> = json.into_model();
-    assert_eq!(model.unwrap().0, amount);
+    let model: Result<mtype::GetReceivedByLabel, amount::ParseAmountError> = json.into_model();
+    let received = model.unwrap();
+    assert_eq!(received.0, amount);
 }
 
 #[test]
@@ -386,7 +389,7 @@ fn wallet__get_transaction__modelled() {
 fn wallet__get_unconfirmed_balance__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let json: GetUnconfirmedBalance = node.client.get_unconfirmed_balance().expect("getunconfirmedbalance");
-    let model: Result<mtype::GetUnconfirmedBalance, _> = json.into_model();
+    let model: Result<mtype::GetUnconfirmedBalance, amount::ParseAmountError> = json.into_model();
     model.unwrap();
 }
 
@@ -540,7 +543,7 @@ fn wallet__list_address_groupings__modelled() {
 
     let json: ListAddressGroupings =
         node.client.list_address_groupings().expect("listaddressgroupings");
-    let model: Result<mtype::ListAddressGroupings, _> = json.into_model();
+    let model: Result<mtype::ListAddressGroupings, ListAddressGroupingsError> = json.into_model();
     let groupings = model.unwrap();
 
     assert!(!groupings.0.is_empty());
@@ -557,8 +560,8 @@ fn wallet__list_labels__modelled() {
     assert!(json.0.iter().any(|s| s == label));
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn wallet__list_received_by_label__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -572,8 +575,8 @@ fn wallet__list_received_by_label__modelled() {
 
     let json: ListReceivedByLabel = node.client.list_received_by_label().expect("listreceivedbylabel");
     let model: Result<mtype::ListReceivedByLabel, ListReceivedByLabelError> = json.into_model();
-    let model = model.unwrap();
-    assert!(model.0.iter().any(|item| item.label == label));
+    let received_by_label = model.unwrap();
+    assert!(received_by_label.0.iter().any(|item| item.label == label));
 }
 
 #[test]
@@ -586,11 +589,11 @@ fn wallet__list_received_by_address__modelled() {
     node.mine_a_block();
 
     let json: ListReceivedByAddress = node.client.list_received_by_address().expect("listreceivedbyaddress");
-    let model: Result<mtype::ListReceivedByAddress, _> = json.into_model();
-    let model = model.unwrap();
+    let model: Result<mtype::ListReceivedByAddress, ListReceivedByAddressError> = json.into_model();
+    let received_by_address = model.unwrap();
 
     let unchecked_addr = address.as_unchecked();
-    assert!(model.0.iter().any(|item| &item.address == unchecked_addr));
+    assert!(received_by_address.0.iter().any(|item| &item.address == unchecked_addr));
 }
 
 #[test]
@@ -604,9 +607,9 @@ fn wallet__list_since_block__modelled() {
 
     let json: ListSinceBlock = node.client.list_since_block().expect("listsinceblock");
     let model: Result<mtype::ListSinceBlock, ListSinceBlockError> = json.into_model();
-    let model = model.unwrap();
+    let list_since_block = model.unwrap();
 
-    let first_tx: mtype::TransactionItem = model.transactions[0].clone();
+    let first_tx: mtype::TransactionItem = list_since_block.transactions[0].clone();
     assert_eq!(first_tx.txid.unwrap().to_string().len(), 64);
 }
 
@@ -622,9 +625,9 @@ fn wallet__list_transactions__modelled() {
 
     let json: ListTransactions = node.client.list_transactions().expect("listtransactions");
     let model: Result<mtype::ListTransactions, TransactionItemError> = json.into_model();
-    let model = model.unwrap();
+    let list_transactions = model.unwrap();
 
-    let first_tx: mtype::TransactionItem = model.0[0].clone();
+    let first_tx: mtype::TransactionItem = list_transactions.0[0].clone();
     assert_eq!(first_tx.txid.unwrap().to_string().len(), 64);
 }
 
@@ -756,16 +759,16 @@ fn wallet__list_lock_unspent__modelled() {
     node.fund_wallet();
 
     let json: ListUnspent = node.client.list_unspent().expect("listunspent");
-    let utxos = json.into_model().expect("listunspent into model");
+    let utxos: mtype::ListUnspent = json.into_model().unwrap();
     let txid = utxos.0[0].txid;
     let vout = utxos.0[0].vout;
     node.client.lock_unspent(&[(txid, vout)]).expect("lockunspent");
 
     let json: ListLockUnspent = node.client.list_lock_unspent().expect("listlockunspent");
     let model: Result<mtype::ListLockUnspent, ListLockUnspentItemError> = json.into_model();
-    let model = model.unwrap();
+    let lock_unspent = model.unwrap();
 
-    assert!(model.0.iter().any(|o| o.txid == txid && o.vout == vout));
+    assert!(lock_unspent.0.iter().any(|o| o.txid == txid && o.vout == vout));
 }
 
 #[test]
@@ -784,8 +787,8 @@ fn wallet__list_unspent__modelled() {
     model.unwrap();
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn wallet__list_wallet_dir() {
     let wallet_name = "test-wallet";
     let node = Node::with_wallet(Wallet::None, &[]);
@@ -823,7 +826,7 @@ fn wallet__lock_unspent() {
     node.fund_wallet();
 
     let json: ListUnspent = node.client.list_unspent().expect("listunspent");
-    let utxos = json.into_model().expect("listunspent into model");
+    let utxos: mtype::ListUnspent = json.into_model().unwrap();
     let txid = utxos.0[0].txid;
     let vout = utxos.0[0].vout;
 
@@ -834,8 +837,8 @@ fn wallet__lock_unspent() {
     assert!(unlocked.0, "unlock_unspent");
 }
 
-#[cfg(not(feature = "v23_and_below"))]
 #[test]
+#[cfg(not(feature = "v23_and_below"))]
 fn wallet__migrate_wallet() {
     let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
     let wallet_name = "legacy_wallet";
@@ -846,16 +849,16 @@ fn wallet__migrate_wallet() {
     assert_eq!(json.wallet_name, wallet_name);
 }
 
-#[cfg(not(feature = "v22_and_below"))]
 #[test]
+#[cfg(not(feature = "v22_and_below"))]
 fn wallet__new_keypool() {
     let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
     node.client.create_legacy_wallet("legacy_wallet").expect("createlegacywallet");
     let _: () = node.client.new_keypool().expect("newkeypool");
 }
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn wallet__psbt_bump_fee__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let address = node.client.new_address().expect("failed to create new address");
@@ -897,15 +900,15 @@ fn wallet__rescan_blockchain__modelled() {
     let _ = node.client.generate_to_address(3, &mining_addr).expect("generatetoaddress");
 
     let json: RescanBlockchain = node.client.rescan_blockchain().expect("rescanblockchain");
-    let model: Result<mtype::RescanBlockchain, _> = json.into_model();
+    let model: Result<mtype::RescanBlockchain, NumericError> = json.into_model();
     let rescan = model.unwrap();
 
     assert!(rescan.stop_height >= rescan.start_height);
 }
 
 // This is tested in `backup_and_restore_wallet()`, called by wallet__backup_wallet()
-#[cfg(not(feature = "v22_and_below"))]
 #[test]
+#[cfg(not(feature = "v22_and_below"))]
 fn wallet__restore_wallet() {}
 
 // This is tested in raw_transactions.rs `create_sign_send()`.
@@ -930,7 +933,7 @@ fn wallet__send_many__modelled() {
     amounts.insert(addr2, Amount::from_sat(100_000));
 
     let json: SendMany = node.client.send_many(amounts.clone()).expect("sendmany");
-    let model: Result<mtype::SendMany, _> = json.into_model();
+    let model: Result<mtype::SendMany, hex::HexToArrayError> = json.into_model();
     model.unwrap();
 
     #[cfg(not(feature = "v20_and_below"))]
@@ -939,13 +942,14 @@ fn wallet__send_many__modelled() {
             .client
             .send_many_verbose(amounts)
             .expect("sendmany verbose");
-        let model_verbose: Result<mtype::SendManyVerbose, _> = json_verbose.into_model();
+        let model_verbose: Result<mtype::SendManyVerbose, hex::HexToArrayError> =
+        json_verbose.into_model();
         model_verbose.unwrap();
     }
 }
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn wallet__send__modelled() {
     use std::collections::BTreeMap;
 
@@ -961,8 +965,8 @@ fn wallet__send__modelled() {
     model.unwrap();
 }
 
-#[cfg(not(feature = "v23_and_below"))]
 #[test]
+#[cfg(not(feature = "v23_and_below"))]
 fn wallet__send_all__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -981,7 +985,7 @@ fn wallet__send_to_address__modelled() {
 
     let json: SendToAddress =
         node.client.send_to_address(&address, Amount::from_sat(10_000)).expect("sendtddress");
-    let model: Result<mtype::SendToAddress, _> = json.into_model();
+    let model: Result<mtype::SendToAddress, hex::HexToArrayError> = json.into_model();
     model.unwrap();
 }
 
@@ -994,8 +998,8 @@ fn wallet__set_tx_fee() {
     assert!(json.0);
 }
 
-#[cfg(not(feature = "v18_and_below"))]
 #[test]
+#[cfg(not(feature = "v18_and_below"))]
 fn wallet__set_wallet_flag() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
@@ -1035,12 +1039,12 @@ fn wallet__sign_message__modelled() {
         .client
         .sign_message(&address, message)
         .expect("signmessage");
-    let res: Result<mtype::SignMessage, _> = json.into_model();
-    let _ = res.expect("SignMessage into model");
+    let model: Result<mtype::SignMessage, sign_message::MessageSignatureError> = json.into_model();
+    model.unwrap();
 }
 
-#[cfg(not(feature = "v23_and_below"))]
 #[test]
+#[cfg(not(feature = "v23_and_below"))]
 fn wallet__simulate_raw_transaction() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -1071,11 +1075,11 @@ fn wallet__simulate_raw_transaction() {
         .simulate_raw_transaction(&rawtxs)
         .expect("simulaterawtransaction");
 
-    let model: Result<mtype::SimulateRawTransaction, _> = json.into_model();
-    let model = model.unwrap();
+    let model: Result<mtype::SimulateRawTransaction, amount::ParseAmountError> = json.into_model();
+    let raw_transaction = model.unwrap();
 
     // Should show a negative balance change since we're sending money
-    assert!(model.balance_change.is_negative());
+    assert!(raw_transaction.balance_change.is_negative());
 }
 
 #[test]
@@ -1107,13 +1111,18 @@ fn wallet__wallet_process_psbt__modelled() {
         .client
         .wallet_create_funded_psbt(vec![], vec![outputs])
         .expect("walletcreatefundedpsbt");
-    let funded_psbt_model: mtype::WalletCreateFundedPsbt = funded_psbt.into_model().unwrap();
+    let model: Result<mtype::WalletCreateFundedPsbt, WalletCreateFundedPsbtError> =
+        funded_psbt.into_model();
+    let funded_psbt_model = model.unwrap();
 
     let json: WalletProcessPsbt = node
         .client
         .wallet_process_psbt(&funded_psbt_model.psbt)
         .expect("walletprocesspsbt");
-    let model: Result<mtype::WalletProcessPsbt, _> = json.into_model();
+    #[cfg(feature = "v25_and_below")]
+    type WalletProcessPsbtError = psbt::PsbtParseError;
+
+    let model: Result<mtype::WalletProcessPsbt, WalletProcessPsbtError> = json.into_model();
     let processed = model.unwrap();
 
     assert_eq!(processed.psbt.inputs.len(), funded_psbt_model.psbt.inputs.len());
@@ -1171,8 +1180,8 @@ fn create_load_unload_wallet() {
     let _: LoadWallet = node.client.load_wallet(&wallet).expect("loadwallet");
 }
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn wallet__upgrade_wallet() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 

@@ -32,7 +32,8 @@ fn mining__get_block_template__modelled() {
 
     let json: GetBlockTemplate = node1.client.get_block_template(&options)
         .expect("get_block_template RPC failed");
-    let _: Result<mtype::GetBlockTemplate, GetBlockTemplateError> = json.into_model();
+    let model: Result<mtype::GetBlockTemplate, GetBlockTemplateError> = json.into_model();
+    model.unwrap();
 }
 
 #[test]
@@ -61,7 +62,6 @@ fn mining__get_network_hash_ps() {
 }
 
 #[test]
-// Core version 26 onwards.
 #[cfg(not(feature = "v25_and_below"))]
 fn mining__get_prioritised_transactions() {
     let node = Node::with_wallet(Wallet::Default, &[]);
@@ -77,8 +77,8 @@ fn mining__prioritise_transaction() {
 
     let (_addr, txid) = node.create_mempool_transaction();
     let fee_delta = SignedAmount::from_sat(10_000);
-    let res = node.client.prioritise_transaction(&txid, fee_delta).expect("prioritisetransaction");
-    assert!(res) // According to docs always returns true.
+    let json = node.client.prioritise_transaction(&txid, fee_delta).expect("prioritisetransaction");
+    assert!(json) // According to docs always returns true.
 }
 
 #[test]
@@ -93,8 +93,8 @@ fn mining__submit_block() {
     node3.mine_a_block();
 
     let options = TemplateRequest { rules: vec![TemplateRules::Segwit] };
-    let json = node1.client.get_block_template(&options).expect("getblocktemplate");
-    let template = json.into_model().expect("GetBlockTemplate into model");
+    let json: GetBlockTemplate = node1.client.get_block_template(&options).expect("getblocktemplate");
+    let template: mtype::GetBlockTemplate = json.into_model().unwrap();
 
     submit_empty_block(&node1, &template);
     // submit_block_with_dummy_coinbase(&node1, &template);
@@ -211,8 +211,8 @@ fn mining__submit_block_with_dummy_coinbase(node: &Node, bt: &mtype::GetBlockTem
     let _: () = node.client.submit_block(&block).expect("submitblock");
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn mining__submit_header() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();

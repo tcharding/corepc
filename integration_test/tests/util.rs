@@ -3,8 +3,9 @@
 //! Tests for methods found under the `== Util ==` section of the API docs.
 
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
+#![allow(unused_imports)] // Because of feature gated tests.
 
-use bitcoin::{PublicKey, PrivateKey};
+use bitcoin::{address, amount, sign_message, PublicKey, PrivateKey};
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::vtype::*;
 use node::mtype;
@@ -26,12 +27,12 @@ fn util__create_multisig__modelled() {
         .client
         .create_multisig(nrequired, vec![pubkey1, pubkey2])
         .expect("createmultisig");
-    let res: Result<mtype::CreateMultisig, CreateMultisigError> = json.into_model();
-    let _ = res.expect("CreateMultisig into model");
+    let model: Result<mtype::CreateMultisig, CreateMultisigError> = json.into_model();
+    model.unwrap();
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn util__derive_addresses__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
@@ -39,8 +40,8 @@ fn util__derive_addresses__modelled() {
     let descriptor = "pkh(02ff12471208c14bd580709cb2358d98975247d8765f92bc25eab3b2763ed605f8)#sf4k0g3u";
 
     let json: DeriveAddresses = node.client.derive_addresses(descriptor).expect("deriveaddresses");
-    let res: Result<mtype::DeriveAddresses, _> = json.into_model();
-    let _ = res.expect("DeriveAddresses into model");
+    let model: Result<mtype::DeriveAddresses, address::ParseError> = json.into_model();
+    model.unwrap();
 
     // For v29 and above test a multipath descriptor.
     #[cfg(not(feature = "v28_and_below"))]
@@ -51,8 +52,8 @@ fn util__derive_addresses__modelled() {
         let range = (0, 3);
         let json: DeriveAddressesMultipath = node.client.derive_addresses_multipath(multipath_descriptor, range)
             .expect("deriveaddresses");
-        let res: Result<mtype::DeriveAddressesMultipath, _> = json.into_model();
-        let derived = res.expect("DeriveAddressesMultipath into model");
+        let model: Result<mtype::DeriveAddressesMultipath, address::ParseError> = json.into_model();
+        let derived = model.unwrap();
 
         // Should return 2 `DeriveAddresses`, one for each derivation path (0 and 1).
         assert_eq!(derived.addresses.len(), 2);
@@ -67,12 +68,12 @@ fn util__estimate_smart_fee__modelled() {
     node.fund_wallet();
 
     let json: EstimateSmartFee = node.client.estimate_smart_fee(6).expect("estimatesmartfee");
-    let res: Result<mtype::EstimateSmartFee, _> = json.into_model();
-    let _ = res.expect("EstimateSmartFee into model");
+    let model: Result<mtype::EstimateSmartFee, amount::ParseAmountError> = json.into_model();
+    model.unwrap();
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn util__get_descriptor_info() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
@@ -81,8 +82,8 @@ fn util__get_descriptor_info() {
     let _: GetDescriptorInfo = node.client.get_descriptor_info(descriptor).expect("getdescriptorinfo");
 }
 
-#[cfg(not(feature = "v20_and_below"))]
 #[test]
+#[cfg(not(feature = "v20_and_below"))]
 fn util__get_index_info() {
     let node = Node::with_wallet(Wallet::Default, &["-txindex"]);
     let index_info: GetIndexInfo = node.client.get_index_info().expect("getindexinfo");
@@ -110,8 +111,9 @@ fn util__sign_message_with_priv_key__modelled() {
         .client
         .sign_message_with_privkey(&privkey, message)
         .expect("signmessagewithprivkey");
-    let res: Result<mtype::SignMessageWithPrivKey, _> = json.into_model();
-    let sig = res.expect("SignMessageWithPrivKey into model");
+    let model: Result<mtype::SignMessageWithPrivKey, sign_message::MessageSignatureError> =
+        json.into_model();
+    let sig = model.unwrap();
 
     // Verify the message using the returned signature
     let verified: VerifyMessage = node
@@ -128,8 +130,8 @@ fn util__validate_address__modelled() {
 
     let addr = node.client.new_address().expect("new_address");
     let json: ValidateAddress = node.client.validate_address(&addr).expect("validateaddress");
-    let res: Result<mtype::ValidateAddress, ValidateAddressError> = json.into_model();
-    let _ = res.expect("ValidateAddress into model");
+    let model: Result<mtype::ValidateAddress, ValidateAddressError> = json.into_model();
+    model.unwrap();
 }
 
 // This is tested in util__sign_message_with_priv_key__modelled()

@@ -13,8 +13,8 @@ fn control__get_memory_info() {
     let _: GetMemoryInfoStats = node.client.get_memory_info().unwrap();
 }
 
-#[cfg(not(feature = "v17"))]
 #[test]
+#[cfg(not(feature = "v17"))]
 fn control__get_rpc_info() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let _ = node.client.get_rpc_info().unwrap();

@@ -4,6 +4,8 @@
 
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
 
+use bitcoin::hex;
+use bitcoin::consensus::encode;
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::client::client_sync;
 use node::vtype::*;             // All the version specific types.
@@ -38,8 +40,8 @@ fn blockchain__dump_tx_out_set__modelled() {
 fn blockchain__get_best_block_hash__modelled() {
     let node = Node::with_wallet(Wallet::None, &[]);
 
-    let json = node.client.get_best_block_hash().expect("rpc");
-    let model: Result<mtype::GetBestBlockHash, _> = json.into_model();
+    let json: GetBestBlockHash = node.client.get_best_block_hash().expect("getbestblockhash");
+    let model: Result<mtype::GetBestBlockHash, hex::HexToArrayError> = json.into_model();
     model.unwrap();
 }
 
@@ -49,12 +51,12 @@ fn blockchain__get_block__modelled() {
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
 
     let json: GetBlockVerboseZero = node.client.get_block_verbose_zero(block_hash).expect("getblock verbose=0");
-    let model: Result<mtype::GetBlockVerboseZero, _> = json.into_model();
-    model.expect("GetBlock into model");
+    let model: Result<mtype::GetBlockVerboseZero, encode::FromHexError> = json.into_model();
+    model.unwrap();
 
     let json: GetBlockVerboseOne = node.client.get_block_verbose_one(block_hash).expect("getblock verbose=1");
     let model: Result<mtype::GetBlockVerboseOne, GetBlockVerboseOneError> = json.into_model();
-    model.expect("GetBlockVerbose into model");
+    model.unwrap();
 
     // TODO: Test getblock 2
     // let json = node.client.get_block_with_verbosity(block_hash, 2).expect("getblock verbosity 2");
@@ -126,7 +128,7 @@ fn blockchain__get_block_hash__modelled() {
     let node = Node::with_wallet(Wallet::None, &[]);
 
     let json: GetBlockHash = node.client.get_block_hash(0).expect("getblockhash");
-    let model: Result<mtype::GetBlockHash, _> = json.into_model();
+    let model: Result<mtype::GetBlockHash, hex::HexToArrayError> = json.into_model();
     model.unwrap();
 }
 
@@ -161,13 +163,15 @@ fn getblockstats() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
 
-    let json = node.client.get_block_stats_by_height(1).expect("getblockstats");
-    json.into_model().unwrap();
+    let json: GetBlockStats = node.client.get_block_stats_by_height(1).expect("getblockstats");
+    let model: Result<mtype::GetBlockStats, GetBlockStatsError> = json.into_model();
+    model.unwrap();
 
     // No need for explicit types, used explicitly in test below.
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
-    let json = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
-    json.into_model().unwrap();
+    let json: GetBlockStats = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
+    let model: Result<mtype::GetBlockStats, GetBlockStatsError> = json.into_model();
+    model.unwrap();
 }
 
 fn getblockstats_txindex() {
@@ -177,12 +181,13 @@ fn getblockstats_txindex() {
     // Get block stats by height.
     let json: GetBlockStats = node.client.get_block_stats_by_height(101).expect("getblockstats");
     let model: Result<mtype::GetBlockStats, GetBlockStatsError> = json.into_model();
-    model.expect("GetBlockStats into model");
+    model.unwrap();
 
     // Get block stats by block hash.
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
-    let json = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
-    json.into_model().unwrap();
+    let json: GetBlockStats = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
+    let model: Result<mtype::GetBlockStats, GetBlockStatsError> = json.into_model();
+    model.unwrap();
 }
 
 #[test]
@@ -193,7 +198,7 @@ fn blockchain__get_chain_states__modelled() {
     let (_address, _tx) = node.create_mined_transaction();
 
     let json: GetChainStates = node.client.get_chain_states().expect("getchainstates");
-    let model: Result<mtype::GetChainStates, _> = json.into_model();
+    let model: Result<mtype::GetChainStates, GetChainStatesError> = json.into_model();
     let chain_states = model.unwrap();
 
     assert!(chain_states.chain_states[0].blocks > 0);
@@ -255,7 +260,7 @@ fn blockchain__get_mempool_ancestors__modelled() {
 
     let json: GetMempoolAncestors =
         node.client.get_mempool_ancestors(child_txid).expect("getmempoolancestors");
-    let model: Result<mtype::GetMempoolAncestors, _> = json.into_model();
+    let model: Result<mtype::GetMempoolAncestors, hex::HexToArrayError> = json.into_model();
     let ancestors = model.unwrap();
 
     assert!(ancestors.0.contains(&parent_txid));
@@ -272,7 +277,7 @@ fn blockchain__get_mempool_ancestors_verbose__modelled() {
         .client
         .get_mempool_ancestors_verbose(child_txid)
         .expect("getmempoolancestors verbose");
-    let model: Result<mtype::GetMempoolAncestorsVerbose, _> = json.into_model();
+    let model: Result<mtype::GetMempoolAncestorsVerbose, MapMempoolEntryError> = json.into_model();
     let ancestors = model.unwrap();
 
     assert!(ancestors.0.contains_key(&parent_txid));
@@ -287,7 +292,7 @@ fn blockchain__get_mempool_descendants__modelled() {
 
     let json: GetMempoolDescendants =
         node.client.get_mempool_descendants(parent_txid).expect("getmempooldescendants");
-    let model: Result<mtype::GetMempoolDescendants, _> = json.into_model();
+    let model: Result<mtype::GetMempoolDescendants, hex::HexToArrayError> = json.into_model();
     let descendants = model.unwrap();
 
     assert!(descendants.0.contains(&child_txid));
@@ -304,7 +309,7 @@ fn blockchain__get_mempool_descendants_verbose__modelled() {
         .client
         .get_mempool_descendants_verbose(parent_txid)
         .expect("getmempooldescendants verbose");
-    let model: Result<mtype::GetMempoolDescendantsVerbose, _> = json.into_model();
+    let model: Result<mtype::GetMempoolDescendantsVerbose, MapMempoolEntryError> = json.into_model();
     let descendants = model.unwrap();
 
     assert!(descendants.0.contains_key(&child_txid));
@@ -343,7 +348,7 @@ fn blockchain__get_raw_mempool__modelled() {
 
     // verbose = false
     let json: GetRawMempool = node.client.get_raw_mempool().expect("getrawmempool");
-    let model: Result<mtype::GetRawMempool, _> = json.clone().into_model();
+    let model: Result<mtype::GetRawMempool, hex::HexToArrayError> = json.clone().into_model();
     let mempool = model.unwrap();
     // Sanity check.
     assert_eq!(mempool.0.len(), 1);
@@ -474,8 +479,8 @@ fn blockchain__savemempool() {
     }
 }
 
-#[cfg(not(feature = "v24_and_below"))]
 #[test]
+#[cfg(not(feature = "v24_and_below"))]
 fn blockchain__scan_blocks_modelled() {
     let node = Node::with_wallet(Wallet::None, &["-blockfilterindex=1"]);
 
@@ -519,7 +524,7 @@ fn verify_tx_out_proof(node: &Node) -> Result<(), client_sync::Error> {
     let proof = node.client.get_tx_out_proof(&[txid])?;
 
     let json: VerifyTxOutProof = node.client.verify_tx_out_proof(&proof)?;
-    let model: Result<mtype::VerifyTxOutProof, _> = json.into_model();
+    let model: Result<mtype::VerifyTxOutProof, hex::HexToArrayError> = json.into_model();
     let txids = model.unwrap();
 
     // sanity check
@@ -547,9 +552,9 @@ fn create_child_spending_parent(node: &Node, parent_txid: bitcoin::Txid) -> bitc
         .client
         .sign_raw_transaction_with_wallet(&funded_tx)
         .expect("signrawtransactionwithwallet");
-    let model = signed.into_model().expect("SignRawTransactionWithWallet into model");
-    let child_txid = model.tx.compute_txid();
-    let _ = node.client.send_raw_transaction(&model.tx).expect("sendrawtransaction");
+    let sign_raw_transaction = signed.into_model().expect("SignRawTransactionWithWallet into model");
+    let child_txid = sign_raw_transaction.tx.compute_txid();
+    let _ = node.client.send_raw_transaction(&sign_raw_transaction.tx).expect("sendrawtransaction");
 
     child_txid
 }

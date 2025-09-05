@@ -294,3 +294,5 @@ pub use crate::psbt::{
     RawTransaction, RawTransactionError, RawTransactionInput, RawTransactionInputError,
     RawTransactionOutput, RawTransactionOutputError, WitnessUtxo, WitnessUtxoError,
 };
+#[doc(inline)]
+pub use crate::NumericError;
