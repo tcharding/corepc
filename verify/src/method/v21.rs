@@ -161,7 +161,7 @@ pub const METHODS: &[Method] = &[
         "sign_raw_transaction_with_wallet",
     ),
     Method::new_nothing("unloadwallet", "unload_wallet"),
-    Method::new_no_model("upgradewallet", "UpgradeWalled", "upgrade_wallet"),
+    Method::new_no_model("upgradewallet", "UpgradeWallet", "upgrade_wallet"),
     Method::new_modelled(
         "walletcreatefundedpsbt",
         "WalletCreateFundedPsbt",
