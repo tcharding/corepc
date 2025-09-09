@@ -64,7 +64,7 @@ pub struct GetBlockchainInfo {
     pub warnings: String,
 }
 
-/// Status of softfork.
+/// Softfork status. Part of `getblockchaininfo`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Softfork {
@@ -79,7 +79,7 @@ pub struct Softfork {
     pub active: bool,
 }
 
-/// The softfork type: one of "buried", "bip9".
+/// The softfork type. Part of `getblockchaininfo`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum SoftforkType {
@@ -93,7 +93,7 @@ pub enum SoftforkType {
     Bip9,
 }
 
-/// Status of BIP-9 softforks.
+/// BIP-9 softfork info. Part of `getblockchaininfo`.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkInfo {
@@ -111,7 +111,7 @@ pub struct Bip9SoftforkInfo {
     pub statistics: Option<Bip9SoftforkStatistics>,
 }
 
-/// BIP-9 softfork status: one of "defined", "started", "locked_in", "active", "failed".
+/// BIP-9 softfork status. Part of `getblockchaininfo`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Bip9SoftforkStatus {
@@ -127,7 +127,7 @@ pub enum Bip9SoftforkStatus {
     Failed,
 }
 
-/// Statistics for a BIP-9 softfork.
+/// BIP-9 softfork statistics. Part of `getblockchaininfo`.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkStatistics {
@@ -239,7 +239,7 @@ pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
-/// A relative (ancestor or descendant) transaction of a transaction in the mempool.
+/// Mempool data. Part of `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
@@ -294,7 +294,7 @@ pub struct MempoolEntry {
     pub bip125_replaceable: bool,
 }
 
-/// The `fees` field from the result of JSON-RPC method `getmempoolentry`.
+/// Fee object. Part of `getmempoolentry`.
 ///
 /// Contains the base fee, modified fee (with fee deltas), and ancestor/descendant fee totals,
 /// all in BTC.

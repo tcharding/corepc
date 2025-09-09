@@ -80,7 +80,7 @@ pub struct GetMiningInfo {
     pub warnings: Vec<String>,
 }
 
-/// Represents the `next` block information within the GetMiningInfo result.
+/// Represents the `next` block information. Part of `getmininginfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct NextBlockInfo {

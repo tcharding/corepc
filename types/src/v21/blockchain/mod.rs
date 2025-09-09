@@ -64,7 +64,7 @@ pub struct GetBlockchainInfo {
     pub warnings: String,
 }
 
-/// Status of softfork.
+/// Softfork status. Part of `getblockchaininfo`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Softfork {
@@ -79,7 +79,7 @@ pub struct Softfork {
     pub active: bool,
 }
 
-/// The softfork type: one of "buried", "bip9".
+/// The softfork type. Part of `getblockchaininfo`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum SoftforkType {
@@ -93,7 +93,7 @@ pub enum SoftforkType {
     Bip9,
 }
 
-/// Status of BIP-9 softforks.
+/// BIP-9 softfork info. Part of `getblockchaininfo`.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkInfo {
@@ -163,7 +163,7 @@ pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
-/// A relative (ancestor or descendant) transaction of a transaction in the mempool.
+/// Mempool data. Part of `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolEntry {

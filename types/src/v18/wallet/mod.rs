@@ -91,7 +91,7 @@ pub struct GetAddressInfo {
     pub labels: Vec<GetAddressInfoLabel>,
 }
 
-/// The `embedded` field of `GetAddressInfo`.
+/// The `embedded` address info field. Part of `getaddressinfo`.
 ///
 /// It includes all getaddressinfo output fields for the embedded address, excluding metadata
 /// ("timestamp", "hdkeypath", "hdseedid") and relation to the wallet ("ismine", "iswatchonly").
@@ -214,7 +214,7 @@ pub struct GetWalletInfo {
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ImportMulti(pub Vec<ImportMultiEntry>);
 
-/// Represents a single entry in the importmulti result array.
+/// A single import multi entry. Part of `importmulti`.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ImportMultiEntry {
     /// The success.
@@ -225,7 +225,7 @@ pub struct ImportMultiEntry {
     pub error: Option<JsonRpcError>,
 }
 
-/// Represents the error object in a JSON-RPC error response.
+/// A JSON-RPC error response. Part of `importmulti`.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct JsonRpcError {
     /// The error code.
@@ -245,7 +245,7 @@ pub struct JsonRpcError {
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddress(pub Vec<ListReceivedByAddressItem>);
 
-/// List item returned as part of of `listreceivedByaddress`.
+/// List received by address item. Part of of `listreceivedbyaddress`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddressItem {
@@ -273,7 +273,7 @@ pub struct ListReceivedByAddressItem {
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByLabel(pub Vec<ListReceivedByLabelItem>);
 
-/// Item returned as part of `listreceivedbylabel`.
+/// List received by label item. Part of of `listreceivedbyaddress`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByLabelItem {
@@ -299,7 +299,7 @@ pub struct ListReceivedByLabelItem {
 #[serde(deny_unknown_fields)]
 pub struct ListUnspent(pub Vec<ListUnspentItem>);
 
-/// Unspent transaction output, returned as part of `listunspent`.
+/// Unspent transaction output. Part of `listunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListUnspentItem {
@@ -346,7 +346,7 @@ pub struct ListWalletDir {
     pub wallets: Vec<ListWalletDirWallet>,
 }
 
-/// Wallet entry returned as part of `listwalletdir`.
+/// Wallet entry. Part of `listwalletdir`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListWalletDirWallet {

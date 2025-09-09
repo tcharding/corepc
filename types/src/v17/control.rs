@@ -26,7 +26,7 @@ use serde::{Deserialize, Serialize};
 #[serde(deny_unknown_fields)]
 pub struct GetMemoryInfoStats(pub BTreeMap<String, Locked>);
 
-/// Information about locked memory manager.
+/// Information about locked memory manager. Part of `getmemoryinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Locked {

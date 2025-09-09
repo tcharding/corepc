@@ -136,7 +136,7 @@ pub struct GetTransaction {
     pub last_processed_block: Option<LastProcessedBlock>,
 }
 
-/// Item returned as part of of `gettransaction`. v26 and later only.
+/// Last processed block item. Part of of `gettransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct LastProcessedBlock {
@@ -207,7 +207,7 @@ pub struct GetWalletInfo {
     pub last_processed_block: Option<LastProcessedBlock>,
 }
 
-/// The `scanning` field of the `getwalletinfo` RPC in v26.
+/// Current scanning details. Part of `getwalletinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum GetWalletInfoScanning {

@@ -19,7 +19,7 @@ use crate::{ScriptPubkey, ScriptSig};
 
 /// Represents a bitcoin transaction.
 ///
-/// Returned as part of `decoderawtransaction` and `decodepsbt`.
+/// Part of `decoderawtransaction` and `decodepsbt`.
 // This JSON data can be encapsulated by a `bitcoin::Transaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -163,7 +163,7 @@ impl WitnessUtxo {
     }
 }
 
-/// A script returned as part of a PSBT input or output.
+/// A script part of a PSBT input or output.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PsbtScript {

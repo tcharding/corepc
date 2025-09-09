@@ -40,7 +40,7 @@ pub struct NodeAddress {
 #[serde(deny_unknown_fields)]
 pub struct GetPeerInfo(pub Vec<PeerInfo>);
 
-/// An item from the list returned by the JSON-RPC method `getpeerinfo`.
+/// A peer info item. Part of `getpeerinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PeerInfo {

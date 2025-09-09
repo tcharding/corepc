@@ -27,7 +27,7 @@ pub struct GetBalances {
     pub watch_only: Option<GetBalancesWatchOnly>,
 }
 
-/// Balances from outputs that the wallet can sign.
+/// Balances from outputs that the wallet can sign. Part of `getbalances`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetBalancesMine {
@@ -43,7 +43,7 @@ pub struct GetBalancesMine {
     pub used: Option<f64>,
 }
 
-/// Hash and height of the block this information was generated on.
+/// Hash and height of the block this information was generated on. Part of `getbalances`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetBalancesWatchOnly {
@@ -156,7 +156,7 @@ pub struct GetWalletInfo {
     pub scanning: GetWalletInfoScanning,
 }
 
-/// The `scanning` field of `GetWalletInfo` in v19.
+/// Current scanning details. Part of `getwalletinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum GetWalletInfoScanning {

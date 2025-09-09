@@ -146,7 +146,7 @@ pub struct GetBlockchainInfo {
     pub warnings: String,
 }
 
-/// Status of softfork.
+/// Softfork status. Part of `getblockchaininfo`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Softfork {
@@ -158,7 +158,7 @@ pub struct Softfork {
     pub reject: SoftforkReject,
 }
 
-/// Progress toward rejecting pre-softfork blocks.
+/// Progress toward rejecting pre-softfork blocks. Part of `getblockchaininfo`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SoftforkReject {
@@ -166,7 +166,7 @@ pub struct SoftforkReject {
     pub status: bool,
 }
 
-/// Status of BIP-9 softforksin progress.
+/// Status of BIP-9 softforks in progress. Part of `getblockchaininfo`.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9Softfork {
@@ -183,7 +183,7 @@ pub struct Bip9Softfork {
     pub since: i64,
 }
 
-/// BIP-9 softfork status: one of "defined", "started", "locked_in", "active", "failed".
+/// BIP-9 softfork status. Part of `getblockchaininfo`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Bip9SoftforkStatus {
@@ -384,7 +384,7 @@ pub struct GetBlockStats {
 #[serde(deny_unknown_fields)]
 pub struct GetChainTips(pub Vec<ChainTips>);
 
-/// An individual list item from the result of JSON-RPC method `getchaintips`.
+/// Chain tip item. Part of `getchaintips`.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ChainTips {
@@ -399,7 +399,7 @@ pub struct ChainTips {
     pub status: ChainTipsStatus,
 }
 
-/// The `status` field from an individual list item from the result of JSON-RPC method `getchaintips`.
+/// Chain tip status. Part of `getchaintips`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum ChainTipsStatus {
@@ -503,7 +503,7 @@ pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
-/// A relative (ancestor or descendant) transaction of a transaction in the mempool.
+/// Mempool data. Part of `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
@@ -549,7 +549,7 @@ pub struct MempoolEntry {
     pub spent_by: Vec<String>,
 }
 
-/// (No docs in Core v0.17.)
+/// Fee object. Part of `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolEntryFees {

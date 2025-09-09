@@ -88,6 +88,7 @@ pub struct GetTransaction {
     pub decoded: Option<Transaction>,
 }
 
+/// Transaction detail. Part of the `gettransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetTransactionDetail {
@@ -140,7 +141,7 @@ pub struct ListSinceBlock {
     pub last_block: String,
 }
 
-/// Transaction item returned as part of `listsinceblock`.
+/// Transaction item. Part of `listsinceblock`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TransactionItem {
@@ -238,7 +239,7 @@ pub struct ListTransactions(pub Vec<TransactionItem>);
 #[serde(deny_unknown_fields)]
 pub struct ListUnspent(pub Vec<ListUnspentItem>);
 
-/// Unspent transaction output, returned as part of `listunspent`.
+/// Unspent transaction output, part of `listunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListUnspentItem {

@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 #[serde(deny_unknown_fields)]
 pub struct GetIndexInfo(pub BTreeMap<String, GetIndexInfoName>);
 
-/// `name` field of `getindexinfo`.
+/// Index info details. Part of `getindexinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetIndexInfoName {

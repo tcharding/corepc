@@ -180,7 +180,7 @@ pub struct GetWalletInfo {
     pub external_signer: bool,
 }
 
-/// The `scanning` field of the `getwalletinfo` RPC in v23.
+/// Current scanning details. Part of `getwalletinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum GetWalletInfoScanning {
@@ -210,7 +210,7 @@ pub struct ListSinceBlock {
     pub last_block: String,
 }
 
-/// Transaction item returned as part of `listsinceblock`.
+/// Transaction item. Part of `listsinceblock`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TransactionItem {

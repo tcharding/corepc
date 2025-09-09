@@ -47,7 +47,7 @@ pub struct DecodePsbt {
     pub fee: Option<u64>,
 }
 
-/// An item from the global xpubs list of `DecodePsbt`.
+/// An item from the global xpubs list. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GlobalXpub {
@@ -59,7 +59,7 @@ pub struct GlobalXpub {
     pub path: String,
 }
 
-/// An item from the global proprietary list of `DecodePsbt`.
+/// An item from the global proprietary list. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Proprietary {
@@ -73,7 +73,7 @@ pub struct Proprietary {
     value: String,
 }
 
-/// An input in a partially signed Bitcoin transaction.
+/// An input in a partially signed Bitcoin transaction. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PsbtInput {
@@ -123,7 +123,7 @@ pub struct PsbtInput {
     pub unknown: Option<HashMap<String, String>>,
 }
 
-/// An output in a partially signed Bitcoin transaction.
+/// An output in a partially signed Bitcoin transaction. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PsbtOutput {
@@ -145,7 +145,7 @@ pub struct PsbtOutput {
     pub unknown: Option<HashMap<String, String>>,
 }
 
-/// An item from the `taproot_script_path_sigs` list of `PsbtInput`.
+/// An item from the `taproot_script_path_sigs` list. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TaprootScriptPathSig {
@@ -157,7 +157,7 @@ pub struct TaprootScriptPathSig {
     pub sig: String,
 }
 
-/// An item from the `taproot_scripts` list of `PsbtInput`.
+/// An item from the `taproot_scripts` list. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TaprootScript {
@@ -170,7 +170,7 @@ pub struct TaprootScript {
     pub control_blocks: Vec<String>,
 }
 
-/// An item from the `taproot_bip32_derivs` list of `PsbtInput`.
+/// An item from the `taproot_bip32_derivs` list. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TaprootBip32Deriv {
@@ -184,7 +184,7 @@ pub struct TaprootBip32Deriv {
     pub leaf_hashes: Vec<String>,
 }
 
-/// A Taproot leaf script at depth with version.
+/// A Taproot leaf script at depth with version. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TaprootLeaf {

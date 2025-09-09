@@ -55,7 +55,7 @@ pub struct GetChainStates {
     pub chain_states: Vec<ChainState>,
 }
 
-/// A single chainstate returned as part of `getchainstates`.
+/// A single chainstate. Part of `getchainstates`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ChainState {

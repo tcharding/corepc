@@ -29,7 +29,7 @@ pub use self::error::{MempoolAcceptanceError, TestMempoolAcceptError};
 #[serde(deny_unknown_fields)]
 pub struct TestMempoolAccept(pub Vec<MempoolAcceptance>);
 
-/// Represents a single mempool acceptance test result, returned as part of `testmempoolaccept`.
+/// A single mempool acceptance test result. Part of `testmempoolaccept`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolAcceptance {
@@ -46,7 +46,7 @@ pub struct MempoolAcceptance {
     pub reject_reason: Option<String>,
 }
 
-/// Wrapper for the fees field. Returned as part of `testmempoolaccept`.
+/// Wrapper for the fees field. Part of `testmempoolaccept`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolAcceptanceFees {

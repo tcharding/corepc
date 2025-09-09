@@ -51,7 +51,7 @@ pub struct ListDescriptors {
     pub descriptors: Vec<DescriptorInfo>,
 }
 
-/// A descriptor object from `listdescriptors`.
+/// A descriptor object. Part of `listdescriptors`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct DescriptorInfo {

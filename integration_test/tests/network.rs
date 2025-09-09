@@ -81,7 +81,7 @@ fn network__get_network_info__modelled() {
     let model: Result<mtype::GetNetworkInfo, GetNetworkInfoError> = json.into_model();
     model.unwrap();
 
-    // Server version is returned as part of the getnetworkinfo method.
+    // Server version is part of the getnetworkinfo method.
     node.client.check_expected_server_version().expect("unexpected version");
 }
 

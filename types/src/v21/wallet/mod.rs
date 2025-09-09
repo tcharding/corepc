@@ -53,7 +53,7 @@ pub struct ImportDescriptors(
     pub Vec<ImportDescriptorsResult>,
 );
 
-/// Result object for each descriptor import in `importdescriptors`.
+/// Result object for each descriptor import. Part of `importdescriptors`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ImportDescriptorsResult {
@@ -225,7 +225,7 @@ pub struct GetWalletInfo {
     pub descriptors: bool,
 }
 
-/// The `scanning` field of the `getwalletinfo` RPC in v21.
+/// Current scanning details. Part of `getwalletinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum GetWalletInfoScanning {

@@ -146,7 +146,7 @@ pub struct DecodePsbt {
     pub fee: Option<u64>,
 }
 
-/// An input in a partially signed Bitcoin transaction.
+/// An input in a partially signed Bitcoin transaction. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PsbtInput {
@@ -175,7 +175,7 @@ pub struct PsbtInput {
     pub unknown: Option<HashMap<String, String>>,
 }
 
-/// An output in a partially signed Bitcoin transaction.
+/// An output in a partially signed Bitcoin transaction. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PsbtOutput {
@@ -234,6 +234,8 @@ pub struct DecodeScript {
     pub p2sh_segwit: Option<String>,
 }
 
+/// Segwit data. Part of `decodescript`.
+//
 /// Seemingly undocumented data returned in the `segwit` field of `DecodeScript`.
 // This seems to be the same as `DecodeScript` except the `p2sh` field is called `p2sh-segwit`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -418,7 +420,7 @@ pub struct SignRawTransaction {
     pub errors: Option<Vec<SignFail>>,
 }
 
-/// Represents a script verification error.
+/// A script verification error. Part of `signrawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SignFail {
@@ -453,7 +455,7 @@ pub struct SignFail {
 #[serde(deny_unknown_fields)]
 pub struct TestMempoolAccept(pub Vec<MempoolAcceptance>);
 
-/// Represents a single mempool acceptance test result, returned as part of `testmempoolaccept`.
+/// A single mempool acceptance test result. Part of `testmempoolaccept`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolAcceptance {
