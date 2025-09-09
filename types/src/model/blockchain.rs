@@ -520,7 +520,7 @@ pub struct GetMempoolAncestors(pub Vec<Txid>);
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolAncestorsVerbose(pub BTreeMap<Txid, MempoolEntry>);
 
-/// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to false.
+/// Models the result of JSON-RPC method `getmempooldescendants` with verbose set to false.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolDescendants(pub Vec<Txid>);

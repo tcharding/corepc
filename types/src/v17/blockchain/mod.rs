@@ -602,7 +602,7 @@ pub struct GetMempoolInfo {
 #[serde(deny_unknown_fields)]
 pub struct GetRawMempool(pub Vec<String>);
 
-/// Result of JSON-RPC method `getmempooldescendants` with verbose set to `true`.
+/// Result of JSON-RPC method `getrawmempool` with verbose set to `true`.
 ///
 /// Map of txid to [`MempoolEntry`].
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
