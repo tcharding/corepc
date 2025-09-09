@@ -53,37 +53,48 @@ fn main() -> Result<()> {
 }
 
 fn verify_all_versions(test_output: Option<&String>, quiet: bool) -> Result<()> {
+    let mut any_failed = false;
     for version in VERSIONS {
         println!("\nVerifying for Bitcoin Core version {} ...", version);
-        verify_version(version, test_output, quiet)?;
+        if verify_version(version, test_output, quiet).is_err() {
+            any_failed = true;
+        }
+    }
+    if any_failed {
+        return Err(anyhow::anyhow!("verification failed for one or more versions"))
     }
     Ok(())
 }
 
 fn verify_version(version: Version, test_output: Option<&String>, quiet: bool) -> Result<()> {
+    let mut failures = 0;
+
     let s = format!("{}::METHOD data", version);
     let msg = format!("Checking that the {} list is correct", s);
     check(&msg, quiet);
-    let correct = verify_correct_methods(version, method::all_methods(version), &s)?;
-    close(correct, quiet);
-    if !correct {
-        process::exit(1);
+    match verify_correct_methods(version, method::all_methods(version), &s) {
+        Ok(()) => close(true, quiet),
+        Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
     }
 
     let s = "rustdoc version specific rustdocs";
     let msg = format!("Checking that the {} list is correct", s);
     check(&msg, quiet);
-    let correct = verify_correct_methods(version, versioned::all_methods(version)?, s)?;
-    close(correct, quiet);
-    if !correct {
-        process::exit(1);
+    match verify_correct_methods(version, versioned::all_methods(version)?, s) {
+        Ok(()) => close(true, quiet),
+        Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
     }
 
     let msg = "Checking that the status claimed in the version specific rustdocs is correct";
     check(msg, quiet);
-    verify_status(version, test_output)?;
-    close(correct, quiet);
+    match verify_status(version, test_output) {
+        Ok(()) => close(true, quiet),
+        Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
+    }
 
+    if failures > 0 {
+        return Err(anyhow::anyhow!("verification failed ({} check(s) failed)", failures));
+    }
     Ok(())
 }
 
@@ -94,40 +105,53 @@ fn check(msg: &str, quiet: bool) {
 }
 
 fn close(correct: bool, quiet: bool) {
-    if correct && !quiet {
+    if quiet { return; }
+    if correct {
         println!("Correct \u{2713} \n");
+    } else {
+    println!("\u{001b}[31mIncorrect \u{2717}\u{001b}[0m \n");
     }
 }
 
 /// Verifies that the correct set of methods are documented.
-fn verify_correct_methods(version: Version, methods: Vec<String>, msg: &str) -> Result<bool> {
+fn verify_correct_methods(version: Version, methods: Vec<String>, msg: &str) -> Result<()> {
     let ssot = ssot::all_methods(version)?;
     let want = ssot.iter().map(|s| s.as_str()).collect::<Vec<&str>>();
     let got = methods.iter().map(|s| s.as_str()).collect::<Vec<&str>>();
-    Ok(verify::correct_methods(&got, &want, msg))
+    if !verify::correct_methods(&got, &want, msg) {
+        return Err(anyhow::anyhow!("incorrect {}", msg));
+    }
+    Ok(())
 }
 
 /// Verifies that the status we claim is correct.
 fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
     let methods = versioned::methods_and_status(version)?;
+    let mut failures = 0;
     for method in methods {
         match method.status {
             Status::Done => {
-                check_types_exist_if_required(version, &method.name)?;
+                if check_types_exist_if_required(version, &method.name).is_err() {
+                    failures += 1;
+                }
 
                 if let Some(test_output) = test_output {
-                    if !check_integration_test_crate::test_exists(version, &method.name, test_output)? {
+                    if check_integration_test_crate::test_exists(version, &method.name, test_output).is_err() {
                         eprintln!("missing integration test: {}", method.name);
+                        failures += 1;
                     }
                 }
             }
             Status::Untested => {
-                check_types_exist_if_required(version, &method.name)?;
+                if check_types_exist_if_required(version, &method.name).is_err() {
+                    failures += 1;
+                }
 
                 // Make sure we didn't forget to mark as tested after implementing integration test.
                 if let Some(test_output) = test_output {
-                    if check_integration_test_crate::test_exists(version, &method.name, test_output)? {
+                    if check_integration_test_crate::test_exists(version, &method.name, test_output).is_ok() {
                         eprintln!("found integration test for untested method: {}", method.name);
+                        failures += 1;
                     }
                 }
             }
@@ -137,15 +161,20 @@ fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
 
                 if versioned::type_exists(version, &method.name)? && !versioned::requires_type(version, &method.name)? {
                     eprintln!("return type found but method is omitted or TODO: {}", output_method(out));
+                    failures += 1;
                 }
 
                 if model::type_exists(version, &method.name)?  && !model::requires_type(version, &method.name)? {
                     eprintln!("model type found but method is omitted or TODO: {}", output_method(out));
+                    failures += 1;
                 }
             }
         }
     }
 
+    if failures > 0 {
+        return Err(anyhow::anyhow!("status verification failed ({} issue(s))", failures));
+    }
     Ok(())
 }
 
@@ -154,12 +183,15 @@ fn check_types_exist_if_required(version: Version, method_name: &str) -> Result<
 
     if versioned::requires_type(version, method_name)? && !versioned::type_exists(version, method_name)? {
         eprintln!("missing return type: {}", output_method(out));
+        return Err(anyhow::anyhow!("missing return type"));
     }
     if model::requires_type(version, method_name)? && !model::type_exists(version, method_name)? {
         eprintln!("missing model type: {}", output_method(out));
+        return Err(anyhow::anyhow!("missing model type"));
     }
     if model::type_exists(version, method_name)? && !model::requires_type(version, method_name)? {
         eprintln!("found model type when none expected: {}", output_method(out));
+        return Err(anyhow::anyhow!("unexpected model type"));
     }
     Ok(())
 }
