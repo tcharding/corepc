@@ -748,16 +748,6 @@ pub struct LoadWallet {
     pub warnings: Vec<String>,
 }
 
-/// Models the result of JSON-RPC method `rescanblockchain`.
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct RescanBlockchain {
-    /// The block height where the rescan has started.
-    pub start_height: u32,
-    /// The height of the last rescanned block.
-    pub stop_height: u32,
-}
-
 /// Models the result of JSON-RPC method `psbtbumpfee`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -770,6 +760,16 @@ pub struct PsbtBumpFee {
     pub fee: Amount,
     /// Errors encountered during processing (may be empty).
     pub errors: Vec<String>,
+}
+
+/// Models the result of JSON-RPC method `rescanblockchain`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct RescanBlockchain {
+    /// The block height where the rescan has started.
+    pub start_height: u32,
+    /// The height of the last rescanned block.
+    pub stop_height: u32,
 }
 
 /// Models the result of JSON-RPC method `send`.

@@ -17,45 +17,6 @@ use serde::{Deserialize, Serialize};
 // TODO: Remove wildcard, use explicit types.
 pub use self::error::*;
 
-/// The purpose of an address. Part of `getaddressesbylabel`.
-#[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
-pub enum AddressPurpose {
-    /// A send-to address.
-    Send,
-    /// A receive-from address.
-    Receive,
-}
-
-/// The category of a transaction. Part of `gettransaction`, `listsinceblock` and `listtransactions`.
-#[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
-pub enum TransactionCategory {
-    /// Transactions sent.
-    Send,
-    /// Non-coinbase transactions received.
-    Receive,
-    /// Coinbase transactions received with more than 100 confirmations.
-    Generate,
-    /// Coinbase transactions received with 100 or fewer confirmations.
-    Immature,
-    /// Orphaned coinbase transactions received.
-    Orphan,
-}
-
-/// Whether this transaction can be RBF'ed. Part of `gettransaction`, `listsinceblock` and
-/// `listtransactions`.
-#[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
-pub enum Bip125Replaceable {
-    /// Yes, can be replaced due to BIP-125 (RBF).
-    Yes,
-    /// No, cannot be replaced due to BIP-125 (RBF).
-    No,
-    /// RBF unknown.
-    Unknown,
-}
-
 /// Result of JSON-RPC method `abortrescan`.
 ///
 /// > abortrescan
@@ -215,6 +176,16 @@ pub struct GetAddressesByLabel(pub BTreeMap<String, AddressInformation>);
 pub struct AddressInformation {
     /// Purpose of address.
     pub purpose: AddressPurpose,
+}
+
+/// The purpose of an address. Part of `getaddressesbylabel`.
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum AddressPurpose {
+    /// A send-to address.
+    Send,
+    /// A receive-from address.
+    Receive,
 }
 
 /// Result of the JSON-RPC method `getaddressinfo`.
@@ -500,6 +471,35 @@ pub struct GetTransactionDetail {
     ///
     /// Only available for the 'send' category of transactions.
     pub abandoned: Option<bool>,
+}
+
+/// The category of a transaction. Part of `gettransaction`, `listsinceblock` and `listtransactions`.
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum TransactionCategory {
+    /// Transactions sent.
+    Send,
+    /// Non-coinbase transactions received.
+    Receive,
+    /// Coinbase transactions received with more than 100 confirmations.
+    Generate,
+    /// Coinbase transactions received with 100 or fewer confirmations.
+    Immature,
+    /// Orphaned coinbase transactions received.
+    Orphan,
+}
+
+/// Whether this transaction can be RBF'ed. Part of `gettransaction`, `listsinceblock` and
+/// `listtransactions`.
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Bip125Replaceable {
+    /// Yes, can be replaced due to BIP-125 (RBF).
+    Yes,
+    /// No, cannot be replaced due to BIP-125 (RBF).
+    No,
+    /// RBF unknown.
+    Unknown,
 }
 
 /// Result of the JSON-RPC method `getunconfirmedbalance`.

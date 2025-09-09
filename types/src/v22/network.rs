@@ -35,31 +35,6 @@ pub struct NodeAddress {
     pub network: String,
 }
 
-/// Result of JSON-RPC method `listbanned`.
-///
-/// > listbanned
-///
-/// > List all banned IPs/Subnets.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct ListBanned(pub Vec<Banned>);
-
-/// An banned item. Part of `listbanned`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct Banned {
-    /// The IP/Subnet of the banned node.
-    pub address: String,
-    /// The UNIX epoch time the ban was created.
-    pub ban_created: u32,
-    /// The UNIX epoch time the ban was expires.
-    pub banned_until: u32,
-    /// The ban duration, in seconds.
-    pub ban_duration: u32,
-    /// The time remaining until the ban expires, in seconds.
-    pub time_remaining: u32,
-}
-
 /// Result of JSON-RPC method `getpeerinfo`.
 ///
 /// > getpeerinfo
@@ -170,4 +145,29 @@ pub struct PeerInfo {
     pub bytes_received_per_message: BTreeMap<String, u64>,
     /// Type of connection.
     pub connection_type: Option<String>,
+}
+
+/// Result of JSON-RPC method `listbanned`.
+///
+/// > listbanned
+///
+/// > List all banned IPs/Subnets.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ListBanned(pub Vec<Banned>);
+
+/// An banned item. Part of `listbanned`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Banned {
+    /// The IP/Subnet of the banned node.
+    pub address: String,
+    /// The UNIX epoch time the ban was created.
+    pub ban_created: u32,
+    /// The UNIX epoch time the ban was expires.
+    pub banned_until: u32,
+    /// The ban duration, in seconds.
+    pub ban_duration: u32,
+    /// The time remaining until the ban expires, in seconds.
+    pub time_remaining: u32,
 }

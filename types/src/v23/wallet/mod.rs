@@ -108,24 +108,6 @@ pub struct GetTransaction {
     pub decoded: Option<Transaction>,
 }
 
-/// Result of the JSON-RPC method `restorewallet`.
-///
-/// > restorewallet "wallet_name" "backup_file" ( load_on_startup )
-/// >
-/// > Restore and loads a wallet from backup.
-/// >
-/// > Arguments:
-/// > 1. wallet_name        (string, required) The name that will be applied to the restored wallet
-/// > 2. backup_file        (string, required) The backup file that will be used to restore the wallet.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct RestoreWallet {
-    /// The wallet name if restored successfully.
-    pub name: String,
-    /// Warning message if wallet was not loaded cleanly.
-    pub warning: Option<String>,
-}
-
 /// Result of the JSON-RPC method `getwalletinfo`.
 ///
 /// > getwalletinfo
@@ -291,3 +273,21 @@ pub struct TransactionItem {
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListTransactions(pub Vec<TransactionItem>);
+
+/// Result of the JSON-RPC method `restorewallet`.
+///
+/// > restorewallet "wallet_name" "backup_file" ( load_on_startup )
+/// >
+/// > Restore and loads a wallet from backup.
+/// >
+/// > Arguments:
+/// > 1. wallet_name        (string, required) The name that will be applied to the restored wallet
+/// > 2. backup_file        (string, required) The backup file that will be used to restore the wallet.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct RestoreWallet {
+    /// The wallet name if restored successfully.
+    pub name: String,
+    /// Warning message if wallet was not loaded cleanly.
+    pub warning: Option<String>,
+}
