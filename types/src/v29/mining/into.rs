@@ -1,36 +1,9 @@
 // SPDX-License-Identifier: CC0-1.0
 
-use bitcoin::{consensus, CompactTarget, SignedAmount, Target, Transaction, Txid, Weight, Wtxid};
+use bitcoin::{CompactTarget, Target, Weight};
 
-use super::{
-    BlockTemplateTransaction, BlockTemplateTransactionError, GetMiningInfo, GetMiningInfoError,
-    NextBlockInfo, NextBlockInfoError,
-};
+use super::{GetMiningInfo, GetMiningInfoError, NextBlockInfo, NextBlockInfoError};
 use crate::model;
-
-impl BlockTemplateTransaction {
-    /// Converts version specific type to a version nonspecific, more strongly typed type.
-    pub fn into_model(
-        self,
-    ) -> Result<model::BlockTemplateTransaction, BlockTemplateTransactionError> {
-        use BlockTemplateTransactionError as E;
-
-        let data =
-            consensus::encode::deserialize_hex::<Transaction>(&self.data).map_err(E::Data)?;
-        let txid = self.txid.parse::<Txid>().map_err(E::Txid)?;
-        let wtxid = self.hash.parse::<Wtxid>().map_err(E::Hash)?;
-        let depends = self
-            .depends
-            .iter()
-            .map(|x| crate::to_u32(*x, "depend"))
-            .collect::<Result<Vec<_>, _>>()?;
-        let fee = SignedAmount::from_sat(self.fee);
-        let sigops = crate::to_u32(self.sigops, "sigops")?;
-        let weight = Weight::from_wu(self.weight); // FIXME: Is this the correct unit?
-
-        Ok(model::BlockTemplateTransaction { data, txid, wtxid, depends, fee, sigops, weight })
-    }
-}
 
 impl GetMiningInfo {
     /// Converts version specific type to a version nonspecific, more strongly typed type.
