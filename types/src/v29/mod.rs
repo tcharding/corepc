@@ -264,10 +264,7 @@ pub use self::{
         GetBlockchainInfoError, GetChainStates, GetChainStatesError, GetDescriptorActivity,
         GetDescriptorActivityError, ReceiveActivity, SpendActivity,
     },
-    mining::{
-        BlockTemplateTransaction, GetMiningInfo, GetMiningInfoError, NextBlockInfo,
-        NextBlockInfoError,
-    },
+    mining::{GetMiningInfo, GetMiningInfoError, NextBlockInfo, NextBlockInfoError},
     raw_transactions::{MempoolAcceptance, TestMempoolAccept},
     util::{DeriveAddressesMultipath, GetDescriptorInfo},
 };

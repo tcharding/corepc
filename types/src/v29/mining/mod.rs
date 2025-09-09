@@ -9,35 +9,7 @@ mod into;
 
 use serde::{Deserialize, Serialize};
 
-pub use self::error::{BlockTemplateTransactionError, GetMiningInfoError, NextBlockInfoError};
-
-/// Contents of non-coinbase transactions that should be included in the next block.
-///
-/// Returned as part of `getblocktemplate`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct BlockTemplateTransaction {
-    /// Transaction data encoded in hexadecimal (byte-for-byte).
-    pub data: String,
-    /// Transaction id encoded in little-endian hexadecimal.
-    pub txid: String,
-    /// Hash encoded in little-endian hexadecimal (including witness data).
-    pub hash: String,
-    /// Array of numbers.
-    ///
-    /// Transactions before this one (by 1-based index in 'transactions' list) that must be present in the final block if this one is.
-    pub depends: Vec<i64>,
-    /// Difference in value between transaction inputs and outputs (in satoshis); for coinbase
-    /// transactions, this is a negative Number of the total collected block fees (ie, not including
-    /// the block subsidy); if key is not present, fee is unknown and clients MUST NOT assume there
-    /// isn't one.
-    pub fee: i64,
-    /// Total SigOps cost, as counted for purposes of block limits; if key is not present, sigop
-    /// cost is unknown and clients MUST NOT assume it is zero.
-    pub sigops: i64,
-    /// Total transaction weight, as counted for purposes of block limits.
-    pub weight: u64,
-}
+pub use self::error::{GetMiningInfoError, NextBlockInfoError};
 
 /// Result of the JSON-RPC method `getmininginfo`.
 ///
