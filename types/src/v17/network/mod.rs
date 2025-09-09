@@ -27,7 +27,7 @@ pub use self::error::*;
 #[serde(deny_unknown_fields)]
 pub struct GetAddedNodeInfo(pub Vec<AddedNode>);
 
-/// An item from the list returned by the JSON-RPC method `getaddednodeinfo`.
+/// An added node item. Part of `getaddednodeinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AddedNode {
@@ -40,7 +40,7 @@ pub struct AddedNode {
     pub addresses: Vec<AddedNodeAddress>,
 }
 
-/// An address returned as part of the JSON-RPC method `getaddednodeinfo`.
+/// An added node address item. Part of `getaddednodeinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AddedNodeAddress {
@@ -82,7 +82,7 @@ pub struct GetNetTotals {
     pub upload_target: UploadTarget,
 }
 
-/// The `upload_target` field from the result of JSON-RPC method `getnettotals`.
+/// The upload target totals. Part of `getnettotals`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct UploadTarget {
@@ -144,7 +144,7 @@ pub struct GetNetworkInfo {
     pub warnings: String,
 }
 
-/// Part of the result of the JSON-RPC method `getnetworkinfo` (information per network).
+/// Information per network. Part of `getnetworkinfo`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetNetworkInfoNetwork {
@@ -160,7 +160,7 @@ pub struct GetNetworkInfoNetwork {
     pub proxy_randomize_credentials: bool,
 }
 
-/// Part of the result of the JSON-RPC method `getnetworkinfo` (local address info).
+/// Local address info. Part of `getnetworkinfo`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetNetworkInfoAddress {
@@ -181,7 +181,7 @@ pub struct GetNetworkInfoAddress {
 #[serde(deny_unknown_fields)]
 pub struct GetPeerInfo(pub Vec<PeerInfo>);
 
-/// An item from the list returned by the JSON-RPC method `getpeerinfo`.
+/// A peer info item. Part of `getpeerinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PeerInfo {
@@ -269,7 +269,7 @@ pub struct PeerInfo {
 #[serde(deny_unknown_fields)]
 pub struct ListBanned(pub Vec<Banned>);
 
-/// An item from the list returned by the JSON-RPC method `listbanned`.
+/// An banned item. Part of `listbanned`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Banned {

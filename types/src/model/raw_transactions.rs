@@ -30,7 +30,7 @@ pub struct AnalyzePsbt {
     pub next: String,
 }
 
-/// Represents an input in a PSBT operation.
+/// An input in a PSBT operation. Part of `analyzepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AnalyzePsbtInput {
@@ -44,7 +44,7 @@ pub struct AnalyzePsbtInput {
     pub next: Option<String>,
 }
 
-/// Represents missing elements required to complete an input.
+/// Missing elements required to complete an input. Part of `analyzepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AnalyzePsbtInputMissing {
@@ -202,7 +202,7 @@ pub struct SignRawTransaction {
     pub errors: Vec<SignFail>,
 }
 
-/// Represents a script verification error.
+/// A script verification error. Part of `signrawtransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SignFail {
@@ -272,7 +272,7 @@ pub struct TestMempoolAccept {
     pub results: Vec<MempoolAcceptance>,
 }
 
-/// Models a single mempool acceptance test result. Returned as part of `testmempoolaccept`.
+/// Models a single mempool acceptance test result. Part of `testmempoolaccept`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolAcceptance {
@@ -292,7 +292,7 @@ pub struct MempoolAcceptance {
     pub reject_details: Option<String>,
 }
 
-/// Models the fees field. Returned as part of `testmempoolaccept`.
+/// Models the fees field. Part of `testmempoolaccept`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolAcceptanceFees {

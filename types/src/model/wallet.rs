@@ -16,7 +16,7 @@ use bitcoin::{
 };
 use serde::{Deserialize, Serialize};
 
-/// The purpose of an address.
+/// The purpose of an address. Part of `getaddressesbylabel`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub enum AddressPurpose {
     /// A send-to address.
@@ -25,7 +25,7 @@ pub enum AddressPurpose {
     Receive,
 }
 
-/// The category of a transaction.
+/// The category of a transaction. Part of `gettransaction`, `listsinceblock` and `listtransactions`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 pub enum TransactionCategory {
     /// Transactions sent.
@@ -40,7 +40,8 @@ pub enum TransactionCategory {
     Orphan,
 }
 
-/// Whether this transaction can be RBF'ed.
+/// Whether this transaction can be RBF'ed. Part of `gettransaction`, `listsinceblock` and
+/// `listtransactions`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 pub enum Bip125Replaceable {
     /// Yes, can be replaced due to BIP-125 (RBF).
@@ -101,7 +102,7 @@ pub struct DumpPrivKey(pub PrivateKey);
 #[serde(deny_unknown_fields)]
 pub struct GetAddressesByLabel(pub BTreeMap<Address<NetworkUnchecked>, AddressInformation>);
 
-/// Information about address.
+/// Address information. Part of `getaddressesbylabel`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AddressInformation {
@@ -169,7 +170,7 @@ pub struct GetAddressInfo {
     pub labels: Vec<String>,
 }
 
-/// An address script type.
+/// The script field. Part of `getaddressinfo` and `getaddressinfoembedded`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub enum ScriptType {
     /// Non-standard output script type.
@@ -192,7 +193,7 @@ pub enum ScriptType {
     WitnessUnknown,
 }
 
-/// The `embedded` field of `GetAddressInfo`.
+/// The `embedded` address info field. Part of `getaddressinfo`.
 ///
 /// It includes all getaddressinfo output fields for the embedded address, excluding metadata
 /// ("timestamp", "hdkeypath", "hdseedid") and relation to the wallet ("ismine", "iswatchonly",
@@ -261,7 +262,7 @@ pub struct GetBalances {
     pub last_processed_block: Option<LastProcessedBlock>,
 }
 
-/// Balances from outputs that the wallet can sign.
+/// Balances from outputs that the wallet can sign. Part of `getbalances`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetBalancesMine {
@@ -277,7 +278,7 @@ pub struct GetBalancesMine {
     pub used: Option<Amount>,
 }
 
-/// Hash and height of the block this information was generated on.
+/// Hash and height of the block this information was generated on. Part of `getbalances`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetBalancesWatchOnly {
@@ -294,7 +295,7 @@ pub struct GetBalancesWatchOnly {
 #[serde(deny_unknown_fields)]
 pub struct GetHdKeys(pub Vec<HdKey>);
 
-/// An HD key entry returned by `gethdkeys`.
+/// An HD key entry. Part of `gethdkeys`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct HdKey {
@@ -308,7 +309,7 @@ pub struct HdKey {
     pub descriptors: Vec<HdKeyDescriptor>,
 }
 
-/// Descriptor object used in `gethdkeys` result.
+/// Descriptor object. Part of `gethdkeys`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct HdKeyDescriptor {
@@ -399,7 +400,7 @@ pub struct GetTransaction {
     pub tx: Transaction,
 }
 
-/// Part of the `GetTransaction`.
+/// Transaction detail. Part of the `gettransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetTransactionDetail {
@@ -432,7 +433,7 @@ pub struct GetTransactionDetail {
     pub parent_descriptors: Option<Vec<String>>,
 }
 
-/// Part of the `GetTransaction`.
+/// Last processed block item. Part of of `gettransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct LastProcessedBlock {
@@ -497,7 +498,7 @@ pub struct GetWalletInfo {
     pub last_processed_block: Option<LastProcessedBlock>,
 }
 
-/// Models the `scanning` field of `getwalletinfo` (v19+). When not scanning Core returns `false`.
+/// Current scanning details. Part of `getwalletinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum GetWalletInfoScanning {
@@ -515,7 +516,7 @@ pub enum GetWalletInfoScanning {
 #[serde(deny_unknown_fields)]
 pub struct ListAddressGroupings(pub Vec<Vec<ListAddressGroupingsItem>>);
 
-/// List item type returned as part of `listaddressgroupings`.
+/// List address item. Part of `listaddressgroupings`.
 // FIXME: The Core docs seem wrong, not sure what shape this should be?
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -533,7 +534,7 @@ pub struct ListAddressGroupingsItem {
 #[serde(deny_unknown_fields)]
 pub struct ListLockUnspent(pub Vec<ListLockUnspentItem>);
 
-/// List item returned as part of of `listlockunspent`.
+/// List lock unspent item. Part of of `listlockunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListLockUnspentItem {
@@ -548,7 +549,7 @@ pub struct ListLockUnspentItem {
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddress(pub Vec<ListReceivedByAddressItem>);
 
-/// List item returned as part of of `listreceivedbyaddress`.
+/// List received by address item. Part of of `listreceivedbyaddress`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddressItem {
@@ -571,7 +572,7 @@ pub struct ListReceivedByAddressItem {
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByLabel(pub Vec<ListReceivedByLabelItem>);
 
-/// Item returned as part of `listreceivedbylabel`.
+/// List received by label item. Part of of `listreceivedbyaddress`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByLabelItem {
@@ -604,7 +605,7 @@ pub struct ListSinceBlock {
     pub last_block: BlockHash,
 }
 
-/// Transaction item, part of `listsinceblock` and `listtransactions`.
+/// Transaction item. Part of `listsinceblock` and `listtransactions`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TransactionItem {
@@ -696,7 +697,7 @@ pub struct ListTransactions(pub Vec<TransactionItem>);
 #[serde(deny_unknown_fields)]
 pub struct ListUnspent(pub Vec<ListUnspentItem>);
 
-/// Unspent transaction output, returned as part of `listunspent`.
+/// Unspent transaction output. Part of `listunspent`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListUnspentItem {
@@ -847,6 +848,7 @@ pub struct UnloadWallet {
     pub warnings: Vec<String>,
 }
 
+/// Models the result of JSON-RPC method `walletcreatefundedpsbt`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct WalletCreateFundedPsbt {

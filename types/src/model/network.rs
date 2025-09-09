@@ -46,7 +46,7 @@ pub struct GetNetworkInfo {
     pub warnings: Vec<String>,
 }
 
-/// Part of the result of the JSON-RPC method `getnetworkinfo` (information per network).
+/// Information per network. Part of `getnetworkinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetNetworkInfoNetwork {
@@ -62,7 +62,7 @@ pub struct GetNetworkInfoNetwork {
     pub proxy_randomize_credentials: bool,
 }
 
-/// Part of the result of the JSON-RPC method `getnetworkinfo` (local address info).
+/// Local address info. Part of `getnetworkinfo`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetNetworkInfoAddress {

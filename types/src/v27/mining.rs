@@ -23,6 +23,7 @@ pub struct GetPrioritisedTransactions(
     pub BTreeMap<String, PrioritisedTransaction>,
 );
 
+/// An individual prioritised transaction. Part of `getprioritisedtransactions`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PrioritisedTransaction {

@@ -198,7 +198,7 @@ pub struct GetChainStates {
     pub chain_states: Vec<ChainState>,
 }
 
-/// A single chainstate returned as part of `getchainstates`.
+/// A single chainstate. Part of `getchainstates`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ChainState {
@@ -241,7 +241,7 @@ pub struct GetDescriptorActivity {
     pub activity: Vec<ActivityEntry>,
 }
 
-/// Enum representing either a spend or receive activity entry.
+/// Enum representing either a spend or receive activity entry. Part of `getdescriptoractivity`.
 #[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum ActivityEntry {
@@ -251,7 +251,7 @@ pub enum ActivityEntry {
     Receive(ReceiveActivity),
 }
 
-/// Represents a 'spend' activity event.
+/// Represents a 'spend' activity event. Part of `getdescriptoractivity`.
 #[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SpendActivity {
@@ -277,7 +277,7 @@ pub struct SpendActivity {
     pub prevout_spk: ScriptPubkey,
 }
 
-/// Represents a 'receive' activity event.
+/// Represents a 'receive' activity event. Part of `getdescriptoractivity`.
 #[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ReceiveActivity {

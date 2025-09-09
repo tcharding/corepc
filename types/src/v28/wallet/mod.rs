@@ -93,7 +93,7 @@ pub struct GetAddressInfo {
     pub labels: Vec<String>,
 }
 
-/// The `embedded` field of `GetAddressInfo`.
+/// The `embedded` address info field. Part of `getaddressinfo`.
 ///
 /// It includes all getaddressinfo output fields for the embedded address, excluding metadata
 /// ("timestamp", "hdkeypath", "hdseedid") and relation to the wallet ("ismine", "iswatchonly").
@@ -172,7 +172,7 @@ pub struct CreateWalletDescriptor {
 #[serde(deny_unknown_fields)]
 pub struct GetHdKeys(pub Vec<HdKey>);
 
-/// HD key entry returned as part of `gethdkeys`.
+/// HD key entry. Part of `gethdkeys`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct HdKey {
@@ -187,7 +187,7 @@ pub struct HdKey {
     pub descriptors: Vec<HdKeyDescriptor>,
 }
 
-/// Descriptor object returned as part of `gethdkeys`.
+/// Descriptor object. Part of `gethdkeys`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct HdKeyDescriptor {
@@ -296,7 +296,7 @@ pub struct ListSinceBlock {
     pub last_block: String,
 }
 
-/// Transaction item returned as part of `listsinceblock`.
+/// Transaction item. Part of `listsinceblock`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TransactionItem {

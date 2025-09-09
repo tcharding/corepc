@@ -62,7 +62,7 @@ pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
-/// A relative (ancestor or descendant) transaction of a transaction in the mempool.
+/// Mempool data. Part of `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolEntry {

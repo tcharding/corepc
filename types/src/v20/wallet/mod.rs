@@ -115,7 +115,7 @@ pub struct GetAddressInfo {
     pub labels: Vec<String>,
 }
 
-/// The `embedded` field of `GetAddressInfo`.
+/// The `embedded` address info field. Part of `getaddressinfo`.
 ///
 /// It includes all getaddressinfo output fields for the embedded address, excluding metadata
 /// ("timestamp", "hdkeypath", "hdseedid") and relation to the wallet ("ismine", "iswatchonly").
@@ -224,6 +224,7 @@ pub struct GetTransaction {
     pub decoded: Option<Transaction>,
 }
 
+/// Transaction detail. Part of the `gettransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetTransactionDetail {
@@ -278,7 +279,7 @@ pub struct ListSinceBlock {
     pub last_block: String,
 }
 
-/// Transaction item returned as part of `listsinceblock`.
+/// Transaction item. Part of `listsinceblock`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TransactionItem {

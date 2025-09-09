@@ -17,14 +17,7 @@ use serde::{Deserialize, Serialize};
 // TODO: Remove wildcard, use explicit types.
 pub use self::error::*;
 
-// # Notes
-//
-// The following structs are very similar but have slightly different fields and docs.
-// - GetTransaction
-// - TransactionItem
-// - TransactionItem
-
-/// Returned as part of `getaddressesbylabel` and `getaddressinfo`.
+/// The purpose of an address. Part of `getaddressesbylabel`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum AddressPurpose {
@@ -34,7 +27,7 @@ pub enum AddressPurpose {
     Receive,
 }
 
-/// The category of a transaction.
+/// The category of a transaction. Part of `gettransaction`, `listsinceblock` and `listtransactions`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum TransactionCategory {
@@ -50,7 +43,8 @@ pub enum TransactionCategory {
     Orphan,
 }
 
-/// Whether this transaction can be RBF'ed.
+/// Whether this transaction can be RBF'ed. Part of `gettransaction`, `listsinceblock` and
+/// `listtransactions`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Bip125Replaceable {
@@ -215,7 +209,7 @@ pub struct EncryptWallet(pub String);
 #[serde(deny_unknown_fields)]
 pub struct GetAddressesByLabel(pub BTreeMap<String, AddressInformation>);
 
-/// Returned as part of `getaddressesbylabel`.
+/// Address information. Part of `getaddressesbylabel`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AddressInformation {
@@ -293,7 +287,7 @@ pub struct GetAddressInfo {
     pub labels: Vec<GetAddressInfoLabel>,
 }
 
-/// The `script` field of `GetAddressInfo` (and `GetAddressInfoEmbedded`).
+/// The script field. Part of `getaddressinfo` and `getaddressinfoembedded`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub enum ScriptType {
     /// Non-standard output script type.
@@ -325,7 +319,7 @@ pub enum ScriptType {
     WitnessUnknown,
 }
 
-/// The `embedded` field of `GetAddressInfo`.
+/// The `embedded` address info field. Part of `getaddressinfo`.
 ///
 /// It includes all getaddressinfo output fields for the embedded address, excluding metadata
 /// ("timestamp", "hdkeypath", "hdseedid") and relation to the wallet ("ismine", "iswatchonly",
@@ -368,7 +362,7 @@ pub struct GetAddressInfoEmbedded {
     pub labels: Option<Vec<GetAddressInfoLabel>>,
 }
 
-/// The `label` field of `GetAddressInfo` (and `GetAddressInfoEmbedded`).
+/// Address label field. Part of `getaddressinfo` and `getaddressinfoembedded`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetAddressInfoLabel {
@@ -482,6 +476,7 @@ pub struct GetTransaction {
     pub hex: String,
 }
 
+/// Transaction detail. Part of the `gettransaction`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetTransactionDetail {
@@ -580,7 +575,7 @@ pub struct GetWalletInfo {
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ImportMulti(pub Vec<ImportMultiEntry>);
 
-/// Represents a single entry in the importmulti result array.
+/// A single import multi entry. Part of `importmulti`.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ImportMultiEntry {
     /// The success.
@@ -589,7 +584,7 @@ pub struct ImportMultiEntry {
     pub error: Option<JsonRpcError>,
 }
 
-/// Represents the error object in a JSON-RPC error response.
+/// A JSON-RPC error response. Part of `importmulti`.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct JsonRpcError {
     /// The error code.
@@ -611,7 +606,7 @@ pub struct JsonRpcError {
 #[serde(deny_unknown_fields)]
 pub struct ListAddressGroupings(pub Vec<Vec<ListAddressGroupingsItem>>);
 
-/// List item type returned as part of `listaddressgroupings`.
+/// List item type. Part of `listaddressgroupings`.
 ///
 /// Core encodes items as a JSON array with either 2 elements `[address, amount]` when there is no
 /// label or 3 elements `[address, amount, label]` when a label is present. Represent this as an
@@ -644,7 +639,7 @@ pub struct ListLabels(pub Vec<String>);
 #[serde(deny_unknown_fields)]
 pub struct ListLockUnspent(pub Vec<ListLockUnspentItem>);
 
-/// List item returned as part of of `listlockunspent`.
+/// List lock unspent item. Part of of `listlockunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListLockUnspentItem {
@@ -663,7 +658,7 @@ pub struct ListLockUnspentItem {
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddress(pub Vec<ListReceivedByAddressItem>);
 
-/// List item returned as part of of `listreceivedByaddress`.
+/// List received by address item. Part of of `listreceivedbyaddress`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListReceivedByAddressItem {
@@ -710,7 +705,7 @@ pub struct ListSinceBlock {
     pub last_block: String,
 }
 
-/// Transaction item returned as part of `listsinceblock` and `listtransactions`.
+/// Transaction item. Part of `listsinceblock` and `listtransactions`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TransactionItem {
@@ -808,7 +803,7 @@ pub struct ListTransactions(pub Vec<TransactionItem>);
 #[serde(deny_unknown_fields)]
 pub struct ListUnspent(pub Vec<ListUnspentItem>);
 
-/// Unspent transaction output, returned as part of `listunspent`.
+/// Unspent transaction output. Part of `listunspent`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ListUnspentItem {

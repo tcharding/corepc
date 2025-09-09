@@ -17,7 +17,7 @@ pub struct GetRpcInfo {
     active_commands: Vec<ActiveCommand>,
 }
 
-/// Information about an active command - return as part of `getrpcinfo`.
+/// Information about an active command. Part of `getrpcinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ActiveCommand {

@@ -37,7 +37,7 @@ pub struct AnalyzePsbt {
     pub next: String,
 }
 
-/// Represents an input in a PSBT operation.
+/// Represents an input in a PSBT operation. Part of `analyzepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AnalyzePsbtInput {
@@ -51,7 +51,7 @@ pub struct AnalyzePsbtInput {
     pub next: Option<String>,
 }
 
-/// Represents missing elements required to complete an input.
+/// Represents missing elements required to complete an input. Part of `analyzepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct AnalyzePsbtInputMissing {

@@ -111,9 +111,7 @@ pub struct GetBlockTemplate {
     pub default_witness_commitment: Option<String>,
 }
 
-/// Contents of non-coinbase transactions that should be included in the next block.
-///
-/// Returned as part of `getblocktemplate`.
+/// Transaction contents. Part of `getblocktemplate`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct BlockTemplateTransaction {

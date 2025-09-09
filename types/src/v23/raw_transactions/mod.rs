@@ -47,7 +47,7 @@ pub struct DecodePsbt {
     pub fee: Option<u64>,
 }
 
-/// An item from the global xpubs list of `DecodePsbt`.
+/// An item from the global xpubs list. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GlobalXpub {
@@ -59,7 +59,7 @@ pub struct GlobalXpub {
     pub path: String,
 }
 
-/// An item from the global proprietary list of `DecodePsbt`.
+/// An item from the global proprietary list. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Proprietary {
@@ -73,7 +73,7 @@ pub struct Proprietary {
     value: String,
 }
 
-/// An input in a partially signed Bitcoin transaction.
+/// An input in a partially signed Bitcoin transaction. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PsbtInput {
@@ -111,7 +111,7 @@ pub struct PsbtInput {
     pub unknown: Option<HashMap<String, String>>,
 }
 
-/// An output in a partially signed Bitcoin transaction.
+/// An output in a partially signed Bitcoin transaction. Part of `decodepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PsbtOutput {
@@ -163,7 +163,7 @@ pub struct DecodeScript {
     pub p2sh_segwit: Option<String>,
 }
 
-/// `segwit` item returned as part of `decodescript`.
+/// Segwit data. Part of `decodescript`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct DecodeScriptSegwit {

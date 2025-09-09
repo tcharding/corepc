@@ -135,7 +135,7 @@ pub struct GetBlockchainInfo {
     pub warnings: Vec<String>,
 }
 
-/// Status of softfork.
+/// Softfork status. Part of `getblockchaininfo`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Softfork {
@@ -150,7 +150,7 @@ pub struct Softfork {
     pub active: bool,
 }
 
-/// The softfork type: one of "buried", "bip9".
+/// The softfork type. Part of `getblockchaininfo`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum SoftforkType {
@@ -164,7 +164,7 @@ pub enum SoftforkType {
     Bip9,
 }
 
-/// Status of BIP-9 softforks.
+/// BIP-9 softfork info. Part of `getblockchaininfo`.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkInfo {
@@ -184,7 +184,7 @@ pub struct Bip9SoftforkInfo {
     pub statistics: Option<Bip9SoftforkStatistics>,
 }
 
-/// BIP-9 softfork status: one of "defined", "started", "locked_in", "active", "failed".
+/// BIP-9 softfork status. Part of `getblockchaininfo`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 pub enum Bip9SoftforkStatus {
     /// BIP-9 softfork status "defined".
@@ -199,7 +199,7 @@ pub enum Bip9SoftforkStatus {
     Failed,
 }
 
-/// Statistics for a BIP-9 softfork.
+/// BIP-9 softfork statistics. Part of `getblockchaininfo`.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9SoftforkStatistics {
@@ -356,7 +356,7 @@ pub struct GetChainStates {
     pub chain_states: Vec<ChainState>,
 }
 
-/// A single chainstate returned as part of `getchainstates`.
+/// A single chainstate. Part of `getchainstates`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ChainState {
@@ -401,7 +401,7 @@ pub struct ChainTips {
     pub status: ChainTipsStatus,
 }
 
-/// The `status` field from an individual list item from the result of JSON-RPC method `getchaintips`.
+/// Chain tips status. Part of `getchaintips`.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum ChainTipsStatus {
@@ -451,7 +451,7 @@ pub struct GetDeploymentInfo {
     pub deployments: std::collections::BTreeMap<String, DeploymentInfo>,
 }
 
-/// Deployment info. Returned as part of `getdeploymentinfo`.
+/// Deployment info. Part of `getdeploymentinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct DeploymentInfo {
@@ -465,7 +465,7 @@ pub struct DeploymentInfo {
     pub bip9: Option<Bip9Info>,
 }
 
-/// Status of bip9 softforks. Returned as part of `getdeploymentinfo`.
+/// Status of bip9 softforks. Part of `getdeploymentinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9Info {
@@ -489,7 +489,7 @@ pub struct Bip9Info {
     pub signalling: Option<String>,
 }
 
-/// Numeric statistics about signalling for a softfork. Returned as part of `getdeploymentinfo`.
+/// Numeric statistics about signalling for a softfork. Part of `getdeploymentinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9Statistics {
@@ -535,7 +535,7 @@ pub struct GetMempoolDescendantsVerbose(pub BTreeMap<Txid, MempoolEntry>);
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
-/// A relative (ancestor or descendant) transaction of a transaction in the mempool.
+/// Mempool data. Part of `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolEntry {
@@ -565,7 +565,7 @@ pub struct MempoolEntry {
     pub ancestor_size: u32,
     /// Hash of serialized transaction, including witness data.
     pub wtxid: Wtxid,
-    /// (No docs in Core v0.17.)
+    /// (No docs in Core v0.17). Part of `getmempoolentry`.
     pub fees: MempoolEntryFees,
     /// Unconfirmed transactions used as inputs for this transaction (parent transaction id).
     pub depends: Vec<Txid>,
@@ -578,7 +578,7 @@ pub struct MempoolEntry {
     pub unbroadcast: Option<bool>,
 }
 
-/// (No docs in Core v0.17.)
+/// Fee object. Part of `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolEntryFees {
@@ -686,7 +686,7 @@ pub struct GetTxOutSetInfo {
 #[serde(deny_unknown_fields)]
 pub struct GetTxSpendingPrevout(pub Vec<GetTxSpendingPrevoutItem>);
 
-/// An individual result item from `gettxspendingprevout`.
+/// A transaction item. Part of `gettxspendingprevout`.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetTxSpendingPrevoutItem {
@@ -709,7 +709,7 @@ pub struct GetDescriptorActivity {
     pub activity: Vec<ActivityEntry>,
 }
 
-/// Enum representing either a spend or receive activity entry using model types.
+/// A spend or receive activity entry. Part of `getdescriptoractivity`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub enum ActivityEntry {
     /// The spend activity using `model::SpendActivity`.
@@ -718,7 +718,7 @@ pub enum ActivityEntry {
     Receive(ReceiveActivity),
 }
 
-/// Models a 'spend' activity event with strongly typed fields.
+/// Models a 'spend' activity event. Part of `getdescriptoractivity`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SpendActivity {
@@ -740,7 +740,7 @@ pub struct SpendActivity {
     pub prevout_spk: ScriptPubkey,
 }
 
-/// Models a 'receive' activity event with strongly typed fields.
+/// Models a 'receive' activity event. Part of `getdescriptoractivity`
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct ReceiveActivity {
@@ -772,7 +772,7 @@ pub struct LoadTxOutSet {
     pub path: String,
 }
 
-/// Models the result of the JSON-RPC method `scanblocks` start.
+/// Models the result of the JSON-RPC method `scanblocks` whan `action = start`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct ScanBlocksStart {
     /// The height we started the scan from

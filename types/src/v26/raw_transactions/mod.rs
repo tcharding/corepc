@@ -76,7 +76,7 @@ pub struct SubmitPackage {
     pub replaced_transactions: Vec<String>,
 }
 
-/// Models the per-transaction result included in the JSON-RPC method `submitpackage`.
+/// The per-transaction result. Part of `submitpackage`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SubmitPackageTxResult {
@@ -95,7 +95,7 @@ pub struct SubmitPackageTxResult {
     pub error: Option<String>,
 }
 
-/// Models the fees included in the per-transaction result of the JSON-RPC method `submitpackage`.
+/// The fees included in the per-transaction result. Part of `submitpackage`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SubmitPackageTxResultFees {

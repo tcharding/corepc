@@ -19,7 +19,7 @@ use serde::{Deserialize, Serialize};
 #[serde(deny_unknown_fields)]
 pub struct GetNodeAddresses(pub Vec<NodeAddress>);
 
-/// An item from the list returned by the JSON-RPC method `getnodeaddresses`.
+/// An node address item. Part of `getnodeaddresses`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct NodeAddress {
@@ -44,7 +44,7 @@ pub struct NodeAddress {
 #[serde(deny_unknown_fields)]
 pub struct ListBanned(pub Vec<Banned>);
 
-/// An item from the list returned by the JSON-RPC method `listbanned`.
+/// An banned item. Part of `listbanned`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Banned {
@@ -69,7 +69,7 @@ pub struct Banned {
 #[serde(deny_unknown_fields)]
 pub struct GetPeerInfo(pub Vec<PeerInfo>);
 
-/// An item from the list returned by the JSON-RPC method `getpeerinfo`.
+/// A peer info item. Part of `getpeerinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PeerInfo {

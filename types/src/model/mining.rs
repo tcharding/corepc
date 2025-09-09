@@ -70,9 +70,7 @@ pub struct GetBlockTemplate {
     pub default_witness_commitment: Option<String>,
 }
 
-/// Contents of non-coinbase transactions that should be included in the next block.
-///
-/// Returned as part of `getblocktemplate`.
+/// Non-coinbase transaction contents. Part of `getblocktemplate`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct BlockTemplateTransaction {
@@ -132,7 +130,7 @@ pub struct GetMiningInfo {
     pub warnings: Vec<String>,
 }
 
-/// Represents the `next` block information within the GetMiningInfo result.
+/// Represents the `next` block information. Part of `getmininginfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct NextBlockInfo {
@@ -151,6 +149,7 @@ pub struct NextBlockInfo {
 #[serde(deny_unknown_fields)]
 pub struct GetPrioritisedTransactions(pub BTreeMap<Txid, PrioritisedTransaction>);
 
+/// An individual prioritised transaction. Part of `getprioritisedtransactions`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct PrioritisedTransaction {

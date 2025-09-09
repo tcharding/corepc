@@ -83,7 +83,7 @@ pub struct GetDeploymentInfo {
     pub deployments: std::collections::BTreeMap<String, DeploymentInfo>,
 }
 
-/// Deployment info. Returned as part of `getdeploymentinfo`.
+/// Deployment info. Part of `getdeploymentinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct DeploymentInfo {
@@ -98,7 +98,7 @@ pub struct DeploymentInfo {
     pub bip9: Option<Bip9Info>,
 }
 
-/// Status of bip9 softforks. Returned as part of `getdeploymentinfo`.
+/// Status of bip9 softforks. Part of `getdeploymentinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9Info {
@@ -122,7 +122,7 @@ pub struct Bip9Info {
     pub signalling: Option<String>,
 }
 
-/// Numeric statistics about signalling for a softfork. Returned as part of `getdeploymentinfo`.
+/// Numeric statistics about signalling for a softfork. Part of `getdeploymentinfo`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Bip9Statistics {
@@ -188,7 +188,7 @@ pub struct GetMempoolDescendantsVerbose(pub BTreeMap<String, MempoolEntry>);
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolEntry(pub MempoolEntry);
 
-/// A relative (ancestor or descendant) transaction of a transaction in the mempool.
+/// Mempool data. Part of `getmempoolentry`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MempoolEntry {

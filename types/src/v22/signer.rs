@@ -16,7 +16,7 @@ pub struct EnumerateSigners {
     pub signers: Vec<Signers>,
 }
 
-/// An item from the list returned by the JSON-RPC method `enumeratesigners`
+/// An signer item. Part of `enumeratesigners`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Signers {

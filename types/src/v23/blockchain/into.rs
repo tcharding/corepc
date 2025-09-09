@@ -69,7 +69,7 @@ impl GetDeploymentInfo {
 }
 
 impl DeploymentInfo {
-    /// Returned as part of `getdeploymentinfo`.
+    /// Part of `getdeploymentinfo`.
     pub fn into_model(self) -> Result<model::DeploymentInfo, crate::NumericError> {
         Ok(model::DeploymentInfo {
             deployment_type: self.deployment_type,
@@ -81,7 +81,7 @@ impl DeploymentInfo {
 }
 
 impl Bip9Info {
-    /// Returned as part of `getdeploymentinfo`.
+    /// Part of `getdeploymentinfo`.
     pub fn into_model(self) -> Result<model::Bip9Info, crate::NumericError> {
         Ok(model::Bip9Info {
             bit: self.bit,
@@ -98,7 +98,7 @@ impl Bip9Info {
 }
 
 impl Bip9Statistics {
-    /// Returned as part of `getdeploymentinfo`.
+    /// Part of `getdeploymentinfo`.
     pub fn into_model(self) -> Result<model::Bip9Statistics, crate::NumericError> {
         Ok(model::Bip9Statistics {
             period: self.period,
