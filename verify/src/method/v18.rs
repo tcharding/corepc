@@ -87,9 +87,9 @@ pub const METHODS: &[Method] = &[
     // util
     Method::new_modelled("createmultisig", "CreateMultisig", "create_multisig"),
     Method::new_modelled("deriveaddresses", "DeriveAddresses", "derive_addresses"),
-    Method::new_nothing("estimatesmartfee", "estimate_smart_fee"),
+    Method::new_modelled("estimatesmartfee", "EstimateSmartFee", "estimate_smart_fee"),
     Method::new_no_model("getdescriptorinfo", "GetDescriptorInfo", "get_descriptor_info"),
-    Method::new_string("signmessagewithprivkey", "sign_message_with_priv_key"),
+    Method::new_modelled("signmessagewithprivkey", "SignMessageWithPrivKey", "sign_message_with_priv_key"),
     Method::new_modelled("validateaddress", "ValidateAddress", "validate_address"),
     Method::new_bool("verifymessage", "verify_message"),
     // wallet

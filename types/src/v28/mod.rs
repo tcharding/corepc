@@ -31,7 +31,7 @@
 //! | getblock                           | version + model | Includes additional 'verbose' type     |
 //! | getblockchaininfo                  | version + model |                                        |
 //! | getblockcount                      | version + model |                                        |
-//! | getblockfilter                     | version         |                                        |
+//! | getblockfilter                     | version + model |                                        |
 //! | getblockfrompeer                   | returns nothing |                                        |
 //! | getblockhash                       | version + model |                                        |
 //! | getblockheader                     | version + model | Includes additional 'verbose' type     |
@@ -68,7 +68,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getmemoryinfo                      | version         |                                        |
-//! | getrpcinfo                         | version + model |                                        |
+//! | getrpcinfo                         | version         |                                        |
 //! | help                               | returns string  |                                        |
 //! | logging                            | version         |                                        |
 //! | stop                               | returns string  |                                        |
@@ -178,7 +178,7 @@
 //! | createwallet                       | version + model |                                        |
 //! | createwalletdescriptor             | version         |                                        |
 //! | dumpprivkey                        | version + model |                                        |
-//! | dumpwallet                         | version + model |                                        |
+//! | dumpwallet                         | version         |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
 //! | getaddressinfo                     | version + model |                                        |
