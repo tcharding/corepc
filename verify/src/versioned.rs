@@ -96,6 +96,47 @@ pub fn type_exists(version: Version, method_name: &str) -> Result<bool> {
     Ok(false)
 }
 
+/// The value from the `Returns` column in the versioned rustdoc table.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ReturnsDoc {
+    /// The table says the method is implemented for this version and no model is required.
+    Version,
+    /// The table says the method is implemented for this version and a model is required.
+    VersionPlusModel,
+    /// Any other entry (omitted, TODO, returns nothing/numeric/bool/string, etc.).
+    Other(String),
+}
+
+/// Parses the version-specific module rustdocs and returns a mapping to `ReturnsDoc`.
+pub fn returns_map(version: Version) -> Result<std::collections::BTreeMap<String, ReturnsDoc>> {
+    use std::collections::BTreeMap;
+
+    let path = path(version);
+    let file = File::open(&path)
+        .with_context(|| format!("Failed to grep rustdocs in {}", path.display()))?;
+    let reader = io::BufReader::new(file);
+
+    let re = Regex::new(r"//! \| ([a-z]+) .* \| ([a-z +]+?) \|.*\|").unwrap();
+
+    let mut map: BTreeMap<String, ReturnsDoc> = BTreeMap::new();
+    for line in reader.lines() {
+        let line = line?;
+        if let Some(caps) = re.captures(&line) {
+            let method_name = caps.get(1).unwrap().as_str();
+            let returns_column = caps.get(2).unwrap().as_str().trim();
+
+            let entry = match returns_column {
+                "version" => ReturnsDoc::Version,
+                "version + model" => ReturnsDoc::VersionPlusModel,
+                other => ReturnsDoc::Other(other.to_string()),
+            };
+            map.insert(method_name.to_string(), entry);
+        }
+    }
+
+    Ok(map)
+}
+
 /// A list item from rustdocs (e.g. in in `types/src/v17/mod.rs`).
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 // TODO: This name is overloaded (`method::Method`).

@@ -92,6 +92,13 @@ fn verify_version(version: Version, test_output: Option<&String>, quiet: bool) -
         Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
     }
 
+    let msg = "Checking that 'Returns' column matches model requirements";
+    check(msg, quiet);
+    match verify_returns_method(version) {
+        Ok(()) => close(true, quiet),
+        Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
+    }
+
     if failures > 0 {
         return Err(anyhow::anyhow!("verification failed ({} check(s) failed)", failures));
     }
@@ -202,6 +209,45 @@ fn output_method(method: &Method) -> String {
     } else {
         method.name.to_string()
     }
+}
+
+/// Verifies that the 'Returns' table entry ("version" vs "version + model") matches the
+/// method definition in verfiy.
+fn verify_returns_method(version: Version) -> Result<()> {
+    use verify::versioned::{returns_map, ReturnsDoc};
+
+    let map = returns_map(version)?;
+    let mut failures = 0;
+
+    for (name, entry) in map.into_iter() {
+        let Some(method) = Method::from_name(version, &name) else { continue };
+
+        match entry {
+            ReturnsDoc::Version => {
+                if method.requires_model {
+                    eprintln!(
+                        "'Returns' says 'version' but method is marked as requiring a model: {}",
+                        output_method(method)
+                    );
+                    failures += 1;
+                }
+            }
+            ReturnsDoc::VersionPlusModel => {
+                if !method.requires_model {
+                    eprintln!(
+                        "'Returns' says 'version + model' but method is marked as not requiring a model: {}",
+                        output_method(method)
+                    );
+                    failures += 1;
+                }
+            }
+            ReturnsDoc::Other(_) => {}
+        }
+    }
+
+    if failures > 0 { return Err(anyhow::anyhow!("returns/model verification failed ({} issue(s))", failures)); }
+
+    Ok(())
 }
 
 // Use a module because a file with this name is confusing.
