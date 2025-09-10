@@ -5,7 +5,7 @@
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
 
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::vtype::*;             // All the version specific types.
+use node::vtype::*; // All the version specific types.
 
 #[test]
 fn control__get_memory_info() {

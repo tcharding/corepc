@@ -5,10 +5,10 @@
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
 #![allow(unused_imports)] // Because of feature gated tests.
 
-use bitcoin::{address, amount, sign_message, PublicKey, PrivateKey};
+use bitcoin::{address, amount, sign_message, PrivateKey, PublicKey};
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::vtype::*;
 use node::mtype;
+use node::vtype::*;
 
 #[test]
 fn util__create_multisig__modelled() {
@@ -23,10 +23,8 @@ fn util__create_multisig__modelled() {
         .unwrap();
 
     let node = Node::with_wallet(Wallet::Default, &[]);
-    let json: CreateMultisig = node
-        .client
-        .create_multisig(nrequired, vec![pubkey1, pubkey2])
-        .expect("createmultisig");
+    let json: CreateMultisig =
+        node.client.create_multisig(nrequired, vec![pubkey1, pubkey2]).expect("createmultisig");
     let model: Result<mtype::CreateMultisig, CreateMultisigError> = json.into_model();
     model.unwrap();
 }
@@ -37,7 +35,8 @@ fn util__derive_addresses__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
     // Use a valid, deterministic public key from the pubkey_sort test vectors and the checksum for it.
-    let descriptor = "pkh(02ff12471208c14bd580709cb2358d98975247d8765f92bc25eab3b2763ed605f8)#sf4k0g3u";
+    let descriptor =
+        "pkh(02ff12471208c14bd580709cb2358d98975247d8765f92bc25eab3b2763ed605f8)#sf4k0g3u";
 
     let json: DeriveAddresses = node.client.derive_addresses(descriptor).expect("deriveaddresses");
     let model: Result<mtype::DeriveAddresses, address::ParseError> = json.into_model();
@@ -50,7 +49,9 @@ fn util__derive_addresses__modelled() {
         let multipath_descriptor = "wpkh([26b4ed16/84h/1h/0h]tpubDDe7JUw2CGU1rYZxupmNrhDXuE1fv25gs4je3BBuWCFwTW9QHGgyh5cjAEugd14ysJXTVshPvnUVABfD66HZKCS9gp5AYFd5K2WN2oVFp8t/<0;1>/*)#grvmsm8m";
 
         let range = (0, 3);
-        let json: DeriveAddressesMultipath = node.client.derive_addresses_multipath(multipath_descriptor, range)
+        let json: DeriveAddressesMultipath = node
+            .client
+            .derive_addresses_multipath(multipath_descriptor, range)
             .expect("deriveaddresses");
         let model: Result<mtype::DeriveAddressesMultipath, address::ParseError> = json.into_model();
         let derived = model.unwrap();
@@ -79,7 +80,8 @@ fn util__get_descriptor_info() {
 
     // Use a valid, deterministic public key from the pubkey_sort test vectors
     let descriptor = "pkh(02ff12471208c14bd580709cb2358d98975247d8765f92bc25eab3b2763ed605f8)";
-    let _: GetDescriptorInfo = node.client.get_descriptor_info(descriptor).expect("getdescriptorinfo");
+    let _: GetDescriptorInfo =
+        node.client.get_descriptor_info(descriptor).expect("getdescriptorinfo");
 }
 
 #[test]
@@ -89,7 +91,10 @@ fn util__get_index_info() {
     let index_info: GetIndexInfo = node.client.get_index_info().expect("getindexinfo");
 
     let txindex_info = index_info.0.get("txindex").unwrap();
-    assert!(txindex_info.best_block_height < u32::MAX, "best_block_height should be a valid block height");
+    assert!(
+        txindex_info.best_block_height < u32::MAX,
+        "best_block_height should be a valid block height"
+    );
 }
 
 #[test]
@@ -107,19 +112,15 @@ fn util__sign_message_with_priv_key__modelled() {
     let addr = bitcoin::Address::p2pkh(pubkey, privkey.network);
 
     // Sign the message with the private key
-    let json: SignMessageWithPrivKey = node
-        .client
-        .sign_message_with_privkey(&privkey, message)
-        .expect("signmessagewithprivkey");
+    let json: SignMessageWithPrivKey =
+        node.client.sign_message_with_privkey(&privkey, message).expect("signmessagewithprivkey");
     let model: Result<mtype::SignMessageWithPrivKey, sign_message::MessageSignatureError> =
         json.into_model();
     let sig = model.unwrap();
 
     // Verify the message using the returned signature
-    let verified: VerifyMessage = node
-        .client
-        .verify_message(&addr, &sig.0, message)
-        .expect("verifymessage");
+    let verified: VerifyMessage =
+        node.client.verify_message(&addr, &sig.0, message).expect("verifymessage");
     assert!(verified.0, "Signature should verify for the correct address and message");
 }
 
