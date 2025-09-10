@@ -505,6 +505,63 @@ pub struct Bip9Statistics {
     pub possible: Option<bool>,
 }
 
+/// Models the result of the JSON-RPC method `getdescriptoractivity`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct GetDescriptorActivity {
+    /// A list of activity events related to the descriptors.
+    pub activity: Vec<ActivityEntry>,
+}
+
+/// A spend or receive activity entry. Part of `getdescriptoractivity`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub enum ActivityEntry {
+    /// The spend activity using `model::SpendActivity`.
+    Spend(SpendActivity),
+    /// The receive activity using `model::ReceiveActivity`.
+    Receive(ReceiveActivity),
+}
+
+/// Models a 'spend' activity event. Part of `getdescriptoractivity`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpendActivity {
+    /// The total amount of the spent output.
+    pub amount: Amount,
+    /// The blockhash (omitted if unconfirmed).
+    pub block_hash: Option<BlockHash>,
+    /// Height of the spend (omitted if unconfirmed).
+    pub height: Option<u32>,
+    /// The txid of the spending transaction.
+    pub spend_txid: Txid,
+    /// The vout of the spend.
+    pub spend_vout: u32,
+    /// The txid of the prevout.
+    pub prevout_txid: Txid,
+    /// The vout of the prevout.
+    pub prevout_vout: u32,
+    /// The prev scriptPubKey.
+    pub prevout_spk: ScriptPubkey,
+}
+
+/// Models a 'receive' activity event. Part of `getdescriptoractivity`
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ReceiveActivity {
+    /// The total amount in BTC of the new output.
+    pub amount: Amount,
+    /// The block that this receive is in (omitted if unconfirmed).
+    pub block_hash: Option<BlockHash>,
+    /// The height of the receive (omitted if unconfirmed).
+    pub height: Option<u32>,
+    /// The txid of the receiving transaction.
+    pub txid: Txid,
+    /// The vout of the receiving output.
+    pub vout: u32,
+    /// The ScriptPubKey.
+    pub output_spk: ScriptPubkey,
+}
+
 /// Models the result of JSON-RPC method `getdifficulty`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -520,7 +577,7 @@ pub struct GetMempoolAncestors(pub Vec<Txid>);
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolAncestorsVerbose(pub BTreeMap<Txid, MempoolEntry>);
 
-/// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to false.
+/// Models the result of JSON-RPC method `getmempooldescendants` with verbose set to false.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct GetMempoolDescendants(pub Vec<Txid>);
@@ -696,68 +753,6 @@ pub struct GetTxSpendingPrevoutItem {
     pub spending_txid: Option<Txid>,
 }
 
-/// Models the result of JSON-RPC method `verifytxoutproof`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct VerifyTxOutProof(pub Vec<Txid>);
-
-/// Models the result of the JSON-RPC method `getdescriptoractivity`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct GetDescriptorActivity {
-    /// A list of activity events related to the descriptors.
-    pub activity: Vec<ActivityEntry>,
-}
-
-/// A spend or receive activity entry. Part of `getdescriptoractivity`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-pub enum ActivityEntry {
-    /// The spend activity using `model::SpendActivity`.
-    Spend(SpendActivity),
-    /// The receive activity using `model::ReceiveActivity`.
-    Receive(ReceiveActivity),
-}
-
-/// Models a 'spend' activity event. Part of `getdescriptoractivity`.
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct SpendActivity {
-    /// The total amount of the spent output.
-    pub amount: Amount,
-    /// The blockhash (omitted if unconfirmed).
-    pub block_hash: Option<BlockHash>,
-    /// Height of the spend (omitted if unconfirmed).
-    pub height: Option<u32>,
-    /// The txid of the spending transaction.
-    pub spend_txid: Txid,
-    /// The vout of the spend.
-    pub spend_vout: u32,
-    /// The txid of the prevout.
-    pub prevout_txid: Txid,
-    /// The vout of the prevout.
-    pub prevout_vout: u32,
-    /// The prev scriptPubKey.
-    pub prevout_spk: ScriptPubkey,
-}
-
-/// Models a 'receive' activity event. Part of `getdescriptoractivity`
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct ReceiveActivity {
-    /// The total amount in BTC of the new output.
-    pub amount: Amount,
-    /// The block that this receive is in (omitted if unconfirmed).
-    pub block_hash: Option<BlockHash>,
-    /// The height of the receive (omitted if unconfirmed).
-    pub height: Option<u32>,
-    /// The txid of the receiving transaction.
-    pub txid: Txid,
-    /// The vout of the receiving output.
-    pub vout: u32,
-    /// The ScriptPubKey.
-    pub output_spk: ScriptPubkey,
-}
-
 /// Models the result of JSON-RPC method `loadtxoutset`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -782,3 +777,8 @@ pub struct ScanBlocksStart {
     /// Blocks that may have matched a scanobject
     pub relevant_blocks: Vec<BlockHash>,
 }
+
+/// Models the result of JSON-RPC method `verifytxoutproof`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct VerifyTxOutProof(pub Vec<Txid>);

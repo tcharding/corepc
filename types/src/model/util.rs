@@ -23,18 +23,6 @@ pub struct CreateMultisig {
     pub warnings: Option<Vec<String>>,
 }
 
-/// Models the result of JSON-RPC method `estimatesmartfee`.
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct EstimateSmartFee {
-    /// Estimate fee rate in BTC/kB.
-    pub fee_rate: Option<FeeRate>,
-    /// Errors encountered during processing.
-    pub errors: Option<Vec<String>>,
-    /// Block number where estimate was found.
-    pub blocks: u32,
-}
-
 /// Models the result of JSON-RPC method `deriveaddresses`.
 ///
 /// > deriveaddresses "descriptor" ( range )
@@ -54,6 +42,18 @@ pub struct DeriveAddresses {
 pub struct DeriveAddressesMultipath {
     /// The derived addresses for each of the multipath expansions of the descriptor, in multipath specifier order.
     pub addresses: Vec<DeriveAddresses>,
+}
+
+/// Models the result of JSON-RPC method `estimatesmartfee`.
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct EstimateSmartFee {
+    /// Estimate fee rate in BTC/kB.
+    pub fee_rate: Option<FeeRate>,
+    /// Errors encountered during processing.
+    pub errors: Option<Vec<String>>,
+    /// Block number where estimate was found.
+    pub blocks: u32,
 }
 
 /// Models the result of JSON-RPC method `signmessagewithprivkey`.
