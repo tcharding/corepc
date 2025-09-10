@@ -59,7 +59,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getmemoryinfo                      | version         |                                        |
-//! | getrpcinfo                         | version + model |                                        |
+//! | getrpcinfo                         | version         |                                        |
 //! | help                               | returns string  |                                        |
 //! | logging                            | version         |                                        |
 //! | stop                               | returns string  |                                        |
@@ -164,7 +164,7 @@
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
 //! | dumpprivkey                        | version + model |                                        |
-//! | dumpwallet                         | version + model |                                        |
+//! | dumpwallet                         | version         |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
 //! | getaddressinfo                     | version + model |                                        |

@@ -157,7 +157,7 @@
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
 //! | dumpprivkey                        | version + model |                                        |
-//! | dumpwallet                         | version + model |                                        |
+//! | dumpwallet                         | version         |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaccount                         | returns nothing |                                        |
 //! | getaccountaddress                  | returns nothing |                                        |
