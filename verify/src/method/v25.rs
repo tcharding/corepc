@@ -71,7 +71,11 @@ pub const METHODS: &[Method] = &[
     // raw transactions
     Method::new_modelled("analyzepsbt", "AnalyzePsbt", "analyze_psbt"),
     Method::new_modelled("combinepsbt", "CombinePsbt", "combine_psbt"),
-    Method::new_modelled("combinerawtransaction", "CombineRawTransaction", "combine_raw_transaction"),
+    Method::new_modelled(
+        "combinerawtransaction",
+        "CombineRawTransaction",
+        "combine_raw_transaction",
+    ),
     Method::new_modelled("converttopsbt", "ConvertToPsbt", "convert_to_psbt"),
     Method::new_modelled("createpsbt", "CreatePsbt", "create_psbt"),
     Method::new_modelled("createrawtransaction", "CreateRawTransaction", "create_raw_transaction"),
@@ -83,7 +87,11 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("getrawtransaction", "GetRawTransaction", "get_raw_transaction"),
     Method::new_modelled("joinpsbts", "JoinPsbts", "join_psbts"),
     Method::new_modelled("sendrawtransaction", "SendRawTransaction", "send_raw_transaction"),
-    Method::new_modelled("signrawtransactionwithkey", "SignRawTransaction", "sign_raw_transaction_with_key"),
+    Method::new_modelled(
+        "signrawtransactionwithkey",
+        "SignRawTransaction",
+        "sign_raw_transaction_with_key",
+    ),
     Method::new_modelled("testmempoolaccept", "TestMempoolAccept", "test_mempool_accept"),
     Method::new_modelled("utxoupdatepsbt", "UtxoUpdatePsbt", "utxo_update_psbt"),
     Method::new_modelled("createmultisig", "CreateMultisig", "create_multisig"),
@@ -91,7 +99,11 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("estimatesmartfee", "EstimateSmartFee", "estimate_smart_fee"),
     Method::new_no_model("getdescriptorinfo", "GetDescriptorInfo", "get_descriptor_info"),
     Method::new_no_model("getindexinfo", "GetIndexInfo", "get_index_info"),
-    Method::new_modelled("signmessagewithprivkey", "SignMessageWithPrivKey", "sign_message_with_priv_key"),
+    Method::new_modelled(
+        "signmessagewithprivkey",
+        "SignMessageWithPrivKey",
+        "sign_message_with_priv_key",
+    ),
     Method::new_modelled("validateaddress", "ValidateAddress", "validate_address"),
     Method::new_bool("verifymessage", "verify_message"),
     Method::new_nothing("abandontransaction", "abandon_transaction"),
@@ -166,7 +178,11 @@ pub const METHODS: &[Method] = &[
         "SignRawTransaction",
         "sign_raw_transaction_with_wallet",
     ),
-    Method::new_modelled("simulaterawtransaction", "SimulateRawTransaction", "simulate_raw_transaction"),
+    Method::new_modelled(
+        "simulaterawtransaction",
+        "SimulateRawTransaction",
+        "simulate_raw_transaction",
+    ),
     Method::new_nothing("unloadwallet", "unload_wallet"),
     Method::new_no_model("upgradewallet", "UpgradeWallet", "upgrade_wallet"),
     Method::new_modelled(

@@ -21,18 +21,28 @@ use verify::{method, model, ssot, Version};
 // TODO: Add a --quiet option.
 
 const VERSIONS: [Version; 13] = [
-    Version::V17, Version::V18, Version::V19, Version::V20, Version::V21, Version::V22,
-    Version::V23, Version::V24, Version::V25, Version::V26, Version::V27, Version::V28,
+    Version::V17,
+    Version::V18,
+    Version::V19,
+    Version::V20,
+    Version::V21,
+    Version::V22,
+    Version::V23,
+    Version::V24,
+    Version::V25,
+    Version::V26,
+    Version::V27,
+    Version::V28,
     Version::V29,
 ];
 
 fn main() -> Result<()> {
-    let cmd = Command::new("verify")
-        .args([
-            arg!([version] "Verify specific version of Core (use \"all\" for all versions)").required(true),
-            arg!(-t --tests <TEST_OUTPUT> "Optionally check claimed status of tests").required(false),
-            arg!(-q --quiet ... "Run tests in quiet mode").required(false),
-        ]);
+    let cmd = Command::new("verify").args([
+        arg!([version] "Verify specific version of Core (use \"all\" for all versions)")
+            .required(true),
+        arg!(-t --tests <TEST_OUTPUT> "Optionally check claimed status of tests").required(false),
+        arg!(-q --quiet ... "Run tests in quiet mode").required(false),
+    ]);
 
     let matches = cmd.clone().get_matches();
     let version = matches.get_one::<String>("version").unwrap();
@@ -61,7 +71,7 @@ fn verify_all_versions(test_output: Option<&String>, quiet: bool) -> Result<()> 
         }
     }
     if any_failed {
-        return Err(anyhow::anyhow!("verification failed for one or more versions"))
+        return Err(anyhow::anyhow!("verification failed for one or more versions"));
     }
     Ok(())
 }
@@ -74,7 +84,13 @@ fn verify_version(version: Version, test_output: Option<&String>, quiet: bool) -
     check(&msg, quiet);
     match verify_correct_methods(version, method::all_methods(version), &s) {
         Ok(()) => close(true, quiet),
-        Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
+        Err(e) => {
+            if !quiet {
+                eprintln!("{}", e);
+            }
+            close(false, quiet);
+            failures += 1;
+        }
     }
 
     let s = "rustdoc version specific rustdocs";
@@ -82,21 +98,39 @@ fn verify_version(version: Version, test_output: Option<&String>, quiet: bool) -
     check(&msg, quiet);
     match verify_correct_methods(version, versioned::all_methods(version)?, s) {
         Ok(()) => close(true, quiet),
-        Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
+        Err(e) => {
+            if !quiet {
+                eprintln!("{}", e);
+            }
+            close(false, quiet);
+            failures += 1;
+        }
     }
 
     let msg = "Checking that the status claimed in the version specific rustdocs is correct";
     check(msg, quiet);
     match verify_status(version, test_output) {
         Ok(()) => close(true, quiet),
-        Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
+        Err(e) => {
+            if !quiet {
+                eprintln!("{}", e);
+            }
+            close(false, quiet);
+            failures += 1;
+        }
     }
 
     let msg = "Checking that 'Returns' column matches model requirements";
     check(msg, quiet);
     match verify_returns_method(version) {
         Ok(()) => close(true, quiet),
-        Err(e) => { if !quiet { eprintln!("{}", e); } close(false, quiet); failures += 1; }
+        Err(e) => {
+            if !quiet {
+                eprintln!("{}", e);
+            }
+            close(false, quiet);
+            failures += 1;
+        }
     }
 
     if failures > 0 {
@@ -112,11 +146,13 @@ fn check(msg: &str, quiet: bool) {
 }
 
 fn close(correct: bool, quiet: bool) {
-    if quiet { return; }
+    if quiet {
+        return;
+    }
     if correct {
         println!("Correct \u{2713} \n");
     } else {
-    println!("\u{001b}[31mIncorrect \u{2717}\u{001b}[0m \n");
+        println!("\u{001b}[31mIncorrect \u{2717}\u{001b}[0m \n");
     }
 }
 
@@ -143,7 +179,9 @@ fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
                 }
 
                 if let Some(test_output) = test_output {
-                    if check_integration_test_crate::test_exists(version, &method.name, test_output).is_err() {
+                    if check_integration_test_crate::test_exists(version, &method.name, test_output)
+                        .is_err()
+                    {
                         eprintln!("missing integration test: {}", method.name);
                         failures += 1;
                     }
@@ -156,23 +194,35 @@ fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
 
                 // Make sure we didn't forget to mark as tested after implementing integration test.
                 if let Some(test_output) = test_output {
-                    if check_integration_test_crate::test_exists(version, &method.name, test_output).is_ok() {
+                    if check_integration_test_crate::test_exists(version, &method.name, test_output)
+                        .is_ok()
+                    {
                         eprintln!("found integration test for untested method: {}", method.name);
                         failures += 1;
                     }
                 }
             }
             Status::Omitted | Status::Todo => {
-                let out =
-                    Method::from_name(version, &method.name).expect("guaranteed by methods_and_status()");
+                let out = Method::from_name(version, &method.name)
+                    .expect("guaranteed by methods_and_status()");
 
-                if versioned::type_exists(version, &method.name)? && !versioned::requires_type(version, &method.name)? {
-                    eprintln!("return type found but method is omitted or TODO: {}", output_method(out));
+                if versioned::type_exists(version, &method.name)?
+                    && !versioned::requires_type(version, &method.name)?
+                {
+                    eprintln!(
+                        "return type found but method is omitted or TODO: {}",
+                        output_method(out)
+                    );
                     failures += 1;
                 }
 
-                if model::type_exists(version, &method.name)?  && !model::requires_type(version, &method.name)? {
-                    eprintln!("model type found but method is omitted or TODO: {}", output_method(out));
+                if model::type_exists(version, &method.name)?
+                    && !model::requires_type(version, &method.name)?
+                {
+                    eprintln!(
+                        "model type found but method is omitted or TODO: {}",
+                        output_method(out)
+                    );
                     failures += 1;
                 }
             }
@@ -188,7 +238,9 @@ fn verify_status(version: Version, test_output: Option<&String>) -> Result<()> {
 fn check_types_exist_if_required(version: Version, method_name: &str) -> Result<()> {
     let out = Method::from_name(version, method_name).expect("guaranteed by methods_and_status()");
 
-    if versioned::requires_type(version, method_name)? && !versioned::type_exists(version, method_name)? {
+    if versioned::requires_type(version, method_name)?
+        && !versioned::type_exists(version, method_name)?
+    {
         eprintln!("missing return type: {}", output_method(out));
         return Err(anyhow::anyhow!("missing return type"));
     }
@@ -223,29 +275,29 @@ fn verify_returns_method(version: Version) -> Result<()> {
         let Some(method) = Method::from_name(version, &name) else { continue };
 
         match entry {
-            ReturnsDoc::Version => {
+            ReturnsDoc::Version =>
                 if method.requires_model {
                     eprintln!(
                         "'Returns' says 'version' but method is marked as requiring a model: {}",
                         output_method(method)
                     );
                     failures += 1;
-                }
-            }
-            ReturnsDoc::VersionPlusModel => {
+                },
+            ReturnsDoc::VersionPlusModel =>
                 if !method.requires_model {
                     eprintln!(
                         "'Returns' says 'version + model' but method is marked as not requiring a model: {}",
                         output_method(method)
                     );
                     failures += 1;
-                }
-            }
+                },
             ReturnsDoc::Other(_) => {}
         }
     }
 
-    if failures > 0 { return Err(anyhow::anyhow!("returns/model verification failed ({} issue(s))", failures)); }
+    if failures > 0 {
+        return Err(anyhow::anyhow!("returns/model verification failed ({} issue(s))", failures));
+    }
 
     Ok(())
 }
@@ -268,9 +320,8 @@ mod check_integration_test_crate {
         let mut functions = vec![];
 
         let path = PathBuf::from(test_output);
-        let file = File::open(&path).with_context(|| {
-            format!("Failed to open test output file {}", path.display())
-        })?;
+        let file = File::open(&path)
+            .with_context(|| format!("Failed to open test output file {}", path.display()))?;
         let reader = io::BufReader::new(file);
         let test_re = Regex::new(r"test ([a-z_]+) ... ok")?;
 
@@ -304,7 +355,7 @@ mod check_integration_test_crate {
         };
         for t in all_test_functions(test_output)? {
             if t.contains(&test_name) {
-                return Ok(true)
+                return Ok(true);
             }
         }
         Ok(false)

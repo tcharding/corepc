@@ -6,8 +6,8 @@
 
 use bitcoin::hex;
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::vtype::*;             // All the version specific types.
 use node::mtype;
+use node::vtype::*; // All the version specific types.
 
 #[test]
 #[cfg(not(feature = "v20_and_below"))]
@@ -29,7 +29,10 @@ fn generating__generate_block__modelled() {
     #[cfg(feature = "v24_and_below")]
     {
         // No `submit` argument
-        json = node.client.generate_block(&mining_addr.to_string(), &transactions).expect("generateblock");
+        json = node
+            .client
+            .generate_block(&mining_addr.to_string(), &transactions)
+            .expect("generateblock");
         let model: Result<mtype::GenerateBlock, hex::HexToArrayError> = json.into_model();
         model.unwrap();
     }
@@ -37,7 +40,10 @@ fn generating__generate_block__modelled() {
     #[cfg(not(feature = "v24_and_below"))]
     {
         // Check with `submit = false` so that `hex` is returned. v25 and later only.
-        json = node.client.generate_block(&mining_addr.to_string(), &transactions, false).expect("generateblock");
+        json = node
+            .client
+            .generate_block(&mining_addr.to_string(), &transactions, false)
+            .expect("generateblock");
         let model: Result<mtype::GenerateBlock, GenerateBlockError> = json.into_model();
         model.unwrap();
     }
@@ -62,9 +68,10 @@ fn generating__generate_to_address__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let address = node.client.new_address().expect("failed to get new address");
 
-    let json: GenerateToAddress = node.client.generate_to_address(NBLOCKS, &address).expect("generatetoaddress");
+    let json: GenerateToAddress =
+        node.client.generate_to_address(NBLOCKS, &address).expect("generatetoaddress");
 
-    let model: Result<mtype::GenerateToAddress, hex::HexToArrayError>  = json.into_model();
+    let model: Result<mtype::GenerateToAddress, hex::HexToArrayError> = json.into_model();
     model.unwrap();
 }
 
@@ -77,7 +84,8 @@ fn generating__generate_to_descriptor__modelled() {
     let address = node.client.new_address().expect("failed to get new address");
     let descriptor = format!("addr({})", address);
 
-    let json: GenerateToDescriptor = node.client.generate_to_descriptor(NBLOCKS, &descriptor).expect("generatetodescriptor");
+    let json: GenerateToDescriptor =
+        node.client.generate_to_descriptor(NBLOCKS, &descriptor).expect("generatetodescriptor");
     let model: Result<mtype::GenerateToDescriptor, hex::HexToArrayError> = json.into_model();
     model.unwrap();
 }
