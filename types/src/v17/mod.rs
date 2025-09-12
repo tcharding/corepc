@@ -264,7 +264,7 @@ pub use self::{
         GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
         MempoolAcceptance, PsbtInput, PsbtInputError, PsbtOutput, PsbtOutputError,
         SendRawTransaction, SignFail, SignFailError, SignRawTransaction, SignRawTransactionError,
-        TestMempoolAccept,
+        TestMempoolAccept, SignRawTransactionWithKey,
     },
     util::{
         CreateMultisig, CreateMultisigError, EstimateSmartFee, SignMessageWithPrivKey,
@@ -285,6 +285,7 @@ pub use self::{
         LoadWallet, LockUnspent, RescanBlockchain, ScriptType, SendMany, SendToAddress, SetTxFee,
         SignMessage, TransactionCategory, TransactionItem, TransactionItemError,
         WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
+        SignRawTransactionWithWallet,
     },
     zmq::GetZmqNotifications,
 };

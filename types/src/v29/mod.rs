@@ -293,6 +293,7 @@ pub use crate::{
         SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, TransactionCategory,
         UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
         VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WitnessUtxo,
+        SignRawTransactionWithKey, SignRawTransactionWithWallet,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,

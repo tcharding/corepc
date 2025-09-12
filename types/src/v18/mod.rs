@@ -285,4 +285,5 @@ pub use crate::v17::{
     TransactionItem, TransactionItemError, UploadTarget, ValidateAddress, ValidateAddressError,
     VerifyChain, VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt,
     WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    SignRawTransactionWithKey, SignRawTransactionWithWallet,
 };

@@ -279,6 +279,7 @@ pub use crate::v17::{
     TestMempoolAccept, TransactionCategory, TransactionItem, TransactionItemError, UploadTarget,
     ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
     WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    SignRawTransactionWithKey, SignRawTransactionWithWallet,
 };
 #[doc(inline)]
 pub use crate::v18::{

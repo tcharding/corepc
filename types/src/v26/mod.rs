@@ -303,7 +303,7 @@ pub use crate::{
         SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError, SoftforkReject,
         TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
         VerifyMessage, VerifyTxOutProof, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WitnessUtxo,
+        WitnessUtxo, SignRawTransactionWithKey, SignRawTransactionWithWallet,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
