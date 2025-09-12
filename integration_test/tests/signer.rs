@@ -6,8 +6,8 @@
 #![allow(unused_imports)] // Because of feature gated tests.
 
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::{mtype, Input, Output};
-use node::vtype::*;             // All the version specific types.
+use node::vtype::*;
+use node::{mtype, Input, Output}; // All the version specific types.
 
 #[test]
 #[cfg(unix)]
@@ -19,12 +19,12 @@ fn signer__enumerate_signers() {
     // `script_body` is minimal JSON array expected by `enumeratesigners` RPC: an array
     // of signer objects with at least a fingerprint and name. Using a hard-coded
     // dummy signer (fingerprint "deadbeef").
-    let script_body = "#!/bin/sh\necho '[{\"fingerprint\":\"deadbeef\",\"name\":\"TestSigner\"}]'\n";
+    let script_body =
+        "#!/bin/sh\necho '[{\"fingerprint\":\"deadbeef\",\"name\":\"TestSigner\"}]'\n";
     std::fs::write(&script_path, script_body).expect("write signer script");
 
     // Script needs to be executable so bitcoind can invoke it via the -signer arg.
-    std::fs::set_permissions(&script_path, std::fs::Permissions::from_mode(0o755))
-    .expect("chmod");
+    std::fs::set_permissions(&script_path, std::fs::Permissions::from_mode(0o755)).expect("chmod");
 
     let signer_arg = format!("-signer={}", script_path.to_str().unwrap());
     let node = Node::with_wallet(Wallet::None, &[&signer_arg]);

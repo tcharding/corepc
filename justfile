@@ -31,6 +31,8 @@ lint-integration-tests:
 # Run cargo fmt
 fmt:
   cargo +$(cat ./nightly-version) fmt --all
+  cargo +$(cat ./nightly-version) fmt --manifest-path $REPO_DIR/integration_test/Cargo.toml
+  cargo +$(cat ./nightly-version) fmt --manifest-path $REPO_DIR/verify/Cargo.toml
 
 # Check the formatting
 format:

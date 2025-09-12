@@ -9,14 +9,14 @@ use bitcoin::consensus::encode;
 use bitcoin::hex::FromHex as _;
 use bitcoin::opcodes::all::*;
 use bitcoin::{
-    absolute, consensus, hex, psbt, script, transaction, Amount, TxOut, Transaction, ScriptBuf,
+    absolute, consensus, hex, psbt, script, transaction, Amount, ScriptBuf, Transaction, TxOut,
 };
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::{mtype, Input, Output};
-use node::vtype::*;             // All the version specific types.
+use node::vtype::*;
+use node::{mtype, Input, Output}; // All the version specific types.
 
 #[test]
-#[cfg(not(feature = "v17"))]    // analyzepsbt was added in v0.18.
+#[cfg(not(feature = "v17"))] // analyzepsbt was added in v0.18.
 fn raw_transactions__analyze_psbt__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -37,7 +37,7 @@ fn raw_transactions__combine_psbt__modelled() {
 
     let tx_out = node
         .client
-        .get_tx_out(txid, 0)    // Might be previous spend or might be change.
+        .get_tx_out(txid, 0) // Might be previous spend or might be change.
         .expect("gettxout")
         .into_model()
         .expect("GetTxOut into model")
@@ -86,17 +86,14 @@ fn raw_transactions__combine_raw_transaction__modelled() {
     node.fund_wallet();
 
     let (_, txid) = node.create_mempool_transaction();
-    let tx = node
-        .client
-        .get_raw_transaction(txid)
-        .expect("getrawtransaction")
-        .transaction()
-        .unwrap();
+    let tx =
+        node.client.get_raw_transaction(txid).expect("getrawtransaction").transaction().unwrap();
 
     // Quick and dirty test, just combine the same tx with itself.
     let txs = vec![tx.clone(), tx.clone()];
 
-    let json: CombineRawTransaction = node.client.combine_raw_transaction(&txs).expect("combinerawtransaction");
+    let json: CombineRawTransaction =
+        node.client.combine_raw_transaction(&txs).expect("combinerawtransaction");
     let model: Result<mtype::CombineRawTransaction, encode::FromHexError> = json.into_model();
 
     let combined = model.unwrap();
@@ -150,14 +147,16 @@ fn raw_transactions__decode_psbt__modelled() {
     // from v23 onwards in should be in its own field.
     {
         use std::collections::BTreeMap;
-        use bitcoin::bip32::{Fingerprint, DerivationPath, Xpub};
+
+        use bitcoin::bip32::{DerivationPath, Fingerprint, Xpub};
 
         let mut map = BTreeMap::default();
         // Some arbitrary xpub I grabbed from rust-bitcoin.
         let xpub = "xpub6ERApfZwUNrhLCkDtcHTcxd75RbzS1ed54G1LkBUHQVHQKqhMkhgbmJbZRkrgZw4koxb5JaHWkY4ALHY2grBGRjaDMzQLcgJvLJuZZvRcEL";
         let xpub = xpub.parse::<Xpub>().expect("failed to parse xpub");
         let fp = Fingerprint::from([1u8, 2, 3, 42]);
-        let path = "m/84'/0'/0'/0/1".parse::<DerivationPath>().expect("failed to parse derivation path");
+        let path =
+            "m/84'/0'/0'/0/1".parse::<DerivationPath>().expect("failed to parse derivation path");
         map.insert(xpub, (fp, path));
 
         psbt.xpub = map;
@@ -188,13 +187,10 @@ fn raw_transactions__decode_raw_transaction__modelled() {
 
     let (_, txid) = node.create_mempool_transaction();
 
-    let tx = node
-        .client
-        .get_raw_transaction(txid)
-        .expect("getrawtransaction")
-        .transaction()
-        .unwrap();
-    let json: DecodeRawTransaction = node.client.decode_raw_transaction(&tx).expect("decoderawtransaction");
+    let tx =
+        node.client.get_raw_transaction(txid).expect("getrawtransaction").transaction().unwrap();
+    let json: DecodeRawTransaction =
+        node.client.decode_raw_transaction(&tx).expect("decoderawtransaction");
     let model: Result<mtype::DecodeRawTransaction, RawTransactionError> = json.into_model();
     model.unwrap();
 }
@@ -276,7 +272,7 @@ fn raw_transactions__fund_raw_transaction__modelled() {
 fn raw_transactions__send_raw_transaction__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
-    create_sign_send(&node);    // Calls `sendrawtransaction`.
+    create_sign_send(&node); // Calls `sendrawtransaction`.
 }
 
 #[test]
@@ -309,7 +305,6 @@ fn raw_transactions__get_raw_transaction__modelled() {
         .expect("getrawtransaction verbose")
         .into_model()
         .unwrap();
-
 }
 
 #[test]
@@ -321,11 +316,9 @@ fn raw_transactions__join_psbts__modelled() {
     let psbt1 = create_a_psbt(&node);
     let psbt2 = create_a_psbt(&node);
 
-    let json: JoinPsbts = node
-        .client
-        .join_psbts(&[psbt1.clone(), psbt2.clone()])
-        .expect("joinpsbts");
-    let model: Result<mtype::JoinPsbts, psbt::PsbtParseError>  = json.into_model();
+    let json: JoinPsbts =
+        node.client.join_psbts(&[psbt1.clone(), psbt2.clone()]).expect("joinpsbts");
+    let model: Result<mtype::JoinPsbts, psbt::PsbtParseError> = json.into_model();
     let join_psbts = model.unwrap();
 
     assert_eq!(join_psbts.0.inputs.len(), psbt1.inputs.len() + psbt2.inputs.len());
@@ -363,10 +356,8 @@ fn raw_transactions__submit_package__modelled() {
 
     // The call for submitting this package should succeed, but yield an 'already known'
     // error for all transactions.
-    let json: SubmitPackage = node
-        .client
-        .submit_package(&[tx_0, tx_1])
-        .expect("failed to submit package");
+    let json: SubmitPackage =
+        node.client.submit_package(&[tx_0, tx_1]).expect("failed to submit package");
     let model: Result<mtype::SubmitPackage, SubmitPackageError> = json.into_model();
     let submit_package = model.unwrap();
     for tx_result in submit_package.tx_results.values() {
@@ -391,10 +382,8 @@ fn raw_transactions__submit_package__modelled() {
 
     // The call for submitting this package should succeed, but yield an 'already known'
     // error for all transactions.
-    let json: SubmitPackage = node
-        .client
-        .submit_package(&[tx_0, tx_1], None, None)
-        .expect("failed to submit package");
+    let json: SubmitPackage =
+        node.client.submit_package(&[tx_0, tx_1], None, None).expect("failed to submit package");
     let model: Result<mtype::SubmitPackage, SubmitPackageError> = json.into_model();
     let submit_package = model.unwrap();
     for tx_result in submit_package.tx_results.values() {
@@ -410,22 +399,19 @@ fn raw_transactions__test_mempool_accept__modelled() {
     let tx = create_a_raw_transaction(&node);
 
     // Sign (but don't broadcast).
-    let signed: SignRawTransaction = node
-        .client
-        .sign_raw_transaction_with_wallet(&tx)
-        .expect("signrawtransactionwithwallet");
-    let signed_model: mtype::SignRawTransaction = signed
-        .into_model()
-        .expect("SignRawTransaction into model");
+    let signed: SignRawTransaction =
+        node.client.sign_raw_transaction_with_wallet(&tx).expect("signrawtransactionwithwallet");
+    let signed_model: mtype::SignRawTransaction =
+        signed.into_model().expect("SignRawTransaction into model");
     let signed_tx = signed_model.tx;
 
     // Call testmempoolaccept with the valid (not yet broadcast) transaction.
     let json: TestMempoolAccept = node
         .client
-        .test_mempool_accept(&[signed_tx.clone()])
+        .test_mempool_accept(std::slice::from_ref(&signed_tx))
         .expect("testmempoolaccept");
     #[cfg(feature = "v20_and_below")]
-        type TestMempoolAcceptError = hex::HexToArrayError;
+    type TestMempoolAcceptError = hex::HexToArrayError;
     let model: Result<mtype::TestMempoolAccept, TestMempoolAcceptError> = json.into_model();
     let test_mempool = model.unwrap();
 
@@ -442,10 +428,7 @@ fn raw_transactions__utxo_update_psbt__modelled() {
     node.fund_wallet();
 
     let psbt = create_a_psbt(&node);
-    let json: UtxoUpdatePsbt = node
-        .client
-        .utxo_update_psbt(&psbt)
-        .expect("utxoupdatepsbt");
+    let json: UtxoUpdatePsbt = node.client.utxo_update_psbt(&psbt).expect("utxoupdatepsbt");
     let model: Result<mtype::UtxoUpdatePsbt, psbt::PsbtParseError> = json.into_model();
     let update_psbts = model.unwrap();
 
@@ -486,7 +469,8 @@ fn create_sign_send(node: &Node) {
 
     let json: CreateRawTransaction =
         node.client.create_raw_transaction(&inputs, &outputs).expect("createrawtransaction");
-    let model: Result<mtype::CreateRawTransaction, encode::FromHexError> = json.clone().into_model();
+    let model: Result<mtype::CreateRawTransaction, encode::FromHexError> =
+        json.clone().into_model();
     model.unwrap();
     let tx = json.transaction().unwrap();
 
@@ -542,7 +526,8 @@ fn create_sign_with_key_send(node: &Node) {
 
     let json: CreateRawTransaction =
         node.client.create_raw_transaction(&inputs, &outputs).expect("createrawtransaction");
-    let model: Result<mtype::CreateRawTransaction, encode::FromHexError> = json.clone().into_model();
+    let model: Result<mtype::CreateRawTransaction, encode::FromHexError> =
+        json.clone().into_model();
     model.unwrap();
     let tx = json.transaction().unwrap();
 
@@ -584,13 +569,15 @@ fn create_fund_sign_send(node: &Node) {
 
     let json: CreateRawTransaction =
         node.client.create_raw_transaction(&inputs, &outputs).expect("createrawtransaction");
-    let model: Result<mtype::CreateRawTransaction, encode::FromHexError> = json.clone().into_model();
+    let model: Result<mtype::CreateRawTransaction, encode::FromHexError> =
+        json.clone().into_model();
     model.unwrap();
     let tx = json.transaction().unwrap();
 
     let json: FundRawTransaction =
         node.client.fund_raw_transaction(&tx).expect("fundrawtransaction");
-    let model: Result<mtype::FundRawTransaction, FundRawTransactionError> = json.clone().into_model();
+    let model: Result<mtype::FundRawTransaction, FundRawTransactionError> =
+        json.clone().into_model();
     model.unwrap();
     let funded = json.transaction().unwrap();
 
@@ -602,7 +589,8 @@ fn create_fund_sign_send(node: &Node) {
     // This proves we did everything correctly.
     let model: Result<mtype::SignRawTransaction, SignRawTransactionError> = json.into_model();
     let sign_raw_transaction = model.unwrap();
-    let _ = node.client.send_raw_transaction(&sign_raw_transaction.tx).expect("createrawtransaction");
+    let _ =
+        node.client.send_raw_transaction(&sign_raw_transaction.tx).expect("createrawtransaction");
 }
 
 // Creates a transaction using client to do RPC call `create_raw_transaction`.
@@ -634,7 +622,8 @@ fn create_a_raw_transaction(node: &Node) -> Transaction {
 
     let json: CreateRawTransaction =
         node.client.create_raw_transaction(&inputs, &outputs).expect("createrawtransaction");
-    let model: Result<mtype::CreateRawTransaction, encode::FromHexError> = json.clone().into_model();
+    let model: Result<mtype::CreateRawTransaction, encode::FromHexError> =
+        json.clone().into_model();
     model.unwrap();
     json.transaction().unwrap()
 }

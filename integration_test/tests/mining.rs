@@ -6,8 +6,8 @@
 
 use bitcoin::SignedAmount;
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::{mtype, TemplateRequest, TemplateRules};
-use node::vtype::*;             // All the version specific types.
+use node::vtype::*;
+use node::{mtype, TemplateRequest, TemplateRules}; // All the version specific types.
 
 #[test]
 fn mining__get_block_template__modelled() {
@@ -27,11 +27,11 @@ fn mining__get_block_template__modelled() {
             rules: vec![TemplateRules::Segwit],
             mode: Some("template".to_string()),
             ..Default::default()
-        }
+        },
     };
 
-    let json: GetBlockTemplate = node1.client.get_block_template(&options)
-        .expect("get_block_template RPC failed");
+    let json: GetBlockTemplate =
+        node1.client.get_block_template(&options).expect("get_block_template RPC failed");
     let model: Result<mtype::GetBlockTemplate, GetBlockTemplateError> = json.into_model();
     model.unwrap();
 }
@@ -82,7 +82,7 @@ fn mining__prioritise_transaction() {
 }
 
 #[test]
-#[cfg(feature = "TODO")]        // This test is flaky - no clue why.
+#[cfg(feature = "TODO")] // This test is flaky - no clue why.
 fn mining__submit_block() {
     // Requires connected nodes otherwise the RPC call errors.
     let (node1, node2, node3) = integration_test::three_node_network();
@@ -93,7 +93,8 @@ fn mining__submit_block() {
     node3.mine_a_block();
 
     let options = TemplateRequest { rules: vec![TemplateRules::Segwit] };
-    let json: GetBlockTemplate = node1.client.get_block_template(&options).expect("getblocktemplate");
+    let json: GetBlockTemplate =
+        node1.client.get_block_template(&options).expect("getblocktemplate");
     let template: mtype::GetBlockTemplate = json.into_model().unwrap();
 
     submit_empty_block(&node1, &template);
@@ -106,8 +107,8 @@ fn mining__submit_block() {
 fn submit_empty_block(node: &Node, bt: &mtype::GetBlockTemplate) {
     use bitcoin::hashes::Hash as _;
     use bitcoin::{
-        absolute, block, transaction, Amount, Block, OutPoint, ScriptBuf, Sequence,
-        Transaction, TxIn, TxOut, Witness, ScriptHash, TxMerkleNode,
+        absolute, block, transaction, Amount, Block, OutPoint, ScriptBuf, ScriptHash, Sequence,
+        Transaction, TxIn, TxMerkleNode, TxOut, Witness,
     };
 
     let txdata = vec![Transaction {
@@ -134,7 +135,10 @@ fn submit_empty_block(node: &Node, bt: &mtype::GetBlockTemplate) {
             version: block::Version::default(),
             prev_blockhash: bt.previous_block_hash,
             merkle_root: TxMerkleNode::all_zeros(),
-            time: Ord::max(bt.min_time, std::time::UNIX_EPOCH.elapsed().expect("elapsed").as_secs() as u32),
+            time: Ord::max(
+                bt.min_time,
+                std::time::UNIX_EPOCH.elapsed().expect("elapsed").as_secs() as u32,
+            ),
             bits: bt.bits,
             nonce: 0,
         },
@@ -158,8 +162,8 @@ fn submit_empty_block(node: &Node, bt: &mtype::GetBlockTemplate) {
 fn mining__submit_block_with_dummy_coinbase(node: &Node, bt: &mtype::GetBlockTemplate) {
     use bitcoin::hashes::Hash as _;
     use bitcoin::{
-        absolute, block, transaction, Amount, Block, OutPoint, ScriptBuf, Sequence,
-        Transaction, TxIn, TxOut, Witness, TxMerkleNode,
+        absolute, block, transaction, Amount, Block, OutPoint, ScriptBuf, Sequence, Transaction,
+        TxIn, TxMerkleNode, TxOut, Witness,
     };
 
     let address = node.client.new_address().expect("failed to get new address");
@@ -218,8 +222,10 @@ fn mining__submit_header() {
     node.fund_wallet();
     node.mine_a_block();
 
-    let best_block = node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
-    let mut header = node.client.get_block_header(&best_block).expect("getblockheader").into_model().unwrap().0;
+    let best_block =
+        node.client.get_best_block_hash().expect("getbestblockhash").into_model().unwrap().0;
+    let mut header =
+        node.client.get_block_header(&best_block).expect("getblockheader").into_model().unwrap().0;
 
     for _ in 1..=u32::MAX {
         header.nonce = header.nonce.wrapping_add(1);

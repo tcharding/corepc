@@ -4,13 +4,12 @@
 
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
 
-use bitcoin::hex;
 use bitcoin::consensus::encode;
+use bitcoin::hex;
 use integration_test::{Node, NodeExt as _, Wallet};
 use node::client::client_sync;
-use node::vtype::*;             // All the version specific types.
-use node::mtype;
-use node::{Input, Output};
+use node::vtype::*; // All the version specific types.
+use node::{mtype, Input, Output};
 
 #[test]
 #[cfg(not(feature = "v25_and_below"))]
@@ -50,11 +49,13 @@ fn blockchain__get_block__modelled() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
 
-    let json: GetBlockVerboseZero = node.client.get_block_verbose_zero(block_hash).expect("getblock verbose=0");
+    let json: GetBlockVerboseZero =
+        node.client.get_block_verbose_zero(block_hash).expect("getblock verbose=0");
     let model: Result<mtype::GetBlockVerboseZero, encode::FromHexError> = json.into_model();
     model.unwrap();
 
-    let json: GetBlockVerboseOne = node.client.get_block_verbose_one(block_hash).expect("getblock verbose=1");
+    let json: GetBlockVerboseOne =
+        node.client.get_block_verbose_one(block_hash).expect("getblock verbose=1");
     let model: Result<mtype::GetBlockVerboseOne, GetBlockVerboseOneError> = json.into_model();
     model.unwrap();
 
@@ -143,7 +144,8 @@ fn blockchain__get_block_header__modelled() {
     model.unwrap();
 
     // verbose = true
-    let json:GetBlockHeaderVerbose = node.client.get_block_header_verbose(&block_hash).expect("getblockheader");
+    let json: GetBlockHeaderVerbose =
+        node.client.get_block_header_verbose(&block_hash).expect("getblockheader");
     let model: Result<mtype::GetBlockHeaderVerbose, GetBlockHeaderVerboseError> = json.into_model();
     model.unwrap();
 }
@@ -169,7 +171,8 @@ fn getblockstats() {
 
     // No need for explicit types, used explicitly in test below.
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
-    let json: GetBlockStats = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
+    let json: GetBlockStats =
+        node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
     let model: Result<mtype::GetBlockStats, GetBlockStatsError> = json.into_model();
     model.unwrap();
 }
@@ -185,7 +188,8 @@ fn getblockstats_txindex() {
 
     // Get block stats by block hash.
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
-    let json: GetBlockStats = node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
+    let json: GetBlockStats =
+        node.client.get_block_stats_by_block_hash(&block_hash).expect("getblockstats");
     let model: Result<mtype::GetBlockStats, GetBlockStatsError> = json.into_model();
     model.unwrap();
 }
@@ -228,7 +232,8 @@ fn blockchain__get_deployment_info__modelled() {
     let node = Node::with_wallet(Wallet::None, &[]);
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
 
-    let json: GetDeploymentInfo = node.client.get_deployment_info(&block_hash).expect("getdeploymentinfo");
+    let json: GetDeploymentInfo =
+        node.client.get_deployment_info(&block_hash).expect("getdeploymentinfo");
     let model: Result<mtype::GetDeploymentInfo, GetDeploymentInfoError> = json.into_model();
     model.unwrap();
 }
@@ -238,7 +243,8 @@ fn blockchain__get_deployment_info__modelled() {
 fn blockchain__get_descriptor_activity__modelled() {
     let node = Node::with_wallet(Wallet::None, &["-coinstatsindex=1", "-txindex=1"]);
 
-    let json: GetDescriptorActivity = node.client.get_descriptor_activity().expect("getdescriptoractivity");
+    let json: GetDescriptorActivity =
+        node.client.get_descriptor_activity().expect("getdescriptoractivity");
     let model: Result<mtype::GetDescriptorActivity, GetDescriptorActivityError> = json.into_model();
     model.unwrap();
 }
@@ -273,10 +279,8 @@ fn blockchain__get_mempool_ancestors_verbose__modelled() {
     let (_address, parent_txid) = node.create_mempool_transaction();
     let child_txid = create_child_spending_parent(&node, parent_txid);
 
-    let json: GetMempoolAncestorsVerbose = node
-        .client
-        .get_mempool_ancestors_verbose(child_txid)
-        .expect("getmempoolancestors verbose");
+    let json: GetMempoolAncestorsVerbose =
+        node.client.get_mempool_ancestors_verbose(child_txid).expect("getmempoolancestors verbose");
     let model: Result<mtype::GetMempoolAncestorsVerbose, MapMempoolEntryError> = json.into_model();
     let ancestors = model.unwrap();
 
@@ -309,7 +313,8 @@ fn blockchain__get_mempool_descendants_verbose__modelled() {
         .client
         .get_mempool_descendants_verbose(parent_txid)
         .expect("getmempooldescendants verbose");
-    let model: Result<mtype::GetMempoolDescendantsVerbose, MapMempoolEntryError> = json.into_model();
+    let model: Result<mtype::GetMempoolDescendantsVerbose, MapMempoolEntryError> =
+        json.into_model();
     let descendants = model.unwrap();
 
     assert!(descendants.0.contains_key(&child_txid));
@@ -406,17 +411,12 @@ fn blockchain__get_tx_spending_prevout__modelled() {
     let (_address2, txid_2) = node.create_mempool_transaction();
 
     let inputs = vec![
-        bitcoin::OutPoint {
-            txid: txid_1,
-            vout: 0,
-        },
-        bitcoin::OutPoint {
-            txid: txid_2,
-            vout: 0,
-        },
+        bitcoin::OutPoint { txid: txid_1, vout: 0 },
+        bitcoin::OutPoint { txid: txid_2, vout: 0 },
     ];
 
-    let json: GetTxSpendingPrevout = node.client.get_tx_spending_prevout(&inputs).expect("gettxspendingprevout");
+    let json: GetTxSpendingPrevout =
+        node.client.get_tx_spending_prevout(&inputs).expect("gettxspendingprevout");
     let model: Result<mtype::GetTxSpendingPrevout, GetTxSpendingPrevoutError> = json.into_model();
     let spending_prevout = model.unwrap();
 
@@ -454,8 +454,15 @@ fn blockchain__prune_blockchain() {
     let node = Node::with_wallet(Wallet::Default, &["-prune=550"]);
     let address = node.client.new_address().expect("Failed to get new address");
 
-    let gen_result = node.client.generate_to_address(NBLOCKS, &address).expect("generate_to_address RPC call failed");
-    assert_eq!(gen_result.0.len(), NBLOCKS, "generate_to_address did not return the expected number of block hashes");
+    let gen_result = node
+        .client
+        .generate_to_address(NBLOCKS, &address)
+        .expect("generate_to_address RPC call failed");
+    assert_eq!(
+        gen_result.0.len(),
+        NBLOCKS,
+        "generate_to_address did not return the expected number of block hashes"
+    );
 
     let target_height: u64 = 500;
 
@@ -487,7 +494,8 @@ fn blockchain__scan_blocks_modelled() {
     // Arbitrary scan descriptor
     let scan_desc = "pkh(022afc20bf379bc96a2f4e9e63ffceb8652b2b6a097f63fbee6ecec2a49a48010e)";
 
-    let json: ScanBlocksStart = node.client.scan_blocks_start(&[scan_desc]).expect("scanblocks start");
+    let json: ScanBlocksStart =
+        node.client.scan_blocks_start(&[scan_desc]).expect("scanblocks start");
     let model: Result<mtype::ScanBlocksStart, ScanBlocksStartError> = json.into_model();
     model.unwrap();
 
@@ -552,7 +560,8 @@ fn create_child_spending_parent(node: &Node, parent_txid: bitcoin::Txid) -> bitc
         .client
         .sign_raw_transaction_with_wallet(&funded_tx)
         .expect("signrawtransactionwithwallet");
-    let sign_raw_transaction = signed.into_model().expect("SignRawTransactionWithWallet into model");
+    let sign_raw_transaction =
+        signed.into_model().expect("SignRawTransactionWithWallet into model");
     let child_txid = sign_raw_transaction.tx.compute_txid();
     let _ = node.client.send_raw_transaction(&sign_raw_transaction.tx).expect("sendrawtransaction");
 

@@ -5,8 +5,8 @@
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
 
 use integration_test::{Node, NodeExt as _, Wallet};
-use node::vtype::*;             // All the version specific types.
-use node::{AddNodeCommand, mtype, SetBanCommand};
+use node::vtype::*; // All the version specific types.
+use node::{mtype, AddNodeCommand, SetBanCommand};
 
 #[test]
 fn network__add_node() {
@@ -59,7 +59,7 @@ fn network__get_addr_man_info() {
     for (network_name, network_info) in &json.0 {
         assert!(!network_name.is_empty());
         assert_eq!(network_info.total, network_info.new + network_info.tried);
-    };
+    }
 }
 
 #[test]
@@ -169,9 +169,11 @@ fn network__set_ban() {
 #[test]
 fn network__set_network_active() {
     let node = Node::with_wallet(Wallet::None, &[]);
-    let json: SetNetworkActive = node.client.set_network_active(false).expect("setnetworkactive false");
+    let json: SetNetworkActive =
+        node.client.set_network_active(false).expect("setnetworkactive false");
     assert!(!json.0);
 
-    let json: SetNetworkActive = node.client.set_network_active(true).expect("setnetworkactive true");
+    let json: SetNetworkActive =
+        node.client.set_network_active(true).expect("setnetworkactive true");
     assert!(json.0);
 }
