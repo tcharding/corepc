@@ -59,5 +59,7 @@ bitcoin = { version = "0.32.0", default-features = false, features = ["std", "se
 env_logger = "0.9.0"
 node = { package = "corepc-node", path = "../node", default-features = false }
 rand = "0.8.5"
+# Just so we can enable the feature.
+types = { package = "corepc-types", path = "../types", features = ["serde-deny-unknown-fields"] }
 
 [dev-dependencies]
