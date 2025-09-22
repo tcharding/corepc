@@ -57,16 +57,7 @@ TODO = []                       # This is a dirty hack while writing the tests.
 [dependencies]
 bitcoin = { version = "0.32.0", default-features = false, features = ["std", "serde"] }
 env_logger = "0.9.0"
-node = { package = "corepc-node", version = "0.9.0", default-features = false }
+node = { package = "corepc-node", path = "../node", default-features = false }
 rand = "0.8.5"
 
 [dev-dependencies]
-
-[patch.crates-io.corepc-client]
-path = "../client"
-
-[patch.crates-io.corepc-types]
-path = "../types"
-
-[patch.crates-io.corepc-node]
-path = "../node"
