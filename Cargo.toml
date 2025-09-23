@@ -1,16 +1,16 @@
 [workspace]
-members = ["client", "types", "node", "jsonrpc"]
+members = ["client", "jsonrpc", "node", "types"]
 exclude = ["integration_test", "verify"]
 resolver = "2"
 
 [patch.crates-io.corepc-client]
 path = "client"
 
-[patch.crates-io.corepc-types]
-path = "types"
+[patch.crates-io.jsonrpc]
+path = "jsonrpc"
 
 [patch.crates-io.corepc-node]
 path = "node"
 
-[patch.crates-io.jsonrpc]
-path = "jsonrpc"
+[patch.crates-io.corepc-types]
+path = "types"
