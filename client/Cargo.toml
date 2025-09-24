@@ -22,11 +22,11 @@ client-sync = ["jsonrpc"]
 
 [dependencies]
 bitcoin = { version = "0.32.0", default-features = false, features = ["std", "serde"] }
-types = { package = "corepc-types", version = "0.9.0", default-features = false, features = ["std"] }
 log = "0.4"
 serde = { version = "1.0.103", default-features = false, features = [ "derive", "alloc" ] }
 serde_json = { version = "1.0.117" }
+types = { package = "corepc-types", path = "../types", default-features = false, features = ["std"] }
 
-jsonrpc = { version = "0.18.0", features = ["minreq_http"], optional = true }
+jsonrpc = { path = "../jsonrpc", features = ["minreq_http"], optional = true }
 
 [dev-dependencies]
