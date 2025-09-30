@@ -8,7 +8,7 @@ use bitcoin::hex::HexToBytesError;
 use bitcoin::{address, amount, hex, network};
 
 use crate::error::write_err;
-use crate::NumericError;
+use crate::{NumericError, ScriptPubkeyError};
 
 /// Error when converting a `GetBlockVerboseOne` type into the model type.
 #[derive(Debug)]
@@ -295,6 +295,10 @@ pub enum GetDescriptorActivityError {
     /// We wrap the inner error to provide context. This might not be strictly necessary
     /// if the inner errors are distinct enough, but can be helpful.
     ActivityEntry(Box<GetDescriptorActivityError>), // Use Box to avoid recursive type size issues
+    /// Conversion of the `prevout_spk` field failed.
+    PrevoutSpk(ScriptPubkeyError),
+    /// Conversion of the `output_spk` field failed.
+    OutputSpk(ScriptPubkeyError),
 }
 
 impl fmt::Display for GetDescriptorActivityError {
@@ -308,6 +312,8 @@ impl fmt::Display for GetDescriptorActivityError {
             Script(ref e) => write_err!(f, "conversion of the script `hex` field failed"; e),
             Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
             ActivityEntry(ref e) => write_err!(f, "conversion of an activity entry failed"; e),
+            PrevoutSpk(ref e) => write_err!(f, "conversion of the `prevout_spk` field failed"; e),
+            OutputSpk(ref e) => write_err!(f, "conversion of the `output_spk` field failed"; e),
         }
     }
 }
@@ -324,6 +330,8 @@ impl std::error::Error for GetDescriptorActivityError {
             Script(ref e) => Some(e),
             Address(ref e) => Some(e),
             ActivityEntry(ref e) => Some(&**e), // Deref the Box to get the inner error
+            PrevoutSpk(ref e) => Some(e),
+            OutputSpk(ref e) => Some(e),
         }
     }
 }
