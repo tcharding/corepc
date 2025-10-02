@@ -15,7 +15,7 @@ use bitcoin::{
 };
 use serde::{Deserialize, Serialize};
 
-use crate::ScriptPubkey;
+use super::ScriptPubkey;
 
 /// Models the result of JSON-RPC method `dumptxoutset`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]

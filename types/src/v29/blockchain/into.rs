@@ -225,6 +225,7 @@ impl GetDescriptorActivity {
                             spend.height.map(|h| crate::to_u32(h, "height")).transpose()?;
                         let spend_txid = Txid::from_str(&spend.spend_txid).map_err(E::Hash)?;
                         let prevout_txid = Txid::from_str(&spend.prevout_txid).map_err(E::Hash)?;
+                        let prevout_spk = spend.prevout_spk.into_model().map_err(E::PrevoutSpk)?;
 
                         Ok(model::ActivityEntry::Spend(model::SpendActivity {
                             amount,
@@ -234,7 +235,7 @@ impl GetDescriptorActivity {
                             spend_vout: spend.spend_vout,
                             prevout_txid,
                             prevout_vout: spend.prevout_vout,
-                            prevout_spk: spend.prevout_spk,
+                            prevout_spk,
                         }))
                     }
                     ActivityEntry::Receive(receive) => {
@@ -247,6 +248,7 @@ impl GetDescriptorActivity {
                         let height =
                             receive.height.map(|h| crate::to_u32(h, "height")).transpose()?; // Uses From<NumericError>
                         let txid = Txid::from_str(&receive.txid).map_err(E::Hash)?;
+                        let output_spk = receive.output_spk.into_model().map_err(E::OutputSpk)?;
 
                         Ok(model::ActivityEntry::Receive(model::ReceiveActivity {
                             amount,
@@ -254,7 +256,7 @@ impl GetDescriptorActivity {
                             height,
                             txid,
                             vout: receive.vout,
-                            output_spk: receive.output_spk,
+                            output_spk,
                         }))
                     }
                 }

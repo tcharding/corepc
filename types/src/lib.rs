@@ -42,6 +42,8 @@ use bitcoin::hex::{self, FromHex as _};
 use bitcoin::{Amount, FeeRate, ScriptBuf, Witness};
 use serde::{Deserialize, Serialize};
 
+use crate::error::write_err;
+
 /// Converts an `i64` numeric type to a `u32`.
 ///
 /// The Bitcoin Core JSONRPC API has fields marked as 'numeric'. It is not obvious what Rust
@@ -191,7 +193,7 @@ pub struct ScriptPubkey {
     pub hex: String,
     /// Number of required signatures - deprecated in Core v22.
     ///
-    /// Only returned before in versions prior to 22 or for version 22 onwards if
+    /// Only returned in versions prior to 22 or for version 22 onwards if
     /// config option `-deprecatedrpc=addresses` is passed.
     #[serde(rename = "reqSigs")]
     pub required_signatures: Option<i64>,
@@ -202,9 +204,43 @@ pub struct ScriptPubkey {
     pub address: Option<String>,
     /// Array of bitcoin addresses - deprecated in Core v22.
     ///
-    /// Only returned before in versions prior to 22 or for version 22 onwards if
+    /// Only returned in versions prior to 22 or for version 22 onwards if
     /// config option `-deprecatedrpc=addresses` is passed.
     pub addresses: Option<Vec<String>>,
+}
+
+/// Error when converting a `ScriptPubkey` type into the model type.
+#[derive(Debug)]
+pub enum ScriptPubkeyError {
+    /// Conversion of the `hex` field failed.
+    Hex(hex::HexToBytesError),
+    /// Conversion of the `address` field failed.
+    Address(address::ParseError),
+    /// Conversion of the `addresses` field failed.
+    Addresses(address::ParseError),
+}
+
+impl fmt::Display for ScriptPubkeyError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        use ScriptPubkeyError::*;
+        match *self {
+            Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Addresses(ref e) => write_err!(f, "conversion of the `addresses` field failed"; e),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for ScriptPubkeyError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        use ScriptPubkeyError::*;
+        match *self {
+            Hex(ref e) => Some(e),
+            Address(ref e) => Some(e),
+            Addresses(ref e) => Some(e),
+        }
+    }
 }
 
 impl ScriptPubkey {
@@ -214,6 +250,32 @@ impl ScriptPubkey {
 
     fn address(&self) -> Option<Result<Address<NetworkUnchecked>, address::ParseError>> {
         self.address.as_ref().map(|addr| addr.parse::<Address<_>>())
+    }
+
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::ScriptPubkey, ScriptPubkeyError> {
+        use ScriptPubkeyError as E;
+
+        let script_pubkey = ScriptBuf::from_hex(&self.hex).map_err(E::Hex)?;
+
+        let address =
+            self.address.map(|s| s.parse::<Address<_>>().map_err(E::Address)).transpose()?;
+
+        let addresses = self
+            .addresses
+            .map(|v| {
+                v.into_iter()
+                    .map(|s| s.parse::<Address<_>>().map_err(E::Addresses))
+                    .collect::<Result<Vec<_>, _>>()
+            })
+            .transpose()?;
+
+        Ok(model::ScriptPubkey {
+            script_pubkey,
+            required_signatures: self.required_signatures,
+            address,
+            addresses,
+        })
     }
 }
 
