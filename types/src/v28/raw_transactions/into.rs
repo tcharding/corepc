@@ -61,7 +61,8 @@ impl SubmitPackageTxResultFees {
             .flatten();
         let effective_includes = self
             .effective_includes
-            .iter()
+            .unwrap_or_default()
+            .into_iter()
             .map(|s| s.parse::<Wtxid>().map_err(E::EffectiveIncludes))
             .collect::<Result<Vec<_>, _>>()?;
 
