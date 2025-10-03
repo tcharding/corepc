@@ -82,5 +82,5 @@ pub struct SubmitPackageTxResultFees {
     /// If [`Self::effective_fee_rate`] is provided, this holds the wtxid's of the transactions
     /// whose fees and vsizes are included in effective-feerate.
     #[serde(rename = "effective-includes")]
-    pub effective_includes: Vec<String>,
+    pub effective_includes: Option<Vec<String>>,
 }

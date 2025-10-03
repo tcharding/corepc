@@ -250,7 +250,7 @@ pub struct ListUnspentItem {
     /// The bitcoin address of the transaction.
     pub address: String,
     /// The associated label, or "" for the default label.
-    pub label: String,
+    pub label: Option<String>,
     /// The script key.
     #[serde(rename = "scriptPubKey")]
     pub script_pubkey: String,
