@@ -184,7 +184,7 @@ pub struct Send {
 /// > 1. dummy   (string, required) Must be set to "" for backwards compatibility.
 /// > 2. amounts (json object, required) The addresses and amounts
 /// >    { "address": amount, (numeric or string, required) The bitcoin address is the key, the numeric amount (can be string) in BTC is the value }
-/// > ...
+/// > 3. - 9. (optional arguments, see Bitcoin Core documentation)
 /// > 10. verbose (boolean, optional, default=false) If true, return extra infomration about the transaction.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
