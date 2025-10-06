@@ -1,3 +1,7 @@
+# 0.10.0 2025-10-07
+
+- Update to use latest `client v0.10.0`.
+
 # 0.9.0 2025-09-11
 
 The `types v0.9.0` release adds support for **all** remaining documented
