@@ -1,3 +1,7 @@
+# 0.10.0 2025-10-07
+
+- Update to use latest `types v0.10.0`.
+
 # 0.9.0 2025-09-11
 
 Add support for all the new methods added as part of the `types v0.9.0`

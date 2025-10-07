@@ -1,3 +1,9 @@
+# 0.10.0 2025-10-07
+
+- Add `ScriptPubKey` model [#370](https://github.com/rust-bitcoin/corepc/pull/370)
+- Add a feature for `serde` deny unknown fields [#367](https://github.com/rust-bitcoin/corepc/pull/367)
+- Fix a few of type fields in v24 and v28 fixes [#375](https://github.com/rust-bitcoin/corepc/pull/375)
+
 # 0.9.0 2025-09-11
 
 This release is massive, it delivers support for **all** documented Core RPC
