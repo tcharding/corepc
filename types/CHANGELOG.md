@@ -1,3 +1,7 @@
+# 0.10.1 2025-10-10
+
+- v24+ should use the correct `GetRawMempoolVerbose` [#381](https://github.com/rust-bitcoin/corepc/pull/381)
+
 # 0.10.0 2025-10-07
 
 - Add `ScriptPubKey` model [#370](https://github.com/rust-bitcoin/corepc/pull/370)
