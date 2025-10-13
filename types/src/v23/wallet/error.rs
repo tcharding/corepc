@@ -52,7 +52,8 @@ impl fmt::Display for ListSinceBlockError {
             Self::Transactions(ref e) =>
                 write_err!(f, "conversion of the `transactions` field failed"; e),
             Self::Removed(ref e) => write_err!(f, "conversion of the `removed` field failed"; e),
-            Self::LastBlock(ref e) => write_err!(f, "conversion of the `last_block` field failed"; e),
+            Self::LastBlock(ref e) =>
+                write_err!(f, "conversion of the `last_block` field failed"; e),
         }
     }
 }
@@ -98,7 +99,8 @@ impl fmt::Display for TransactionItemError {
             Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
             Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
             Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
-            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::BlockHash(ref e) =>
+                write_err!(f, "conversion of the `block_hash` field failed"; e),
             Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
             Self::WalletConflicts(ref e) =>
                 write_err!(f, "conversion of the `wallet_conflicts` field failed"; e),
@@ -137,7 +139,8 @@ impl fmt::Display for GetTransactionError {
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
             Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
             Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
-            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::BlockHash(ref e) =>
+                write_err!(f, "conversion of the `block_hash` field failed"; e),
             Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
             Self::WalletConflicts(ref e) =>
                 write_err!(f, "conversion of the `wallet_conflicts` field failed"; e),

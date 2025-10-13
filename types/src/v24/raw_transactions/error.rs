@@ -36,7 +36,8 @@ impl fmt::Display for DecodePsbtError {
             Self::Unknown(ref e) =>
                 write_err!(f, "conversion of one the map items in the `unknown` field failed"; e),
             Self::Inputs(ref e) => write_err!(f, "conversion of one of the PSBT inputs failed"; e),
-            Self::Outputs(ref e) => write_err!(f, "conversion of one of the PSBT outputs failed"; e),
+            Self::Outputs(ref e) =>
+                write_err!(f, "conversion of one of the PSBT outputs failed"; e),
         }
     }
 }

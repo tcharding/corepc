@@ -26,7 +26,8 @@ impl fmt::Display for DecodeScriptError {
         match *self {
             Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
             Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            Self::Addresses(ref e) => write_err!(f, "conversion of the `addresses` field failed"; e),
+            Self::Addresses(ref e) =>
+                write_err!(f, "conversion of the `addresses` field failed"; e),
             Self::P2sh(ref e) => write_err!(f, "conversion of the `p2sh` field failed"; e),
         }
     }

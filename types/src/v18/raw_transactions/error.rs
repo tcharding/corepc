@@ -57,7 +57,8 @@ impl fmt::Display for AnalyzePsbtInputMissingError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
-            Self::Signatures(ref e) => write_err!(f, "conversion of the `signatures` field failed"; e),
+            Self::Signatures(ref e) =>
+                write_err!(f, "conversion of the `signatures` field failed"; e),
             Self::RedeemScript(ref e) =>
                 write_err!(f, "conversion of the `redeem_script` field failed"; e),
             Self::WitnessScript(ref e) =>

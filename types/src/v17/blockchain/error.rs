@@ -36,7 +36,8 @@ impl fmt::Display for GetBlockVerboseOneError {
             Self::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
             Self::Tx(ref e) => write_err!(f, "conversion of the `tx` field failed"; e),
             Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            Self::ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
             Self::PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
             Self::NextBlockHash(ref e) =>
@@ -84,7 +85,8 @@ impl fmt::Display for GetBlockchainInfoError {
             Self::Chain(ref e) => write_err!(f, "conversion of the `chain` field failed"; e),
             Self::BestBlockHash(ref e) =>
                 write_err!(f, "conversion of the `best_block_hash` field failed"; e),
-            Self::ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
         }
     }
 }
@@ -118,7 +120,8 @@ impl fmt::Display for GetBlockHeaderError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Hex(ref e) => write_err!(f, "conversion of hex data to bytes failed"; e),
-            Self::Consensus(ref e) => write_err!(f, "consensus decoding of bytes to header failed"; e),
+            Self::Consensus(ref e) =>
+                write_err!(f, "consensus decoding of bytes to header failed"; e),
         }
     }
 }
@@ -157,9 +160,11 @@ impl fmt::Display for GetBlockHeaderVerboseError {
         match *self {
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
             Self::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
-            Self::MerkleRoot(ref e) => write_err!(f, "conversion of the `merkle_root` field failed"; e),
+            Self::MerkleRoot(ref e) =>
+                write_err!(f, "conversion of the `merkle_root` field failed"; e),
             Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            Self::ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
             Self::PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
             Self::NextBlockHash(ref e) =>
@@ -200,7 +205,8 @@ impl fmt::Display for GetBlockStatsError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
-            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::BlockHash(ref e) =>
+                write_err!(f, "conversion of the `block_hash` field failed"; e),
         }
     }
 }
@@ -375,7 +381,8 @@ impl fmt::Display for MempoolEntryFeesError {
             Self::Base(ref e) => write_err!(f, "conversion of the `base` field failed"; e),
             Self::Modified(ref e) => write_err!(f, "conversion of the `modified` field failed"; e),
             Self::Ancestor(ref e) => write_err!(f, "conversion of the `ancestor` field failed"; e),
-            Self::Descendant(ref e) => write_err!(f, "conversion of the `descendant` field failed"; e),
+            Self::Descendant(ref e) =>
+                write_err!(f, "conversion of the `descendant` field failed"; e),
         }
     }
 }
@@ -450,7 +457,8 @@ impl fmt::Display for GetTxOutError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
-            Self::BestBlock(ref e) => write_err!(f, "conversion of the `beast_block` field failed"; e),
+            Self::BestBlock(ref e) =>
+                write_err!(f, "conversion of the `beast_block` field failed"; e),
             Self::Value(ref e) => write_err!(f, "conversion of the `value` field failed"; e),
             Self::ScriptBuf(ref e) =>
                 write_err!(f, "conversion of the `ScriptPubkey` hex to a `ScriptBuf` failed"; e),
@@ -492,8 +500,10 @@ impl fmt::Display for GetTxOutSetInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
-            Self::BestBlock(ref e) => write_err!(f, "conversion of the `best_block` field failed"; e),
-            Self::TotalAmount(ref e) => write_err!(f, "conversion of the `total_amount` field failed"; e),
+            Self::BestBlock(ref e) =>
+                write_err!(f, "conversion of the `best_block` field failed"; e),
+            Self::TotalAmount(ref e) =>
+                write_err!(f, "conversion of the `total_amount` field failed"; e),
         }
     }
 }

@@ -60,8 +60,10 @@ impl fmt::Display for GetAddressInfoError {
             Self::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
             Self::Pubkey(ref e) => write_err!(f, "conversion of the `pubkey` failed"; e),
             Self::Embedded(ref e) => write_err!(f, "conversion of the `embedded` field failed"; e),
-            Self::HdKeyPath(ref e) => write_err!(f, "conversion of the `hd_key_path` field failed"; e),
-            Self::HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
+            Self::HdKeyPath(ref e) =>
+                write_err!(f, "conversion of the `hd_key_path` field failed"; e),
+            Self::HdSeedId(ref e) =>
+                write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
             Self::HdMasterFingerprint(ref e) =>
                 write_err!(f, "conversion of the `hd_master_fingerprint` field failed"; e),
         }

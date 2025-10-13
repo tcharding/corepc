@@ -33,7 +33,8 @@ impl fmt::Display for DecodePsbtError {
             Self::Unknown(ref e) =>
                 write_err!(f, "conversion of one the map items in the `unknown` field failed"; e),
             Self::Inputs(ref e) => write_err!(f, "conversion of one of the PSBT inputs failed"; e),
-            Self::Outputs(ref e) => write_err!(f, "conversion of one of the PSBT outputs failed"; e),
+            Self::Outputs(ref e) =>
+                write_err!(f, "conversion of one of the PSBT outputs failed"; e),
         }
     }
 }
@@ -172,7 +173,8 @@ impl fmt::Display for DecodeScriptError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            Self::Addresses(ref e) => write_err!(f, "conversion of the `addresses` field failed"; e),
+            Self::Addresses(ref e) =>
+                write_err!(f, "conversion of the `addresses` field failed"; e),
             Self::P2sh(ref e) => write_err!(f, "conversion of the `p2sh` field failed"; e),
         }
     }
@@ -263,7 +265,8 @@ impl fmt::Display for GetRawTransactionVerboseError {
                 write_err!(f, "conversion of one of the transaction inputs failed"; e),
             Self::Outputs(ref e) =>
                 write_err!(f, "conversion of one of the transaction outputs failed"; e),
-            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::BlockHash(ref e) =>
+                write_err!(f, "conversion of the `block_hash` field failed"; e),
         }
     }
 }
@@ -320,7 +323,8 @@ impl fmt::Display for SignFailError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            Self::ScriptSig(ref e) => write_err!(f, "conversion of the `script_sig` field failed"; e),
+            Self::ScriptSig(ref e) =>
+                write_err!(f, "conversion of the `script_sig` field failed"; e),
         }
     }
 }

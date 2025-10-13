@@ -19,7 +19,8 @@ impl fmt::Display for GetBalancesError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Mine(ref e) => write_err!(f, "conversion of the `mine` field failed"; e),
-            Self::WatchOnly(ref e) => write_err!(f, "conversion of the `watchonly` field failed"; e),
+            Self::WatchOnly(ref e) =>
+                write_err!(f, "conversion of the `watchonly` field failed"; e),
         }
     }
 }

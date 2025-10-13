@@ -102,8 +102,10 @@ impl fmt::Display for GetTxOutSetInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
-            Self::BestBlock(ref e) => write_err!(f, "conversion of the `beast_block` field failed"; e),
-            Self::TotalAmount(ref e) => write_err!(f, "conversion of the `total_amount` field failed"; e),
+            Self::BestBlock(ref e) =>
+                write_err!(f, "conversion of the `beast_block` field failed"; e),
+            Self::TotalAmount(ref e) =>
+                write_err!(f, "conversion of the `total_amount` field failed"; e),
         }
     }
 }
@@ -137,7 +139,8 @@ pub enum LoadTxOutSetError {
 impl fmt::Display for LoadTxOutSetError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            Self::CoinsLoaded(ref e) => write_err!(f, "conversion of the `coins_loaded` field failed"; e),
+            Self::CoinsLoaded(ref e) =>
+                write_err!(f, "conversion of the `coins_loaded` field failed"; e),
             Self::TipHash(ref e) => write_err!(f, "conversion of the `tip_hash` field failed"; e),
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
         }

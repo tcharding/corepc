@@ -39,7 +39,8 @@ impl fmt::Display for GetBlockVerboseOneError {
             Self::Tx(ref e) => write_err!(f, "conversion of the `tx` field failed"; e),
             Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
             Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            Self::ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
             Self::PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
             Self::NextBlockHash(ref e) =>
@@ -96,7 +97,8 @@ impl fmt::Display for GetBlockchainInfoError {
                 write_err!(f, "conversion of the `best_block_hash` field failed"; e),
             Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
             Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            Self::ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
             Self::SignetChallenge(ref e) =>
                 write_err!(f, "conversion of the `signet_challenge` field failed"; e),
         }
@@ -139,7 +141,8 @@ impl fmt::Display for GetBlockHeaderError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Self::Hex(ref e) => write_err!(f, "conversion of hex data to bytes failed"; e),
-            Self::Consensus(ref e) => write_err!(f, "consensus decoding of bytes to header failed"; e),
+            Self::Consensus(ref e) =>
+                write_err!(f, "consensus decoding of bytes to header failed"; e),
         }
     }
 }
@@ -180,10 +183,12 @@ impl fmt::Display for GetBlockHeaderVerboseError {
         match *self {
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
             Self::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
-            Self::MerkleRoot(ref e) => write_err!(f, "conversion of the `merkle_root` field failed"; e),
+            Self::MerkleRoot(ref e) =>
+                write_err!(f, "conversion of the `merkle_root` field failed"; e),
             Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
             Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            Self::ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
             Self::PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
             Self::NextBlockHash(ref e) =>
@@ -293,9 +298,12 @@ impl fmt::Display for GetDescriptorActivityError {
             Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
             Self::Script(ref e) => write_err!(f, "conversion of the script `hex` field failed"; e),
             Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            Self::ActivityEntry(ref e) => write_err!(f, "conversion of an activity entry failed"; e),
-            Self::PrevoutSpk(ref e) => write_err!(f, "conversion of the `prevout_spk` field failed"; e),
-            Self::OutputSpk(ref e) => write_err!(f, "conversion of the `output_spk` field failed"; e),
+            Self::ActivityEntry(ref e) =>
+                write_err!(f, "conversion of an activity entry failed"; e),
+            Self::PrevoutSpk(ref e) =>
+                write_err!(f, "conversion of the `prevout_spk` field failed"; e),
+            Self::OutputSpk(ref e) =>
+                write_err!(f, "conversion of the `output_spk` field failed"; e),
         }
     }
 }

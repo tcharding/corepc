@@ -121,8 +121,10 @@ impl fmt::Display for GetAddressInfoError {
             Self::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
             Self::Pubkey(ref e) => write_err!(f, "conversion of the `pubkey` failed"; e),
             Self::Embedded(ref e) => write_err!(f, "conversion of the `embedded` field failed"; e),
-            Self::HdKeyPath(ref e) => write_err!(f, "conversion of the `hd_key_path` field failed"; e),
-            Self::HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
+            Self::HdKeyPath(ref e) =>
+                write_err!(f, "conversion of the `hd_key_path` field failed"; e),
+            Self::HdSeedId(ref e) =>
+                write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
         }
     }
 }
@@ -247,7 +249,8 @@ impl fmt::Display for GetTransactionError {
             Self::Numeric(ref e) => write_err!(f, "numeric"; e),
             Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
             Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
-            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::BlockHash(ref e) =>
+                write_err!(f, "conversion of the `block_hash` field failed"; e),
             Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
             Self::WalletConflicts(ref e) =>
                 write_err!(f, "conversion of the `wallet_conflicts` field failed"; e),
@@ -335,8 +338,10 @@ impl fmt::Display for GetWalletInfoError {
                 write_err!(f, "conversion of the `unconfirmed_balance` field failed"; e),
             Self::ImmatureBalance(ref e) =>
                 write_err!(f, "conversion of the `immature_balance` field failed"; e),
-            Self::PayTxFee(ref e) => write_err!(f, "conversion of the `pay_tx_fee` field failed"; e),
-            Self::HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
+            Self::PayTxFee(ref e) =>
+                write_err!(f, "conversion of the `pay_tx_fee` field failed"; e),
+            Self::HdSeedId(ref e) =>
+                write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
         }
     }
 }
@@ -469,7 +474,8 @@ impl fmt::Display for ListSinceBlockError {
             Self::Transactions(ref e) =>
                 write_err!(f, "conversion of the `transactions` field failed"; e),
             Self::Removed(ref e) => write_err!(f, "conversion of the `removed` field failed"; e),
-            Self::LastBlock(ref e) => write_err!(f, "conversion of the `last_block` field failed"; e),
+            Self::LastBlock(ref e) =>
+                write_err!(f, "conversion of the `last_block` field failed"; e),
         }
     }
 }
@@ -509,7 +515,8 @@ impl fmt::Display for TransactionItemError {
             Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
             Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
             Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
-            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::BlockHash(ref e) =>
+                write_err!(f, "conversion of the `block_hash` field failed"; e),
             Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
         }
     }

@@ -143,7 +143,8 @@ impl fmt::Display for PartialSignatureError {
         match *self {
             Self::PublicKey(ref e) =>
                 write_err!(f, "partial sigs key-value pair parse pubkey failed"; e),
-            Self::Signature(ref e) => write_err!(f, "partial sigs key-value pair parse sig failed"; e),
+            Self::Signature(ref e) =>
+                write_err!(f, "partial sigs key-value pair parse sig failed"; e),
         }
     }
 }

@@ -30,7 +30,8 @@ impl fmt::Display for GetBlockchainInfoError {
             Self::BestBlockHash(ref e) => {
                 write_err!(f, "conversion of the `best_block_hash` field failed"; e)
             }
-            Self::ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
         }
     }
 }
@@ -169,8 +170,10 @@ impl fmt::Display for MempoolEntryFeesError {
         match *self {
             Self::Base(ref e) => write_err!(f, "conversion of the `base` field failed"; e),
             Self::Modified(ref e) => write_err!(f, "conversion of the `modified` field failed"; e),
-            Self::MempoolEntry(ref e) => write_err!(f, "conversion of the `ancestor` field failed"; e),
-            Self::Descendant(ref e) => write_err!(f, "conversion of the `descendant` field failed"; e),
+            Self::MempoolEntry(ref e) =>
+                write_err!(f, "conversion of the `ancestor` field failed"; e),
+            Self::Descendant(ref e) =>
+                write_err!(f, "conversion of the `descendant` field failed"; e),
         }
     }
 }
