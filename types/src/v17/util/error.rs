@@ -16,11 +16,9 @@ pub enum CreateMultisigError {
 
 impl fmt::Display for CreateMultisigError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use CreateMultisigError as E;
-
         match *self {
-            E::Address(ref e) => write!(f, "conversion of the `address` field failed: {}", e),
-            E::RedeemScript(ref e) =>
+            Self::Address(ref e) => write!(f, "conversion of the `address` field failed: {}", e),
+            Self::RedeemScript(ref e) =>
                 write!(f, "conversion of the `redeem_script` field failed: {}", e),
         }
     }
@@ -29,11 +27,9 @@ impl fmt::Display for CreateMultisigError {
 #[cfg(feature = "std")]
 impl std::error::Error for CreateMultisigError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use CreateMultisigError as E;
-
         match *self {
-            E::Address(ref e) => Some(e),
-            E::RedeemScript(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::RedeemScript(ref e) => Some(e),
         }
     }
 }
@@ -57,21 +53,19 @@ pub enum ValidateAddressError {
 
 impl fmt::Display for ValidateAddressError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ValidateAddressError as E;
-
         match *self {
-            E::Address(ref e) => write!(f, "conversion of the `address` field failed: {}", e),
-            E::ScriptPubkey(ref e) =>
+            Self::Address(ref e) => write!(f, "conversion of the `address` field failed: {}", e),
+            Self::ScriptPubkey(ref e) =>
                 write!(f, "conversion of the `script_pubkey` field failed: {}", e),
-            E::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
-            E::WitnessVersion(ref e) =>
+            Self::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
+            Self::WitnessVersion(ref e) =>
                 write!(f, "conversion of the `witness_version` field failed: {}", e),
-            E::WitnessProgramBytes(ref e) => write!(
+            Self::WitnessProgramBytes(ref e) => write!(
                 f,
                 "conversion of the `witness_program` field hex string to bytes failed: {}",
                 e
             ),
-            E::WitnessProgram(ref e) =>
+            Self::WitnessProgram(ref e) =>
                 write!(f, "conversion of the `witness_program` field failed: {}", e),
         }
     }
@@ -80,15 +74,13 @@ impl fmt::Display for ValidateAddressError {
 #[cfg(feature = "std")]
 impl std::error::Error for ValidateAddressError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ValidateAddressError as E;
-
         match *self {
-            E::Address(ref e) => Some(e),
-            E::ScriptPubkey(ref e) => Some(e),
-            E::WitnessVersionValue(_) => None,
-            E::WitnessVersion(ref e) => Some(e),
-            E::WitnessProgramBytes(ref e) => Some(e),
-            E::WitnessProgram(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::ScriptPubkey(ref e) => Some(e),
+            Self::WitnessVersionValue(_) => None,
+            Self::WitnessVersion(ref e) => Some(e),
+            Self::WitnessProgramBytes(ref e) => Some(e),
+            Self::WitnessProgram(ref e) => Some(e),
         }
     }
 }

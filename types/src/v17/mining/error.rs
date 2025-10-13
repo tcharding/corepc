@@ -27,16 +27,14 @@ pub enum GetBlockTemplateError {
 
 impl fmt::Display for GetBlockTemplateError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBlockTemplateError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::PreviousBlockHash(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
-            E::Transactions(ref e) =>
+            Self::Transactions(ref e) =>
                 write_err!(f, "conversion of the `transactions` field failed"; e),
-            E::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            E::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
+            Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
+            Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
         }
     }
 }
@@ -44,14 +42,12 @@ impl fmt::Display for GetBlockTemplateError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetBlockTemplateError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBlockTemplateError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::PreviousBlockHash(ref e) => Some(e),
-            E::Transactions(ref e) => Some(e),
-            E::Target(ref e) => Some(e),
-            E::Bits(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::PreviousBlockHash(ref e) => Some(e),
+            Self::Transactions(ref e) => Some(e),
+            Self::Target(ref e) => Some(e),
+            Self::Bits(ref e) => Some(e),
         }
     }
 }
@@ -77,14 +73,12 @@ pub enum BlockTemplateTransactionError {
 
 impl fmt::Display for BlockTemplateTransactionError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use BlockTemplateTransactionError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Data(ref e) => write_err!(f, "conversion of the `data` field failed"; e),
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Data(ref e) => write_err!(f, "conversion of the `data` field failed"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }
 }
@@ -92,14 +86,12 @@ impl fmt::Display for BlockTemplateTransactionError {
 #[cfg(feature = "std")]
 impl std::error::Error for BlockTemplateTransactionError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use BlockTemplateTransactionError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Data(ref e) => Some(e),
-            E::Txid(ref e) => Some(e),
-            E::Hash(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Data(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::Hash(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
         }
     }
 }

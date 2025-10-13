@@ -77,11 +77,9 @@ pub enum NumericError {
 
 impl fmt::Display for NumericError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use NumericError::*;
-
         match *self {
-            Negative{ ref field, value } => write!(f, "expected an unsigned numeric value however the value was negative (field name: {} value: {})", field, value),
-            Overflow { ref field, value } => write!(f, "a value larger than `u32::MAX` was unexpectedly encountered (field name: {} Value: {})", field, value),
+            Self::Negative{ ref field, value } => write!(f, "expected an unsigned numeric value however the value was negative (field name: {} value: {})", field, value),
+            Self::Overflow { ref field, value } => write!(f, "a value larger than `u32::MAX` was unexpectedly encountered (field name: {} Value: {})", field, value),
         }
     }
 }
@@ -222,11 +220,10 @@ pub enum ScriptPubkeyError {
 
 impl fmt::Display for ScriptPubkeyError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ScriptPubkeyError::*;
         match *self {
-            Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            Addresses(ref e) => write_err!(f, "conversion of the `addresses` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::Addresses(ref e) => write_err!(f, "conversion of the `addresses` field failed"; e),
         }
     }
 }
@@ -234,11 +231,10 @@ impl fmt::Display for ScriptPubkeyError {
 #[cfg(feature = "std")]
 impl std::error::Error for ScriptPubkeyError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ScriptPubkeyError::*;
         match *self {
-            Hex(ref e) => Some(e),
-            Address(ref e) => Some(e),
-            Addresses(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::Addresses(ref e) => Some(e),
         }
     }
 }

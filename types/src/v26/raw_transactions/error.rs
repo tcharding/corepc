@@ -21,11 +21,9 @@ pub enum DescriptorProcessPsbtError {
 
 impl fmt::Display for DescriptorProcessPsbtError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use DescriptorProcessPsbtError as E;
-
         match *self {
-            E::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
         }
     }
 }
@@ -33,11 +31,9 @@ impl fmt::Display for DescriptorProcessPsbtError {
 #[cfg(feature = "std")]
 impl std::error::Error for DescriptorProcessPsbtError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use DescriptorProcessPsbtError as E;
-
         match *self {
-            E::Psbt(ref e) => Some(e),
-            E::Hex(ref e) => Some(e),
+            Self::Psbt(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
         }
     }
 }
@@ -55,14 +51,12 @@ pub enum SubmitPackageError {
 
 impl fmt::Display for SubmitPackageError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use SubmitPackageError as E;
-
         match *self {
-            E::TxResultKey(ref e) =>
+            Self::TxResultKey(ref e) =>
                 write_err!(f, "conversion of key from `tx_results` map failed"; e),
-            E::TxResultValue(ref e) =>
+            Self::TxResultValue(ref e) =>
                 write_err!(f, "conversion of value from `tx_results` map failed"; e),
-            E::ReplaceTransactions(ref e) =>
+            Self::ReplaceTransactions(ref e) =>
                 write_err!(f, "conversion of a list item from `replaced_transactions` field failed"; e),
         }
     }
@@ -71,12 +65,10 @@ impl fmt::Display for SubmitPackageError {
 #[cfg(feature = "std")]
 impl std::error::Error for SubmitPackageError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use SubmitPackageError as E;
-
         match *self {
-            E::TxResultKey(ref e) => Some(e),
-            E::TxResultValue(ref e) => Some(e),
-            E::ReplaceTransactions(ref e) => Some(e),
+            Self::TxResultKey(ref e) => Some(e),
+            Self::TxResultValue(ref e) => Some(e),
+            Self::ReplaceTransactions(ref e) => Some(e),
         }
     }
 }
@@ -96,14 +88,12 @@ pub enum SubmitPackageTxResultError {
 
 impl fmt::Display for SubmitPackageTxResultError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use SubmitPackageTxResultError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::OtherWtxid(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::OtherWtxid(ref e) =>
                 write_err!(f, "conversion of the `other_wtxid` field failed"; e),
-            E::Fees(ref e) => write_err!(f, "conversion of the `fees` field failed"; e),
+            Self::Fees(ref e) => write_err!(f, "conversion of the `fees` field failed"; e),
         }
     }
 }
@@ -111,13 +101,11 @@ impl fmt::Display for SubmitPackageTxResultError {
 #[cfg(feature = "std")]
 impl std::error::Error for SubmitPackageTxResultError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use SubmitPackageTxResultError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Txid(ref e) => Some(e),
-            E::OtherWtxid(ref e) => Some(e),
-            E::Fees(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::OtherWtxid(ref e) => Some(e),
+            Self::Fees(ref e) => Some(e),
         }
     }
 }
@@ -139,13 +127,11 @@ pub enum SubmitPackageTxResultFeesError {
 
 impl fmt::Display for SubmitPackageTxResultFeesError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use SubmitPackageTxResultFeesError as E;
-
         match *self {
-            E::BaseFee(ref e) => write_err!(f, "conversion of the `base_fee` field failed"; e),
-            E::EffectiveFeeRate(ref e) =>
+            Self::BaseFee(ref e) => write_err!(f, "conversion of the `base_fee` field failed"; e),
+            Self::EffectiveFeeRate(ref e) =>
                 write_err!(f, "conversion of the `effective_fee_rate` field failed"; e),
-            E::EffectiveIncludes(ref e) => write_err!(f, "effective_includes"; e),
+            Self::EffectiveIncludes(ref e) => write_err!(f, "effective_includes"; e),
         }
     }
 }
@@ -153,12 +139,10 @@ impl fmt::Display for SubmitPackageTxResultFeesError {
 #[cfg(feature = "std")]
 impl std::error::Error for SubmitPackageTxResultFeesError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use SubmitPackageTxResultFeesError as E;
-
         match *self {
-            E::BaseFee(ref e) => Some(e),
-            E::EffectiveFeeRate(ref e) => Some(e),
-            E::EffectiveIncludes(ref e) => Some(e),
+            Self::BaseFee(ref e) => Some(e),
+            Self::EffectiveFeeRate(ref e) => Some(e),
+            Self::EffectiveIncludes(ref e) => Some(e),
         }
     }
 }

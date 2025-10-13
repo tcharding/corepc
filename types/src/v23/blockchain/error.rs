@@ -17,11 +17,9 @@ pub enum GetDeploymentInfoError {
 
 impl fmt::Display for GetDeploymentInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetDeploymentInfoError as E;
-
         match *self {
-            E::BlockHash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
-            E::Deployment(ref e) =>
+            Self::BlockHash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
+            Self::Deployment(ref e) =>
                 write_err!(f, "conversion of the `deployments` field failed"; e),
         }
     }
@@ -30,11 +28,9 @@ impl fmt::Display for GetDeploymentInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetDeploymentInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetDeploymentInfoError as E;
-
         match *self {
-            E::BlockHash(ref e) => Some(e),
-            E::Deployment(ref e) => Some(e),
+            Self::BlockHash(ref e) => Some(e),
+            Self::Deployment(ref e) => Some(e),
         }
     }
 }

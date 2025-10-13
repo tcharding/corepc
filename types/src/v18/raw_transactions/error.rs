@@ -20,13 +20,11 @@ pub enum AnalyzePsbtError {
 
 impl fmt::Display for AnalyzePsbtError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use AnalyzePsbtError as E;
-
         match *self {
-            E::Inputs(ref e) => write_err!(f, "conversion of one of the `inputs` failed"; e),
-            E::EstimatedFeeRate(ref e) =>
+            Self::Inputs(ref e) => write_err!(f, "conversion of one of the `inputs` failed"; e),
+            Self::EstimatedFeeRate(ref e) =>
                 write_err!(f, "conversion of the `estimated_fee_rate` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }
 }
@@ -34,12 +32,10 @@ impl fmt::Display for AnalyzePsbtError {
 #[cfg(feature = "std")]
 impl std::error::Error for AnalyzePsbtError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use AnalyzePsbtError as E;
-
         match *self {
-            E::Inputs(ref e) => Some(e),
-            E::EstimatedFeeRate(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
+            Self::Inputs(ref e) => Some(e),
+            Self::EstimatedFeeRate(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
         }
     }
 }
@@ -59,14 +55,12 @@ pub enum AnalyzePsbtInputMissingError {
 
 impl fmt::Display for AnalyzePsbtInputMissingError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use AnalyzePsbtInputMissingError as E;
-
         match *self {
-            E::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
-            E::Signatures(ref e) => write_err!(f, "conversion of the `signatures` field failed"; e),
-            E::RedeemScript(ref e) =>
+            Self::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
+            Self::Signatures(ref e) => write_err!(f, "conversion of the `signatures` field failed"; e),
+            Self::RedeemScript(ref e) =>
                 write_err!(f, "conversion of the `redeem_script` field failed"; e),
-            E::WitnessScript(ref e) =>
+            Self::WitnessScript(ref e) =>
                 write_err!(f, "conversion of the `witness_script` field failed"; e),
         }
     }
@@ -75,13 +69,11 @@ impl fmt::Display for AnalyzePsbtInputMissingError {
 #[cfg(feature = "std")]
 impl std::error::Error for AnalyzePsbtInputMissingError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use AnalyzePsbtInputMissingError as E;
-
         match *self {
-            E::Pubkeys(ref e) => Some(e),
-            E::Signatures(ref e) => Some(e),
-            E::RedeemScript(ref e) => Some(e),
-            E::WitnessScript(ref e) => Some(e),
+            Self::Pubkeys(ref e) => Some(e),
+            Self::Signatures(ref e) => Some(e),
+            Self::RedeemScript(ref e) => Some(e),
+            Self::WitnessScript(ref e) => Some(e),
         }
     }
 }

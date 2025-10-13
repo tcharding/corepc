@@ -21,11 +21,9 @@ pub enum AddMultisigAddressError {
 
 impl fmt::Display for AddMultisigAddressError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use AddMultisigAddressError::*;
-
         match *self {
-            Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            RedeemScript(ref e) =>
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::RedeemScript(ref e) =>
                 write_err!(f, "conversion of the `redeem_script` field failed"; e),
         }
     }
@@ -34,11 +32,9 @@ impl fmt::Display for AddMultisigAddressError {
 #[cfg(feature = "std")]
 impl std::error::Error for AddMultisigAddressError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use AddMultisigAddressError::*;
-
         match *self {
-            Address(ref e) => Some(e),
-            RedeemScript(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::RedeemScript(ref e) => Some(e),
         }
     }
 }
@@ -56,13 +52,11 @@ pub enum BumpFeeError {
 
 impl fmt::Display for BumpFeeError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use BumpFeeError as E;
-
         match *self {
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::OriginalFee(ref e) =>
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::OriginalFee(ref e) =>
                 write_err!(f, "conversion of the `original_fee` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }
 }
@@ -70,12 +64,10 @@ impl fmt::Display for BumpFeeError {
 #[cfg(feature = "std")]
 impl std::error::Error for BumpFeeError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use BumpFeeError as E;
-
         match *self {
-            E::Txid(ref e) => Some(e),
-            E::OriginalFee(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::OriginalFee(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
         }
     }
 }
@@ -113,26 +105,24 @@ pub enum GetAddressInfoError {
 
 impl fmt::Display for GetAddressInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetAddressInfoError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            E::ScriptPubkey(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::ScriptPubkey(ref e) =>
                 write_err!(f, "conversion of the `script_pubkey` field failed"; e),
-            E::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
-            E::WitnessVersion(ref e) =>
+            Self::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
+            Self::WitnessVersion(ref e) =>
                 write_err!(f, "conversion of the `witness_version` field failed"; e),
-            E::WitnessProgramBytes(ref e) =>
+            Self::WitnessProgramBytes(ref e) =>
                 write_err!(f, "conversion of the `witness_program` field hex string to bytes failed"; e),
-            E::WitnessProgram(ref e) =>
+            Self::WitnessProgram(ref e) =>
                 write_err!(f, "conversion of the `witness_program` field failed"; e),
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
-            E::Pubkey(ref e) => write_err!(f, "conversion of the `pubkey` failed"; e),
-            E::Embedded(ref e) => write_err!(f, "conversion of the `embedded` field failed"; e),
-            E::HdKeyPath(ref e) => write_err!(f, "conversion of the `hd_key_path` field failed"; e),
-            E::HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
+            Self::Pubkey(ref e) => write_err!(f, "conversion of the `pubkey` failed"; e),
+            Self::Embedded(ref e) => write_err!(f, "conversion of the `embedded` field failed"; e),
+            Self::HdKeyPath(ref e) => write_err!(f, "conversion of the `hd_key_path` field failed"; e),
+            Self::HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
         }
     }
 }
@@ -140,22 +130,20 @@ impl fmt::Display for GetAddressInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetAddressInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetAddressInfoError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Address(ref e) => Some(e),
-            E::ScriptPubkey(ref e) => Some(e),
-            E::WitnessVersionValue(_) => None,
-            E::WitnessVersion(ref e) => Some(e),
-            E::WitnessProgramBytes(ref e) => Some(e),
-            E::WitnessProgram(ref e) => Some(e),
-            E::Hex(ref e) => Some(e),
-            E::Pubkeys(ref e) => Some(e),
-            E::Pubkey(ref e) => Some(e),
-            E::Embedded(ref e) => Some(e),
-            E::HdKeyPath(ref e) => Some(e),
-            E::HdSeedId(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::ScriptPubkey(ref e) => Some(e),
+            Self::WitnessVersionValue(_) => None,
+            Self::WitnessVersion(ref e) => Some(e),
+            Self::WitnessProgramBytes(ref e) => Some(e),
+            Self::WitnessProgram(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Pubkeys(ref e) => Some(e),
+            Self::Pubkey(ref e) => Some(e),
+            Self::Embedded(ref e) => Some(e),
+            Self::HdKeyPath(ref e) => Some(e),
+            Self::HdSeedId(ref e) => Some(e),
         }
     }
 }
@@ -191,23 +179,21 @@ pub enum GetAddressInfoEmbeddedError {
 
 impl fmt::Display for GetAddressInfoEmbeddedError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetAddressInfoEmbeddedError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            E::ScriptPubkey(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::ScriptPubkey(ref e) =>
                 write_err!(f, "conversion of the `script_pubkey` field failed"; e),
-            E::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
-            E::WitnessVersion(ref e) =>
+            Self::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
+            Self::WitnessVersion(ref e) =>
                 write_err!(f, "conversion of the `witness_version` field failed"; e),
-            E::WitnessProgramBytes(ref e) =>
+            Self::WitnessProgramBytes(ref e) =>
                 write_err!(f, "conversion of the `witness_program` field hex string to bytes failed"; e),
-            E::WitnessProgram(ref e) =>
+            Self::WitnessProgram(ref e) =>
                 write_err!(f, "conversion of the `witness_program` field failed"; e),
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
-            E::Pubkey(ref e) => write_err!(f, "conversion of the `pubkey` failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
+            Self::Pubkey(ref e) => write_err!(f, "conversion of the `pubkey` failed"; e),
         }
     }
 }
@@ -215,19 +201,17 @@ impl fmt::Display for GetAddressInfoEmbeddedError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetAddressInfoEmbeddedError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetAddressInfoEmbeddedError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Address(ref e) => Some(e),
-            E::ScriptPubkey(ref e) => Some(e),
-            E::WitnessVersionValue(_) => None,
-            E::WitnessVersion(ref e) => Some(e),
-            E::WitnessProgramBytes(ref e) => Some(e),
-            E::WitnessProgram(ref e) => Some(e),
-            E::Hex(ref e) => Some(e),
-            E::Pubkeys(ref e) => Some(e),
-            E::Pubkey(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::ScriptPubkey(ref e) => Some(e),
+            Self::WitnessVersionValue(_) => None,
+            Self::WitnessVersion(ref e) => Some(e),
+            Self::WitnessProgramBytes(ref e) => Some(e),
+            Self::WitnessProgram(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Pubkeys(ref e) => Some(e),
+            Self::Pubkey(ref e) => Some(e),
         }
     }
 }
@@ -259,18 +243,16 @@ pub enum GetTransactionError {
 
 impl fmt::Display for GetTransactionError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetTransactionError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
-            E::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::WalletConflicts(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::WalletConflicts(ref e) =>
                 write_err!(f, "conversion of the `wallet_conflicts` field failed"; e),
-            E::Tx(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Details(ref e) => write_err!(f, "conversion of the `details` field failed"; e),
+            Self::Tx(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Details(ref e) => write_err!(f, "conversion of the `details` field failed"; e),
         }
     }
 }
@@ -278,17 +260,15 @@ impl fmt::Display for GetTransactionError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetTransactionError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetTransactionError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Amount(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
-            E::BlockHash(ref e) => Some(e),
-            E::Txid(ref e) => Some(e),
-            E::WalletConflicts(ref e) => Some(e),
-            E::Tx(ref e) => Some(e),
-            E::Details(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
+            Self::BlockHash(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::WalletConflicts(ref e) => Some(e),
+            Self::Tx(ref e) => Some(e),
+            Self::Details(ref e) => Some(e),
         }
     }
 }
@@ -310,12 +290,10 @@ pub enum GetTransactionDetailError {
 
 impl fmt::Display for GetTransactionDetailError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetTransactionDetailError::*;
-
         match *self {
-            Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }
 }
@@ -323,12 +301,10 @@ impl fmt::Display for GetTransactionDetailError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetTransactionDetailError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetTransactionDetailError as E;
-
         match *self {
-            E::Address(ref e) => Some(e),
-            E::Amount(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
         }
     }
 }
@@ -352,17 +328,15 @@ pub enum GetWalletInfoError {
 
 impl fmt::Display for GetWalletInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetWalletInfoError::*;
-
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            Balance(ref e) => write_err!(f, "conversion of the `balance` field failed"; e),
-            UnconfirmedBalance(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Balance(ref e) => write_err!(f, "conversion of the `balance` field failed"; e),
+            Self::UnconfirmedBalance(ref e) =>
                 write_err!(f, "conversion of the `unconfirmed_balance` field failed"; e),
-            ImmatureBalance(ref e) =>
+            Self::ImmatureBalance(ref e) =>
                 write_err!(f, "conversion of the `immature_balance` field failed"; e),
-            PayTxFee(ref e) => write_err!(f, "conversion of the `pay_tx_fee` field failed"; e),
-            HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
+            Self::PayTxFee(ref e) => write_err!(f, "conversion of the `pay_tx_fee` field failed"; e),
+            Self::HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
         }
     }
 }
@@ -370,15 +344,13 @@ impl fmt::Display for GetWalletInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetWalletInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetWalletInfoError::*;
-
         match *self {
-            Numeric(ref e) => Some(e),
-            Balance(ref e) => Some(e),
-            UnconfirmedBalance(ref e) => Some(e),
-            ImmatureBalance(ref e) => Some(e),
-            PayTxFee(ref e) => Some(e),
-            HdSeedId(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Balance(ref e) => Some(e),
+            Self::UnconfirmedBalance(ref e) => Some(e),
+            Self::ImmatureBalance(ref e) => Some(e),
+            Self::PayTxFee(ref e) => Some(e),
+            Self::HdSeedId(ref e) => Some(e),
         }
     }
 }
@@ -398,11 +370,9 @@ pub enum ListAddressGroupingsError {
 
 impl fmt::Display for ListAddressGroupingsError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ListAddressGroupingsError::*;
-
         match *self {
-            Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
         }
     }
 }
@@ -410,11 +380,9 @@ impl fmt::Display for ListAddressGroupingsError {
 #[cfg(feature = "std")]
 impl std::error::Error for ListAddressGroupingsError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ListAddressGroupingsError::*;
-
         match *self {
-            Address(ref e) => Some(e),
-            Amount(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
         }
     }
 }
@@ -430,11 +398,9 @@ pub enum ListLockUnspentItemError {
 
 impl fmt::Display for ListLockUnspentItemError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ListLockUnspentItemError::*;
-
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
         }
     }
 }
@@ -442,11 +408,9 @@ impl fmt::Display for ListLockUnspentItemError {
 #[cfg(feature = "std")]
 impl std::error::Error for ListLockUnspentItemError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ListLockUnspentItemError::*;
-
         match *self {
-            Numeric(ref e) => Some(e),
-            Txid(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
         }
     }
 }
@@ -468,12 +432,10 @@ pub enum ListReceivedByAddressError {
 
 impl fmt::Display for ListReceivedByAddressError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ListReceivedByAddressError::*;
-
         match *self {
-            Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            Txids(index, ref e) =>
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Txids(index, ref e) =>
                 write_err!(f, "conversion of the txid at index {} in the `txids` field failed", index; e),
         }
     }
@@ -482,12 +444,10 @@ impl fmt::Display for ListReceivedByAddressError {
 #[cfg(feature = "std")]
 impl std::error::Error for ListReceivedByAddressError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ListReceivedByAddressError::*;
-
         match *self {
-            Address(ref e) => Some(e),
-            Amount(ref e) => Some(e),
-            Txids(_, ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
+            Self::Txids(_, ref e) => Some(e),
         }
     }
 }
@@ -505,13 +465,11 @@ pub enum ListSinceBlockError {
 
 impl fmt::Display for ListSinceBlockError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ListSinceBlockError::*;
-
         match *self {
-            Transactions(ref e) =>
+            Self::Transactions(ref e) =>
                 write_err!(f, "conversion of the `transactions` field failed"; e),
-            Removed(ref e) => write_err!(f, "conversion of the `removed` field failed"; e),
-            LastBlock(ref e) => write_err!(f, "conversion of the `last_block` field failed"; e),
+            Self::Removed(ref e) => write_err!(f, "conversion of the `removed` field failed"; e),
+            Self::LastBlock(ref e) => write_err!(f, "conversion of the `last_block` field failed"; e),
         }
     }
 }
@@ -519,12 +477,10 @@ impl fmt::Display for ListSinceBlockError {
 #[cfg(feature = "std")]
 impl std::error::Error for ListSinceBlockError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ListSinceBlockError::*;
-
         match *self {
-            Transactions(ref e) => Some(e),
-            Removed(ref e) => Some(e),
-            LastBlock(ref e) => Some(e),
+            Self::Transactions(ref e) => Some(e),
+            Self::Removed(ref e) => Some(e),
+            Self::LastBlock(ref e) => Some(e),
         }
     }
 }
@@ -548,15 +504,13 @@ pub enum TransactionItemError {
 
 impl fmt::Display for TransactionItemError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use TransactionItemError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            E::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
-            E::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
         }
     }
 }
@@ -564,15 +518,13 @@ impl fmt::Display for TransactionItemError {
 #[cfg(feature = "std")]
 impl std::error::Error for TransactionItemError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use TransactionItemError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Address(ref e) => Some(e),
-            E::Amount(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
-            E::BlockHash(ref e) => Some(e),
-            E::Txid(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
+            Self::BlockHash(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
         }
     }
 }
@@ -602,18 +554,16 @@ pub enum ListUnspentItemError {
 
 impl fmt::Display for ListUnspentItemError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ListUnspentItemError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            E::ScriptPubkey(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::ScriptPubkey(ref e) =>
                 write_err!(f, "conversion of the `script_pubkey` field failed"; e),
-            E::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            E::RedeemScript(ref e) =>
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::RedeemScript(ref e) =>
                 write_err!(f, "conversion of the `redeem_script` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }
 }
@@ -621,16 +571,14 @@ impl fmt::Display for ListUnspentItemError {
 #[cfg(feature = "std")]
 impl std::error::Error for ListUnspentItemError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ListUnspentItemError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Txid(ref e) => Some(e),
-            E::Address(ref e) => Some(e),
-            E::ScriptPubkey(ref e) => Some(e),
-            E::Amount(ref e) => Some(e),
-            E::RedeemScript(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::ScriptPubkey(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
+            Self::RedeemScript(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
         }
     }
 }
@@ -652,12 +600,10 @@ pub enum WalletCreateFundedPsbtError {
 
 impl fmt::Display for WalletCreateFundedPsbtError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use WalletCreateFundedPsbtError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }
 }
@@ -665,12 +611,10 @@ impl fmt::Display for WalletCreateFundedPsbtError {
 #[cfg(feature = "std")]
 impl std::error::Error for WalletCreateFundedPsbtError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use WalletCreateFundedPsbtError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Psbt(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Psbt(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
         }
     }
 }

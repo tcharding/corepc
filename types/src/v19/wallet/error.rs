@@ -17,11 +17,9 @@ pub enum GetBalancesError {
 
 impl fmt::Display for GetBalancesError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBalancesError as E;
-
         match *self {
-            E::Mine(ref e) => write_err!(f, "conversion of the `mine` field failed"; e),
-            E::WatchOnly(ref e) => write_err!(f, "conversion of the `watchonly` field failed"; e),
+            Self::Mine(ref e) => write_err!(f, "conversion of the `mine` field failed"; e),
+            Self::WatchOnly(ref e) => write_err!(f, "conversion of the `watchonly` field failed"; e),
         }
     }
 }
@@ -29,11 +27,9 @@ impl fmt::Display for GetBalancesError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetBalancesError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBalancesError as E;
-
         match *self {
-            E::Mine(ref e) => Some(e),
-            E::WatchOnly(ref e) => Some(e),
+            Self::Mine(ref e) => Some(e),
+            Self::WatchOnly(ref e) => Some(e),
         }
     }
 }

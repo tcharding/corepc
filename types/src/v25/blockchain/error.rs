@@ -18,11 +18,9 @@ pub enum ScanBlocksStartError {
 
 impl fmt::Display for ScanBlocksStartError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ScanBlocksStartError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::RelevantBlocks(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::RelevantBlocks(ref e) =>
                 write_err!(f, "conversion of the `relevant_blocks` field failed"; e),
         }
     }
@@ -31,11 +29,9 @@ impl fmt::Display for ScanBlocksStartError {
 #[cfg(feature = "std")]
 impl std::error::Error for ScanBlocksStartError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ScanBlocksStartError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::RelevantBlocks(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::RelevantBlocks(ref e) => Some(e),
         }
     }
 }

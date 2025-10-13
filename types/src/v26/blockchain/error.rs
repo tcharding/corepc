@@ -20,14 +20,12 @@ pub enum GetChainStatesError {
 
 impl fmt::Display for GetChainStatesError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetChainStatesError::*;
-
         match *self {
-            BestBlockHash(ref e) =>
+            Self::BestBlockHash(ref e) =>
                 write_err!(f, "conversion of the `best_block_hash` field failed"; e),
-            SnapshotBlockHash(ref e) =>
+            Self::SnapshotBlockHash(ref e) =>
                 write_err!(f, "conversion of the `snapshot_block_hash` field failed"; e),
-            Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
         }
     }
 }
@@ -35,12 +33,10 @@ impl fmt::Display for GetChainStatesError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetChainStatesError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetChainStatesError::*;
-
         match *self {
-            BestBlockHash(ref e) => Some(e),
-            SnapshotBlockHash(ref e) => Some(e),
-            Numeric(ref e) => Some(e),
+            Self::BestBlockHash(ref e) => Some(e),
+            Self::SnapshotBlockHash(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
         }
     }
 }
@@ -64,15 +60,13 @@ pub enum DumpTxOutSetError {
 
 impl fmt::Display for DumpTxOutSetError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use DumpTxOutSetError::*;
-
         match *self {
-            CoinsWritten(ref e) =>
+            Self::CoinsWritten(ref e) =>
                 write_err!(f, "conversion of the `coins_written` field failed"; e),
-            BaseHash(ref e) => write_err!(f, "conversion of the `base_hash` field failed"; e),
-            TxOutSetHash(ref e) =>
+            Self::BaseHash(ref e) => write_err!(f, "conversion of the `base_hash` field failed"; e),
+            Self::TxOutSetHash(ref e) =>
                 write_err!(f, "conversion of the `txoutset_hash` field failed"; e),
-            Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
         }
     }
 }
@@ -80,13 +74,11 @@ impl fmt::Display for DumpTxOutSetError {
 #[cfg(feature = "std")]
 impl std::error::Error for DumpTxOutSetError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use DumpTxOutSetError::*;
-
         match *self {
-            CoinsWritten(ref e) => Some(e),
-            BaseHash(ref e) => Some(e),
-            TxOutSetHash(ref e) => Some(e),
-            Numeric(ref e) => Some(e),
+            Self::CoinsWritten(ref e) => Some(e),
+            Self::BaseHash(ref e) => Some(e),
+            Self::TxOutSetHash(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
         }
     }
 }
@@ -108,12 +100,10 @@ pub enum GetTxOutSetInfoError {
 
 impl fmt::Display for GetTxOutSetInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetTxOutSetInfoError::*;
-
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            BestBlock(ref e) => write_err!(f, "conversion of the `beast_block` field failed"; e),
-            TotalAmount(ref e) => write_err!(f, "conversion of the `total_amount` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::BestBlock(ref e) => write_err!(f, "conversion of the `beast_block` field failed"; e),
+            Self::TotalAmount(ref e) => write_err!(f, "conversion of the `total_amount` field failed"; e),
         }
     }
 }
@@ -121,12 +111,10 @@ impl fmt::Display for GetTxOutSetInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetTxOutSetInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetTxOutSetInfoError::*;
-
         match *self {
-            Numeric(ref e) => Some(e),
-            BestBlock(ref e) => Some(e),
-            TotalAmount(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::BestBlock(ref e) => Some(e),
+            Self::TotalAmount(ref e) => Some(e),
         }
     }
 }
@@ -148,12 +136,10 @@ pub enum LoadTxOutSetError {
 
 impl fmt::Display for LoadTxOutSetError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use LoadTxOutSetError::*;
-
         match *self {
-            CoinsLoaded(ref e) => write_err!(f, "conversion of the `coins_loaded` field failed"; e),
-            TipHash(ref e) => write_err!(f, "conversion of the `tip_hash` field failed"; e),
-            Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::CoinsLoaded(ref e) => write_err!(f, "conversion of the `coins_loaded` field failed"; e),
+            Self::TipHash(ref e) => write_err!(f, "conversion of the `tip_hash` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
         }
     }
 }
@@ -161,12 +147,10 @@ impl fmt::Display for LoadTxOutSetError {
 #[cfg(feature = "std")]
 impl std::error::Error for LoadTxOutSetError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use LoadTxOutSetError::*;
-
         match *self {
-            CoinsLoaded(ref e) => Some(e),
-            TipHash(ref e) => Some(e),
-            Numeric(ref e) => Some(e),
+            Self::CoinsLoaded(ref e) => Some(e),
+            Self::TipHash(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
         }
     }
 }

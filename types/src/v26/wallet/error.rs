@@ -23,12 +23,10 @@ pub enum GetBalancesError {
 
 impl fmt::Display for GetBalancesError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBalancesError as E;
-
         match *self {
-            E::Mine(ref e) => write_err!(f, "conversion of the `mine` field failed"; e),
-            E::WatchOnly(ref e) => write_err!(f, "conversion of the `watchonly` field failed"; e),
-            E::LastProcessedBlock(ref e) =>
+            Self::Mine(ref e) => write_err!(f, "conversion of the `mine` field failed"; e),
+            Self::WatchOnly(ref e) => write_err!(f, "conversion of the `watchonly` field failed"; e),
+            Self::LastProcessedBlock(ref e) =>
                 write_err!(f, "conversion of the `last_processed_block` field failed"; e),
         }
     }
@@ -37,12 +35,10 @@ impl fmt::Display for GetBalancesError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetBalancesError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBalancesError as E;
-
         match *self {
-            E::Mine(ref e) => Some(e),
-            E::WatchOnly(ref e) => Some(e),
-            E::LastProcessedBlock(ref e) => Some(e),
+            Self::Mine(ref e) => Some(e),
+            Self::WatchOnly(ref e) => Some(e),
+            Self::LastProcessedBlock(ref e) => Some(e),
         }
     }
 }
@@ -80,26 +76,24 @@ pub enum GetTransactionError {
 
 impl fmt::Display for GetTransactionError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetTransactionError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
-            E::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
-            E::WalletConflicts(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
+            Self::WalletConflicts(ref e) =>
                 write_err!(f, "conversion of the `wallet_conflicts` field failed"; e),
-            E::ReplacedByTxid(ref e) =>
+            Self::ReplacedByTxid(ref e) =>
                 write_err!(f, "conversion of the `replaced_by_txid` field failed"; e),
-            E::ReplacesTxid(ref e) =>
+            Self::ReplacesTxid(ref e) =>
                 write_err!(f, "conversion of the `replaces_txid` field failed"; e),
-            E::MempoolConflicts(ref e) =>
+            Self::MempoolConflicts(ref e) =>
                 write_err!(f, "conversion of the `mempool_conflicts` field failed"; e),
-            E::Tx(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Details(ref e) => write_err!(f, "conversion of the `details` field failed"; e),
-            E::LastProcessedBlock(ref e) =>
+            Self::Tx(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Details(ref e) => write_err!(f, "conversion of the `details` field failed"; e),
+            Self::LastProcessedBlock(ref e) =>
                 write_err!(f, "conversion of the `last_processed_block` field failed"; e),
         }
     }
@@ -108,22 +102,20 @@ impl fmt::Display for GetTransactionError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetTransactionError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetTransactionError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Amount(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
-            E::BlockHash(ref e) => Some(e),
-            E::Txid(ref e) => Some(e),
-            E::Wtxid(ref e) => Some(e),
-            E::WalletConflicts(ref e) => Some(e),
-            E::ReplacedByTxid(ref e) => Some(e),
-            E::ReplacesTxid(ref e) => Some(e),
-            E::MempoolConflicts(ref e) => Some(e),
-            E::Tx(ref e) => Some(e),
-            E::Details(ref e) => Some(e),
-            E::LastProcessedBlock(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
+            Self::BlockHash(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::Wtxid(ref e) => Some(e),
+            Self::WalletConflicts(ref e) => Some(e),
+            Self::ReplacedByTxid(ref e) => Some(e),
+            Self::ReplacesTxid(ref e) => Some(e),
+            Self::MempoolConflicts(ref e) => Some(e),
+            Self::Tx(ref e) => Some(e),
+            Self::Details(ref e) => Some(e),
+            Self::LastProcessedBlock(ref e) => Some(e),
         }
     }
 }
@@ -153,17 +145,16 @@ pub enum GetWalletInfoError {
 
 impl fmt::Display for GetWalletInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetWalletInfoError::*;
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            Balance(ref e) => write_err!(f, "conversion of the `balance` field failed"; e),
-            UnconfirmedBalance(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Balance(ref e) => write_err!(f, "conversion of the `balance` field failed"; e),
+            Self::UnconfirmedBalance(ref e) =>
                 write_err!(f, "conversion of the `unconfirmed_balance` field failed"; e),
-            ImmatureBalance(ref e) =>
+            Self::ImmatureBalance(ref e) =>
                 write_err!(f, "conversion of the `immature_balance` field failed"; e),
-            PayTxFee(ref e) => write_err!(f, "conversion of the `pay_tx_fee` field failed"; e),
-            HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
-            LastProcessedBlock(ref e) =>
+            Self::PayTxFee(ref e) => write_err!(f, "conversion of the `pay_tx_fee` field failed"; e),
+            Self::HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
+            Self::LastProcessedBlock(ref e) =>
                 write_err!(f, "conversion of the `last_processed_block` field failed"; e),
         }
     }
@@ -172,15 +163,14 @@ impl fmt::Display for GetWalletInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetWalletInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetWalletInfoError::*;
         match *self {
-            Numeric(ref e) => Some(e),
-            Balance(ref e) => Some(e),
-            UnconfirmedBalance(ref e) => Some(e),
-            ImmatureBalance(ref e) => Some(e),
-            PayTxFee(ref e) => Some(e),
-            HdSeedId(ref e) => Some(e),
-            LastProcessedBlock(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Balance(ref e) => Some(e),
+            Self::UnconfirmedBalance(ref e) => Some(e),
+            Self::ImmatureBalance(ref e) => Some(e),
+            Self::PayTxFee(ref e) => Some(e),
+            Self::HdSeedId(ref e) => Some(e),
+            Self::LastProcessedBlock(ref e) => Some(e),
         }
     }
 }
@@ -200,11 +190,9 @@ pub enum LastProcessedBlockError {
 
 impl fmt::Display for LastProcessedBlockError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use LastProcessedBlockError::*;
-
         match *self {
-            Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
-            Height(ref e) => write_err!(f, "conversion of the `height` field failed"; e),
+            Self::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
+            Self::Height(ref e) => write_err!(f, "conversion of the `height` field failed"; e),
         }
     }
 }
@@ -212,11 +200,9 @@ impl fmt::Display for LastProcessedBlockError {
 #[cfg(feature = "std")]
 impl std::error::Error for LastProcessedBlockError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use LastProcessedBlockError::*;
-
         match *self {
-            Hash(ref e) => Some(e),
-            Height(ref e) => Some(e),
+            Self::Hash(ref e) => Some(e),
+            Self::Height(ref e) => Some(e),
         }
     }
 }
@@ -236,9 +222,9 @@ pub enum WalletProcessPsbtError {
 
 impl fmt::Display for WalletProcessPsbtError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            WalletProcessPsbtError::Psbt(e) => write!(f, "psbt parse error: {}", e),
-            WalletProcessPsbtError::Hex(e) => write!(f, "hex decode error: {}", e),
+        match *self {
+            Self::Psbt(ref e) => write!(f, "psbt parse error: {}", e),
+            Self::Hex(ref e) => write!(f, "hex decode error: {}", e),
         }
     }
 }
@@ -246,9 +232,9 @@ impl fmt::Display for WalletProcessPsbtError {
 #[cfg(feature = "std")]
 impl std::error::Error for WalletProcessPsbtError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            WalletProcessPsbtError::Psbt(e) => Some(e),
-            WalletProcessPsbtError::Hex(e) => Some(e),
+        match *self {
+            Self::Psbt(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
         }
     }
 }
