@@ -21,11 +21,10 @@ pub enum GetHdKeysError {
 
 impl fmt::Display for GetHdKeysError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetHdKeysError::*;
         match *self {
-            Xpub(ref e) => write_err!(f, "conversion of the `xpub` field failed"; e),
-            Xpriv(ref e) => write_err!(f, "conversion of the `xpriv` field failed"; e),
-            Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Xpub(ref e) => write_err!(f, "conversion of the `xpub` field failed"; e),
+            Self::Xpriv(ref e) => write_err!(f, "conversion of the `xpriv` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
         }
     }
 }
@@ -33,11 +32,10 @@ impl fmt::Display for GetHdKeysError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetHdKeysError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetHdKeysError::*;
         match *self {
-            Xpub(ref e) => Some(e),
-            Xpriv(ref e) => Some(e),
-            Numeric(ref e) => Some(e),
+            Self::Xpub(ref e) => Some(e),
+            Self::Xpriv(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
         }
     }
 }
@@ -59,12 +57,12 @@ pub enum ListSinceBlockError {
 
 impl fmt::Display for ListSinceBlockError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ListSinceBlockError::*;
         match *self {
-            Transactions(ref e) =>
+            Self::Transactions(ref e) =>
                 write_err!(f, "conversion of the `transactions` field failed"; e),
-            Removed(ref e) => write_err!(f, "conversion of the `removed` field failed"; e),
-            LastBlock(ref e) => write_err!(f, "conversion of the `last_block` field failed"; e),
+            Self::Removed(ref e) => write_err!(f, "conversion of the `removed` field failed"; e),
+            Self::LastBlock(ref e) =>
+                write_err!(f, "conversion of the `last_block` field failed"; e),
         }
     }
 }
@@ -72,11 +70,10 @@ impl fmt::Display for ListSinceBlockError {
 #[cfg(feature = "std")]
 impl std::error::Error for ListSinceBlockError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ListSinceBlockError::*;
         match *self {
-            Transactions(ref e) => Some(e),
-            Removed(ref e) => Some(e),
-            LastBlock(ref e) => Some(e),
+            Self::Transactions(ref e) => Some(e),
+            Self::Removed(ref e) => Some(e),
+            Self::LastBlock(ref e) => Some(e),
         }
     }
 }
@@ -108,20 +105,20 @@ pub enum TransactionItemError {
 
 impl fmt::Display for TransactionItemError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use TransactionItemError as E;
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            E::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
-            E::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
-            E::WalletConflicts(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::BlockHash(ref e) =>
+                write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
+            Self::WalletConflicts(ref e) =>
                 write_err!(f, "conversion of the `wallet_conflicts` field failed"; e),
-            E::ReplacedByTxid(ref e) =>
+            Self::ReplacedByTxid(ref e) =>
                 write_err!(f, "conversion of the `replaced_by_txid` field failed"; e),
-            E::ReplacesTxid(ref e) =>
+            Self::ReplacesTxid(ref e) =>
                 write_err!(f, "conversion of the `replaces_txid` field failed"; e),
         }
     }
@@ -130,18 +127,17 @@ impl fmt::Display for TransactionItemError {
 #[cfg(feature = "std")]
 impl std::error::Error for TransactionItemError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use TransactionItemError as E;
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Address(ref e) => Some(e),
-            E::Amount(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
-            E::BlockHash(ref e) => Some(e),
-            E::Txid(ref e) => Some(e),
-            E::Wtxid(ref e) => Some(e),
-            E::WalletConflicts(ref e) => Some(e),
-            E::ReplacedByTxid(ref e) => Some(e),
-            E::ReplacesTxid(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
+            Self::BlockHash(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::Wtxid(ref e) => Some(e),
+            Self::WalletConflicts(ref e) => Some(e),
+            Self::ReplacedByTxid(ref e) => Some(e),
+            Self::ReplacesTxid(ref e) => Some(e),
         }
     }
 }

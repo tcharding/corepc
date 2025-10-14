@@ -44,27 +44,27 @@ pub enum GetAddressInfoError {
 
 impl fmt::Display for GetAddressInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetAddressInfoError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            E::ScriptPubkey(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::ScriptPubkey(ref e) =>
                 write_err!(f, "conversion of the `script_pubkey` field failed"; e),
-            E::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
-            E::WitnessVersion(ref e) =>
+            Self::WitnessVersionValue(v) => write!(f, "invalid witness version number: {}", v),
+            Self::WitnessVersion(ref e) =>
                 write_err!(f, "conversion of the `witness_version` field failed"; e),
-            E::WitnessProgramBytes(ref e) =>
+            Self::WitnessProgramBytes(ref e) =>
                 write_err!(f, "conversion of the `witness_program` field hex string to bytes failed"; e),
-            E::WitnessProgram(ref e) =>
+            Self::WitnessProgram(ref e) =>
                 write_err!(f, "conversion of the `witness_program` field failed"; e),
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
-            E::Pubkey(ref e) => write_err!(f, "conversion of the `pubkey` failed"; e),
-            E::Embedded(ref e) => write_err!(f, "conversion of the `embedded` field failed"; e),
-            E::HdKeyPath(ref e) => write_err!(f, "conversion of the `hd_key_path` field failed"; e),
-            E::HdSeedId(ref e) => write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
-            E::HdMasterFingerprint(ref e) =>
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Pubkeys(ref e) => write_err!(f, "conversion of the `pubkeys` field failed"; e),
+            Self::Pubkey(ref e) => write_err!(f, "conversion of the `pubkey` failed"; e),
+            Self::Embedded(ref e) => write_err!(f, "conversion of the `embedded` field failed"; e),
+            Self::HdKeyPath(ref e) =>
+                write_err!(f, "conversion of the `hd_key_path` field failed"; e),
+            Self::HdSeedId(ref e) =>
+                write_err!(f, "conversion of the `hd_seed_id` field failed"; e),
+            Self::HdMasterFingerprint(ref e) =>
                 write_err!(f, "conversion of the `hd_master_fingerprint` field failed"; e),
         }
     }
@@ -73,23 +73,21 @@ impl fmt::Display for GetAddressInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetAddressInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetAddressInfoError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Address(ref e) => Some(e),
-            E::ScriptPubkey(ref e) => Some(e),
-            E::WitnessVersionValue(_) => None,
-            E::WitnessVersion(ref e) => Some(e),
-            E::WitnessProgramBytes(ref e) => Some(e),
-            E::WitnessProgram(ref e) => Some(e),
-            E::Hex(ref e) => Some(e),
-            E::Pubkeys(ref e) => Some(e),
-            E::Pubkey(ref e) => Some(e),
-            E::Embedded(ref e) => Some(e),
-            E::HdKeyPath(ref e) => Some(e),
-            E::HdSeedId(ref e) => Some(e),
-            E::HdMasterFingerprint(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Address(ref e) => Some(e),
+            Self::ScriptPubkey(ref e) => Some(e),
+            Self::WitnessVersionValue(_) => None,
+            Self::WitnessVersion(ref e) => Some(e),
+            Self::WitnessProgramBytes(ref e) => Some(e),
+            Self::WitnessProgram(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Pubkeys(ref e) => Some(e),
+            Self::Pubkey(ref e) => Some(e),
+            Self::Embedded(ref e) => Some(e),
+            Self::HdKeyPath(ref e) => Some(e),
+            Self::HdSeedId(ref e) => Some(e),
+            Self::HdMasterFingerprint(ref e) => Some(e),
         }
     }
 }
@@ -109,11 +107,9 @@ pub enum ListReceivedByLabelError {
 
 impl fmt::Display for ListReceivedByLabelError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use ListReceivedByLabelError::*;
-
         match *self {
-            Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
         }
     }
 }
@@ -121,11 +117,9 @@ impl fmt::Display for ListReceivedByLabelError {
 #[cfg(feature = "std")]
 impl std::error::Error for ListReceivedByLabelError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use ListReceivedByLabelError::*;
-
         match *self {
-            Amount(ref e) => Some(e),
-            Numeric(ref e) => Some(e),
+            Self::Amount(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
         }
     }
 }

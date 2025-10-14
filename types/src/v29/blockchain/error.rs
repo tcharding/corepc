@@ -33,18 +33,17 @@ pub enum GetBlockVerboseOneError {
 
 impl fmt::Display for GetBlockVerboseOneError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBlockVerboseOneError::*;
-
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
-            Tx(ref e) => write_err!(f, "conversion of the `tx` field failed"; e),
-            Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
-            PreviousBlockHash(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
+            Self::Tx(ref e) => write_err!(f, "conversion of the `tx` field failed"; e),
+            Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
+            Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
-            NextBlockHash(ref e) =>
+            Self::NextBlockHash(ref e) =>
                 write_err!(f, "conversion of the `next_block_hash` field failed"; e),
         }
     }
@@ -53,17 +52,15 @@ impl fmt::Display for GetBlockVerboseOneError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetBlockVerboseOneError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBlockVerboseOneError::*;
-
         match *self {
-            Numeric(ref e) => Some(e),
-            Hash(ref e) => Some(e),
-            Tx(ref e) => Some(e),
-            Bits(ref e) => Some(e),
-            Target(ref e) => Some(e),
-            ChainWork(ref e) => Some(e),
-            PreviousBlockHash(ref e) => Some(e),
-            NextBlockHash(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Hash(ref e) => Some(e),
+            Self::Tx(ref e) => Some(e),
+            Self::Bits(ref e) => Some(e),
+            Self::Target(ref e) => Some(e),
+            Self::ChainWork(ref e) => Some(e),
+            Self::PreviousBlockHash(ref e) => Some(e),
+            Self::NextBlockHash(ref e) => Some(e),
         }
     }
 }
@@ -93,17 +90,16 @@ pub enum GetBlockchainInfoError {
 
 impl fmt::Display for GetBlockchainInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBlockchainInfoError::*;
-
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            Chain(ref e) => write_err!(f, "conversion of the `chain` field failed"; e),
-            BestBlockHash(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Chain(ref e) => write_err!(f, "conversion of the `chain` field failed"; e),
+            Self::BestBlockHash(ref e) =>
                 write_err!(f, "conversion of the `best_block_hash` field failed"; e),
-            Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
-            SignetChallenge(ref e) =>
+            Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
+            Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::SignetChallenge(ref e) =>
                 write_err!(f, "conversion of the `signet_challenge` field failed"; e),
         }
     }
@@ -112,16 +108,14 @@ impl fmt::Display for GetBlockchainInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetBlockchainInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBlockchainInfoError::*;
-
         match *self {
-            Numeric(ref e) => Some(e),
-            Chain(ref e) => Some(e),
-            Bits(ref e) => Some(e),
-            Target(ref e) => Some(e),
-            BestBlockHash(ref e) => Some(e),
-            ChainWork(ref e) => Some(e),
-            SignetChallenge(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Chain(ref e) => Some(e),
+            Self::Bits(ref e) => Some(e),
+            Self::Target(ref e) => Some(e),
+            Self::BestBlockHash(ref e) => Some(e),
+            Self::ChainWork(ref e) => Some(e),
+            Self::SignetChallenge(ref e) => Some(e),
         }
     }
 }
@@ -145,11 +139,10 @@ pub enum GetBlockHeaderError {
 
 impl fmt::Display for GetBlockHeaderError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBlockHeaderError::*;
-
         match *self {
-            Hex(ref e) => write_err!(f, "conversion of hex data to bytes failed"; e),
-            Consensus(ref e) => write_err!(f, "consensus decoding of bytes to header failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of hex data to bytes failed"; e),
+            Self::Consensus(ref e) =>
+                write_err!(f, "consensus decoding of bytes to header failed"; e),
         }
     }
 }
@@ -157,11 +150,9 @@ impl fmt::Display for GetBlockHeaderError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetBlockHeaderError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBlockHeaderError::*;
-
         match *self {
-            Hex(ref e) => Some(e),
-            Consensus(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Consensus(ref e) => Some(e),
         }
     }
 }
@@ -189,18 +180,18 @@ pub enum GetBlockHeaderVerboseError {
 
 impl fmt::Display for GetBlockHeaderVerboseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBlockHeaderVerboseError::*;
-
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
-            MerkleRoot(ref e) => write_err!(f, "conversion of the `merkle_root` field failed"; e),
-            Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
-            PreviousBlockHash(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
+            Self::MerkleRoot(ref e) =>
+                write_err!(f, "conversion of the `merkle_root` field failed"; e),
+            Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
+            Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::PreviousBlockHash(ref e) =>
                 write_err!(f, "conversion of the `previous_block_hash` field failed"; e),
-            NextBlockHash(ref e) =>
+            Self::NextBlockHash(ref e) =>
                 write_err!(f, "conversion of the `next_block_hash` field failed"; e),
         }
     }
@@ -245,16 +236,14 @@ pub enum GetChainStatesError {
 
 impl fmt::Display for GetChainStatesError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetChainStatesError::*;
-
         match *self {
-            BestBlockHash(ref e) =>
+            Self::BestBlockHash(ref e) =>
                 write_err!(f, "conversion of the `best_block_hash` field failed"; e),
-            Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            SnapshotBlockHash(ref e) =>
+            Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
+            Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
+            Self::SnapshotBlockHash(ref e) =>
                 write_err!(f, "conversion of the `snapshot_block_hash` field failed"; e),
-            Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
         }
     }
 }
@@ -303,17 +292,18 @@ pub enum GetDescriptorActivityError {
 
 impl fmt::Display for GetDescriptorActivityError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetDescriptorActivityError::*;
-
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric conversion failed"; e),
-            Hash(ref e) => write_err!(f, "conversion of a hash string failed"; e),
-            Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
-            Script(ref e) => write_err!(f, "conversion of the script `hex` field failed"; e),
-            Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
-            ActivityEntry(ref e) => write_err!(f, "conversion of an activity entry failed"; e),
-            PrevoutSpk(ref e) => write_err!(f, "conversion of the `prevout_spk` field failed"; e),
-            OutputSpk(ref e) => write_err!(f, "conversion of the `output_spk` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric conversion failed"; e),
+            Self::Hash(ref e) => write_err!(f, "conversion of a hash string failed"; e),
+            Self::Amount(ref e) => write_err!(f, "conversion of the `amount` field failed"; e),
+            Self::Script(ref e) => write_err!(f, "conversion of the script `hex` field failed"; e),
+            Self::Address(ref e) => write_err!(f, "conversion of the `address` field failed"; e),
+            Self::ActivityEntry(ref e) =>
+                write_err!(f, "conversion of an activity entry failed"; e),
+            Self::PrevoutSpk(ref e) =>
+                write_err!(f, "conversion of the `prevout_spk` field failed"; e),
+            Self::OutputSpk(ref e) =>
+                write_err!(f, "conversion of the `output_spk` field failed"; e),
         }
     }
 }

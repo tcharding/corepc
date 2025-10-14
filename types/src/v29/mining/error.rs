@@ -19,12 +19,10 @@ pub enum GetMiningInfoError {
 
 impl fmt::Display for GetMiningInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetMiningInfoError as E;
-
         match *self {
-            E::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            E::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
-            E::Next(ref e) =>
+            Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
+            Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
+            Self::Next(ref e) =>
                 write_err!(f, "conversion of one of the items in field `next` failed"; e),
         }
     }
@@ -33,12 +31,10 @@ impl fmt::Display for GetMiningInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetMiningInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetMiningInfoError as E;
-
         match *self {
-            E::Bits(ref e) => Some(e),
-            E::Target(ref e) => Some(e),
-            E::Next(ref e) => Some(e),
+            Self::Bits(ref e) => Some(e),
+            Self::Target(ref e) => Some(e),
+            Self::Next(ref e) => Some(e),
         }
     }
 }
@@ -54,11 +50,9 @@ pub enum NextBlockInfoError {
 
 impl fmt::Display for NextBlockInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use NextBlockInfoError as E;
-
         match *self {
-            E::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
-            E::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
+            Self::Bits(ref e) => write_err!(f, "conversion of the `bits` field failed"; e),
+            Self::Target(ref e) => write_err!(f, "conversion of the `target` field failed"; e),
         }
     }
 }
@@ -66,11 +60,9 @@ impl fmt::Display for NextBlockInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for NextBlockInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use NextBlockInfoError as E;
-
         match *self {
-            E::Bits(ref e) => Some(e),
-            E::Target(ref e) => Some(e),
+            Self::Bits(ref e) => Some(e),
+            Self::Target(ref e) => Some(e),
         }
     }
 }

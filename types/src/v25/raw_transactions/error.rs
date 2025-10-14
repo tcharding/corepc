@@ -17,10 +17,8 @@ pub enum TestMempoolAcceptError {
 
 impl fmt::Display for TestMempoolAcceptError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use TestMempoolAcceptError as E;
-
         match *self {
-            E::MempoolAcceptance(ref e) =>
+            Self::MempoolAcceptance(ref e) =>
                 write_err!(f, "conversion of one of the mempool acceptance results failed"; e),
         }
     }
@@ -29,10 +27,8 @@ impl fmt::Display for TestMempoolAcceptError {
 #[cfg(feature = "std")]
 impl std::error::Error for TestMempoolAcceptError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use TestMempoolAcceptError as E;
-
         match *self {
-            E::MempoolAcceptance(ref e) => Some(e),
+            Self::MempoolAcceptance(ref e) => Some(e),
         }
     }
 }
@@ -58,14 +54,12 @@ pub enum MempoolAcceptanceError {
 
 impl fmt::Display for MempoolAcceptanceError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use MempoolAcceptanceError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "conversion of a numeric field failed"; e),
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
-            E::Base(ref e) => write_err!(f, "conversion of the `base` fee field failed"; e),
-            E::Feerate(ref e) =>
+            Self::Numeric(ref e) => write_err!(f, "conversion of a numeric field failed"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
+            Self::Base(ref e) => write_err!(f, "conversion of the `base` fee field failed"; e),
+            Self::Feerate(ref e) =>
                 write_err!(f, "conversion of the `effective-feerate` field failed"; e),
         }
     }
@@ -74,14 +68,12 @@ impl fmt::Display for MempoolAcceptanceError {
 #[cfg(feature = "std")]
 impl std::error::Error for MempoolAcceptanceError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use MempoolAcceptanceError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Txid(ref e) => Some(e),
-            E::Wtxid(ref e) => Some(e),
-            E::Base(ref e) => Some(e),
-            E::Feerate(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::Wtxid(ref e) => Some(e),
+            Self::Base(ref e) => Some(e),
+            Self::Feerate(ref e) => Some(e),
         }
     }
 }

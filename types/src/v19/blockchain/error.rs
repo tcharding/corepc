@@ -24,15 +24,14 @@ pub enum GetBlockchainInfoError {
 
 impl fmt::Display for GetBlockchainInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBlockchainInfoError::*;
-
         match *self {
-            Numeric(ref e) => write_err!(f, "numeric"; e),
-            Chain(ref e) => write_err!(f, "conversion of the `chain` field failed"; e),
-            BestBlockHash(ref e) => {
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Chain(ref e) => write_err!(f, "conversion of the `chain` field failed"; e),
+            Self::BestBlockHash(ref e) => {
                 write_err!(f, "conversion of the `best_block_hash` field failed"; e)
             }
-            ChainWork(ref e) => write_err!(f, "conversion of the `chain_work` field failed"; e),
+            Self::ChainWork(ref e) =>
+                write_err!(f, "conversion of the `chain_work` field failed"; e),
         }
     }
 }
@@ -40,13 +39,11 @@ impl fmt::Display for GetBlockchainInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetBlockchainInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBlockchainInfoError::*;
-
         match *self {
-            Numeric(ref e) => Some(e),
-            Chain(ref e) => Some(e),
-            BestBlockHash(ref e) => Some(e),
-            ChainWork(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Chain(ref e) => Some(e),
+            Self::BestBlockHash(ref e) => Some(e),
+            Self::ChainWork(ref e) => Some(e),
         }
     }
 }
@@ -66,11 +63,9 @@ pub enum GetBlockFilterError {
 
 impl fmt::Display for GetBlockFilterError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetBlockFilterError as E;
-
         match *self {
-            E::Filter(ref e) => write_err!(f, "conversion of the `filter` field failed"; e),
-            E::Header(ref e) => write_err!(f, "conversion of the `header` field failed"; e),
+            Self::Filter(ref e) => write_err!(f, "conversion of the `filter` field failed"; e),
+            Self::Header(ref e) => write_err!(f, "conversion of the `header` field failed"; e),
         }
     }
 }
@@ -78,11 +73,9 @@ impl fmt::Display for GetBlockFilterError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetBlockFilterError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetBlockFilterError as E;
-
         match *self {
-            E::Filter(ref e) => Some(e),
-            E::Header(ref e) => Some(e),
+            Self::Filter(ref e) => Some(e),
+            Self::Header(ref e) => Some(e),
         }
     }
 }
@@ -98,11 +91,9 @@ pub enum MapMempoolEntryError {
 
 impl fmt::Display for MapMempoolEntryError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use MapMempoolEntryError as E;
-
         match *self {
-            E::Txid(ref e) => write_err!(f, "conversion of a `txid` failed"; e),
-            E::MempoolEntry(ref e) => write_err!(f, "conversion of an `MempoolEntry` failed"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of a `txid` failed"; e),
+            Self::MempoolEntry(ref e) => write_err!(f, "conversion of an `MempoolEntry` failed"; e),
         }
     }
 }
@@ -110,11 +101,9 @@ impl fmt::Display for MapMempoolEntryError {
 #[cfg(feature = "std")]
 impl std::error::Error for MapMempoolEntryError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use MapMempoolEntryError as E;
-
         match *self {
-            E::Txid(ref e) => Some(e),
-            E::MempoolEntry(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::MempoolEntry(ref e) => Some(e),
         }
     }
 }
@@ -140,14 +129,12 @@ impl From<NumericError> for MempoolEntryError {
 
 impl fmt::Display for MempoolEntryError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use MempoolEntryError as E;
-
         match *self {
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
-            E::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
-            E::Fees(ref e) => write_err!(f, "conversion of the `fees` field failed"; e),
-            E::Depends(ref e) => write_err!(f, "conversion of the `depends` field failed"; e),
-            E::SpentBy(ref e) => write_err!(f, "conversion of the `spent_by` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Wtxid(ref e) => write_err!(f, "conversion of the `wtxid` field failed"; e),
+            Self::Fees(ref e) => write_err!(f, "conversion of the `fees` field failed"; e),
+            Self::Depends(ref e) => write_err!(f, "conversion of the `depends` field failed"; e),
+            Self::SpentBy(ref e) => write_err!(f, "conversion of the `spent_by` field failed"; e),
         }
     }
 }
@@ -155,14 +142,12 @@ impl fmt::Display for MempoolEntryError {
 #[cfg(feature = "std")]
 impl std::error::Error for MempoolEntryError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use MempoolEntryError as E;
-
         match *self {
-            E::Numeric(ref e) => Some(e),
-            E::Wtxid(ref e) => Some(e),
-            E::Fees(ref e) => Some(e),
-            E::Depends(ref e) => Some(e),
-            E::SpentBy(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
+            Self::Wtxid(ref e) => Some(e),
+            Self::Fees(ref e) => Some(e),
+            Self::Depends(ref e) => Some(e),
+            Self::SpentBy(ref e) => Some(e),
         }
     }
 }
@@ -182,13 +167,13 @@ pub enum MempoolEntryFeesError {
 
 impl fmt::Display for MempoolEntryFeesError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use MempoolEntryFeesError as E;
-
         match *self {
-            E::Base(ref e) => write_err!(f, "conversion of the `base` field failed"; e),
-            E::Modified(ref e) => write_err!(f, "conversion of the `modified` field failed"; e),
-            E::MempoolEntry(ref e) => write_err!(f, "conversion of the `ancestor` field failed"; e),
-            E::Descendant(ref e) => write_err!(f, "conversion of the `descendant` field failed"; e),
+            Self::Base(ref e) => write_err!(f, "conversion of the `base` field failed"; e),
+            Self::Modified(ref e) => write_err!(f, "conversion of the `modified` field failed"; e),
+            Self::MempoolEntry(ref e) =>
+                write_err!(f, "conversion of the `ancestor` field failed"; e),
+            Self::Descendant(ref e) =>
+                write_err!(f, "conversion of the `descendant` field failed"; e),
         }
     }
 }
@@ -196,13 +181,11 @@ impl fmt::Display for MempoolEntryFeesError {
 #[cfg(feature = "std")]
 impl std::error::Error for MempoolEntryFeesError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use MempoolEntryFeesError as E;
-
         match *self {
-            E::Base(ref e) => Some(e),
-            E::Modified(ref e) => Some(e),
-            E::MempoolEntry(ref e) => Some(e),
-            E::Descendant(ref e) => Some(e),
+            Self::Base(ref e) => Some(e),
+            Self::Modified(ref e) => Some(e),
+            Self::MempoolEntry(ref e) => Some(e),
+            Self::Descendant(ref e) => Some(e),
         }
     }
 }

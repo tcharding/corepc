@@ -18,11 +18,9 @@ pub enum GenerateBlockError {
 
 impl fmt::Display for GenerateBlockError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GenerateBlockError::*;
-
         match *self {
-            Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
-            Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Hash(ref e) => write_err!(f, "conversion of the `hash` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
         }
     }
 }
@@ -30,11 +28,9 @@ impl fmt::Display for GenerateBlockError {
 #[cfg(feature = "std")]
 impl std::error::Error for GenerateBlockError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GenerateBlockError::*;
-
         match *self {
-            Hash(ref e) => Some(e),
-            Hex(ref e) => Some(e),
+            Self::Hash(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
         }
     }
 }

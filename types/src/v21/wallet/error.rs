@@ -23,13 +23,11 @@ pub enum PsbtBumpFeeError {
 
 impl fmt::Display for PsbtBumpFeeError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use PsbtBumpFeeError as E;
-
         match *self {
-            E::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
-            E::OriginalFee(ref e) =>
+            Self::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
+            Self::OriginalFee(ref e) =>
                 write_err!(f, "conversion of the `original_fee` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }
 }
@@ -37,12 +35,10 @@ impl fmt::Display for PsbtBumpFeeError {
 #[cfg(feature = "std")]
 impl std::error::Error for PsbtBumpFeeError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use PsbtBumpFeeError as E;
-
         match *self {
-            E::Psbt(ref e) => Some(e),
-            E::OriginalFee(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
+            Self::Psbt(ref e) => Some(e),
+            Self::OriginalFee(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
         }
     }
 }
@@ -62,13 +58,11 @@ pub enum SendError {
 
 impl fmt::Display for SendError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use SendError as E;
-
         match *self {
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
-            E::Numeric(ref e) => write_err!(f, "numeric"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
+            Self::Numeric(ref e) => write_err!(f, "numeric"; e),
         }
     }
 }
@@ -76,13 +70,11 @@ impl fmt::Display for SendError {
 #[cfg(feature = "std")]
 impl std::error::Error for SendError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use SendError as E;
-
         match *self {
-            E::Txid(ref e) => Some(e),
-            E::Hex(ref e) => Some(e),
-            E::Psbt(ref e) => Some(e),
-            E::Numeric(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Psbt(ref e) => Some(e),
+            Self::Numeric(ref e) => Some(e),
         }
     }
 }

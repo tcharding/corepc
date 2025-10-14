@@ -17,11 +17,9 @@ pub enum GetNetworkInfoError {
 
 impl fmt::Display for GetNetworkInfoError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetNetworkInfoError as E;
-
         match *self {
-            E::RelayFee(ref e) => write_err!(f, "conversion of the `relay_fee` field failed"; e),
-            E::IncrementalFee(ref e) =>
+            Self::RelayFee(ref e) => write_err!(f, "conversion of the `relay_fee` field failed"; e),
+            Self::IncrementalFee(ref e) =>
                 write_err!(f, "conversion of the `incremental_fee` field failed"; e),
         }
     }
@@ -30,11 +28,9 @@ impl fmt::Display for GetNetworkInfoError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetNetworkInfoError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetNetworkInfoError as E;
-
         match *self {
-            E::RelayFee(ref e) => Some(e),
-            E::IncrementalFee(ref e) => Some(e),
+            Self::RelayFee(ref e) => Some(e),
+            Self::IncrementalFee(ref e) => Some(e),
         }
     }
 }

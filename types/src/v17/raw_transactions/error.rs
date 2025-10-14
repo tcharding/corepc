@@ -28,14 +28,13 @@ pub enum DecodePsbtError {
 
 impl fmt::Display for DecodePsbtError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use DecodePsbtError as E;
-
         match *self {
-            E::Tx(ref e) => write_err!(f, "conversion of raw transaction data field failed"; e),
-            E::Unknown(ref e) =>
+            Self::Tx(ref e) => write_err!(f, "conversion of raw transaction data field failed"; e),
+            Self::Unknown(ref e) =>
                 write_err!(f, "conversion of one the map items in the `unknown` field failed"; e),
-            E::Inputs(ref e) => write_err!(f, "conversion of one of the PSBT inputs failed"; e),
-            E::Outputs(ref e) => write_err!(f, "conversion of one of the PSBT outputs failed"; e),
+            Self::Inputs(ref e) => write_err!(f, "conversion of one of the PSBT inputs failed"; e),
+            Self::Outputs(ref e) =>
+                write_err!(f, "conversion of one of the PSBT outputs failed"; e),
         }
     }
 }
@@ -43,13 +42,11 @@ impl fmt::Display for DecodePsbtError {
 #[cfg(feature = "std")]
 impl std::error::Error for DecodePsbtError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use DecodePsbtError as E;
-
         match *self {
-            E::Tx(ref e) => Some(e),
-            E::Unknown(ref e) => Some(e),
-            E::Inputs(ref e) => Some(e),
-            E::Outputs(ref e) => Some(e),
+            Self::Tx(ref e) => Some(e),
+            Self::Unknown(ref e) => Some(e),
+            Self::Inputs(ref e) => Some(e),
+            Self::Outputs(ref e) => Some(e),
         }
     }
 }
@@ -81,27 +78,25 @@ pub enum PsbtInputError {
 
 impl fmt::Display for PsbtInputError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use PsbtInputError as E;
-
         match *self {
-            E::NonWitnessUtxo(ref e) =>
+            Self::NonWitnessUtxo(ref e) =>
                 write_err!(f, "conversion of the `non_witness_utxo` field failed"; e),
-            E::WitnessUtxo(ref e) =>
+            Self::WitnessUtxo(ref e) =>
                 write_err!(f, "conversion of the `witness_utxo` field failed"; e),
-            E::PartialSignatures(ref e) =>
+            Self::PartialSignatures(ref e) =>
                 write_err!(f, "conversion of the `partial_signatures` field failed"; e),
-            E::Sighash(ref e) => write_err!(f, "conversion of the `sighash` field failed"; e),
-            E::RedeemScript(ref e) =>
+            Self::Sighash(ref e) => write_err!(f, "conversion of the `sighash` field failed"; e),
+            Self::RedeemScript(ref e) =>
                 write_err!(f, "conversion of the `redeem_script` field failed"; e),
-            E::WitnessScript(ref e) =>
+            Self::WitnessScript(ref e) =>
                 write_err!(f, "conversion of the `witness_script` field failed"; e),
-            E::Bip32Derivs(ref e) =>
+            Self::Bip32Derivs(ref e) =>
                 write_err!(f, "conversion of the `bip32_derivs` field failed"; e),
-            E::FinalScriptSig(ref e) =>
+            Self::FinalScriptSig(ref e) =>
                 write_err!(f, "conversion of the `final_script_sig` field failed"; e),
-            E::FinalScriptWitness(ref e) =>
+            Self::FinalScriptWitness(ref e) =>
                 write_err!(f, "conversion of the `final_script_witness` field failed"; e),
-            E::Unknown(ref e) => write_err!(f, "conversion of the `unknown` field failed"; e),
+            Self::Unknown(ref e) => write_err!(f, "conversion of the `unknown` field failed"; e),
         }
     }
 }
@@ -109,19 +104,17 @@ impl fmt::Display for PsbtInputError {
 #[cfg(feature = "std")]
 impl std::error::Error for PsbtInputError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use PsbtInputError as E;
-
         match *self {
-            E::NonWitnessUtxo(ref e) => Some(e),
-            E::WitnessUtxo(ref e) => Some(e),
-            E::PartialSignatures(ref e) => Some(e),
-            E::Sighash(ref e) => Some(e),
-            E::RedeemScript(ref e) => Some(e),
-            E::WitnessScript(ref e) => Some(e),
-            E::Bip32Derivs(ref e) => Some(e),
-            E::FinalScriptSig(ref e) => Some(e),
-            E::FinalScriptWitness(ref e) => Some(e),
-            E::Unknown(ref e) => Some(e),
+            Self::NonWitnessUtxo(ref e) => Some(e),
+            Self::WitnessUtxo(ref e) => Some(e),
+            Self::PartialSignatures(ref e) => Some(e),
+            Self::Sighash(ref e) => Some(e),
+            Self::RedeemScript(ref e) => Some(e),
+            Self::WitnessScript(ref e) => Some(e),
+            Self::Bip32Derivs(ref e) => Some(e),
+            Self::FinalScriptSig(ref e) => Some(e),
+            Self::FinalScriptWitness(ref e) => Some(e),
+            Self::Unknown(ref e) => Some(e),
         }
     }
 }
@@ -141,16 +134,14 @@ pub enum PsbtOutputError {
 
 impl fmt::Display for PsbtOutputError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use PsbtOutputError as E;
-
         match *self {
-            E::RedeemScript(ref e) =>
+            Self::RedeemScript(ref e) =>
                 write_err!(f, "conversion of the `redeem_script` field failed"; e),
-            E::WitnessScript(ref e) =>
+            Self::WitnessScript(ref e) =>
                 write_err!(f, "conversion of the `witness_script` field failed"; e),
-            E::Bip32Derivs(ref e) =>
+            Self::Bip32Derivs(ref e) =>
                 write_err!(f, "conversion of the `bip32_derivs` field failed"; e),
-            E::Unknown(ref e) => write_err!(f, "conversion of the `unknown` field failed"; e),
+            Self::Unknown(ref e) => write_err!(f, "conversion of the `unknown` field failed"; e),
         }
     }
 }
@@ -158,13 +149,11 @@ impl fmt::Display for PsbtOutputError {
 #[cfg(feature = "std")]
 impl std::error::Error for PsbtOutputError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use PsbtOutputError as E;
-
         match *self {
-            E::RedeemScript(ref e) => Some(e),
-            E::WitnessScript(ref e) => Some(e),
-            E::Bip32Derivs(ref e) => Some(e),
-            E::Unknown(ref e) => Some(e),
+            Self::RedeemScript(ref e) => Some(e),
+            Self::WitnessScript(ref e) => Some(e),
+            Self::Bip32Derivs(ref e) => Some(e),
+            Self::Unknown(ref e) => Some(e),
         }
     }
 }
@@ -182,12 +171,11 @@ pub enum DecodeScriptError {
 
 impl fmt::Display for DecodeScriptError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use DecodeScriptError as E;
-
         match *self {
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Addresses(ref e) => write_err!(f, "conversion of the `addresses` field failed"; e),
-            E::P2sh(ref e) => write_err!(f, "conversion of the `p2sh` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Addresses(ref e) =>
+                write_err!(f, "conversion of the `addresses` field failed"; e),
+            Self::P2sh(ref e) => write_err!(f, "conversion of the `p2sh` field failed"; e),
         }
     }
 }
@@ -195,12 +183,10 @@ impl fmt::Display for DecodeScriptError {
 #[cfg(feature = "std")]
 impl std::error::Error for DecodeScriptError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use DecodeScriptError as E;
-
         match *self {
-            E::Hex(ref e) => Some(e),
-            E::Addresses(ref e) => Some(e),
-            E::P2sh(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Addresses(ref e) => Some(e),
+            Self::P2sh(ref e) => Some(e),
         }
     }
 }
@@ -216,11 +202,9 @@ pub enum FinalizePsbtError {
 
 impl fmt::Display for FinalizePsbtError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use FinalizePsbtError as E;
-
         match *self {
-            E::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Psbt(ref e) => write_err!(f, "conversion of the `psbt` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
         }
     }
 }
@@ -228,11 +212,9 @@ impl fmt::Display for FinalizePsbtError {
 #[cfg(feature = "std")]
 impl std::error::Error for FinalizePsbtError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use FinalizePsbtError as E;
-
         match *self {
-            E::Psbt(ref e) => Some(e),
-            E::Hex(ref e) => Some(e),
+            Self::Psbt(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
         }
     }
 }
@@ -248,11 +230,9 @@ pub enum FundRawTransactionError {
 
 impl fmt::Display for FundRawTransactionError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use FundRawTransactionError as E;
-
         match *self {
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Fee(ref e) => write_err!(f, "conversion of the `fee` field failed"; e),
         }
     }
 }
@@ -260,11 +240,9 @@ impl fmt::Display for FundRawTransactionError {
 #[cfg(feature = "std")]
 impl std::error::Error for FundRawTransactionError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use FundRawTransactionError as E;
-
         match *self {
-            E::Hex(ref e) => Some(e),
-            E::Fee(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Fee(ref e) => Some(e),
         }
     }
 }
@@ -282,14 +260,13 @@ pub enum GetRawTransactionVerboseError {
 
 impl fmt::Display for GetRawTransactionVerboseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use GetRawTransactionVerboseError as E;
-
         match *self {
-            E::Inputs(ref e) =>
+            Self::Inputs(ref e) =>
                 write_err!(f, "conversion of one of the transaction inputs failed"; e),
-            E::Outputs(ref e) =>
+            Self::Outputs(ref e) =>
                 write_err!(f, "conversion of one of the transaction outputs failed"; e),
-            E::BlockHash(ref e) => write_err!(f, "conversion of the `block_hash` field failed"; e),
+            Self::BlockHash(ref e) =>
+                write_err!(f, "conversion of the `block_hash` field failed"; e),
         }
     }
 }
@@ -297,12 +274,10 @@ impl fmt::Display for GetRawTransactionVerboseError {
 #[cfg(feature = "std")]
 impl std::error::Error for GetRawTransactionVerboseError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use GetRawTransactionVerboseError as E;
-
         match *self {
-            E::Inputs(ref e) => Some(e),
-            E::Outputs(ref e) => Some(e),
-            E::BlockHash(ref e) => Some(e),
+            Self::Inputs(ref e) => Some(e),
+            Self::Outputs(ref e) => Some(e),
+            Self::BlockHash(ref e) => Some(e),
         }
     }
 }
@@ -318,11 +293,9 @@ pub enum SignRawTransactionError {
 
 impl fmt::Display for SignRawTransactionError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use SignRawTransactionError as E;
-
         match *self {
-            E::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
-            E::Errors(ref e) => write_err!(f, "conversion of the `errors` field failed"; e),
+            Self::Hex(ref e) => write_err!(f, "conversion of the `hex` field failed"; e),
+            Self::Errors(ref e) => write_err!(f, "conversion of the `errors` field failed"; e),
         }
     }
 }
@@ -330,11 +303,9 @@ impl fmt::Display for SignRawTransactionError {
 #[cfg(feature = "std")]
 impl std::error::Error for SignRawTransactionError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use SignRawTransactionError as E;
-
         match *self {
-            E::Hex(ref e) => Some(e),
-            E::Errors(ref e) => Some(e),
+            Self::Hex(ref e) => Some(e),
+            Self::Errors(ref e) => Some(e),
         }
     }
 }
@@ -350,11 +321,10 @@ pub enum SignFailError {
 
 impl fmt::Display for SignFailError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use SignFailError as E;
-
         match *self {
-            E::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
-            E::ScriptSig(ref e) => write_err!(f, "conversion of the `script_sig` field failed"; e),
+            Self::Txid(ref e) => write_err!(f, "conversion of the `txid` field failed"; e),
+            Self::ScriptSig(ref e) =>
+                write_err!(f, "conversion of the `script_sig` field failed"; e),
         }
     }
 }
@@ -362,11 +332,9 @@ impl fmt::Display for SignFailError {
 #[cfg(feature = "std")]
 impl std::error::Error for SignFailError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        use SignFailError as E;
-
         match *self {
-            E::Txid(ref e) => Some(e),
-            E::ScriptSig(ref e) => Some(e),
+            Self::Txid(ref e) => Some(e),
+            Self::ScriptSig(ref e) => Some(e),
         }
     }
 }
