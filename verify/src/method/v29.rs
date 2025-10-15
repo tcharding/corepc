@@ -67,8 +67,6 @@ pub const METHODS: &[Method] = &[
     ),
     Method::new_bool("prioritisetransaction", "prioritise_transaction"),
     Method::new_nothing("submitblock", "submit_block"),
-    Method::new_bool("prioritisetransaction", "prioritise_transaction"),
-    Method::new_nothing("submitblock", "submit_block"),
     Method::new_nothing("submitheader", "submit_header"),
     // network
     Method::new_nothing("addnode", "add_node"),
