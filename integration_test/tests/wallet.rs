@@ -59,6 +59,7 @@ fn wallet__abort_rescan() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__add_multisig_address__modelled() {
     let nrequired = 2;
 
@@ -168,6 +169,7 @@ fn wallet__create_wallet_descriptor() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__dump_priv_key__modelled() {
     // As of Core v23 the default wallet is an native descriptor wallet which does not
     // support dumping private keys. Legacy wallets are supported upto v25 it seems.
@@ -200,6 +202,7 @@ fn wallet__dump_priv_key__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__dump_wallet() {
     // As of Core v23 the default wallet is an native descriptor wallet which does not
     // support dumping private keys. Legacy wallets are supported upto v25 it seems.
@@ -398,6 +401,7 @@ fn wallet__get_transaction__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__get_unconfirmed_balance__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let json: GetUnconfirmedBalance =
@@ -407,6 +411,7 @@ fn wallet__get_unconfirmed_balance__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__get_wallet_info__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.mine_a_block();
@@ -433,6 +438,7 @@ fn wallet__get_wallet_info__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__import_address() {
     let node = match () {
         #[cfg(feature = "v22_and_below")]
@@ -517,6 +523,7 @@ fn wallet__import_pruned_funds() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__import_wallet() {
     let node = match () {
         #[cfg(feature = "v22_and_below")]
@@ -648,6 +655,7 @@ fn wallet__list_transactions__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__import_multi() {
     let node = match () {
         #[cfg(feature = "v22_and_below")]
@@ -711,6 +719,7 @@ fn wallet__import_multi() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__import_privkey() {
     let node = match () {
         #[cfg(feature = "v22_and_below")]
@@ -730,6 +739,7 @@ fn wallet__import_privkey() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__import_pubkey() {
     let node = match () {
         #[cfg(feature = "v22_and_below")]
@@ -805,7 +815,7 @@ fn wallet__list_unspent__modelled() {
 }
 
 #[test]
-#[cfg(not(feature = "v17"))]
+#[cfg(all(feature = "v29_and_below", not(feature = "v17")))]
 fn wallet__list_wallet_dir() {
     let wallet_name = "test-wallet";
     let node = Node::with_wallet(Wallet::None, &[]);
@@ -853,7 +863,7 @@ fn wallet__lock_unspent() {
 }
 
 #[test]
-#[cfg(not(feature = "v23_and_below"))]
+#[cfg(all(feature = "v29_and_below", not(feature = "v23_and_below")))]
 fn wallet__migrate_wallet() {
     let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
     let wallet_name = "legacy_wallet";
@@ -865,7 +875,7 @@ fn wallet__migrate_wallet() {
 }
 
 #[test]
-#[cfg(not(feature = "v22_and_below"))]
+#[cfg(all(feature = "v29_and_below", not(feature = "v22_and_below")))]
 fn wallet__new_keypool() {
     let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
     node.client.create_legacy_wallet("legacy_wallet").expect("createlegacywallet");
@@ -1002,6 +1012,7 @@ fn wallet__send_to_address__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__set_tx_fee() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     let fee_rate = FeeRate::from_sat_per_vb(2).expect("2 sat/vb is valid");
@@ -1021,6 +1032,7 @@ fn wallet__set_wallet_flag() {
 }
 
 #[test]
+#[cfg(feature = "v29_and_below")]
 fn wallet__set_hd_seed() {
     let node = match () {
         #[cfg(feature = "v22_and_below")]
@@ -1181,7 +1193,7 @@ fn create_load_unload_wallet() {
 }
 
 #[test]
-#[cfg(not(feature = "v20_and_below"))]
+#[cfg(all(feature = "v29_and_below", not(feature = "v20_and_below")))]
 fn wallet__upgrade_wallet() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! JSON RPC methods provided by Bitcoin Core v26.
+//! JSON RPC methods provided by Bitcoin Core v30.
 
 use super::Method;
 
-/// Data for the JSON RPC methods provided by Bitcoin Core v26.
+/// Data for the JSON RPC methods provided by Bitcoin Core v30.
 pub const METHODS: &[Method] = &[
     // blockchain
     Method::new_modelled("dumptxoutset", "DumpTxOutSet", "dump_tx_out_set"),
@@ -21,6 +21,11 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("getchaintips", "GetChainTips", "get_chain_tips"),
     Method::new_modelled("getchaintxstats", "GetChainTxStats", "get_chain_tx_stats"),
     Method::new_modelled("getdeploymentinfo", "GetDeploymentInfo", "get_deployment_info"),
+    Method::new_modelled(
+        "getdescriptoractivity",
+        "GetDescriptorActivity",
+        "get_descriptor_activity",
+    ),
     Method::new_modelled("getdifficulty", "GetDifficulty", "get_difficulty"),
     Method::new_modelled("getmempoolancestors", "GetMempoolAncestors", "get_mempool_ancestors"),
     Method::new_modelled(
@@ -44,8 +49,11 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("scantxoutset", "ScanTxOutSet", "scan_tx_out_set"),
     Method::new_no_model("verifychain", "VerifyChain", "verify_chain"),
     Method::new_modelled("verifytxoutproof", "VerifyTxOutProof", "verify_tx_out_proof"),
-    Method::new_no_model("getrpcinfo", "GetRpcInfo", "get_rpc_info"),
+    Method::new_modelled("waitforblock", "WaitForBlock", "wait_for_block"),
+    Method::new_modelled("waitforblockheight", "WaitForBlockHeight", "wait_for_block_height"),
+    Method::new_modelled("waitfornewblock", "WaitForNewBlock", "wait_for_new_block"),
     // control
+    Method::new_no_model("getrpcinfo", "GetRpcInfo", "get_rpc_info"),
     Method::new_no_model("getmemoryinfo", "GetMemoryInfoStats", "get_memory_info"),
     Method::new_string("help", "help"),
     Method::new_no_model("logging", "Logging", "logging"),
@@ -127,42 +135,34 @@ pub const METHODS: &[Method] = &[
     // wallet
     Method::new_nothing("abandontransaction", "abandon_transaction"),
     Method::new_no_model("abortrescan", "AbortRescan", "abort_rescan"),
-    Method::new_modelled("addmultisigaddress", "AddMultisigAddress", "add_multisig_address"),
     Method::new_nothing("backupwallet", "backup_wallet"),
     Method::new_modelled("bumpfee", "BumpFee", "bump_fee"),
     Method::new_modelled("createwallet", "CreateWallet", "create_wallet"),
-    Method::new_modelled("dumpprivkey", "DumpPrivKey", "dump_priv_key"),
-    Method::new_no_model("dumpwallet", "DumpWallet", "dump_wallet"),
+    Method::new_no_model(
+        "createwalletdescriptor",
+        "CreateWalletDescriptor",
+        "create_wallet_descriptor",
+    ),
     Method::new_no_model("encryptwallet", "EncryptWallet", "encrypt_wallet"),
     Method::new_modelled("getaddressesbylabel", "GetAddressesByLabel", "get_addresses_by_label"),
     Method::new_modelled("getaddressinfo", "GetAddressInfo", "get_address_info"),
     Method::new_modelled("getbalance", "GetBalance", "get_balance"),
     Method::new_modelled("getbalances", "GetBalances", "get_balances"),
+    Method::new_modelled("gethdkeys", "GetHdKeys", "get_hd_keys"),
     Method::new_modelled("getnewaddress", "GetNewAddress", "get_new_address"),
     Method::new_modelled("getrawchangeaddress", "GetRawChangeAddress", "get_raw_change_address"),
     Method::new_modelled("getreceivedbyaddress", "GetReceivedByAddress", "get_received_by_address"),
     Method::new_modelled("getreceivedbylabel", "GetReceivedByLabel", "get_received_by_label"),
     Method::new_modelled("gettransaction", "GetTransaction", "get_transaction"),
-    Method::new_modelled(
-        "getunconfirmedbalance",
-        "GetUnconfirmedBalance",
-        "get_unconfirmed_balance",
-    ),
     Method::new_modelled("getwalletinfo", "GetWalletInfo", "get_wallet_info"),
-    Method::new_nothing("importaddress", "import_address"),
     Method::new_no_model("importdescriptors", "ImportDescriptors", "import_descriptors"),
-    Method::new_no_model("importmulti", "ImportMulti", "import_multi"),
-    Method::new_nothing("importprivkey", "import_priv_key"),
     Method::new_nothing("importprunedfunds", "import_pruned_funds"),
-    Method::new_nothing("importpubkey", "import_pubkey"),
-    Method::new_nothing("importwallet", "import_walet"),
     Method::new_nothing("keypoolrefill", "keypool_refill"),
     Method::new_modelled("listaddressgroupings", "ListAddressGroupings", "list_address_groupings"),
     Method::new_no_model("listdescriptors", "ListDescriptors", "list_descriptors"),
     Method::new_no_model("listlabels", "ListLabels", "list_labels"),
     Method::new_modelled("listlockunspent", "ListLockUnspent", "list_lock_unspent"),
     Method::new_no_model("migratewallet", "MigrateWallet", "migrate_wallet"),
-    Method::new_nothing("newkeypool", "new_key_pool"),
     Method::new_modelled("psbtbumpfee", "PsbtBumpFee", "psbt_bump_fee"),
     Method::new_modelled(
         "listreceivedbyaddress",
@@ -184,7 +184,6 @@ pub const METHODS: &[Method] = &[
     Method::new_modelled("sendall", "SendAll", "send_all"),
     Method::new_modelled("sendmany", "SendMany", "send_many"),
     Method::new_modelled("sendtoaddress", "SendToAddress", "send_to_address"),
-    Method::new_nothing("sethdseed", "set_hd_seed"),
     Method::new_nothing("setlabel", "set_label"),
     Method::new_no_model("settxfee", "SetTxFee", "set_tx_fee"),
     Method::new_no_model("setwalletflag", "SetWalletFlag", "set_wallet_flag"),
@@ -200,7 +199,6 @@ pub const METHODS: &[Method] = &[
         "simulate_raw_transaction",
     ),
     Method::new_nothing("unloadwallet", "unload_wallet"),
-    Method::new_no_model("upgradewallet", "UpgradeWallet", "upgrade_wallet"),
     Method::new_modelled(
         "walletcreatefundedpsbt",
         "WalletCreateFundedPsbt",
