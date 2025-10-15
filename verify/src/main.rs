@@ -20,7 +20,7 @@ use verify::{method, model, ssot, Version};
 // TODO: Enable running from any directory, currently errors if run from `src/`.
 // TODO: Add a --quiet option.
 
-const VERSIONS: [Version; 13] = [
+const VERSIONS: [Version; 14] = [
     Version::V17,
     Version::V18,
     Version::V19,
@@ -34,6 +34,7 @@ const VERSIONS: [Version; 13] = [
     Version::V27,
     Version::V28,
     Version::V29,
+    Version::V30,
 ];
 
 fn main() -> Result<()> {

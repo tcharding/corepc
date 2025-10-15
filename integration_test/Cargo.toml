@@ -14,7 +14,8 @@ edition = "2021"
 download = ["node/download"]
 
 # Enable the same feature in `node` and the version feature here.
-# All minor releases of the latest three versions.
+# All minor releases of the latest four versions.
+30_0 = ["v30_and_below", "node/30_0"]
 29_0 = ["v29_and_below", "node/29_0"]
 28_2 = ["v28_and_below", "node/28_2"]
 28_1 = ["v28_and_below", "node/28_1"]
@@ -38,7 +39,8 @@ download = ["node/download"]
 # Each major version is tested with the same client.
 # A specific range of versions can be specified e.g. for 24-26:
 # #[cfg(all(feature = "v26_and_below", not(feature = "v23_and_below")))]
-v29_and_below = []
+v30_and_below = []
+v29_and_below = ["v30_and_below"]
 v28_and_below = ["v29_and_below"]
 v27_and_below = ["v28_and_below"]
 v26_and_below = ["v27_and_below"]
