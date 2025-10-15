@@ -45,7 +45,7 @@
 //! | getmempoolancestors                | version + model |                                        |
 //! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
-//! | getmempoolinfo                     | version + model |                                        |
+//! | getmempoolinfo                     | version + model | TODO                                   |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
 //! | gettxout                           | version + model |                                        |
 //! | gettxoutproof                      | returns string  |                                        |
@@ -60,6 +60,9 @@
 //! | scantxoutset                       | omitted         | API marked as experimental             |
 //! | verifychain                        | version         |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
+//! | waitforblock                       | version + model | TODO                                   |
+//! | waitforblockheight                 | version + model | TODO                                   |
+//! | waitfornewblock                    | version + model | TODO                                   |
 //!
 //! </details>
 //!
@@ -83,7 +86,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getblocktemplate                   | version + model |                                        |
-//! | getmininginfo                      | version + model |                                        |
+//! | getmininginfo                      | version + model | TODO                                   |
 //! | getnetworkhashps                   | returns boolean |                                        |
 //! | getprioritisedtransactions         | version + model |                                        |
 //! | prioritisetransaction              | returns boolean |                                        |
@@ -125,7 +128,7 @@
 //! | converttopsbt                      | version + model |                                        |
 //! | createpsbt                         | version + model |                                        |
 //! | createrawtransaction               | version + model |                                        |
-//! | decodepsbt                         | version + model |                                        |
+//! | decodepsbt                         | version + model | TODO                                   |
 //! | descriptorprocesspsbt              | returns boolean |                                        |
 //! | decoderawtransaction               | version + model |                                        |
 //! | decodescript                       | version + model |                                        |
@@ -173,13 +176,10 @@
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | abandontransaction                 | returns nothing |                                        |
 //! | abortrescan                        | version         |                                        |
-//! | addmultisigaddress                 | version + model |                                        |
 //! | backupwallet                       | returns nothing |                                        |
 //! | bumpfee                            | version + model |                                        |
 //! | createwallet                       | version + model |                                        |
 //! | createwalletdescriptor             | version         |                                        |
-//! | dumpprivkey                        | version + model |                                        |
-//! | dumpwallet                         | version         |                                        |
 //! | encryptwallet                      | version         |                                        |
 //! | getaddressesbylabel                | version + model |                                        |
 //! | getaddressinfo                     | version + model |                                        |
@@ -191,29 +191,22 @@
 //! | getreceivedbyaddress               | version + model |                                        |
 //! | getreceivedbylabel                 | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
-//! | getunconfirmedbalance              | version + model |                                        |
-//! | getwalletinfo                      | version + model |                                        |
-//! | importaddress                      | returns nothing |                                        |
+//! | getwalletinfo                      | version + model | TODO                                   |
 //! | importdescriptors                  | version         |                                        |
-//! | importmulti                        | version         |                                        |
-//! | importprivkey                      | returns nothing |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
-//! | importpubkey                       | returns nothing |                                        |
-//! | importwallet                       | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
 //! | listaddressgroupings               | version + model |                                        |
 //! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model |                                        |
-//! | migratewallet                      | version         |                                        |
-//! | newkeypool                         | returns nothing |                                        |
+//! | migratewallet                      | version         | TODO                                   |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model |                                        |
 //! | listtransactions                   | version + model |                                        |
 //! | listunspent                        | version + model |                                        |
-//! | listwalletdir                      | version         |                                        |
+//! | listwalletdir                      | version         | TODO                                   |
 //! | listwallets                        | version + model |                                        |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | version         |                                        |
@@ -224,15 +217,13 @@
 //! | sendall                            | version + model |                                        |
 //! | sendmany                           | version + model |                                        |
 //! | sendtoaddress                      | version + model |                                        |
-//! | sethdseed                          | returns nothing |                                        |
 //! | setlabel                           | returns nothing |                                        |
-//! | settxfee                           | version         |                                        |
+//! | settxfee                           | version         | TODO                                   |
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
 //! | simulaterawtransaction             | version + model |                                        |
 //! | unloadwallet                       | returns nothing |                                        |
-//! | upgradewallet                      | version         |                                        |
 //! | walletcreatefundedpsbt             | version + model |                                        |
 //! | walletdisplayaddress               | version + model | UNTESTED                               |
 //! | walletlock                         | returns nothing |                                        |
@@ -254,11 +245,10 @@
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AbortRescan, AddMultisigAddressError, AddedNode, AddedNodeAddress, AddressInformation,
-        BumpFee, BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt,
-        CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
-        CreateRawTransaction, DecodeRawTransaction, DumpPrivKey, DumpWallet, EncryptWallet,
-        EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
+        AbortRescan, AddedNode, AddedNodeAddress, AddressInformation, BumpFee, BumpFeeError,
+        ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt, CombineRawTransaction,
+        ConvertToPsbt, CreateMultisigError, CreatePsbt, CreateRawTransaction, DecodeRawTransaction,
+        EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
         FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
         GetAddressInfoEmbeddedError, GetAddressesByLabel, GetBalance, GetBestBlockHash,
         GetBlockCount, GetBlockHash, GetBlockStatsError, GetBlockTemplate, GetBlockTemplateError,
@@ -267,12 +257,11 @@ pub use crate::{
         GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
         GetRawMempool, GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
         GetReceivedByAddress, GetTransactionDetailError, GetTxOut, GetTxOutError,
-        GetUnconfirmedBalance, ListAddressGroupings, ListAddressGroupingsError,
-        ListAddressGroupingsItem, ListLabels, ListLockUnspent, ListLockUnspentItem,
-        ListLockUnspentItemError, ListReceivedByAddressError, ListUnspentItemError, ListWallets,
-        LockUnspent, Locked, NumericError, PruneBlockchain, RawTransactionError,
-        RawTransactionInput, RawTransactionOutput, RescanBlockchain, ScriptType,
-        SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignMessage,
+        ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels,
+        ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddressError,
+        ListUnspentItemError, ListWallets, LockUnspent, Locked, NumericError, PruneBlockchain,
+        RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain,
+        ScriptType, SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignMessage,
         SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
         SignRawTransactionWithKey, SignRawTransactionWithWallet, TransactionCategory, UploadTarget,
         ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
@@ -281,9 +270,9 @@ pub use crate::{
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
-        GetZmqNotifications, ImportMulti, ImportMultiEntry, JoinPsbts, JsonRpcError,
-        ListReceivedByAddress, ListReceivedByAddressItem, ListReceivedByLabel,
-        ListReceivedByLabelError, ListWalletDir, ListWalletDirWallet, UtxoUpdatePsbt,
+        GetZmqNotifications, JoinPsbts, JsonRpcError, ListReceivedByAddress,
+        ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir,
+        ListWalletDirWallet, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,
@@ -294,16 +283,15 @@ pub use crate::{
     v20::GenerateToDescriptor,
     v21::{
         AddPeerAddress, GetIndexInfo, GetIndexInfoName, ImportDescriptors, ImportDescriptorsResult,
-        PsbtBumpFee, PsbtBumpFeeError, Send, SendError, SendMany, SendManyVerbose, UpgradeWallet,
+        PsbtBumpFee, PsbtBumpFeeError, Send, SendError, SendMany, SendManyVerbose,
     },
     v22::{
         Banned, EnumerateSigners, GetNodeAddresses, ListBanned, NodeAddress, ScriptPubkey,
         WalletDisplayAddress,
     },
     v23::{
-        AddMultisigAddress, Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript,
-        DecodeScriptError, DeploymentInfo, GetDeploymentInfo, GetDeploymentInfoError,
-        RestoreWallet, SaveMempool,
+        Bip9Info, Bip9Statistics, CreateMultisig, DecodeScript, DecodeScriptError, DeploymentInfo,
+        GetDeploymentInfo, GetDeploymentInfoError, RestoreWallet, SaveMempool,
     },
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
