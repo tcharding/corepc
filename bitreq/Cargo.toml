@@ -1,0 +1,15 @@
+[package]
+name = "bitreq"
+version = "0.0.0"
+authors = ["Tobin C. Harding <me@tobin.cc>"]
+description = "Simple, minimal-dependency HTTP client"
+documentation = "https://docs.rs/bitreq"
+repository = "https://github.com/rust-bitcoin/corepc"
+readme = "README.md"
+keywords = ["http", "https", "client", "request", "json"]
+categories = ["web-programming::http-client"]
+license = "ISC"
+edition = "2021"
+rust-version = "1.74.0"
+
+[dependencies]
