@@ -359,13 +359,13 @@ fn blockchain__get_raw_mempool__modelled() {
     // Sanity check.
     assert_eq!(mempool.0.len(), 1);
 
-    // FIXME: Fails: JsonRpc(Json(Error("invalid type: map, expected a sequence", line: 1, column: 0)))
     // verbose = true
-    // let json: GetRawMempoolVerbose = node.client.get_raw_mempool_verbose().expect("getrawmempool verbose");
-    // let model: Result<mtype::GetRawMempoolVerbose, GetRawMempoolVerboseError> = json.into_model();
-    // let mempool = model.unwrap();
-    // // Sanity check.
-    // assert_eq!(mempool.0.len(), 1);
+    let json: GetRawMempoolVerbose =
+        node.client.get_raw_mempool_verbose().expect("getrawmempool verbose");
+    let model: Result<mtype::GetRawMempoolVerbose, MapMempoolEntryError> = json.into_model();
+    let mempool = model.unwrap();
+    // Sanity check.
+    assert_eq!(mempool.0.len(), 1);
 }
 
 #[test]
