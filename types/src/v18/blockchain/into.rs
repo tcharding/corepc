@@ -6,8 +6,8 @@ use bitcoin::{hex, Txid, Wtxid};
 
 use super::{
     GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
-    GetMempoolDescendantsVerbose, GetMempoolEntry, MapMempoolEntryError, MempoolEntry,
-    MempoolEntryError,
+    GetMempoolDescendantsVerbose, GetMempoolEntry, GetRawMempool, GetRawMempoolVerbose,
+    MapMempoolEntryError, MempoolEntry, MempoolEntryError,
 };
 use crate::model;
 
@@ -109,5 +109,28 @@ impl MempoolEntry {
             bip125_replaceable: Some(self.bip125_replaceable),
             unbroadcast: None,
         })
+    }
+}
+
+impl GetRawMempool {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetRawMempool, hex::HexToArrayError> {
+        let v = self.0.iter().map(|t| t.parse::<Txid>()).collect::<Result<Vec<_>, _>>()?;
+        Ok(model::GetRawMempool(v))
+    }
+}
+
+impl GetRawMempoolVerbose {
+    /// Converts version specific type to a version nonspecific, more strongly typed type.
+    pub fn into_model(self) -> Result<model::GetRawMempoolVerbose, MapMempoolEntryError> {
+        use MapMempoolEntryError as E;
+
+        let mut map = BTreeMap::new();
+        for (k, v) in self.0.into_iter() {
+            let txid = k.parse::<Txid>().map_err(E::Txid)?;
+            let relative = v.into_model().map_err(E::MempoolEntry)?;
+            map.insert(txid, relative);
+        }
+        Ok(model::GetRawMempoolVerbose(map))
     }
 }

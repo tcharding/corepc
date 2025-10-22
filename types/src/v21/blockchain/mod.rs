@@ -250,3 +250,20 @@ pub struct GetMempoolInfo {
     #[serde(rename = "unbroadcastcount")]
     pub unbroadcast_count: i64,
 }
+
+/// Result of JSON-RPC method `getrawmempool` with verbose set to `false`.
+/// > getrawmempool ( verbose )
+/// >
+/// > Returns all transaction ids in memory pool as a json array of string transaction ids.
+/// >
+/// > Hint: use getmempoolentry to fetch a specific transaction from the mempool.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
+pub struct GetRawMempool(pub Vec<String>);
+
+/// Result of JSON-RPC method `getrawmempool` with verbose set to `true`.
+///
+/// Map of txid to [`MempoolEntry`].
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
+pub struct GetRawMempoolVerbose(pub BTreeMap<String, MempoolEntry>);
