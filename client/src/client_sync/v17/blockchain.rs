@@ -230,7 +230,7 @@ macro_rules! impl_client_v17__get_raw_mempool {
                 // Equivalent to self.call("getrawmempool", &[into_json(false)?])
                 self.call("getrawmempool", &[])
             }
-            pub fn get_raw_mempool_verbose(&self) -> Result<GetRawMempool> {
+            pub fn get_raw_mempool_verbose(&self) -> Result<GetRawMempoolVerbose> {
                 self.call("getrawmempool", &[into_json(true)?])
             }
         }
