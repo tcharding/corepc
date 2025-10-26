@@ -15,6 +15,21 @@ fn test_https() {
 }
 
 #[test]
+#[cfg(feature = "json-using-serde")]
+fn test_json_using_serde() {
+    const JSON_SRC: &str = r#"{
+        "str": "Json test",
+        "num": 42
+    }"#;
+
+    setup();
+    let original_json: serde_json::Value = serde_json::from_str(JSON_SRC).unwrap();
+    let response = bitreq::post(url("/echo")).with_json(&original_json).unwrap().send().unwrap();
+    let actual_json: serde_json::Value = response.json().unwrap();
+    assert_eq!(actual_json, original_json);
+}
+
+#[test]
 fn test_timeout_too_low() {
     setup();
     let result = bitreq::get(url("/slow_a")).with_body("Q".to_string()).with_timeout(1).send();

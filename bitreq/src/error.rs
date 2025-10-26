@@ -9,6 +9,9 @@ use std::{error, io};
 // what the user might want to handle? This error doesn't really invite graceful
 // handling.
 pub enum Error {
+    #[cfg(feature = "json-using-serde")]
+    /// Ran into a Serde error.
+    SerdeJsonError(serde_json::Error),
     /// The response body contains invalid UTF-8, so the `as_str()`
     /// conversion failed.
     InvalidUtf8InBody(str::Utf8Error),
@@ -88,6 +91,8 @@ impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         use Error::*;
         match self {
+            #[cfg(feature = "json-using-serde")]
+            SerdeJsonError(err) => write!(f, "{}", err),
             #[cfg(feature = "std")]
             IoError(err) => write!(f, "{}", err),
             InvalidUtf8InBody(err) => write!(f, "{}", err),
@@ -124,6 +129,8 @@ impl error::Error for Error {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         use Error::*;
         match self {
+            #[cfg(feature = "json-using-serde")]
+            SerdeJsonError(err) => Some(err),
             #[cfg(feature = "std")]
             IoError(err) => Some(err),
             InvalidUtf8InBody(err) => Some(err),
