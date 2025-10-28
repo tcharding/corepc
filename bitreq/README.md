@@ -40,7 +40,7 @@ We use an MSRV per major release, i.e., with a new major release we
 reserve the right to change the MSRV.
 
 The current major version of this library should always compile with
-default features (i.e., `std`) on **Rust 1.63**. Other features may
+default features (i.e., `std`) on **Rust 1.75**. Other features may
 require a higher MSRV.
 
 ## License

@@ -56,6 +56,6 @@ Some code shamelessly stolen from `rust-bitcoincore-rpc` (credit to Steven).
 
 ## Minimum Supported Rust Version (MSRV)
 
-This library should always compile with any combination of features on **Rust 1.63.0**.
+This library should always compile with any combination of features on **Rust 1.75.0**.
 
 Use `Cargo-minimal.lock` to build the MSRV by copying to `Cargo.lock` and building.
