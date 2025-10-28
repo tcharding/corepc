@@ -57,7 +57,7 @@ RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --features download,doc --open
 
 ## Minimum Supported Rust Version (MSRV)
 
-This library should always compile with any combination of features on **Rust 1.63.0**.
+This library should always compile with any combination of features on **Rust 1.75.0**.
 
 ## Nix
 

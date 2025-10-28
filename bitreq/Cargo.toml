@@ -10,7 +10,7 @@ keywords = ["http", "https", "client", "request", "json"]
 categories = ["web-programming::http-client"]
 license = "ISC"
 edition = "2021"
-rust-version = "1.74.0"
+rust-version = "1.75.0"
 
 [badges]
 maintenance = { status = "experimental" }

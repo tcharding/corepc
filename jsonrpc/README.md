@@ -2,7 +2,7 @@
 
 # Rust Version compatibility
 
-This library is compatible with Rust **1.63.0** or higher.
+This library is compatible with Rust **1.75.0** or higher.
 
 # Rust JSONRPC Client
 
