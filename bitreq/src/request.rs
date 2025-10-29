@@ -297,7 +297,7 @@ impl Request {
     /// Returns `Err` if we run into an error while sending the
     /// request, or receiving/parsing the response. The specific error
     /// is described in the `Err`, and it can be any
-    /// [`minreq::Error`](enum.Error.html) except
+    /// [`bitreq::Error`](enum.Error.html) except
     /// [`InvalidUtf8InBody`](enum.Error.html#variant.InvalidUtf8InBody).
     #[cfg(feature = "async")]
     pub async fn send_async(self) -> Result<Response, Error> {
