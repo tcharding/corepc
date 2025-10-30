@@ -165,6 +165,8 @@ dependencies = [
  "rustls",
  "rustls-native-certs",
  "rustls-webpki",
+ "serde",
+ "serde_json",
  "tiny_http",
  "tokio",
  "tokio-rustls",

@@ -173,6 +173,24 @@ impl Request {
         self
     }
 
+    /// Converts given argument to JSON and sets it as body.
+    ///
+    /// # Errors
+    ///
+    /// Returns
+    /// [`SerdeJsonError`](enum.Error.html#variant.SerdeJsonError) if
+    /// Serde runs into a problem when converting `body` into a
+    /// string.
+    #[cfg(feature = "json-using-serde")]
+    pub fn with_json<T: serde::ser::Serialize>(mut self, body: &T) -> Result<Request, Error> {
+        self.headers
+            .insert("Content-Type".to_string(), "application/json; charset=UTF-8".to_string());
+        match serde_json::to_string(&body) {
+            Ok(json) => Ok(self.with_body(json)),
+            Err(err) => Err(Error::SerdeJsonError(err)),
+        }
+    }
+
     /// Sets the request timeout in seconds.
     pub fn with_timeout(mut self, timeout: u64) -> Request {
         self.timeout = Some(timeout);
@@ -297,7 +315,7 @@ impl Request {
     /// Returns `Err` if we run into an error while sending the
     /// request, or receiving/parsing the response. The specific error
     /// is described in the `Err`, and it can be any
-    /// [`minreq::Error`](enum.Error.html) except
+    /// [`bitreq::Error`](enum.Error.html) except
     /// [`InvalidUtf8InBody`](enum.Error.html#variant.InvalidUtf8InBody).
     #[cfg(feature = "async")]
     pub async fn send_async(self) -> Result<Response, Error> {
