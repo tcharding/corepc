@@ -1,4 +1,4 @@
-//! # Minreq
+//! # Bitreq
 //!
 //! Simple, minimal-dependency HTTP client.  The library has a very
 //! minimal API, so you'll probably know everything you need to after
