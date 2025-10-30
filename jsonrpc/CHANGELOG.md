@@ -1,3 +1,8 @@
+# 0.19.0 - 2025-10-31
+
+* Depend on `bitreq` [399](https://github.com/rust-bitcoin/corepc/pull/399)
+* Update MSRV to Rust `v1.75.0` [#405](https://github.com/rust-bitcoin/corepc/pull/405/)
+
 # 0.18.0 - 2024-04-12
 
 * simple_http: throw a specific error when transfer encoding is chunked
