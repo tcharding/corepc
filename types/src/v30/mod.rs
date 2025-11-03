@@ -128,7 +128,7 @@
 //! | converttopsbt                      | version + model |                                        |
 //! | createpsbt                         | version + model |                                        |
 //! | createrawtransaction               | version + model |                                        |
-//! | decodepsbt                         | version + model | TODO                                   |
+//! | decodepsbt                         | version + model | Musig not modelled: not in rust-bitcoin|
 //! | descriptorprocesspsbt              | returns boolean |                                        |
 //! | decoderawtransaction               | version + model |                                        |
 //! | decodescript                       | version + model |                                        |

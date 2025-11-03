@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-//! The JSON-RPC API for Bitcoin Core `v23` - raw transactions.
+//! The JSON-RPC API for Bitcoin Core `v30` - raw transactions.
 //!
 //! Types for methods found under the `== Rawtransactions ==` section of the API docs.
 
@@ -78,6 +78,8 @@ pub struct Proprietary {
 }
 
 /// An input in a partially signed Bitcoin transaction. Part of `decodepsbt`.
+///
+/// TODO: Update model once Musig is supported in rust-bitcoin.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
 pub struct PsbtInput {
@@ -121,6 +123,12 @@ pub struct PsbtInput {
     pub taproot_internal_key: Option<String>,
     /// The hex-encoded Taproot merkle root.
     pub taproot_merkle_root: Option<String>,
+    /// MuSig2 participant public keys.
+    pub musig2_participant_pubkeys: Option<Vec<Musig2ParticipantPubkeys>>,
+    /// MuSig2 public nonces.
+    pub musig2_pubnonces: Option<Vec<Musig2Pubnonce>>,
+    /// MuSig2 partial signatures.
+    pub musig2_partial_sigs: Option<Vec<Musig2PartialSig>>,
     /// The input proprietary map.
     pub proprietary: Option<Vec<Proprietary>>,
     /// The unknown input fields.
@@ -143,6 +151,8 @@ pub struct PsbtOutput {
     pub taproot_tree: Option<Vec<TaprootLeaf>>,
     /// BIP32 derivation paths for keys.
     pub taproot_bip32_derivs: Option<Vec<TaprootBip32Deriv>>,
+    /// MuSig2 participant public keys.
+    pub musig2_participant_pubkeys: Option<Vec<Musig2ParticipantPubkeys>>,
     /// The output proprietary map.
     pub proprietary: Option<Vec<Proprietary>>,
     /// The unknown global fields.
@@ -199,6 +209,44 @@ pub struct TaprootLeaf {
     pub leaf_version: u32,
     /// The hex-encoded script itself.
     pub script: String,
+}
+
+/// MuSig2 participant public keys. Part of `decodepsbt`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
+pub struct Musig2ParticipantPubkeys {
+    /// The compressed aggregate public key for which the participants create.
+    pub aggregate_pubkey: String,
+    /// The compressed public keys that are aggregated for aggregate_pubkey.
+    pub participant_pubkeys: Vec<String>,
+}
+
+/// MuSig2 public nonce. Part of `decodepsbt`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
+pub struct Musig2Pubnonce {
+    /// The compressed public key of the participant that created this pubnonce.
+    pub participant_pubkey: String,
+    /// The compressed aggregate public key for which this pubnonce is for.
+    pub aggregate_pubkey: String,
+    /// The hash of the leaf script that contains the aggregate pubkey being signed for. Omitted when signing for the internal key.
+    pub leaf_hash: Option<String>,
+    /// The public nonce itself.
+    pub pubnonce: String,
+}
+
+/// MuSig2 partial signature. Part of `decodepsbt`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
+pub struct Musig2PartialSig {
+    /// The compressed public key of the participant that created this partial signature.
+    pub participant_pubkey: String,
+    /// The compressed aggregate public key for which this partial signature is for.
+    pub aggregate_pubkey: String,
+    /// The hash of the leaf script that contains the aggregate pubkey being signed for. Omitted when signing for the internal key.
+    pub leaf_hash: Option<String>,
+    /// The partial signature itself.
+    pub partial_sig: String,
 }
 
 // TODO: Remove all this code once it is implemented and backported to 0.32.x
