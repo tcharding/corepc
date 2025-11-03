@@ -100,6 +100,7 @@ impl GetMiningInfo {
             target: None,
             network_hash_ps: self.network_hash_ps,
             pooled_tx: self.pooled_tx,
+            block_min_tx_fee: None,
             chain: self.chain,
             signet_challenge: None,
             next: None,

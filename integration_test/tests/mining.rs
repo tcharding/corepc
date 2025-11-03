@@ -37,7 +37,6 @@ fn mining__get_block_template__modelled() {
 }
 
 #[test]
-#[cfg(feature = "v29_and_below")]
 fn mining__get_mining_info() {
     let node = Node::with_wallet(Wallet::Default, &[]);
 
