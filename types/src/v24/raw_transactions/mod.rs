@@ -14,8 +14,12 @@ use serde::{Deserialize, Serialize};
 use crate::ScriptSig;
 
 #[rustfmt::skip]                // Keep public re-exports separate.
-pub use self::error::{DecodePsbtError, GlobalXpubError, PsbtInputError, PsbtOutputError, TaprootScriptPathSigError, TaprootScriptError, TaprootBip32DerivsError, ControlBlocksError, TaprootLeafError};
+pub use self::error::{
+    DecodePsbtError, GlobalXpubError, PsbtInputError, PsbtOutputError, TaprootScriptPathSigError,
+    TaprootScriptError, TaprootBip32DerivsError, ControlBlocksError, TaprootLeafError
+};
 // Re-export types that appear in the public API of this module.
+pub use super::{Bip32DerivError, PartialSignatureError, RawTransactionError, WitnessUtxoError};
 pub use crate::psbt::{Bip32Deriv, PsbtScript, RawTransaction, WitnessUtxo};
 
 /// Result of JSON-RPC method `decodepsbt`.

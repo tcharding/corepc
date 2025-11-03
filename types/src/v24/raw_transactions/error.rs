@@ -5,8 +5,8 @@ use core::fmt;
 use bitcoin::taproot::{IncompleteBuilderError, TaprootBuilderError, TaprootError};
 use bitcoin::{bip32, hex, secp256k1, sighash};
 
+use super::{Bip32DerivError, PartialSignatureError, RawTransactionError, WitnessUtxoError};
 use crate::error::write_err;
-use crate::v17::{Bip32DerivError, PartialSignatureError, RawTransactionError, WitnessUtxoError};
 
 /// Error when converting a `DecodePsbt` type into the model type.
 #[derive(Debug)]
