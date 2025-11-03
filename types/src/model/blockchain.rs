@@ -646,6 +646,10 @@ pub struct GetMempoolInfo {
     /// True if the mempool accepts RBF without replaceability signaling inspection. v24 and later
     /// only.
     pub full_rbf: Option<bool>,
+    /// True if the mempool accepts transactions with bare multisig outputs.
+    pub permit_bare_multisig: Option<bool>,
+    /// Maximum number of bytes that can be used by OP_RETURN outputs in the mempool.
+    pub max_data_carrier_size: Option<u64>,
 }
 
 /// Models the result of JSON-RPC method `getrawmempool` with verbose set to false.

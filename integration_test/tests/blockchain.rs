@@ -331,7 +331,6 @@ fn blockchain__get_mempool_entry__modelled() {
 }
 
 #[test]
-#[cfg(feature = "v29_and_below")]
 fn blockchain__get_mempool_info__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();

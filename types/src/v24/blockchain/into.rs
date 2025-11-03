@@ -153,6 +153,8 @@ impl GetMempoolInfo {
             incremental_relay_fee,
             unbroadcast_count,
             full_rbf: Some(self.full_rbf),
+            permit_bare_multisig: None,
+            max_data_carrier_size: None,
         })
     }
 }

@@ -45,7 +45,7 @@
 //! | getmempoolancestors                | version + model |                                        |
 //! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
-//! | getmempoolinfo                     | version + model | TODO                                   |
+//! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
 //! | gettxout                           | version + model |                                        |
 //! | gettxoutproof                      | returns string  |                                        |
@@ -242,6 +242,10 @@
 //!
 //! </details>
 
+mod blockchain;
+
+#[doc(inline)]
+pub use self::{blockchain::GetMempoolInfo};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -297,7 +301,7 @@ pub use crate::{
     },
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry,
         GetRawMempoolVerbose, GetTransactionDetail, GetTxSpendingPrevout,
         GetTxSpendingPrevoutError, GlobalXpub, ListUnspent, ListUnspentItem, MempoolEntry,
         MigrateWallet, Proprietary, PsbtInput, PsbtOutput, SendAll, SendAllError,
