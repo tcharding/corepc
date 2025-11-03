@@ -244,11 +244,18 @@
 
 mod blockchain;
 mod mining;
+mod raw_transactions;
 
 #[doc(inline)]
 pub use self::{
     blockchain::GetMempoolInfo,
     mining::{GetMiningInfo, GetMiningInfoError},
+    raw_transactions::{
+        ControlBlocksError, DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput,
+        PsbtInputError, PsbtOutput, PsbtOutputError, TaprootBip32Deriv, TaprootBip32DerivsError,
+        TaprootLeaf, TaprootLeafError, TaprootScript, TaprootScriptError, TaprootScriptPathSig,
+        TaprootScriptPathSigError,
+    },
 };
 #[doc(inline)]
 pub use crate::{
@@ -305,14 +312,10 @@ pub use crate::{
         GetDeploymentInfo, GetDeploymentInfoError, RestoreWallet, SaveMempool,
     },
     v24::{
-        ControlBlocksError, DecodePsbt, DecodePsbtError, GetMempoolAncestors,
-        GetMempoolAncestorsVerbose, GetMempoolDescendants, GetMempoolDescendantsVerbose,
-        GetMempoolEntry, GetRawMempoolVerbose, GetTransactionDetail,
-        GetTxSpendingPrevout, GetTxSpendingPrevoutError, GlobalXpub, GlobalXpubError, ListUnspent,
-        ListUnspentItem, MempoolEntry, MigrateWallet, Proprietary, PsbtInput, PsbtInputError,
-        PsbtOutput, PsbtOutputError, SendAll, SendAllError, SimulateRawTransaction,
-        TaprootBip32Deriv, TaprootBip32DerivsError, TaprootLeaf, TaprootLeafError, TaprootScript,
-        TaprootScriptError, TaprootScriptPathSig, TaprootScriptPathSigError,
+        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        GetMempoolDescendantsVerbose, GetMempoolEntry, GetRawMempoolVerbose, GetTransactionDetail,
+        GetTxSpendingPrevout, GetTxSpendingPrevoutError, ListUnspent, ListUnspentItem,
+        MempoolEntry, MigrateWallet, SendAll, SendAllError, SimulateRawTransaction,
     },
     v25::{
         GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, MempoolAcceptanceError,
