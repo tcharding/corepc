@@ -252,8 +252,8 @@ pub use self::{
 #[doc(inline)]
 pub use crate::v17::{
     AbortRescan, AddMultisigAddress, AddMultisigAddressError, AddedNode, AddedNodeAddress,
-    AddressInformation, Banned, Bip125Replaceable, BumpFee, BumpFeeError, ChainTips,
-    ChainTipsError, ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt,
+    AddressInformation, Banned, Bip125Replaceable, Bip32DerivError, BumpFee, BumpFeeError,
+    ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt, CombineRawTransaction, ConvertToPsbt,
     CreateMultisig, CreateMultisigError, CreatePsbt, CreateRawTransaction, CreateWallet,
     DecodePsbt, DecodePsbtError, DecodeRawTransaction, DecodeScript, DecodeScriptError,
     DumpPrivKey, DumpWallet, EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError,
@@ -272,15 +272,16 @@ pub use crate::v17::{
     ListBanned, ListLabels, ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError,
     ListReceivedByAddressError, ListSinceBlock, ListSinceBlockError, ListTransactions,
     ListUnspentItemError, ListWallets, LoadWallet, LockUnspent, Locked, Logging, NumericError,
-    PruneBlockchain, RawTransactionError, RawTransactionInput, RawTransactionOutput,
-    RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress, SetNetworkActive,
-    SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
-    SignRawTransactionWithKey, SignRawTransactionWithWallet, SoftforkReject, TestMempoolAccept,
-    TransactionCategory, TransactionItem, TransactionItemError, UploadTarget, ValidateAddress,
-    ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof, WaitForBlock,
-    WaitForBlockError, WaitForBlockHeight, WaitForBlockHeightError, WaitForNewBlock,
-    WaitForNewBlockError, WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt,
-    WitnessUtxo,
+    PartialSignatureError, PruneBlockchain, RawTransactionError, RawTransactionInput,
+    RawTransactionOutput, RescanBlockchain, ScriptType, SendMany, SendRawTransaction,
+    SendToAddress, SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey,
+    SignRawTransaction, SignRawTransactionError, SignRawTransactionWithKey,
+    SignRawTransactionWithWallet, SoftforkReject, TestMempoolAccept, TransactionCategory,
+    TransactionItem, TransactionItemError, UploadTarget, ValidateAddress, ValidateAddressError,
+    VerifyChain, VerifyMessage, VerifyTxOutProof, WaitForBlock, WaitForBlockError,
+    WaitForBlockHeight, WaitForBlockHeightError, WaitForNewBlock, WaitForNewBlockError,
+    WalletCreateFundedPsbt, WalletCreateFundedPsbtError, WalletProcessPsbt, WitnessUtxo,
+    WitnessUtxoError,
 };
 #[doc(inline)]
 pub use crate::v18::{

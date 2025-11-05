@@ -128,7 +128,7 @@
 //! | converttopsbt                      | version + model |                                        |
 //! | createpsbt                         | version + model |                                        |
 //! | createrawtransaction               | version + model |                                        |
-//! | decodepsbt                         | version + model | TODO                                   |
+//! | decodepsbt                         | version + model | Musig not modelled: not in rust-bitcoin|
 //! | descriptorprocesspsbt              | returns boolean |                                        |
 //! | decoderawtransaction               | version + model |                                        |
 //! | decodescript                       | version + model |                                        |
@@ -244,38 +244,46 @@
 
 mod blockchain;
 mod mining;
+mod raw_transactions;
 
 #[doc(inline)]
 pub use self::{
     blockchain::GetMempoolInfo,
     mining::{GetMiningInfo, GetMiningInfoError},
+    raw_transactions::{
+        ControlBlocksError, DecodePsbt, DecodePsbtError, GlobalXpub, Proprietary, PsbtInput,
+        PsbtInputError, PsbtOutput, PsbtOutputError, TaprootBip32Deriv, TaprootBip32DerivsError,
+        TaprootLeaf, TaprootLeafError, TaprootScript, TaprootScriptError, TaprootScriptPathSig,
+        TaprootScriptPathSigError,
+    },
 };
 #[doc(inline)]
 pub use crate::{
     v17::{
-        AbortRescan, AddedNode, AddedNodeAddress, AddressInformation, BumpFee, BumpFeeError,
-        ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt, CombineRawTransaction,
-        ConvertToPsbt, CreateMultisigError, CreatePsbt, CreateRawTransaction, DecodeRawTransaction,
-        EncryptWallet, EstimateSmartFee, FinalizePsbt, FinalizePsbtError, FundRawTransaction,
-        FundRawTransactionError, Generate, GenerateToAddress, GetAddedNodeInfo,
-        GetAddressInfoEmbeddedError, GetAddressesByLabel, GetBalance, GetBestBlockHash,
-        GetBlockCount, GetBlockHash, GetBlockStatsError, GetBlockTemplate, GetBlockTemplateError,
-        GetBlockVerboseZero, GetChainTips, GetChainTxStatsError, GetConnectionCount, GetDifficulty,
-        GetMemoryInfoStats, GetMempoolInfoError, GetNetTotals, GetNetworkInfoAddress,
-        GetNetworkInfoError, GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress,
-        GetRawMempool, GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
+        AbortRescan, AddedNode, AddedNodeAddress, AddressInformation, Bip32DerivError, BumpFee,
+        BumpFeeError, ChainTips, ChainTipsError, ChainTipsStatus, CombinePsbt,
+        CombineRawTransaction, ConvertToPsbt, CreateMultisigError, CreatePsbt,
+        CreateRawTransaction, DecodeRawTransaction, EncryptWallet, EstimateSmartFee, FinalizePsbt,
+        FinalizePsbtError, FundRawTransaction, FundRawTransactionError, Generate,
+        GenerateToAddress, GetAddedNodeInfo, GetAddressInfoEmbeddedError, GetAddressesByLabel,
+        GetBalance, GetBestBlockHash, GetBlockCount, GetBlockHash, GetBlockStatsError,
+        GetBlockTemplate, GetBlockTemplateError, GetBlockVerboseZero, GetChainTips,
+        GetChainTxStatsError, GetConnectionCount, GetDifficulty, GetMemoryInfoStats,
+        GetMempoolInfoError, GetNetTotals, GetNetworkInfoAddress, GetNetworkInfoError,
+        GetNetworkInfoNetwork, GetNewAddress, GetRawChangeAddress, GetRawMempool,
+        GetRawTransaction, GetRawTransactionVerbose, GetRawTransactionVerboseError,
         GetReceivedByAddress, GetTransactionDetailError, GetTxOut, GetTxOutError,
         ListAddressGroupings, ListAddressGroupingsError, ListAddressGroupingsItem, ListLabels,
         ListLockUnspent, ListLockUnspentItem, ListLockUnspentItemError, ListReceivedByAddressError,
-        ListUnspentItemError, ListWallets, LockUnspent, Locked, NumericError, PruneBlockchain,
-        RawTransactionError, RawTransactionInput, RawTransactionOutput, RescanBlockchain,
-        ScriptType, SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignMessage,
-        SignMessageWithPrivKey, SignRawTransaction, SignRawTransactionError,
-        SignRawTransactionWithKey, SignRawTransactionWithWallet, TransactionCategory, UploadTarget,
-        ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage, VerifyTxOutProof,
-        WaitForBlock, WaitForBlockError, WaitForBlockHeight, WaitForBlockHeightError,
-        WaitForNewBlock, WaitForNewBlockError, WalletCreateFundedPsbt, WalletCreateFundedPsbtError,
-        WitnessUtxo,
+        ListUnspentItemError, ListWallets, LockUnspent, Locked, NumericError,
+        PartialSignatureError, PruneBlockchain, RawTransactionError, RawTransactionInput,
+        RawTransactionOutput, RescanBlockchain, ScriptType, SendRawTransaction, SendToAddress,
+        SetNetworkActive, SetTxFee, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
+        SignRawTransactionError, SignRawTransactionWithKey, SignRawTransactionWithWallet,
+        TransactionCategory, UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain,
+        VerifyMessage, VerifyTxOutProof, WaitForBlock, WaitForBlockError, WaitForBlockHeight,
+        WaitForBlockHeightError, WaitForNewBlock, WaitForNewBlockError, WalletCreateFundedPsbt,
+        WalletCreateFundedPsbtError, WitnessUtxo, WitnessUtxoError,
     },
     v18::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
@@ -304,12 +312,10 @@ pub use crate::{
         GetDeploymentInfo, GetDeploymentInfoError, RestoreWallet, SaveMempool,
     },
     v24::{
-        DecodePsbt, DecodePsbtError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetRawMempoolVerbose,
-        GetTransactionDetail, GetTxSpendingPrevout, GetTxSpendingPrevoutError, GlobalXpub,
-        ListUnspent, ListUnspentItem, MempoolEntry, MigrateWallet, Proprietary, PsbtInput,
-        PsbtOutput, SendAll, SendAllError, SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf,
-        TaprootScript, TaprootScriptPathSig,
+        GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
+        GetMempoolDescendantsVerbose, GetMempoolEntry, GetRawMempoolVerbose, GetTransactionDetail,
+        GetTxSpendingPrevout, GetTxSpendingPrevoutError, ListUnspent, ListUnspentItem,
+        MempoolEntry, MigrateWallet, SendAll, SendAllError, SimulateRawTransaction,
     },
     v25::{
         GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, MempoolAcceptanceError,
