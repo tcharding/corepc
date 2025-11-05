@@ -45,7 +45,7 @@
 //! | getmempoolancestors                | version + model |                                        |
 //! | getmempooldescendants              | version + model |                                        |
 //! | getmempoolentry                    | version + model |                                        |
-//! | getmempoolinfo                     | version + model | TODO                                   |
+//! | getmempoolinfo                     | version + model |                                        |
 //! | getrawmempool                      | version + model | Includes additional 'verbose' type     |
 //! | gettxout                           | version + model |                                        |
 //! | gettxoutproof                      | returns string  |                                        |
@@ -86,7 +86,7 @@
 //! | JSON-RPC Method Name               | Returns         | Notes                                  |
 //! |:-----------------------------------|:---------------:|:--------------------------------------:|
 //! | getblocktemplate                   | version + model |                                        |
-//! | getmininginfo                      | version + model | TODO                                   |
+//! | getmininginfo                      | version + model |                                        |
 //! | getnetworkhashps                   | returns boolean |                                        |
 //! | getprioritisedtransactions         | version + model |                                        |
 //! | prioritisetransaction              | returns boolean |                                        |
@@ -242,6 +242,14 @@
 //!
 //! </details>
 
+mod blockchain;
+mod mining;
+
+#[doc(inline)]
+pub use self::{
+    blockchain::GetMempoolInfo,
+    mining::{GetMiningInfo, GetMiningInfoError},
+};
 #[doc(inline)]
 pub use crate::{
     v17::{
@@ -297,12 +305,11 @@ pub use crate::{
     },
     v24::{
         DecodePsbt, DecodePsbtError, GetMempoolAncestors, GetMempoolAncestorsVerbose,
-        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetMempoolInfo,
-        GetRawMempoolVerbose, GetTransactionDetail, GetTxSpendingPrevout,
-        GetTxSpendingPrevoutError, GlobalXpub, ListUnspent, ListUnspentItem, MempoolEntry,
-        MigrateWallet, Proprietary, PsbtInput, PsbtOutput, SendAll, SendAllError,
-        SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf, TaprootScript,
-        TaprootScriptPathSig,
+        GetMempoolDescendants, GetMempoolDescendantsVerbose, GetMempoolEntry, GetRawMempoolVerbose,
+        GetTransactionDetail, GetTxSpendingPrevout, GetTxSpendingPrevoutError, GlobalXpub,
+        ListUnspent, ListUnspentItem, MempoolEntry, MigrateWallet, Proprietary, PsbtInput,
+        PsbtOutput, SendAll, SendAllError, SimulateRawTransaction, TaprootBip32Deriv, TaprootLeaf,
+        TaprootScript, TaprootScriptPathSig,
     },
     v25::{
         GenerateBlock, GenerateBlockError, GetBlockStats, ListDescriptors, MempoolAcceptanceError,
@@ -330,7 +337,7 @@ pub use crate::{
         GetBlockHeaderVerbose, GetBlockHeaderVerboseError, GetBlockVerboseOne,
         GetBlockVerboseOneError, GetBlockchainInfo, GetBlockchainInfoError, GetChainStates,
         GetChainStatesError, GetDescriptorActivity, GetDescriptorActivityError, GetDescriptorInfo,
-        GetMiningInfo, GetMiningInfoError, MempoolAcceptance, NextBlockInfo, NextBlockInfoError,
-        ReceiveActivity, SpendActivity, TestMempoolAccept,
+        MempoolAcceptance, NextBlockInfo, NextBlockInfoError, ReceiveActivity, SpendActivity,
+        TestMempoolAccept,
     },
 };

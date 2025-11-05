@@ -8,7 +8,8 @@
 use std::collections::BTreeMap;
 
 use bitcoin::{
-    block, Amount, BlockHash, CompactTarget, SignedAmount, Target, Transaction, Txid, Weight, Wtxid,
+    block, Amount, BlockHash, CompactTarget, FeeRate, SignedAmount, Target, Transaction, Txid,
+    Weight, Wtxid,
 };
 use serde::{Deserialize, Serialize};
 
@@ -115,6 +116,8 @@ pub struct GetMiningInfo {
     pub network_hash_ps: i64,
     /// The size of the mempool.
     pub pooled_tx: i64,
+    /// Minimum feerate of packages selected for block inclusion.
+    pub block_min_tx_fee: Option<FeeRate>,
     /// Current network name as defined in BIP70 (main, test, regtest).
     pub chain: String,
     /// The block challenge (aka. block script).
