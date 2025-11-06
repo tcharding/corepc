@@ -218,7 +218,7 @@
 //! | sendmany                           | version + model |                                        |
 //! | sendtoaddress                      | version + model |                                        |
 //! | setlabel                           | returns nothing |                                        |
-//! | settxfee                           | version         | TODO                                   |
+//! | settxfee                           | version         |                                        |
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |

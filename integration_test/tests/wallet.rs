@@ -1012,9 +1012,13 @@ fn wallet__send_to_address__modelled() {
 }
 
 #[test]
-#[cfg(feature = "v29_and_below")]
+#[cfg(feature = "v30_and_below")]
 fn wallet__set_tx_fee() {
+    #[cfg(feature = "v29_and_below")]
     let node = Node::with_wallet(Wallet::Default, &[]);
+    #[cfg(not(feature = "v29_and_below"))]
+    let node = Node::with_wallet(Wallet::Default, &["-deprecatedrpc=settxfee"]);
+
     let fee_rate = FeeRate::from_sat_per_vb(2).expect("2 sat/vb is valid");
 
     let json: SetTxFee = node.client.set_tx_fee(fee_rate).expect("settxfee");
