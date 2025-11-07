@@ -438,16 +438,17 @@ pub struct GetWalletInfo {
     pub wallet_version: u32,
     /// Database format. v21 and later only.
     pub format: Option<String>,
-    /// The total confirmed balance of the wallet in BTC.
-    pub balance: Amount,
-    /// The total unconfirmed balance of the wallet in BTC.
-    pub unconfirmed_balance: Amount,
-    /// The total immature balance of the wallet in BTC.
-    pub immature_balance: Amount,
-    /// The total number of transactions in the wallet
+    /// The total confirmed balance of the wallet in BTC. v17 to v29 only.
+    pub balance: Option<Amount>,
+    /// The total unconfirmed balance of the wallet in BTC. v17 to v29 only.
+    pub unconfirmed_balance: Option<Amount>,
+    /// The total immature balance of the wallet in BTC. v17 to v29 only.
+    pub immature_balance: Option<Amount>,
+    /// The total number of transactions in the wallet.
     pub tx_count: u32,
     /// The timestamp (seconds since Unix epoch) of the oldest pre-generated key in the key pool.
-    pub keypool_oldest: u32,
+    /// v17 to v29 only.
+    pub keypool_oldest: Option<u32>,
     /// How many new keys are pre-generated (only counts external keys).
     pub keypool_size: u32,
     /// How many new keys are pre-generated for internal use (used for change outputs, only appears
@@ -474,6 +475,8 @@ pub struct GetWalletInfo {
     pub blank: Option<bool>,
     /// The start time for blocks scanning. v26 and later only.
     pub birthtime: Option<u32>,
+    /// The flags currently set on the wallet. v30 and later only.
+    pub flags: Option<Vec<String>>,
     /// Hash and height of the block this information was generated on. v26 and later only.
     pub last_processed_block: Option<LastProcessedBlock>,
 }

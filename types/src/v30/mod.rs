@@ -191,7 +191,7 @@
 //! | getreceivedbyaddress               | version + model |                                        |
 //! | getreceivedbylabel                 | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
-//! | getwalletinfo                      | version + model | TODO                                   |
+//! | getwalletinfo                      | version + model |                                        |
 //! | importdescriptors                  | version         |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
@@ -245,6 +245,7 @@
 mod blockchain;
 mod mining;
 mod raw_transactions;
+mod wallet;
 
 #[doc(inline)]
 pub use self::{
@@ -255,6 +256,10 @@ pub use self::{
         PsbtInputError, PsbtOutput, PsbtOutputError, TaprootBip32Deriv, TaprootBip32DerivsError,
         TaprootLeaf, TaprootLeafError, TaprootScript, TaprootScriptError, TaprootScriptPathSig,
         TaprootScriptPathSigError,
+    },
+    wallet::{
+        GetWalletInfo, GetWalletInfoError, GetWalletInfoScanning, LastProcessedBlock,
+        LastProcessedBlockError,
     },
 };
 #[doc(inline)]
@@ -325,9 +330,8 @@ pub use crate::{
     v26::{
         AddrManInfoNetwork, CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
         DumpTxOutSet, DumpTxOutSetError, GetAddrManInfo, GetBalances, GetBalancesError,
-        GetPeerInfo, GetTransactionError, GetTxOutSetInfo, GetTxOutSetInfoError, GetWalletInfo,
-        GetWalletInfoError, GetWalletInfoScanning, LastProcessedBlock, LastProcessedBlockError,
-        LoadTxOutSet, LoadTxOutSetError, LoadWallet, PeerInfo, UnloadWallet, WalletProcessPsbt,
+        GetPeerInfo, GetTransactionError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet,
+        LoadTxOutSetError, LoadWallet, PeerInfo, UnloadWallet, WalletProcessPsbt,
         WalletProcessPsbtError,
     },
     v27::{GetPrioritisedTransactions, PrioritisedTransaction},
