@@ -206,7 +206,7 @@
 //! | listsinceblock                     | version + model |                                        |
 //! | listtransactions                   | version + model |                                        |
 //! | listunspent                        | version + model |                                        |
-//! | listwalletdir                      | version         | TODO                                   |
+//! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model |                                        |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | version         |                                        |
@@ -259,7 +259,7 @@ pub use self::{
     },
     wallet::{
         GetWalletInfo, GetWalletInfoError, GetWalletInfoScanning, LastProcessedBlock,
-        LastProcessedBlockError,
+        LastProcessedBlockError, ListWalletDir, ListWalletDirWallet,
     },
 };
 #[doc(inline)]
@@ -294,8 +294,7 @@ pub use crate::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
         GetZmqNotifications, JoinPsbts, JsonRpcError, ListReceivedByAddress,
-        ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir,
-        ListWalletDirWallet, UtxoUpdatePsbt,
+        ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,

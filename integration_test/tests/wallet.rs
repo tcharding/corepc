@@ -814,7 +814,7 @@ fn wallet__list_unspent__modelled() {
 }
 
 #[test]
-#[cfg(all(feature = "v29_and_below", not(feature = "v17")))]
+#[cfg(not(feature = "v17"))]
 fn wallet__list_wallet_dir() {
     let wallet_name = "test-wallet";
     let node = Node::with_wallet(Wallet::None, &[]);

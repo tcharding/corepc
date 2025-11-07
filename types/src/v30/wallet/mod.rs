@@ -81,3 +81,25 @@ pub struct LastProcessedBlock {
     /// Height of the block this information was generated on.
     pub height: i64,
 }
+
+/// Result of the JSON-RPC method `listwalletdir`.
+///
+/// > listwalletdir
+/// >
+/// > Returns a list of wallets in the wallet directory.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
+pub struct ListWalletDir {
+    /// The list of wallets in the wallet directory.
+    pub wallets: Vec<ListWalletDirWallet>,
+}
+
+/// Wallet entry. Part of `listwalletdir`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[cfg_attr(feature = "serde-deny-unknown-fields", serde(deny_unknown_fields))]
+pub struct ListWalletDirWallet {
+    /// The wallet name.
+    pub name: String,
+    /// Warning messages, if any, related to loading the wallet.
+    pub warnings: Option<Vec<String>>,
+}
