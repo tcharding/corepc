@@ -865,6 +865,8 @@ fn wallet__lock_unspent() {
 #[test]
 #[cfg(all(feature = "v29_and_below", not(feature = "v23_and_below")))]
 fn wallet__migrate_wallet() {
+    // In v30 it is no longer possible to create a legacy wallet.
+    // It is tested in v29 and has no documented changes in v30.
     let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
     let wallet_name = "legacy_wallet";
     node.client.create_legacy_wallet(wallet_name).expect("createlegacywallet");

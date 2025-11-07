@@ -199,7 +199,7 @@
 //! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model |                                        |
-//! | migratewallet                      | version         | TODO                                   |
+//! | migratewallet                      | version         | Untested in v30, unchanged from v29    |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
