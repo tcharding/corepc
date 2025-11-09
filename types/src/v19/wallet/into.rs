@@ -138,11 +138,11 @@ impl GetWalletInfo {
             wallet_name: self.wallet_name,
             wallet_version,
             format: None,
-            balance,
-            unconfirmed_balance,
-            immature_balance,
+            balance: Some(balance),
+            unconfirmed_balance: Some(unconfirmed_balance),
+            immature_balance: Some(immature_balance),
             tx_count,
-            keypool_oldest,
+            keypool_oldest: Some(keypool_oldest),
             keypool_size,
             keypool_size_hd_internal,
             unlocked_until: self.unlocked_until,
@@ -155,6 +155,7 @@ impl GetWalletInfo {
             external_signer: None,
             blank: None,
             birthtime: None,
+            flags: None,
             last_processed_block: None,
         })
     }

@@ -411,7 +411,6 @@ fn wallet__get_unconfirmed_balance__modelled() {
 }
 
 #[test]
-#[cfg(feature = "v29_and_below")]
 fn wallet__get_wallet_info__modelled() {
     let node = Node::with_wallet(Wallet::Default, &[]);
     node.mine_a_block();
@@ -815,7 +814,7 @@ fn wallet__list_unspent__modelled() {
 }
 
 #[test]
-#[cfg(all(feature = "v29_and_below", not(feature = "v17")))]
+#[cfg(not(feature = "v17"))]
 fn wallet__list_wallet_dir() {
     let wallet_name = "test-wallet";
     let node = Node::with_wallet(Wallet::None, &[]);
@@ -865,6 +864,8 @@ fn wallet__lock_unspent() {
 #[test]
 #[cfg(all(feature = "v29_and_below", not(feature = "v23_and_below")))]
 fn wallet__migrate_wallet() {
+    // In v30 it is no longer possible to create a legacy wallet.
+    // It is tested in v29 and has no documented changes in v30.
     let node = Node::with_wallet(Wallet::None, &["-deprecatedrpc=create_bdb"]);
     let wallet_name = "legacy_wallet";
     node.client.create_legacy_wallet(wallet_name).expect("createlegacywallet");
@@ -1012,9 +1013,13 @@ fn wallet__send_to_address__modelled() {
 }
 
 #[test]
-#[cfg(feature = "v29_and_below")]
+#[cfg(feature = "v30_and_below")]
 fn wallet__set_tx_fee() {
+    #[cfg(feature = "v29_and_below")]
     let node = Node::with_wallet(Wallet::Default, &[]);
+    #[cfg(not(feature = "v29_and_below"))]
+    let node = Node::with_wallet(Wallet::Default, &["-deprecatedrpc=settxfee"]);
+
     let fee_rate = FeeRate::from_sat_per_vb(2).expect("2 sat/vb is valid");
 
     let json: SetTxFee = node.client.set_tx_fee(fee_rate).expect("settxfee");

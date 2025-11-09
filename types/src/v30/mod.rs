@@ -191,7 +191,7 @@
 //! | getreceivedbyaddress               | version + model |                                        |
 //! | getreceivedbylabel                 | version + model |                                        |
 //! | gettransaction                     | version + model |                                        |
-//! | getwalletinfo                      | version + model | TODO                                   |
+//! | getwalletinfo                      | version + model |                                        |
 //! | importdescriptors                  | version         |                                        |
 //! | importprunedfunds                  | returns nothing |                                        |
 //! | keypoolrefill                      | returns nothing |                                        |
@@ -199,14 +199,14 @@
 //! | listdescriptors                    | version         |                                        |
 //! | listlabels                         | version         |                                        |
 //! | listlockunspent                    | version + model |                                        |
-//! | migratewallet                      | version         | TODO                                   |
+//! | migratewallet                      | version         | Untested in v30, unchanged from v29    |
 //! | psbtbumpfee                        | version + model |                                        |
 //! | listreceivedbyaddress              | version + model |                                        |
 //! | listreceivedbylabel                | version + model |                                        |
 //! | listsinceblock                     | version + model |                                        |
 //! | listtransactions                   | version + model |                                        |
 //! | listunspent                        | version + model |                                        |
-//! | listwalletdir                      | version         | TODO                                   |
+//! | listwalletdir                      | version         |                                        |
 //! | listwallets                        | version + model |                                        |
 //! | loadwallet                         | version + model |                                        |
 //! | lockunspent                        | version         |                                        |
@@ -218,7 +218,7 @@
 //! | sendmany                           | version + model |                                        |
 //! | sendtoaddress                      | version + model |                                        |
 //! | setlabel                           | returns nothing |                                        |
-//! | settxfee                           | version         | TODO                                   |
+//! | settxfee                           | version         |                                        |
 //! | setwalletflag                      | version         |                                        |
 //! | signmessage                        | version + model |                                        |
 //! | signrawtransactionwithwallet       | version + model |                                        |
@@ -245,6 +245,7 @@
 mod blockchain;
 mod mining;
 mod raw_transactions;
+mod wallet;
 
 #[doc(inline)]
 pub use self::{
@@ -255,6 +256,10 @@ pub use self::{
         PsbtInputError, PsbtOutput, PsbtOutputError, TaprootBip32Deriv, TaprootBip32DerivsError,
         TaprootLeaf, TaprootLeafError, TaprootScript, TaprootScriptError, TaprootScriptPathSig,
         TaprootScriptPathSigError,
+    },
+    wallet::{
+        GetWalletInfo, GetWalletInfoError, GetWalletInfoScanning, LastProcessedBlock,
+        LastProcessedBlockError, ListWalletDir, ListWalletDirWallet,
     },
 };
 #[doc(inline)]
@@ -289,8 +294,7 @@ pub use crate::{
         ActiveCommand, AnalyzePsbt, AnalyzePsbtError, AnalyzePsbtInput, AnalyzePsbtInputMissing,
         AnalyzePsbtInputMissingError, DeriveAddresses, GetAddressInfoError, GetReceivedByLabel,
         GetZmqNotifications, JoinPsbts, JsonRpcError, ListReceivedByAddress,
-        ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError, ListWalletDir,
-        ListWalletDirWallet, UtxoUpdatePsbt,
+        ListReceivedByAddressItem, ListReceivedByLabel, ListReceivedByLabelError, UtxoUpdatePsbt,
     },
     v19::{
         Bip9SoftforkInfo, Bip9SoftforkStatistics, Bip9SoftforkStatus, GetBalancesMine,
@@ -325,9 +329,8 @@ pub use crate::{
     v26::{
         AddrManInfoNetwork, CreateWallet, DescriptorProcessPsbt, DescriptorProcessPsbtError,
         DumpTxOutSet, DumpTxOutSetError, GetAddrManInfo, GetBalances, GetBalancesError,
-        GetPeerInfo, GetTransactionError, GetTxOutSetInfo, GetTxOutSetInfoError, GetWalletInfo,
-        GetWalletInfoError, GetWalletInfoScanning, LastProcessedBlock, LastProcessedBlockError,
-        LoadTxOutSet, LoadTxOutSetError, LoadWallet, PeerInfo, UnloadWallet, WalletProcessPsbt,
+        GetPeerInfo, GetTransactionError, GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet,
+        LoadTxOutSetError, LoadWallet, PeerInfo, UnloadWallet, WalletProcessPsbt,
         WalletProcessPsbtError,
     },
     v27::{GetPrioritisedTransactions, PrioritisedTransaction},

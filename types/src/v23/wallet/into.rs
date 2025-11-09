@@ -121,11 +121,11 @@ impl GetWalletInfo {
         Ok(model::GetWalletInfo {
             wallet_name: self.wallet_name,
             wallet_version,
-            balance,
-            unconfirmed_balance,
-            immature_balance,
+            balance: Some(balance),
+            unconfirmed_balance: Some(unconfirmed_balance),
+            immature_balance: Some(immature_balance),
             tx_count,
-            keypool_oldest: keypool_oldest.unwrap_or(0),
+            keypool_oldest: Some(keypool_oldest.unwrap_or(0)),
             keypool_size,
             keypool_size_hd_internal: keypool_size_hd_internal.unwrap_or(0),
             unlocked_until: self.unlocked_until,
@@ -139,6 +139,7 @@ impl GetWalletInfo {
             external_signer: Some(self.external_signer),
             blank: None,
             birthtime: None,
+            flags: None,
             last_processed_block: None,
         })
     }
