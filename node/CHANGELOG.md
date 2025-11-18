@@ -1,3 +1,12 @@
+# 0.11.0 - 2025-11-18
+
+- Bump MSRV to 1.75.0 [#405](https://github.com/rust-bitcoin/corepc/pull/405)
+- Update to use latest `client v0.11.0`.
+
+# 0.10.1 2025-11-18
+
+- Remove `doc_auto_cfg` to fix build on docs.rs
+
 # 0.10.0 - 2025-10-07
 
 - Update to use latest `client v0.10.0`.
