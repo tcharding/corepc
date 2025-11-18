@@ -1,3 +1,12 @@
+# 0.11.0 - 2025-11-18
+
+- Add support for Bitcoin Core 30.0 [#387](https://github.com/rust-bitcoin/corepc/pull/387),
+  [#388](https://github.com/rust-bitcoin/corepc/pull/388),
+  [#409](https://github.com/rust-bitcoin/corepc/pull/409),
+  [#410](https://github.com/rust-bitcoin/corepc/pull/410),
+  [#412](https://github.com/rust-bitcoin/corepc/pull/412).
+- Bump MSRV to 1.75.0 [#405](https://github.com/rust-bitcoin/corepc/pull/405)
+
 # 0.10.1 - 2025-10-10
 
 - v24+ should use the correct `GetRawMempoolVerbose` [#381](https://github.com/rust-bitcoin/corepc/pull/381)

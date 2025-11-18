@@ -1,3 +1,10 @@
+# 0.11.0 - 2025-11-18
+
+- Add support for Bitcoin Core 30.0 [#387](https://github.com/rust-bitcoin/corepc/pull/387),
+  [#388](https://github.com/rust-bitcoin/corepc/pull/388).
+- Bump MSRV to 1.75.0 [#405](https://github.com/rust-bitcoin/corepc/pull/405)
+- Update to use latest `types v0.11.0`.
+
 # 0.10.0 - 2025-10-07
 
 - Update to use latest `types v0.10.0`.
