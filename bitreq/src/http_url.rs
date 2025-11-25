@@ -102,9 +102,6 @@ impl HttpUrl {
                     path_and_query = Some(resource);
                     resource = String::new();
                 }
-                #[cfg(not(feature = "urlencoding"))]
-                UrlParseStatus::PathAndQuery | UrlParseStatus::Fragment => resource.push(c),
-                #[cfg(feature = "urlencoding")]
                 UrlParseStatus::PathAndQuery | UrlParseStatus::Fragment => match c {
                     // All URL-'safe' characters, plus URL 'special
                     // characters' like &, #, =, / ,?
@@ -181,7 +178,6 @@ impl HttpUrl {
 }
 
 /// Returns the `%HH` triplet representing `byte` for percent encoding.
-#[cfg(feature = "urlencoding")]
 fn percent_encoded_triplet(byte: u8) -> [char; 3] {
     const HEX: &[u8; 16] = b"0123456789ABCDEF";
     ['%', HEX[(byte >> 4) as usize] as char, HEX[(byte & 0x0F) as usize] as char]
@@ -189,7 +185,6 @@ fn percent_encoded_triplet(byte: u8) -> [char; 3] {
 
 /// Percent-encodes a char and appends it to `result`.
 /// Unreserved characters (0-9, A-Z, a-z, -, ., _, ~) are not encoded.
-#[cfg(feature = "urlencoding")]
 pub(crate) fn percent_encode_char(c: char, result: &mut String) {
     match c {
         // All URL-'safe' characters are not encoded
@@ -209,7 +204,6 @@ pub(crate) fn percent_encode_char(c: char, result: &mut String) {
 }
 
 /// Percent-encodes the entire input string and returns the encoded version.
-#[cfg(feature = "urlencoding")]
 pub(crate) fn percent_encode_string(input: &str) -> String {
     let mut encoded = String::with_capacity(input.len());
     for ch in input.chars() {

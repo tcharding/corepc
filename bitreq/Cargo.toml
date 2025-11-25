@@ -51,7 +51,6 @@ json-using-serde = ["serde", "serde_json"]
 proxy = ["base64", "std"]
 async = ["tokio", "std"]
 async-https = ["async", "https-rustls", "tokio-rustls"]
-urlencoding = []
 
 [[example]]
 name = "hello"

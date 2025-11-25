@@ -72,12 +72,6 @@
 //!
 //! This feature enables HTTP proxy support. See [Proxy].
 //!
-//! ## `urlencoding`
-//!
-//! This feature enables percent-encoding for the URL resource when
-//! creating a request and any subsequently added parameters from
-//! [`Request::with_param`].
-//!
 //! # Examples
 //!
 //! ## Get
