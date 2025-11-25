@@ -116,25 +116,8 @@ impl HttpUrl {
                     | '?' => {
                         resource.push(c);
                     }
-                    // There is probably a simpler way to do this, but this
-                    // method avoids any heap allocations (except extending
-                    // `resource`)
-                    _ => {
-                        // Any UTF-8 character can fit in 4 bytes
-                        let mut utf8_buf = [0u8; 4];
-                        // Bytes fill buffer from the front
-                        c.encode_utf8(&mut utf8_buf);
-                        // Slice disregards the unused portion of the buffer
-                        utf8_buf[..c.len_utf8()].iter().for_each(|byte| {
-                            // Convert byte to URL escape, e.g. %21 for b'!'
-                            let rem = *byte % 16;
-                            let right_char = to_hex_digit(rem);
-                            let left_char = to_hex_digit((*byte - rem) >> 4);
-                            resource.push('%');
-                            resource.push(left_char);
-                            resource.push(right_char);
-                        });
-                    }
+                    // Every other character gets percent-encoded.
+                    _ => percent_encode_char(c, &mut resource),
                 },
             }
         }
@@ -198,5 +181,36 @@ fn to_hex_digit(digit: u8) -> char {
     match digit {
         0..=9 => (b'0' + digit) as char,
         10..=255 => (b'A' - 10 + digit) as char,
+    }
+}
+
+/// Percent-encodes a char and appends it to `result`.
+/// Unreserved characters (0-9, A-Z, a-z, -, ., _, ~) are not encoded.
+#[cfg(feature = "urlencoding")]
+pub(crate) fn percent_encode_char(c: char, result: &mut String) {
+    match c {
+        // All URL-'safe' characters are not encoded
+        '0'..='9' | 'A'..='Z' | 'a'..='z' | '-' | '.' | '_' | '~' => {
+            result.push(c);
+        }
+        _ => {
+            // There is probably a simpler way to do this, but this
+            // method avoids any heap allocations (except extending
+            // `resource`)
+            // Any UTF-8 character can fit in 4 bytes
+            let mut utf8_buf = [0u8; 4];
+            // Bytes fill buffer from the front
+            c.encode_utf8(&mut utf8_buf);
+            // Slice disregards the unused portion of the buffer
+            utf8_buf[..c.len_utf8()].iter().for_each(|byte| {
+                // Convert byte to URL escape, e.g. %21 for b'!'
+                let rem = *byte % 16;
+                let right_char = to_hex_digit(rem);
+                let left_char = to_hex_digit((*byte - rem) >> 4);
+                result.push('%');
+                result.push(left_char);
+                result.push(right_char);
+            });
+        }
     }
 }
