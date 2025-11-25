@@ -174,14 +174,11 @@ impl HttpUrl {
     }
 }
 
-// https://github.com/kornelski/rust_urlencoding/blob/a4df8027ab34a86a63f1be727965cf101556403f/src/enc.rs#L130-L136
-// Converts a UTF-8 byte to a single hexadecimal character
+/// Returns the `%HH` triplet representing `byte` for percent encoding.
 #[cfg(feature = "urlencoding")]
-fn to_hex_digit(digit: u8) -> char {
-    match digit {
-        0..=9 => (b'0' + digit) as char,
-        10..=255 => (b'A' - 10 + digit) as char,
-    }
+fn percent_encoded_triplet(byte: u8) -> [char; 3] {
+    const HEX: &[u8; 16] = b"0123456789ABCDEF";
+    ['%', HEX[(byte >> 4) as usize] as char, HEX[(byte & 0x0F) as usize] as char]
 }
 
 /// Percent-encodes a char and appends it to `result`.
@@ -194,22 +191,12 @@ pub(crate) fn percent_encode_char(c: char, result: &mut String) {
             result.push(c);
         }
         _ => {
-            // There is probably a simpler way to do this, but this
-            // method avoids any heap allocations (except extending
-            // `resource`)
             // Any UTF-8 character can fit in 4 bytes
             let mut utf8_buf = [0u8; 4];
-            // Bytes fill buffer from the front
-            c.encode_utf8(&mut utf8_buf);
-            // Slice disregards the unused portion of the buffer
-            utf8_buf[..c.len_utf8()].iter().for_each(|byte| {
-                // Convert byte to URL escape, e.g. %21 for b'!'
-                let rem = *byte % 16;
-                let right_char = to_hex_digit(rem);
-                let left_char = to_hex_digit((*byte - rem) >> 4);
-                result.push('%');
-                result.push(left_char);
-                result.push(right_char);
+            c.encode_utf8(&mut utf8_buf).as_bytes().iter().for_each(|byte| {
+                for ch in percent_encoded_triplet(*byte) {
+                    result.push(ch);
+                }
             });
         }
     }
