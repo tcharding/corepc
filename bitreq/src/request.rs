@@ -7,6 +7,8 @@ use core::fmt::Write;
 use crate::connection::AsyncConnection;
 #[cfg(feature = "std")]
 use crate::connection::Connection;
+#[cfg(feature = "urlencoding")]
+use crate::http_url::percent_encode_string;
 #[cfg(feature = "std")]
 use crate::http_url::{HttpUrl, Port};
 #[cfg(feature = "proxy")]
@@ -159,10 +161,10 @@ impl Request {
     pub fn with_param<T: Into<String>, U: Into<String>>(mut self, key: T, value: U) -> Request {
         let key = key.into();
         #[cfg(feature = "urlencoding")]
-        let key = urlencoding::encode(&key);
+        let key = percent_encode_string(&key);
         let value = value.into();
         #[cfg(feature = "urlencoding")]
-        let value = urlencoding::encode(&value);
+        let value = percent_encode_string(&value);
 
         if !self.params.is_empty() {
             self.params.push('&');

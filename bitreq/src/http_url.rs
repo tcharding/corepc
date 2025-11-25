@@ -207,3 +207,13 @@ pub(crate) fn percent_encode_char(c: char, result: &mut String) {
         }
     }
 }
+
+/// Percent-encodes the entire input string and returns the encoded version.
+#[cfg(feature = "urlencoding")]
+pub(crate) fn percent_encode_string(input: &str) -> String {
+    let mut encoded = String::with_capacity(input.len());
+    for ch in input.chars() {
+        percent_encode_char(ch, &mut encoded);
+    }
+    encoded
+}
