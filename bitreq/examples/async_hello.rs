@@ -1,11 +1,16 @@
 //! This example demonstrates the `async` feature.
 
-#[tokio::main]
-async fn main() -> Result<(), bitreq::Error> {
-    let response = bitreq::get("http://httpbin.org/get").send_async().await?;
+fn main() -> Result<(), bitreq::Error> {
+    let runtime = tokio::runtime::Builder::new_current_thread()
+        .build()
+        .expect("failed to build Tokio runtime");
 
-    println!("Status: {}", response.status_code);
-    println!("Body: {}", response.as_str()?);
+    runtime.block_on(async {
+        let response = bitreq::get("http://httpbin.org/get").send_async().await?;
 
-    Ok(())
+        println!("Status: {}", response.status_code);
+        println!("Body: {}", response.as_str()?);
+
+        Ok(())
+    })
 }
