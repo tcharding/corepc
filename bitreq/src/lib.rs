@@ -231,7 +231,6 @@ extern crate alloc;
 #[cfg(feature = "std")]
 mod connection;
 mod error;
-#[cfg(feature = "std")]
 mod http_url;
 #[cfg(feature = "proxy")]
 mod proxy;

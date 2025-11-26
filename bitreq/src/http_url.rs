@@ -1,7 +1,10 @@
+#[cfg(feature = "std")]
 use core::fmt::{self, Write};
 
+#[cfg(feature = "std")]
 use crate::Error;
 
+#[cfg(feature = "std")]
 #[derive(Clone, Copy, PartialEq)]
 pub(crate) enum Port {
     ImplicitHttp,
@@ -9,6 +12,7 @@ pub(crate) enum Port {
     Explicit(u32),
 }
 
+#[cfg(feature = "std")]
 impl Port {
     pub(crate) fn port(self) -> u32 {
         match self {
@@ -27,6 +31,7 @@ impl Port {
 /// ```text
 /// scheme "://" host [ ":" port ] path [ "?" query ] [ "#" fragment ]
 /// ```
+#[cfg(feature = "std")]
 #[derive(Clone, PartialEq)]
 pub(crate) struct HttpUrl {
     /// If scheme is "https", true, if "http", false.
@@ -41,6 +46,7 @@ pub(crate) struct HttpUrl {
     pub(crate) fragment: Option<String>,
 }
 
+#[cfg(feature = "std")]
 impl HttpUrl {
     pub(crate) fn parse(url: &str, redirected_from: Option<&HttpUrl>) -> Result<HttpUrl, Error> {
         enum UrlParseStatus {
