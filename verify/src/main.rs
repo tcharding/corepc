@@ -8,6 +8,7 @@
 //! - That an expected return type is provided if the method is supported.
 //! - That there is a `model` type if required.
 //! - That the method has an integration test.
+//! - That re-exports in `corepc-types` are complete.
 
 use std::process;
 
@@ -15,7 +16,7 @@ use anyhow::Result;
 use clap::{arg, Command};
 use verify::method::{Method, Return};
 use verify::versioned::{self, Status};
-use verify::{method, model, ssot, Version};
+use verify::{method, model, reexports, ssot, Version};
 
 // TODO: Enable running from any directory, currently errors if run from `src/`.
 // TODO: Add a --quiet option.
@@ -124,6 +125,19 @@ fn verify_version(version: Version, test_output: Option<&String>, quiet: bool) -
     let msg = "Checking that 'Returns' column matches model requirements";
     check(msg, quiet);
     match verify_returns_method(version) {
+        Ok(()) => close(true, quiet),
+        Err(e) => {
+            if !quiet {
+                eprintln!("{}", e);
+            }
+            close(false, quiet);
+            failures += 1;
+        }
+    }
+
+    let msg = "Checking that corepc-types re-exports are complete";
+    check(msg, quiet);
+    match reexports::check_type_reexports(version) {
         Ok(()) => close(true, quiet),
         Err(e) => {
             if !quiet {
