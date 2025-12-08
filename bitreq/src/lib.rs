@@ -21,7 +21,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! bitreq = { version = "2.13.5-alpha", features = ["https"] }
+//! bitreq = { version = "0.2.0", features = ["https"] }
 //! ```
 //!
 //! Below is the list of all available features.
