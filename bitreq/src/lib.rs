@@ -15,9 +15,9 @@
 //! # Additional features
 //!
 //! Since the crate is supposed to be minimal in terms of
-//! dependencies, there are no default features, and optional
-//! functionality can be enabled by specifying features for `bitreq`
-//! dependency in `Cargo.toml`:
+//! dependencies, only the `std` feature is enabled by default.
+//! Additional functionality can be enabled by specifying features for
+//! the `bitreq` dependency in `Cargo.toml`:
 //!
 //! ```toml
 //! [dependencies]
