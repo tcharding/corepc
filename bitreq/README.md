@@ -43,7 +43,7 @@ require a higher MSRV.
 ## License
 This crate is distributed under the terms of the [ISC license](COPYING.md).
 
-## Planned for 3.0.0
+## Planned for a future major release
 
 This is a list of features I'll implement once it gets long enough, or
 a severe enough issue is found that there's good reason to make a
@@ -59,9 +59,6 @@ major version bump.
   with `http://` or `https://`.
 - Change default proxy port to 1080 (from 8080). Curl uses 1080, so it's a sane
   default.
-- Bump MSRV enough to compile the latest versions of all dependencies, and add
-  the `rust-version` (at least 1.56) and `edition` (at least 2021) fields to
-  Cargo.toml.
 
 ### Potential ideas
 
