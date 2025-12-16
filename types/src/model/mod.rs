@@ -11,6 +11,7 @@
 mod blockchain;
 mod control;
 mod generating;
+mod hidden;
 mod mining;
 mod network;
 mod raw_transactions;
