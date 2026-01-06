@@ -2,6 +2,11 @@ use alloc::collections::BTreeMap;
 use core::str;
 #[cfg(feature = "std")]
 use std::io::{self, BufReader, Bytes, Read};
+#[cfg(feature = "async")]
+use std::future::Future;
+
+#[cfg(feature = "async")]
+use tokio::io::{AsyncRead, AsyncReadExt};
 
 #[cfg(feature = "std")]
 use crate::connection::HttpStream;
@@ -302,140 +307,6 @@ impl Read for ResponseLazy {
 }
 
 #[cfg(feature = "std")]
-fn read_until_closed(bytes: &mut HttpStreamBytes) -> Option<<ResponseLazy as Iterator>::Item> {
-    if let Some(byte) = bytes.next() {
-        match byte {
-            Ok(byte) => Some(Ok((byte, 1))),
-            Err(err) => Some(Err(Error::IoError(err))),
-        }
-    } else {
-        None
-    }
-}
-
-#[cfg(feature = "std")]
-fn read_with_content_length(
-    bytes: &mut HttpStreamBytes,
-    content_length: &mut usize,
-) -> Option<<ResponseLazy as Iterator>::Item> {
-    if *content_length > 0 {
-        *content_length -= 1;
-
-        if let Some(byte) = bytes.next() {
-            match byte {
-                // Cap Content-Length to 16KiB, to avoid out-of-memory issues.
-                Ok(byte) => return Some(Ok((byte, (*content_length).min(MAX_CONTENT_LENGTH) + 1))),
-                Err(err) => return Some(Err(Error::IoError(err))),
-            }
-        }
-    }
-    None
-}
-
-#[cfg(feature = "std")]
-fn read_trailers(
-    bytes: &mut HttpStreamBytes,
-    headers: &mut BTreeMap<String, String>,
-    mut max_headers_size: Option<usize>,
-) -> Result<(), Error> {
-    loop {
-        let trailer_line = read_line(bytes, max_headers_size, Error::HeadersOverflow)?;
-        if let Some(ref mut max_headers_size) = max_headers_size {
-            *max_headers_size -= trailer_line.len() + 2;
-        }
-        if let Some((header, value)) = parse_header(trailer_line) {
-            headers.insert(header, value);
-        } else {
-            break;
-        }
-    }
-    Ok(())
-}
-
-#[cfg(feature = "std")]
-fn read_chunked(
-    bytes: &mut HttpStreamBytes,
-    headers: &mut BTreeMap<String, String>,
-    expecting_more_chunks: &mut bool,
-    chunk_length: &mut usize,
-    content_length: &mut usize,
-    max_trailing_headers_size: Option<usize>,
-) -> Option<<ResponseLazy as Iterator>::Item> {
-    if !*expecting_more_chunks && *chunk_length == 0 {
-        return None;
-    }
-
-    if *chunk_length == 0 {
-        // Max length of the chunk length line is 1KB: not too long to
-        // take up much memory, long enough to tolerate some chunk
-        // extensions (which are ignored).
-
-        // Get the size of the next chunk
-        let length_line = match read_line(bytes, Some(1024), Error::MalformedChunkLength) {
-            Ok(line) => line,
-            Err(err) => return Some(Err(err)),
-        };
-
-        // Note: the trim() and check for empty lines shouldn't be
-        // needed according to the RFC, but we might as well, it's a
-        // small change and it fixes a few servers.
-        let incoming_length = if length_line.is_empty() {
-            0
-        } else {
-            let length = if let Some(i) = length_line.find(';') {
-                length_line[..i].trim()
-            } else {
-                length_line.trim()
-            };
-            match usize::from_str_radix(length, 16) {
-                Ok(length) => length,
-                Err(_) => return Some(Err(Error::MalformedChunkLength)),
-            }
-        };
-
-        if incoming_length == 0 {
-            if let Err(err) = read_trailers(bytes, headers, max_trailing_headers_size) {
-                return Some(Err(err));
-            }
-
-            *expecting_more_chunks = false;
-            headers.insert("content-length".to_string(), (*content_length).to_string());
-            headers.remove("transfer-encoding");
-            return None;
-        }
-        *chunk_length = incoming_length;
-        *content_length += incoming_length;
-    }
-
-    if *chunk_length > 0 {
-        *chunk_length -= 1;
-        if let Some(byte) = bytes.next() {
-            match byte {
-                Ok(byte) => {
-                    // If we're at the end of the chunk...
-                    if *chunk_length == 0 {
-                        //...read the trailing \r\n of the chunk, and
-                        // possibly return an error instead.
-
-                        // TODO: Maybe this could be written in a way
-                        // that doesn't discard the last ok byte if
-                        // the \r\n reading fails?
-                        if let Err(err) = read_line(bytes, Some(2), Error::MalformedChunkEnd) {
-                            return Some(Err(err));
-                        }
-                    }
-
-                    return Some(Ok((byte, (*chunk_length).min(MAX_CONTENT_LENGTH) + 1)));
-                }
-                Err(err) => return Some(Err(Error::IoError(err))),
-            }
-        }
-    }
-
-    None
-}
-
-#[cfg(feature = "std")]
 enum HttpStreamState {
     // No Content-Length, and Transfer-Encoding != chunked, so we just
     // read unti lthe server closes the connection (this should be the
@@ -464,95 +335,260 @@ struct ResponseMetadata {
     max_trailing_headers_size: Option<usize>,
 }
 
-#[cfg(feature = "std")]
-fn read_metadata(
-    stream: &mut HttpStreamBytes,
-    mut max_headers_size: Option<usize>,
-    max_status_line_len: Option<usize>,
-) -> Result<ResponseMetadata, Error> {
-    let line = read_line(stream, max_status_line_len, Error::StatusLineOverflow)?;
-    let (status_code, reason_phrase) = parse_status_line(&line);
-
-    let mut headers = BTreeMap::new();
-    loop {
-        let line = read_line(stream, max_headers_size, Error::HeadersOverflow)?;
-        if line.is_empty() {
-            // Body starts here
-            break;
-        }
-        if let Some(ref mut max_headers_size) = max_headers_size {
-            *max_headers_size -= line.len() + 2;
-        }
-        if let Some(header) = parse_header(line) {
-            headers.insert(header.0, header.1);
-        }
-    }
-
-    let mut chunked = false;
-    let mut content_length = None;
-    for (header, value) in &headers {
-        // Handle the Transfer-Encoding header
-        if header.to_lowercase().trim() == "transfer-encoding"
-            && value.to_lowercase().trim() == "chunked"
-        {
-            chunked = true;
-        }
-
-        // Handle the Content-Length header
-        if header.to_lowercase().trim() == "content-length" {
-            match str::parse::<usize>(value.trim()) {
-                Ok(length) => content_length = Some(length),
-                Err(_) => return Err(Error::MalformedContentLength),
-            }
-        }
-    }
-
-    let state = if chunked {
-        HttpStreamState::Chunked(true, 0, 0)
-    } else if let Some(length) = content_length {
-        HttpStreamState::ContentLength(length)
-    } else {
-        HttpStreamState::EndOnClose
+macro_rules! maybe_await {
+    ($e: expr, await) => {
+        $e.await
     };
+    ($e: expr,) => {
+        $e
+    };
+}
 
-    Ok(ResponseMetadata {
-        status_code,
-        reason_phrase,
-        headers,
-        state,
-        max_trailing_headers_size: max_headers_size,
-    })
+#[cfg(feature = "async")]
+/// We need to mungle [`AsyncRead`] to look like an iterator, which we do here.
+trait AsyncIteratorReadExt {
+    fn next(&mut self) -> impl Future<Output = Option<Result<u8, io::Error>>>;
+}
+
+#[cfg(feature = "async")]
+impl<T: AsyncReadExt + Unpin> AsyncIteratorReadExt for T {
+    fn next(&mut self) -> impl Future<Output = Option<Result<u8, io::Error>>> {
+        async {
+            Some(self.read_u8().await)
+        }
+    }
+}
+
+macro_rules! define_read_methods {
+    (($read_until_closed: ident, $read_with_content_length: ident, $read_trailers: ident, $read_chunked: ident, $read_metadata: ident, $read_line: ident)<$($arg: ident : $($argty: path $(|)?)*),*>, $stream_type: ident $(, $async: tt, $await: tt)?) => {
+        $($async)? fn $read_until_closed<$($arg: $($argty +)*),*>(
+            bytes: &mut $stream_type,
+        ) -> Option<<ResponseLazy as Iterator>::Item> {
+            if let Some(byte) = maybe_await!(bytes.next(), $($await)?) {
+                match byte {
+                    Ok(byte) => Some(Ok((byte, 1))),
+                    Err(err) => Some(Err(Error::IoError(err))),
+                }
+            } else {
+                None
+            }
+        }
+
+        $($async)? fn $read_with_content_length<$($arg: $($argty +)*),*>(
+            bytes: &mut $stream_type,
+            content_length: &mut usize,
+        ) -> Option<<ResponseLazy as Iterator>::Item> {
+            if *content_length > 0 {
+                *content_length -= 1;
+
+                if let Some(byte) = maybe_await!(bytes.next(), $($await)?) {
+                    match byte {
+                        // Cap Content-Length to 16KiB, to avoid out-of-memory issues.
+                        Ok(byte) => return Some(Ok((byte, (*content_length).min(MAX_CONTENT_LENGTH) + 1))),
+                        Err(err) => return Some(Err(Error::IoError(err))),
+                    }
+                }
+            }
+            None
+        }
+
+        $($async)? fn $read_trailers<$($arg: $($argty +)*),*>(
+            bytes: &mut $stream_type,
+            headers: &mut BTreeMap<String, String>,
+            mut max_headers_size: Option<usize>,
+        ) -> Result<(), Error> {
+            loop {
+                let trailer_line = maybe_await!($read_line(bytes, max_headers_size, Error::HeadersOverflow), $($await)?)?;
+                if let Some(ref mut max_headers_size) = max_headers_size {
+                    *max_headers_size -= trailer_line.len() + 2;
+                }
+                if let Some((header, value)) = parse_header(trailer_line) {
+                    headers.insert(header, value);
+                } else {
+                    break;
+                }
+            }
+            Ok(())
+        }
+
+        $($async)? fn $read_chunked<$($arg: $($argty +)*),*>(
+            bytes: &mut $stream_type,
+            headers: &mut BTreeMap<String, String>,
+            expecting_more_chunks: &mut bool,
+            chunk_length: &mut usize,
+            content_length: &mut usize,
+            max_trailing_headers_size: Option<usize>,
+        ) -> Option<<ResponseLazy as Iterator>::Item> {
+            if !*expecting_more_chunks && *chunk_length == 0 {
+                return None;
+            }
+
+            if *chunk_length == 0 {
+                // Max length of the chunk length line is 1KB: not too long to
+                // take up much memory, long enough to tolerate some chunk
+                // extensions (which are ignored).
+
+                // Get the size of the next chunk
+                let length_line = match maybe_await!($read_line(bytes, Some(1024), Error::MalformedChunkLength), $($await)?) {
+                    Ok(line) => line,
+                    Err(err) => return Some(Err(err)),
+                };
+
+                // Note: the trim() and check for empty lines shouldn't be
+                // needed according to the RFC, but we might as well, it's a
+                // small change and it fixes a few servers.
+                let incoming_length = if length_line.is_empty() {
+                    0
+                } else {
+                    let length = if let Some(i) = length_line.find(';') {
+                        length_line[..i].trim()
+                    } else {
+                        length_line.trim()
+                    };
+                    match usize::from_str_radix(length, 16) {
+                        Ok(length) => length,
+                        Err(_) => return Some(Err(Error::MalformedChunkLength)),
+                    }
+                };
+
+                if incoming_length == 0 {
+                    if let Err(err) = maybe_await!($read_trailers(bytes, headers, max_trailing_headers_size), $($await)?) {
+                        return Some(Err(err));
+                    }
+
+                    *expecting_more_chunks = false;
+                    headers.insert("content-length".to_string(), (*content_length).to_string());
+                    headers.remove("transfer-encoding");
+                    return None;
+                }
+                *chunk_length = incoming_length;
+                *content_length += incoming_length;
+            }
+
+            if *chunk_length > 0 {
+                *chunk_length -= 1;
+                if let Some(byte) = maybe_await!(bytes.next(), $($await)?) {
+                    match byte {
+                        Ok(byte) => {
+                            // If we're at the end of the chunk...
+                            if *chunk_length == 0 {
+                                //...read the trailing \r\n of the chunk, and
+                                // possibly return an error instead.
+
+                                // TODO: Maybe this could be written in a way
+                                // that doesn't discard the last ok byte if
+                                // the \r\n reading fails?
+                                if let Err(err) = maybe_await!($read_line(bytes, Some(2), Error::MalformedChunkEnd), $($await)?) {
+                                    return Some(Err(err));
+                                }
+                            }
+
+                            return Some(Ok((byte, (*chunk_length).min(MAX_CONTENT_LENGTH) + 1)));
+                        }
+                        Err(err) => return Some(Err(Error::IoError(err))),
+                    }
+                }
+            }
+
+            None
+        }
+
+        #[cfg(feature = "std")]
+        $($async)? fn $read_metadata<$($arg: $($argty +)*),*>(
+            stream: &mut $stream_type,
+            mut max_headers_size: Option<usize>,
+            max_status_line_len: Option<usize>,
+        ) -> Result<ResponseMetadata, Error> {
+            let line = maybe_await!($read_line(stream, max_status_line_len, Error::StatusLineOverflow), $($await)?)?;
+            let (status_code, reason_phrase) = parse_status_line(&line);
+
+            let mut headers = BTreeMap::new();
+            loop {
+                let line = maybe_await!($read_line(stream, max_headers_size, Error::HeadersOverflow), $($await)?)?;
+                if line.is_empty() {
+                    // Body starts here
+                    break;
+                }
+                if let Some(ref mut max_headers_size) = max_headers_size {
+                    *max_headers_size -= line.len() + 2;
+                }
+                if let Some(header) = parse_header(line) {
+                    headers.insert(header.0, header.1);
+                }
+            }
+
+            let mut chunked = false;
+            let mut content_length = None;
+            for (header, value) in &headers {
+                // Handle the Transfer-Encoding header
+                if header.to_lowercase().trim() == "transfer-encoding"
+                    && value.to_lowercase().trim() == "chunked"
+                {
+                    chunked = true;
+                }
+
+                // Handle the Content-Length header
+                if header.to_lowercase().trim() == "content-length" {
+                    match str::parse::<usize>(value.trim()) {
+                        Ok(length) => content_length = Some(length),
+                        Err(_) => return Err(Error::MalformedContentLength),
+                    }
+                }
+            }
+
+            let state = if chunked {
+                HttpStreamState::Chunked(true, 0, 0)
+            } else if let Some(length) = content_length {
+                HttpStreamState::ContentLength(length)
+            } else {
+                HttpStreamState::EndOnClose
+            };
+
+            Ok(ResponseMetadata {
+                status_code,
+                reason_phrase,
+                headers,
+                state,
+                max_trailing_headers_size: max_headers_size,
+            })
+        }
+
+        #[cfg(feature = "std")]
+        $($async)? fn $read_line<$($arg: $($argty +)*),*>(
+            stream: &mut $stream_type,
+            max_len: Option<usize>,
+            overflow_error: Error,
+        ) -> Result<String, Error> {
+            let mut bytes = Vec::with_capacity(32);
+            while let Some(byte) = maybe_await!(stream.next(), $($await)?) {
+                match byte {
+                    Ok(byte) => {
+                        if let Some(max_len) = max_len {
+                            if bytes.len() >= max_len {
+                                return Err(overflow_error);
+                            }
+                        }
+                        if byte == b'\n' {
+                            if let Some(b'\r') = bytes.last() {
+                                bytes.pop();
+                            }
+                            break;
+                        } else {
+                            bytes.push(byte);
+                        }
+                    }
+                    Err(err) => return Err(Error::IoError(err)),
+                }
+            }
+            String::from_utf8(bytes).map_err(|_error| Error::InvalidUtf8InResponse)
+        }
+    }
 }
 
 #[cfg(feature = "std")]
-fn read_line(
-    stream: &mut HttpStreamBytes,
-    max_len: Option<usize>,
-    overflow_error: Error,
-) -> Result<String, Error> {
-    let mut bytes = Vec::with_capacity(32);
-    for byte in stream {
-        match byte {
-            Ok(byte) => {
-                if let Some(max_len) = max_len {
-                    if bytes.len() >= max_len {
-                        return Err(overflow_error);
-                    }
-                }
-                if byte == b'\n' {
-                    if let Some(b'\r') = bytes.last() {
-                        bytes.pop();
-                    }
-                    break;
-                } else {
-                    bytes.push(byte);
-                }
-            }
-            Err(err) => return Err(Error::IoError(err)),
-        }
-    }
-    String::from_utf8(bytes).map_err(|_error| Error::InvalidUtf8InResponse)
-}
+define_read_methods!((read_until_closed, read_with_content_length, read_trailers, read_chunked, read_metadata, read_line)<>, HttpStreamBytes);
+#[cfg(feature = "async")]
+define_read_methods!((read_until_closed_async, read_with_content_length_async, read_trailers_async, read_chunked_async, read_metadata_async, read_line_async)<R: AsyncRead | Unpin>, R, async, await);
 
 #[cfg(feature = "std")]
 fn parse_status_line(line: &str) -> (i32, String) {
