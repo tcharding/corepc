@@ -67,6 +67,72 @@ impl Response {
         Ok(Response { status_code, reason_phrase, headers, url, body })
     }
 
+    #[cfg(feature = "async")]
+    /// Fully read a [`Response`] from an async stream.
+    ///
+    /// When this crate was originally made "async", it actually just spawned sync requests on
+    /// background threads and waited on their completion rather than actually doing async reads.
+    /// In order to avoid changing the API while fixing this, we read the full response but then
+    /// return a "lazy" response that has the full contents pre-read.
+    pub(crate) async fn create_async<R: AsyncRead + Unpin>(
+        mut stream: R,
+        is_head: bool,
+        max_headers_size: Option<usize>,
+        max_status_line_len: Option<usize>,
+    ) -> Result<Response, Error> {
+        use HttpStreamState::*;
+
+        let ResponseMetadata {
+            status_code,
+            reason_phrase,
+            mut headers,
+            state,
+            max_trailing_headers_size,
+        } = read_metadata_async(&mut stream, max_headers_size, max_status_line_len).await?;
+
+        let mut body = Vec::new();
+        if !is_head && status_code != 204 && status_code != 304 {
+            match state {
+                EndOnClose => {
+                    while let Some(byte_result) =
+                        read_until_closed_async(&mut stream).await
+                    {
+                        let (byte, length) = byte_result?;
+                        body.reserve(length);
+                        body.push(byte);
+                    }
+                }
+                ContentLength(mut length) => {
+                    while let Some(byte_result) =
+                        read_with_content_length_async(&mut stream, &mut length).await
+                    {
+                        let (byte, expected_length) = byte_result?;
+                        body.reserve(expected_length);
+                        body.push(byte);
+                    }
+                }
+                Chunked(mut expecting_chunks, mut chunk_length, mut content_length) => {
+                    while let Some(byte_result) = read_chunked_async(
+                        &mut stream,
+                        &mut headers,
+                        &mut expecting_chunks,
+                        &mut chunk_length,
+                        &mut content_length,
+                        max_trailing_headers_size,
+                    )
+                    .await
+                    {
+                        let (byte, length) = byte_result?;
+                        body.reserve(length);
+                        body.push(byte);
+                    }
+                }
+            }
+        }
+
+        Ok(Response { status_code, reason_phrase, headers, url: String::new(), body })
+    }
+
     /// Returns the body as an `&str`.
     ///
     /// # Errors
