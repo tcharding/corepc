@@ -1,5 +1,8 @@
+#![cfg(feature = "std")]
+
 extern crate bitreq;
 extern crate tiny_http;
+use std::io::Read;
 use std::str::FromStr;
 use std::sync::{Arc, Once};
 use std::thread;
@@ -12,7 +15,7 @@ static INIT: Once = Once::new();
 pub fn setup() {
     INIT.call_once(|| {
         let server = Arc::new(Server::http("localhost:35562").unwrap());
-        for _ in 0..4 {
+        for _ in 0..8 {
             let server = server.clone();
 
             thread::spawn(move || loop {
@@ -174,28 +177,66 @@ pub fn setup() {
 
 pub fn url(req: &str) -> String { format!("http://localhost:35562{}", req) }
 
-pub fn get_body(request: Result<bitreq::Response, bitreq::Error>) -> String {
-    match request {
-        Ok(response) => match response.as_str() {
-            Ok(str) => String::from(str),
-            Err(err) => {
-                println!("\n[ERROR]: {}\n", err);
-                String::new()
-            }
+pub async fn maybe_make_request(request: bitreq::Request) -> Result<bitreq::Response, bitreq::Error> {
+    let response = request.clone().send();
+    let lazy_response = request.clone().send_lazy();
+    match (&response, lazy_response) {
+        (Ok(resp), Ok(mut lazy_resp)) => {
+            assert_eq!(lazy_resp.status_code, resp.status_code);
+            assert_eq!(lazy_resp.reason_phrase, resp.reason_phrase);
+            let mut lazy_bytes = Vec::new();
+            lazy_resp.read_to_end(&mut lazy_bytes).unwrap();
+            assert_eq!(lazy_bytes, resp.as_bytes());
         },
-        Err(err) => {
-            println!("\n[ERROR]: {}\n", err);
-            String::new()
+        (Err(e), Err(lazy_e)) => assert_eq!(format!("{e:?}"), format!("{lazy_e:?}")),
+        (res, lazy_res) => panic!("{res:?} != {}", lazy_res.is_err()),
+    }
+
+    #[cfg(feature = "async")]
+    {
+        if let Ok(resp) = &response {
+            if resp.url.starts_with("https") && !cfg!(feature = "async-https") {
+                return response;
+            }
+        } else {
+            // Assume its not HTTPS or async-https is set
+        }
+        let async_response = request.clone().send_async().await;
+        let lazy_async_response = request.send_lazy_async().await;
+        match (&response, &async_response) {
+            (Ok(resp), Ok(async_resp)) => {
+                assert_eq!(async_resp.status_code, resp.status_code);
+                assert_eq!(async_resp.reason_phrase, resp.reason_phrase);
+                assert_eq!(async_resp.as_bytes(), resp.as_bytes());
+            },
+            (Err(e), Err(async_e)) => assert_eq!(format!("{e:?}"), format!("{async_e:?}")),
+            (res, async_res) => panic!("{res:?} != {async_res:?}"),
+        }
+        match (&response, lazy_async_response) {
+            (Ok(resp), Ok(mut lazy_resp)) => {
+                assert_eq!(lazy_resp.status_code, resp.status_code);
+                assert_eq!(lazy_resp.reason_phrase, resp.reason_phrase);
+                let mut lazy_bytes = Vec::new();
+                lazy_resp.read_to_end(&mut lazy_bytes).unwrap();
+                assert_eq!(lazy_bytes, resp.as_bytes());
+            },
+            (Err(e), Err(lazy_e)) => assert_eq!(format!("{e:?}"), format!("{lazy_e:?}")),
+            (res, lazy_res) => panic!("{res:?} != {}", lazy_res.is_err()),
         }
     }
+    response
 }
 
-pub fn get_status_code(request: Result<bitreq::Response, bitreq::Error>) -> i32 {
-    match request {
-        Ok(response) => response.status_code,
-        Err(err) => {
-            println!("\n[ERROR]: {}\n", err);
-            -1
-        }
-    }
+pub async fn make_request(request: bitreq::Request) -> bitreq::Response {
+    maybe_make_request(request).await.unwrap()
+}
+
+pub async fn get_body(request: bitreq::Request) -> String {
+    let response = make_request(request).await;
+    String::from(response.as_str().unwrap())
+}
+
+pub async fn get_status_code(request: bitreq::Request) -> i32 {
+    let response = make_request(request).await;
+    response.status_code
 }
