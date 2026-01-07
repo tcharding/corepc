@@ -1,9 +1,9 @@
 use alloc::collections::BTreeMap;
 use core::str;
-#[cfg(feature = "std")]
-use std::io::{self, BufReader, Bytes, Read};
 #[cfg(feature = "async")]
 use std::future::Future;
+#[cfg(feature = "std")]
+use std::io::{self, BufReader, Bytes, Read};
 
 #[cfg(feature = "async")]
 use tokio::io::{AsyncRead, AsyncReadExt};
@@ -96,9 +96,7 @@ impl Response {
         if !is_head && status_code != 204 && status_code != 304 {
             match state {
                 EndOnClose => {
-                    while let Some(byte_result) =
-                        read_until_closed_async(&mut stream).await
-                    {
+                    while let Some(byte_result) = read_until_closed_async(&mut stream).await {
                         let (byte, length) = byte_result?;
                         body.reserve(length);
                         body.push(byte);
@@ -113,7 +111,7 @@ impl Response {
                         body.push(byte);
                     }
                 }
-                Chunked(mut expecting_chunks, mut chunk_length, mut content_length) => {
+                Chunked(mut expecting_chunks, mut chunk_length, mut content_length) =>
                     while let Some(byte_result) = read_chunked_async(
                         &mut stream,
                         &mut headers,
@@ -127,8 +125,7 @@ impl Response {
                         let (byte, length) = byte_result?;
                         body.reserve(length);
                         body.push(byte);
-                    }
-                }
+                    },
             }
         }
 
@@ -435,9 +432,7 @@ trait AsyncIteratorReadExt {
 #[cfg(feature = "async")]
 impl<T: AsyncReadExt + Unpin> AsyncIteratorReadExt for T {
     fn next(&mut self) -> impl Future<Output = Option<Result<u8, io::Error>>> {
-        async {
-            Some(self.read_u8().await)
-        }
+        async { Some(self.read_u8().await) }
     }
 }
 

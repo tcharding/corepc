@@ -8,18 +8,17 @@ use std::net::{TcpStream, ToSocketAddrs};
 use std::pin::Pin;
 use std::time::Instant;
 
-#[cfg(feature = "async")]
-use tokio::io::{AsyncRead, AsyncWriteExt};
 #[cfg(all(feature = "async", feature = "proxy"))]
 use tokio::io::AsyncReadExt;
+#[cfg(feature = "async")]
+use tokio::io::{AsyncRead, AsyncWriteExt};
 #[cfg(feature = "async")]
 use tokio::net::TcpStream as AsyncTcpStream;
 
 use crate::request::ParsedRequest;
-use crate::{Error, Method, ResponseLazy};
-
 #[cfg(feature = "async")]
 use crate::Response;
+use crate::{Error, Method, ResponseLazy};
 
 type UnsecuredStream = TcpStream;
 
@@ -176,11 +175,10 @@ impl AsyncConnection {
             for (i, addr) in addrs.iter().enumerate() {
                 match AsyncTcpStream::connect(addr).await {
                     Ok(s) => return Ok(s),
-                    Err(e) => {
+                    Err(e) =>
                         if i == addrs_count - 1 {
                             return Err(Error::IoError(e));
-                        }
-                    }
+                        },
                 }
             }
 
@@ -481,7 +479,11 @@ macro_rules! redirect_utils {
             Destination($Connection),
         }
 
-        fn $get_redirect(mut connection: $Connection, status_code: i32, url: Option<&String>) -> $NextHop {
+        fn $get_redirect(
+            mut connection: $Connection,
+            status_code: i32,
+            url: Option<&String>,
+        ) -> $NextHop {
             match status_code {
                 301 | 302 | 303 | 307 => {
                     let url = match url {
@@ -510,8 +512,7 @@ macro_rules! redirect_utils {
                 _ => $NextHop::Destination(connection),
             }
         }
-
-    }
+    };
 }
 
 redirect_utils!(get_redirect, NextHop, Connection, ResponseLazy);

@@ -8,13 +8,12 @@ use std::net::TcpStream;
 use std::sync::OnceLock;
 
 use rustls::{self, ClientConfig, ClientConnection, RootCertStore, ServerName, StreamOwned};
-#[cfg(feature = "rustls-webpki")]
-use webpki_roots::TLS_SERVER_ROOTS;
-
 #[cfg(feature = "async-https")]
 use tokio::io::AsyncWriteExt;
 #[cfg(feature = "async-https")]
-use tokio_rustls::{TlsConnector, client::TlsStream};
+use tokio_rustls::{client::TlsStream, TlsConnector};
+#[cfg(feature = "rustls-webpki")]
+use webpki_roots::TLS_SERVER_ROOTS;
 
 #[cfg(feature = "async-https")]
 use super::{AsyncConnection, AsyncHttpStream};
@@ -89,7 +88,9 @@ pub(super) fn create_secured_stream(conn: &Connection) -> Result<HttpStream, Err
 pub type AsyncSecuredStream = TlsStream<tokio::net::TcpStream>;
 
 #[cfg(feature = "async-https")]
-pub(super) async fn create_async_secured_stream(conn: &AsyncConnection) -> Result<AsyncHttpStream, Error> {
+pub(super) async fn create_async_secured_stream(
+    conn: &AsyncConnection,
+) -> Result<AsyncHttpStream, Error> {
     // Rustls setup
     #[cfg(feature = "log")]
     log::trace!("Setting up TLS parameters for {}.", conn.request.url.host);

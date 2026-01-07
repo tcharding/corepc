@@ -177,7 +177,9 @@ pub fn setup() {
 
 pub fn url(req: &str) -> String { format!("http://localhost:35562{}", req) }
 
-pub async fn maybe_make_request(request: bitreq::Request) -> Result<bitreq::Response, bitreq::Error> {
+pub async fn maybe_make_request(
+    request: bitreq::Request,
+) -> Result<bitreq::Response, bitreq::Error> {
     let response = request.clone().send();
     let lazy_response = request.clone().send_lazy();
     match (&response, lazy_response) {
@@ -187,7 +189,7 @@ pub async fn maybe_make_request(request: bitreq::Request) -> Result<bitreq::Resp
             let mut lazy_bytes = Vec::new();
             lazy_resp.read_to_end(&mut lazy_bytes).unwrap();
             assert_eq!(lazy_bytes, resp.as_bytes());
-        },
+        }
         (Err(e), Err(lazy_e)) => assert_eq!(format!("{e:?}"), format!("{lazy_e:?}")),
         (res, lazy_res) => panic!("{res:?} != {}", lazy_res.is_err()),
     }
@@ -208,7 +210,7 @@ pub async fn maybe_make_request(request: bitreq::Request) -> Result<bitreq::Resp
                 assert_eq!(async_resp.status_code, resp.status_code);
                 assert_eq!(async_resp.reason_phrase, resp.reason_phrase);
                 assert_eq!(async_resp.as_bytes(), resp.as_bytes());
-            },
+            }
             (Err(e), Err(async_e)) => assert_eq!(format!("{e:?}"), format!("{async_e:?}")),
             (res, async_res) => panic!("{res:?} != {async_res:?}"),
         }
@@ -219,7 +221,7 @@ pub async fn maybe_make_request(request: bitreq::Request) -> Result<bitreq::Resp
                 let mut lazy_bytes = Vec::new();
                 lazy_resp.read_to_end(&mut lazy_bytes).unwrap();
                 assert_eq!(lazy_bytes, resp.as_bytes());
-            },
+            }
             (Err(e), Err(lazy_e)) => assert_eq!(format!("{e:?}"), format!("{lazy_e:?}")),
             (res, lazy_res) => panic!("{res:?} != {}", lazy_res.is_err()),
         }

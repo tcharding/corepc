@@ -24,7 +24,8 @@ async fn test_json_using_serde() {
 
     setup();
     let original_json: serde_json::Value = serde_json::from_str(JSON_SRC).unwrap();
-    let response = make_request(bitreq::post(url("/echo")).with_json(&original_json).unwrap()).await;
+    let response =
+        make_request(bitreq::post(url("/echo")).with_json(&original_json).unwrap()).await;
     let actual_json: serde_json::Value = response.json().unwrap();
     assert_eq!(actual_json, original_json);
 }
@@ -56,10 +57,9 @@ async fn test_headers() {
 async fn test_custom_method() {
     use bitreq::Method;
     setup();
-    let body = get_body(
-        bitreq::Request::new(Method::Custom("GET".to_string()), url("/a")).with_body("Q"),
-    )
-    .await;
+    let body =
+        get_body(bitreq::Request::new(Method::Custom("GET".to_string()), url("/a")).with_body("Q"))
+            .await;
     assert_eq!("j: Q", body);
 }
 
@@ -176,7 +176,8 @@ async fn test_patch() {
 #[tokio::test]
 async fn tcp_connect_timeout() {
     let _listener = std::net::TcpListener::bind("127.0.0.1:32162").unwrap();
-    let request = bitreq::Request::new(bitreq::Method::Get, "http://127.0.0.1:32162").with_timeout(1);
+    let request =
+        bitreq::Request::new(bitreq::Method::Get, "http://127.0.0.1:32162").with_timeout(1);
     let resp = maybe_make_request(request).await;
     assert!(resp.is_err());
     if let Some(bitreq::Error::IoError(err)) = resp.err() {
