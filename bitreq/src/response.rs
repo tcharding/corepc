@@ -75,12 +75,14 @@ impl Response {
     /// In order to avoid changing the API while fixing this, we read the full response but then
     /// return a "lazy" response that has the full contents pre-read.
     pub(crate) async fn create_async<R: AsyncRead + Unpin>(
-        mut stream: R,
+        stream: R,
         is_head: bool,
         max_headers_size: Option<usize>,
         max_status_line_len: Option<usize>,
     ) -> Result<Response, Error> {
         use HttpStreamState::*;
+
+        let mut stream = tokio::io::BufReader::with_capacity(BACKING_READ_BUFFER_LENGTH, stream);
 
         let ResponseMetadata {
             status_code,
@@ -321,6 +323,20 @@ impl ResponseLazy {
             state,
             max_trailing_headers_size,
         })
+    }
+
+    #[cfg(feature = "async")]
+    pub(crate) fn dummy_from_response(response: Response) -> ResponseLazy {
+        let http_stream = HttpStream::create_buffer(response.body);
+        ResponseLazy {
+            status_code: response.status_code,
+            reason_phrase: response.reason_phrase,
+            headers: response.headers,
+            url: response.url,
+            stream: BufReader::with_capacity(1, http_stream).bytes(),
+            state: HttpStreamState::EndOnClose,
+            max_trailing_headers_size: None,
+        }
     }
 }
 

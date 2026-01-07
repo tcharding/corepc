@@ -212,15 +212,15 @@ async fn test_status_line_cap() {
     make_request(request).await;
 }
 
-#[test]
-fn test_massive_content_length() {
-    // Note that we cannot run this test async as long as the "async" fetching happens via a
-    // blocking spawn.
+#[tokio::test]
+async fn test_massive_content_length() {
     setup();
+    #[cfg(feature = "async")]
+    tokio::spawn(bitreq::get(url("/massive_content_length")).send_async());
     std::thread::spawn(|| {
         // If bitreq trusts Content-Length, this should crash pretty much straight away.
         let _ = bitreq::get(url("/massive_content_length")).send();
     });
-    std::thread::sleep(std::time::Duration::from_millis(500));
+    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
     // If it were to crash, it would have at this point. Pass!
 }
