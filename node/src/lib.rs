@@ -609,8 +609,13 @@ pub fn downloaded_exe_path() -> anyhow::Result<String> {
         return Err(Error::SkipDownload.into());
     }
 
-    let mut path: PathBuf = env!("OUT_DIR").into();
-    path.push("bitcoin");
+    let mut path: PathBuf = if let Ok(dir) = std::env::var("BITCOIND_DOWNLOAD_DIR") {
+        dir.into()
+    } else {
+        let mut p: PathBuf = env!("OUT_DIR").into();
+        p.push("bitcoin");
+        p
+    };
     path.push(format!("bitcoin-{}", VERSION));
     path.push("bin");
 

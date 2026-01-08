@@ -242,5 +242,12 @@ jobs:
         uses: actions/checkout@v4
       - name: "Select toolchain"
         uses: dtolnay/rust-toolchain@stable
+      - name: "Cache downloaded bitcoind"
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.cache/corepc/bitcoind
+          key: bitcoind-${{ runner.os }}-${{ runner.arch }}-${{ matrix.version }}
       - name: "Run integration tests"
+        env:
+          BITCOIND_DOWNLOAD_DIR: ${{ github.workspace }}/.cache/corepc/bitcoind
         run: cd integration_test && cargo test --features=${{ matrix.version }},download
