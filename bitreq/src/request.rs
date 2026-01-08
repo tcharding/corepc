@@ -314,32 +314,6 @@ impl Request {
         if parsed_request.url.https {
             #[cfg(feature = "async-https")]
             {
-                let is_head = parsed_request.config.method == Method::Head;
-                let response = AsyncConnection::new(parsed_request).send_https().await?;
-                Response::create(response, is_head)
-            }
-            #[cfg(not(feature = "async-https"))]
-            {
-                Err(Error::HttpsFeatureNotEnabled)
-            }
-        } else {
-            let is_head = parsed_request.config.method == Method::Head;
-            let response = AsyncConnection::new(parsed_request).send().await?;
-            Response::create(response, is_head)
-        }
-    }
-
-    /// Sends this request to the host asynchronously, loaded lazily.
-    ///
-    /// # Errors
-    ///
-    /// See [`send_async`](struct.Request.html#method.send_async).
-    #[cfg(feature = "async")]
-    pub async fn send_lazy_async(self) -> Result<ResponseLazy, Error> {
-        let parsed_request = ParsedRequest::new(self)?;
-        if parsed_request.url.https {
-            #[cfg(feature = "async-https")]
-            {
                 AsyncConnection::new(parsed_request).send_https().await
             }
             #[cfg(not(feature = "async-https"))]
@@ -349,6 +323,23 @@ impl Request {
         } else {
             AsyncConnection::new(parsed_request).send().await
         }
+    }
+
+    /// Sends this request to the host asynchronously, "loaded lazily".
+    ///
+    /// Note that due to API limitations the response is not actually loaded lazily - it is loaded
+    /// immediately and then can be re-read from the response. In a future version an
+    /// `AsyncResponseLazy` will be added and lazy loading support will be added.
+    ///
+    /// Until then, you should use [`Self::send_async`].
+    ///
+    /// # Errors
+    ///
+    /// See [`send_async`](struct.Request.html#method.send_async).
+    #[cfg(feature = "async")]
+    pub async fn send_lazy_async(self) -> Result<ResponseLazy, Error> {
+        let response = self.send_async().await?;
+        Ok(ResponseLazy::dummy_from_response(response))
     }
 }
 

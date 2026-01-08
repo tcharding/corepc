@@ -7,16 +7,16 @@ use std::io;
 
 use self::setup::*;
 
-#[test]
+#[tokio::test]
 #[cfg(feature = "rustls")]
-fn test_https() {
+async fn test_https() {
     // TODO: Implement this locally.
-    assert_eq!(get_status_code(bitreq::get("https://example.com").send()), 200,);
+    assert_eq!(get_status_code(bitreq::get("https://example.com")).await, 200);
 }
 
-#[test]
+#[tokio::test]
 #[cfg(feature = "json-using-serde")]
-fn test_json_using_serde() {
+async fn test_json_using_serde() {
     const JSON_SRC: &str = r#"{
         "str": "Json test",
         "num": 42
@@ -24,158 +24,161 @@ fn test_json_using_serde() {
 
     setup();
     let original_json: serde_json::Value = serde_json::from_str(JSON_SRC).unwrap();
-    let response = bitreq::post(url("/echo")).with_json(&original_json).unwrap().send().unwrap();
+    let response =
+        make_request(bitreq::post(url("/echo")).with_json(&original_json).unwrap()).await;
     let actual_json: serde_json::Value = response.json().unwrap();
     assert_eq!(actual_json, original_json);
 }
 
-#[test]
-fn test_timeout_too_low() {
+#[tokio::test]
+async fn test_timeout_too_low() {
     setup();
-    let result = bitreq::get(url("/slow_a")).with_body("Q".to_string()).with_timeout(1).send();
+    let request = bitreq::get(url("/slow_a")).with_body("Q".to_string()).with_timeout(1);
+    let result = maybe_make_request(request).await;
     assert!(result.is_err());
 }
 
-#[test]
-fn test_timeout_high_enough() {
+#[tokio::test]
+async fn test_timeout_high_enough() {
     setup();
     let body =
-        get_body(bitreq::get(url("/slow_a")).with_body("Q".to_string()).with_timeout(3).send());
+        get_body(bitreq::get(url("/slow_a")).with_body("Q".to_string()).with_timeout(3)).await;
     assert_eq!(body, "j: Q");
 }
 
-#[test]
-fn test_headers() {
+#[tokio::test]
+async fn test_headers() {
     setup();
-    let body = get_body(bitreq::get(url("/header_pong")).with_header("Ping", "Qwerty").send());
+    let body = get_body(bitreq::get(url("/header_pong")).with_header("Ping", "Qwerty")).await;
     assert_eq!("Qwerty", body);
 }
 
-#[test]
-fn test_custom_method() {
+#[tokio::test]
+async fn test_custom_method() {
     use bitreq::Method;
     setup();
-    let body = get_body(
-        bitreq::Request::new(Method::Custom("GET".to_string()), url("/a")).with_body("Q").send(),
-    );
+    let body =
+        get_body(bitreq::Request::new(Method::Custom("GET".to_string()), url("/a")).with_body("Q"))
+            .await;
     assert_eq!("j: Q", body);
 }
 
-#[test]
-fn test_get() {
+#[tokio::test]
+async fn test_get() {
     setup();
-    let body = get_body(bitreq::get(url("/a")).with_body("Q").send());
+    let body = get_body(bitreq::get(url("/a")).with_body("Q")).await;
     assert_eq!(body, "j: Q");
 }
 
-#[test]
-fn test_redirect_get() {
+#[tokio::test]
+async fn test_redirect_get() {
     setup();
-    let body = get_body(bitreq::get(url("/redirect")).with_body("Q").send());
+    let body = get_body(bitreq::get(url("/redirect")).with_body("Q")).await;
     assert_eq!(body, "j: Q");
 }
 
-#[test]
-fn test_redirect_post() {
+#[tokio::test]
+async fn test_redirect_post() {
     setup();
     // POSTing to /redirect should return a 303, which means we should
     // make a GET request to the given location. This test relies on
     // the fact that the test server only responds to GET requests on
     // the /a path.
-    let body = get_body(bitreq::post(url("/redirect")).with_body("Q").send());
+    let body = get_body(bitreq::post(url("/redirect")).with_body("Q")).await;
     assert_eq!(body, "j: Q");
 }
 
-#[test]
-fn test_redirect_with_fragment() {
+#[tokio::test]
+async fn test_redirect_with_fragment() {
     setup();
     let original_url = url("/redirect#foo");
-    let res = bitreq::get(original_url).send().unwrap();
+    let res = make_request(bitreq::get(original_url)).await;
     // Fragment should stay the same, otherwise redirected
     assert_eq!(res.url.as_str(), url("/a#foo"));
 }
 
-#[test]
-fn test_redirect_with_overridden_fragment() {
+#[tokio::test]
+async fn test_redirect_with_overridden_fragment() {
     setup();
     let original_url = url("/redirect-baz#foo");
-    let res = bitreq::get(original_url).send().unwrap();
+    let res = make_request(bitreq::get(original_url)).await;
     // This redirect should provide its own fragment, overriding the initial one
     assert_eq!(res.url.as_str(), url("/a#baz"));
 }
 
-#[test]
-fn test_infinite_redirect() {
+#[tokio::test]
+async fn test_infinite_redirect() {
     setup();
-    let body = bitreq::get(url("/infiniteredirect")).send();
+    let body = maybe_make_request(bitreq::get(url("/infiniteredirect"))).await;
     assert!(body.is_err());
 }
 
-#[test]
-fn test_relative_redirect_get() {
+#[tokio::test]
+async fn test_relative_redirect_get() {
     setup();
-    let body = get_body(bitreq::get(url("/relativeredirect")).with_body("Q").send());
+    let body = get_body(bitreq::get(url("/relativeredirect")).with_body("Q")).await;
     assert_eq!(body, "j: Q");
 }
 
-#[test]
-fn test_head() {
+#[tokio::test]
+async fn test_head() {
     setup();
-    assert_eq!(get_status_code(bitreq::head(url("/b")).send()), 418);
+    assert_eq!(get_status_code(bitreq::head(url("/b"))).await, 418);
 }
 
-#[test]
-fn test_post() {
+#[tokio::test]
+async fn test_post() {
     setup();
-    let body = get_body(bitreq::post(url("/c")).with_body("E").send());
+    let body = get_body(bitreq::post(url("/c")).with_body("E")).await;
     assert_eq!(body, "l: E");
 }
 
-#[test]
-fn test_put() {
+#[tokio::test]
+async fn test_put() {
     setup();
-    let body = get_body(bitreq::put(url("/d")).with_body("R").send());
+    let body = get_body(bitreq::put(url("/d")).with_body("R")).await;
     assert_eq!(body, "m: R");
 }
 
-#[test]
-fn test_delete() {
+#[tokio::test]
+async fn test_delete() {
     setup();
-    assert_eq!(get_body(bitreq::delete(url("/e")).send()), "n: ");
+    assert_eq!(get_body(bitreq::delete(url("/e"))).await, "n: ");
 }
 
-#[test]
-fn test_trace() {
+#[tokio::test]
+async fn test_trace() {
     setup();
-    assert_eq!(get_body(bitreq::trace(url("/f")).send()), "o: ");
+    assert_eq!(get_body(bitreq::trace(url("/f"))).await, "o: ");
 }
 
-#[test]
-fn test_options() {
+#[tokio::test]
+async fn test_options() {
     setup();
-    let body = get_body(bitreq::options(url("/g")).with_body("U").send());
+    let body = get_body(bitreq::options(url("/g")).with_body("U")).await;
     assert_eq!(body, "p: U");
 }
 
-#[test]
-fn test_connect() {
+#[tokio::test]
+async fn test_connect() {
     setup();
-    let body = get_body(bitreq::connect(url("/h")).with_body("I").send());
+    let body = get_body(bitreq::connect(url("/h")).with_body("I")).await;
     assert_eq!(body, "q: I");
 }
 
-#[test]
-fn test_patch() {
+#[tokio::test]
+async fn test_patch() {
     setup();
-    let body = get_body(bitreq::patch(url("/i")).with_body("O").send());
+    let body = get_body(bitreq::patch(url("/i")).with_body("O")).await;
     assert_eq!(body, "r: O");
 }
 
-#[test]
-fn tcp_connect_timeout() {
+#[tokio::test]
+async fn tcp_connect_timeout() {
     let _listener = std::net::TcpListener::bind("127.0.0.1:32162").unwrap();
-    let resp =
-        bitreq::Request::new(bitreq::Method::Get, "http://127.0.0.1:32162").with_timeout(1).send();
+    let request =
+        bitreq::Request::new(bitreq::Method::Get, "http://127.0.0.1:32162").with_timeout(1);
+    let resp = maybe_make_request(request).await;
     assert!(resp.is_err());
     if let Some(bitreq::Error::IoError(err)) = resp.err() {
         assert_eq!(err.kind(), io::ErrorKind::TimedOut);
@@ -184,41 +187,41 @@ fn tcp_connect_timeout() {
     }
 }
 
-#[test]
-fn test_header_cap() {
+#[tokio::test]
+async fn test_header_cap() {
     setup();
-    let body = bitreq::get(url("/long_header")).with_max_headers_size(999).send();
-    assert!(body.is_err());
-    assert!(matches!(body.err(), Some(bitreq::Error::HeadersOverflow)));
+    let res = maybe_make_request(bitreq::get(url("/long_header")).with_max_headers_size(999)).await;
+    assert!(res.is_err());
+    assert!(matches!(res.err(), Some(bitreq::Error::HeadersOverflow)));
 
-    let body = bitreq::get(url("/long_header")).with_max_headers_size(1500).send();
-    assert!(body.is_ok());
+    make_request(bitreq::get(url("/long_header")).with_max_headers_size(1500)).await;
 }
 
-#[test]
-fn test_status_line_cap() {
+#[tokio::test]
+async fn test_status_line_cap() {
     setup();
     let expected_status_line = "HTTP/1.1 203 Non-Authoritative Information";
 
-    let body = bitreq::get(url("/long_status_line"))
-        .with_max_status_line_length(expected_status_line.len() + 1)
-        .send();
-    assert!(body.is_err());
-    assert!(matches!(body.err(), Some(bitreq::Error::StatusLineOverflow)));
+    let request = bitreq::get(url("/long_status_line"))
+        .with_max_status_line_length(expected_status_line.len() + 1);
+    let resp = maybe_make_request(request).await;
+    assert!(resp.is_err());
+    assert!(matches!(resp.err(), Some(bitreq::Error::StatusLineOverflow)));
 
-    let body = bitreq::get(url("/long_status_line"))
-        .with_max_status_line_length(expected_status_line.len() + 2)
-        .send();
-    assert!(body.is_ok());
+    let request = bitreq::get(url("/long_status_line"))
+        .with_max_status_line_length(expected_status_line.len() + 2);
+    make_request(request).await;
 }
 
-#[test]
-fn test_massive_content_length() {
+#[tokio::test]
+async fn test_massive_content_length() {
     setup();
+    #[cfg(feature = "async")]
+    tokio::spawn(bitreq::get(url("/massive_content_length")).send_async());
     std::thread::spawn(|| {
         // If bitreq trusts Content-Length, this should crash pretty much straight away.
         let _ = bitreq::get(url("/massive_content_length")).send();
     });
-    std::thread::sleep(std::time::Duration::from_millis(500));
+    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
     // If it were to crash, it would have at this point. Pass!
 }
