@@ -521,6 +521,47 @@ impl<'a> ConnectionParams<'a> {
     }
 }
 
+/// A [`ConnectionParams`] without references.
+#[cfg(feature = "std")]
+#[derive(Clone, Debug, Hash, PartialEq, Eq)]
+pub(crate) struct OwnedConnectionParams {
+    pub(crate) https: bool,
+    pub(crate) host: String,
+    pub(crate) port: Port,
+    #[cfg(feature = "proxy")]
+    pub(crate) proxy: Option<Proxy>,
+}
+
+#[cfg(feature = "std")]
+impl PartialEq<ConnectionParams<'_>> for OwnedConnectionParams {
+    fn eq(&self, other: &ConnectionParams<'_>) -> bool {
+        if self.https != other.https || self.host != other.host || self.port != other.port {
+            return false;
+        }
+        #[cfg(feature = "proxy")]
+        {
+            self.proxy.as_ref() == other.proxy
+        }
+        #[cfg(not(feature = "proxy"))]
+        {
+            true
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl From<ConnectionParams<'_>> for OwnedConnectionParams {
+    fn from(other: ConnectionParams<'_>) -> Self {
+        Self {
+            https: other.https,
+            host: other.host.to_owned(),
+            port: other.port,
+            #[cfg(feature = "proxy")]
+            proxy: other.proxy.cloned(),
+        }
+    }
+}
+
 /// Alias for [Request::new](struct.Request.html#method.new) with `method` set to
 /// [Method::Get](enum.Method.html).
 pub fn get<T: Into<URL>>(url: T) -> Request { Request::new(Method::Get, url) }
