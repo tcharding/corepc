@@ -159,10 +159,9 @@ impl AsyncConnection {
 
     /// Asynchronously connect to the server.
     async fn connect(&self) -> Result<AsyncTcpStream, Error> {
-        let tcp_connect = |host: String, port: u32| async move {
-            let addrs = tokio::net::lookup_host((host.as_str(), port as u16))
-                .await
-                .map_err(Error::IoError)?;
+        let tcp_connect = |host: String, port: u16| async move {
+            let addrs =
+                tokio::net::lookup_host((host.as_str(), port)).await.map_err(Error::IoError)?;
             let addrs: Vec<_> = addrs.collect();
             let addrs_count = addrs.len();
 
@@ -363,8 +362,8 @@ impl Connection {
     }
 
     fn connect(&self) -> Result<TcpStream, Error> {
-        let tcp_connect = |host: &str, port: u32| -> Result<TcpStream, Error> {
-            let addrs = (host, port as u16).to_socket_addrs().map_err(Error::IoError)?;
+        let tcp_connect = |host: &str, port: u16| -> Result<TcpStream, Error> {
+            let addrs = (host, port).to_socket_addrs().map_err(Error::IoError)?;
             let addrs_count = addrs.len();
 
             // Try all resolved addresses. Return the first one to which we could connect. If all
