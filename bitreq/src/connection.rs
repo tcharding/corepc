@@ -395,7 +395,11 @@ impl Connection {
                 // do proxy things
                 let mut tcp = tcp_connect(&proxy.server, proxy.port)?;
 
-                write!(tcp, "{}", proxy.connect(&self.request.url.host, self.request.url.port.port())).unwrap();
+                write!(
+                    tcp,
+                    "{}",
+                    proxy.connect(&self.request.url.host, self.request.url.port.port())
+                )?;
                 tcp.flush()?;
 
                 let mut proxy_response = Vec::new();
