@@ -227,8 +227,8 @@ pub async fn maybe_make_request(
         } else {
             // Assume its not HTTPS or async-https is set
         }
-        let async_response = request.clone().send_async().await;
-        let lazy_async_response = request.send_lazy_async().await;
+        let (async_response, lazy_async_response) =
+            tokio::join!(request.clone().send_async(), request.send_lazy_async());
         match (&response, &async_response) {
             (Ok(resp), Ok(async_resp)) => {
                 assert_eq!(async_resp.status_code, resp.status_code);
