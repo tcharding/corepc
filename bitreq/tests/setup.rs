@@ -31,31 +31,57 @@ pub fn setup() {
                 let headers = Vec::from(request.headers());
 
                 let url = String::from(request.url().split('#').next().unwrap());
+                macro_rules! respond {
+                    ($response: expr) => {{
+                        let mut response = $response;
+                        use core::hash::{BuildHasher, Hasher};
+                        // Get a random value using the only std API to do so - the DefaultHasher
+                        let rand_val =
+                            std::collections::hash_map::RandomState::new().build_hasher().finish();
+                        if rand_val % 2 == 0 {
+                            // Include a Connection: close header on 1 in 4 responses.
+                            // Sadly tinny_httpd doesn't let us actually close the connection, but
+                            // our response handling does it as well.
+                            response.add_header(Header::from_str("Connection: close").unwrap());
+                        } else {
+                            let header = Header::from_str("Connection: keep-alive").unwrap();
+                            response.add_header(header);
+                        }
+                        if rand_val % 3 == 1 {
+                            // In 1 of 8 responses (but never if we include a Connection: close),
+                            // include a Keep-Alive header with a maximum number of requests and a
+                            // timeout.
+                            let header = Header::from_str("Keep-alive: timeout=1, max=5").unwrap();
+                            response.add_header(header);
+                        }
+                        request.respond(response).unwrap();
+                    }};
+                }
                 match request.method() {
                     Method::Get if url == "/header_pong" => {
                         for header in headers {
                             if header.field.as_str() == "Ping" {
                                 let response = Response::from_string(format!("{}", header.value));
-                                request.respond(response).ok();
+                                respond!(response);
                                 return;
                             }
                         }
-                        request.respond(Response::from_string("No header!")).ok();
+                        respond!(Response::from_string("No header!"));
                     }
 
                     Method::Get if url == "/slow_a" => {
                         thread::sleep(Duration::from_secs(2));
                         let response = Response::from_string(format!("j: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
 
                     Method::Get if url == "/a" => {
                         let response = Response::from_string(format!("j: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Post if url == "/a" => {
                         let response = Response::from_string("POST to /a is not valid.");
-                        request.respond(response).ok();
+                        respond!(response);
                     }
 
                     Method::Get if url == "/long_header" => {
@@ -66,7 +92,7 @@ pub fn setup() {
                         }
                         let long_header = Header::from_str(&long_header).unwrap();
                         let response = Response::empty(200).with_header(long_header);
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Get if url == "/massive_content_length" => {
                         let status = StatusCode(200);
@@ -74,17 +100,17 @@ pub fn setup() {
                         let length = 1_000_000_000_000_000;
                         let response = Response::new(status, vec![], body, Some(length), None)
                             .with_chunked_threshold(2 * length);
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Get if url == "/long_status_line" => {
-                        request.respond(Response::empty(203)).ok();
+                        respond!(Response::empty(203));
                     }
 
                     Method::Get if url == "/redirect-baz" => {
                         let response = Response::empty(301).with_header(
                             Header::from_str("Location: http://localhost:35562/a#baz").unwrap(),
                         );
-                        request.respond(response).ok();
+                        respond!(response);
                     }
 
                     Method::Get if url == "/redirect" => {
@@ -92,14 +118,14 @@ pub fn setup() {
                             Header::from_bytes(&b"Location"[..], &b"http://localhost:35562/a"[..])
                                 .unwrap(),
                         );
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Post if url == "/redirect" => {
                         let response = Response::empty(303).with_header(
                             Header::from_bytes(&b"Location"[..], &b"http://localhost:35562/a"[..])
                                 .unwrap(),
                         );
-                        request.respond(response).ok();
+                        respond!(response);
                     }
 
                     Method::Get if url == "/infiniteredirect" => {
@@ -110,7 +136,7 @@ pub fn setup() {
                             )
                             .unwrap(),
                         );
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Get if url == "/redirectpong" => {
                         let response = Response::empty(301).with_header(
@@ -120,54 +146,52 @@ pub fn setup() {
                             )
                             .unwrap(),
                         );
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Get if url == "/relativeredirect" => {
                         let response = Response::empty(303)
                             .with_header(Header::from_bytes(&b"Location"[..], &b"/a"[..]).unwrap());
-                        request.respond(response).ok();
+                        respond!(response);
                     }
 
                     Method::Post if url == "/echo" => {
-                        request.respond(Response::from_string(content)).ok();
+                        respond!(Response::from_string(content));
                     }
 
                     Method::Head if url == "/b" => {
-                        request.respond(Response::empty(418)).ok();
+                        respond!(Response::empty(418));
                     }
                     Method::Post if url == "/c" => {
                         let response = Response::from_string(format!("l: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Put if url == "/d" => {
                         let response = Response::from_string(format!("m: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Delete if url == "/e" => {
                         let response = Response::from_string(format!("n: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Trace if url == "/f" => {
                         let response = Response::from_string(format!("o: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Options if url == "/g" => {
                         let response = Response::from_string(format!("p: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Connect if url == "/h" => {
                         let response = Response::from_string(format!("q: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
                     Method::Patch if url == "/i" => {
                         let response = Response::from_string(format!("r: {}", content));
-                        request.respond(response).ok();
+                        respond!(response);
                     }
 
                     _ => {
-                        request
-                            .respond(Response::from_string("Not Found").with_status_code(404))
-                            .ok();
+                        respond!(Response::from_string("Not Found").with_status_code(404));
                     }
                 }
             });
