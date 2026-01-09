@@ -9,7 +9,7 @@ mod download {
 mod download {
     use std::fs::File;
     use std::io::{self, BufRead, BufReader, Cursor, Read};
-    use std::path::Path;
+    use std::path::{Path, PathBuf};
     use std::str::FromStr;
 
     use anyhow::Context;
@@ -61,6 +61,13 @@ mod download {
         );
     }
 
+    fn download_dir(out_dir: &Path) -> PathBuf {
+        if let Some(path) = std::env::var_os("BITCOIND_DOWNLOAD_DIR") {
+            return PathBuf::from(path);
+        }
+        out_dir.join("bitcoin")
+    }
+
     pub(crate) fn start() -> anyhow::Result<()> {
         if std::env::var_os("BITCOIND_SKIP_DOWNLOAD").is_some() {
             return Ok(());
@@ -68,15 +75,19 @@ mod download {
         let download_filename = download_filename();
         println!("download_filename: {}", download_filename);
         let expected_hash = get_expected_sha256(&download_filename)?;
-        let out_dir = std::env::var_os("OUT_DIR").unwrap();
+        let out_dir = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
 
-        let mut bitcoin_exe_home = Path::new(&out_dir).join("bitcoin");
-        if !bitcoin_exe_home.exists() {
-            std::fs::create_dir(&bitcoin_exe_home)
-                .with_context(|| format!("cannot create dir {:?}", bitcoin_exe_home))?;
+        let bitcoin_exe_home = download_dir(&out_dir);
+        std::fs::create_dir_all(&bitcoin_exe_home)
+            .with_context(|| format!("cannot create dir {:?}", bitcoin_exe_home))?;
+
+        let mut existing_filename =
+            bitcoin_exe_home.join(format!("bitcoin-{}", VERSION)).join("bin");
+        if cfg!(target_os = "windows") {
+            existing_filename.push("bitcoind.exe");
+        } else {
+            existing_filename.push("bitcoind");
         }
-        let existing_filename =
-            bitcoin_exe_home.join(format!("bitcoin-{}", VERSION)).join("bin").join("bitcoind");
 
         if !existing_filename.exists() {
             println!("filename:{} version:{} hash:{}", download_filename, VERSION, expected_hash);
@@ -140,16 +151,12 @@ mod download {
                     };
 
                     if outpath.file_name().map(|s| s.to_str()) == Some(Some("bitcoind.exe")) {
-                        for d in outpath.iter() {
-                            bitcoin_exe_home.push(d);
-                        }
-                        let parent = bitcoin_exe_home.parent().unwrap();
+                        let dest = bitcoin_exe_home.join(&outpath);
+                        let parent = dest.parent().unwrap();
                         std::fs::create_dir_all(parent)
                             .with_context(|| format!("cannot create dir {:?}", parent))?;
-                        let mut outfile =
-                            std::fs::File::create(&bitcoin_exe_home).with_context(|| {
-                                format!("cannot create file {:?}", bitcoin_exe_home)
-                            })?;
+                        let mut outfile = std::fs::File::create(&dest)
+                            .with_context(|| format!("cannot create file {:?}", dest))?;
                         io::copy(&mut file, &mut outfile).unwrap();
                         break;
                     }

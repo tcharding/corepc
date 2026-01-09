@@ -191,7 +191,7 @@ impl AsyncConnection {
                 // do proxy things
                 let mut tcp = tcp_connect(proxy.server.clone(), proxy.port).await?;
 
-                let proxy_request = format!("{}", proxy.connect(&self.request));
+                let proxy_request = proxy.connect(&self.request).to_string();
                 tcp.write_all(proxy_request.as_bytes()).await?;
                 tcp.flush().await?;
 

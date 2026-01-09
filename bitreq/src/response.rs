@@ -431,9 +431,7 @@ trait AsyncIteratorReadExt {
 
 #[cfg(feature = "async")]
 impl<T: AsyncReadExt + Unpin> AsyncIteratorReadExt for T {
-    fn next(&mut self) -> impl Future<Output = Option<Result<u8, io::Error>>> {
-        async { Some(self.read_u8().await) }
-    }
+    async fn next(&mut self) -> Option<Result<u8, io::Error>> { Some(self.read_u8().await) }
 }
 
 macro_rules! define_read_methods {
