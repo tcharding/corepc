@@ -3,7 +3,7 @@
 
 use alloc::sync::Arc;
 use core::convert::TryFrom;
-use std::io::{self, Write};
+use std::io;
 use std::net::TcpStream;
 use std::sync::OnceLock;
 
@@ -15,7 +15,6 @@ use webpki_roots::TLS_SERVER_ROOTS;
 
 #[cfg(feature = "async-https")]
 use super::{AsyncHttpStream, AsyncTcpStream};
-use super::{Connection, HttpStream};
 use crate::Error;
 
 pub type SecuredStream = StreamOwned<ClientConnection, TcpStream>;
@@ -52,32 +51,19 @@ fn build_client_config() -> Arc<ClientConfig> {
     Arc::new(config)
 }
 
-pub(super) fn create_secured_stream(conn: &Connection) -> Result<HttpStream, Error> {
-    // Rustls setup
+pub(super) fn wrap_stream(tcp: TcpStream, host: &str) -> Result<SecuredStream, Error> {
     #[cfg(feature = "log")]
-    log::trace!("Setting up TLS parameters for {}.", conn.request.url.host);
-    let dns_name = match ServerName::try_from(&*conn.request.url.host) {
+    log::trace!("Setting up TLS parameters for {host}.");
+    let dns_name = match ServerName::try_from(host) {
         Ok(result) => result,
         Err(err) => return Err(Error::IoError(io::Error::new(io::ErrorKind::Other, err))),
     };
     let sess = ClientConnection::new(CONFIG.get_or_init(build_client_config).clone(), dns_name)
         .map_err(Error::RustlsCreateConnection)?;
 
-    // Connect
     #[cfg(feature = "log")]
-    log::trace!("Establishing TCP connection to {}.", conn.request.url.host);
-    let tcp = conn.connect()?;
-
-    // Send request
-    #[cfg(feature = "log")]
-    log::trace!("Establishing TLS session to {}.", conn.request.url.host);
-    let mut tls = StreamOwned::new(sess, tcp); // I don't think this actually does any communication.
-    #[cfg(feature = "log")]
-    log::trace!("Writing HTTPS request to {}.", conn.request.url.host);
-    let _ = tls.get_ref().set_write_timeout(conn.timeout()?);
-    tls.write_all(&conn.request.as_bytes())?;
-
-    Ok(HttpStream::create_secured(tls, conn.timeout_at))
+    log::trace!("Establishing TLS session to {host}.");
+    Ok(StreamOwned::new(sess, tcp))
 }
 
 // Async TLS implementation

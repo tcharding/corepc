@@ -90,7 +90,7 @@ pub struct Request {
     params: String,
     headers: BTreeMap<String, String>,
     body: Option<Vec<u8>>,
-    pub(crate) timeout: Option<u64>,
+    timeout: Option<u64>,
     pub(crate) max_headers_size: Option<usize>,
     pub(crate) max_status_line_len: Option<usize>,
     max_redirects: usize,
@@ -264,22 +264,11 @@ impl Request {
     #[cfg(feature = "std")]
     pub fn send(self) -> Result<Response, Error> {
         let parsed_request = ParsedRequest::new(self)?;
-        if parsed_request.url.https {
-            #[cfg(feature = "rustls")]
-            {
-                let is_head = parsed_request.config.method == Method::Head;
-                let response = Connection::new(parsed_request).send_https()?;
-                Response::create(response, is_head)
-            }
-            #[cfg(not(feature = "rustls"))]
-            {
-                Err(Error::HttpsFeatureNotEnabled)
-            }
-        } else {
-            let is_head = parsed_request.config.method == Method::Head;
-            let response = Connection::new(parsed_request).send()?;
-            Response::create(response, is_head)
-        }
+        let is_head = parsed_request.config.method == Method::Head;
+        let connection =
+            Connection::new(parsed_request.connection_params(), parsed_request.timeout_at)?;
+        let response = connection.send(parsed_request)?;
+        Response::create(response, is_head)
     }
 
     /// Sends this request to the host, loaded lazily.
@@ -290,18 +279,8 @@ impl Request {
     #[cfg(feature = "std")]
     pub fn send_lazy(self) -> Result<ResponseLazy, Error> {
         let parsed_request = ParsedRequest::new(self)?;
-        if parsed_request.url.https {
-            #[cfg(feature = "rustls")]
-            {
-                Connection::new(parsed_request).send_https()
-            }
-            #[cfg(not(feature = "rustls"))]
-            {
-                Err(Error::HttpsFeatureNotEnabled)
-            }
-        } else {
-            Connection::new(parsed_request).send()
-        }
+        Connection::new(parsed_request.connection_params(), parsed_request.timeout_at)?
+            .send(parsed_request)
     }
 
     /// Sends this request to the host asynchronously.

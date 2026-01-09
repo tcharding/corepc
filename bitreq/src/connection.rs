@@ -1,5 +1,4 @@
 use core::time::Duration;
-use std::env;
 #[cfg(feature = "async")]
 use std::future::Future;
 use std::io::{self, Read, Write};
@@ -40,11 +39,6 @@ pub(crate) enum HttpStream {
 impl HttpStream {
     fn create_unsecured(reader: UnsecuredStream, timeout_at: Option<Instant>) -> HttpStream {
         HttpStream::Unsecured(reader, timeout_at)
-    }
-
-    #[cfg(feature = "rustls")]
-    fn create_secured(reader: SecuredStream, timeout_at: Option<Instant>) -> HttpStream {
-        HttpStream::Secured(Box::new(reader), timeout_at)
     }
 
     #[cfg(feature = "async")]
@@ -88,6 +82,65 @@ impl Read for HttpStream {
             }
             #[cfg(feature = "async")]
             HttpStream::Buffer(cursor) => std::io::Read::read(cursor, buf),
+        };
+        match result {
+            Err(e) if e.kind() == io::ErrorKind::WouldBlock => {
+                // We're a blocking socket, so EWOULDBLOCK indicates a timeout
+                Err(timeout_err())
+            }
+            r => r,
+        }
+    }
+}
+
+fn set_socket_write_timeout(tcp: &TcpStream, timeout_at: Option<Instant>) -> io::Result<()> {
+    tcp.set_write_timeout(timeout_at_to_duration(timeout_at)?)?;
+    Ok(())
+}
+
+impl Write for HttpStream {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        let result = match self {
+            HttpStream::Unsecured(inner, timeout_at) => {
+                set_socket_write_timeout(inner, *timeout_at)?;
+                inner.write(buf)
+            }
+            #[cfg(feature = "rustls")]
+            HttpStream::Secured(inner, timeout_at) => {
+                set_socket_write_timeout(inner.get_ref(), *timeout_at)?;
+                inner.write(buf)
+            }
+            #[cfg(feature = "async")]
+            HttpStream::Buffer(_) => {
+                debug_assert!(false, "We shouldn't write to a pre-loaded stream");
+                Ok(buf.len())
+            }
+        };
+        match result {
+            Err(e) if e.kind() == io::ErrorKind::WouldBlock => {
+                // We're a blocking socket, so EWOULDBLOCK indicates a timeout
+                Err(timeout_err())
+            }
+            r => r,
+        }
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        let result = match self {
+            HttpStream::Unsecured(inner, timeout_at) => {
+                set_socket_write_timeout(inner, *timeout_at)?;
+                inner.flush()
+            }
+            #[cfg(feature = "rustls")]
+            HttpStream::Secured(inner, timeout_at) => {
+                set_socket_write_timeout(inner.get_ref(), *timeout_at)?;
+                inner.flush()
+            }
+            #[cfg(feature = "async")]
+            HttpStream::Buffer(_) => {
+                debug_assert!(false, "We shouldn't write to a pre-loaded stream");
+                Ok(())
+            }
         };
         match result {
             Err(e) if e.kind() == io::ErrorKind::WouldBlock => {
@@ -293,113 +346,80 @@ impl AsyncConnection {
 /// A connection to the server for sending
 /// [`Request`](struct.Request.html)s.
 pub struct Connection {
-    request: ParsedRequest,
-    timeout_at: Option<Instant>,
+    stream: HttpStream,
 }
 
 impl Connection {
     /// Creates a new `Connection`. See [Request] and [ParsedRequest]
     /// for specifics about *what* is being sent.
-    pub(crate) fn new(request: ParsedRequest) -> Connection {
-        let timeout = request.config.timeout.or_else(|| match env::var("BITREQ_TIMEOUT") {
-            Ok(t) => t.parse::<u64>().ok(),
-            Err(_) => None,
-        });
-        let timeout_at = timeout.map(|t| Instant::now() + Duration::from_secs(t));
-        Connection { request, timeout_at }
-    }
+    pub(crate) fn new(
+        params: ConnectionParams<'_>,
+        timeout_at: Option<Instant>,
+    ) -> Result<Connection, Error> {
+        let socket = Self::connect(params, timeout_at)?;
 
-    /// Returns the timeout duration for operations that should end at
-    /// timeout and are starting "now".
-    ///
-    /// The Result will be Err if the timeout has already passed.
-    fn timeout(&self) -> Result<Option<Duration>, io::Error> {
-        let timeout = timeout_at_to_duration(self.timeout_at);
-        #[cfg(feature = "log")]
-        log::trace!("Timeout requested, it is currently: {:?}", timeout);
-        timeout
-    }
-
-    /// Sends the [`Request`](struct.Request.html), consumes this
-    /// connection, and returns a [`Response`](struct.Response.html).
-    #[cfg(feature = "rustls")]
-    pub(crate) fn send_https(self) -> Result<ResponseLazy, Error> {
-        enforce_timeout(self.timeout_at, move || {
-            let secured_stream = rustls_stream::create_secured_stream(&self)?;
-
-            #[cfg(feature = "log")]
-            log::trace!("Reading HTTPS response from {}.", self.request.url.host);
-            let response = ResponseLazy::from_stream(
-                secured_stream,
-                self.request.config.max_headers_size,
-                self.request.config.max_status_line_len,
-            )?;
-
-            handle_redirects(self, response)
-        })
-    }
-
-    /// Sends the [`Request`](struct.Request.html), consumes this
-    /// connection, and returns a [`Response`](struct.Response.html).
-    pub(crate) fn send(self) -> Result<ResponseLazy, Error> {
-        enforce_timeout(self.timeout_at, move || {
-            let bytes = self.request.as_bytes();
-
-            #[cfg(feature = "log")]
-            log::trace!("Establishing TCP connection to {}.", self.request.url.host);
-            let mut tcp = self.connect()?;
-
-            // Send request
-            #[cfg(feature = "log")]
-            log::trace!("Writing HTTP request.");
-            let _ = tcp.set_write_timeout(self.timeout()?);
-            tcp.write_all(&bytes)?;
-
-            // Receive response
-            #[cfg(feature = "log")]
-            log::trace!("Reading HTTP response.");
-            let stream = HttpStream::create_unsecured(tcp, self.timeout_at);
-            let response = ResponseLazy::from_stream(
-                stream,
-                self.request.config.max_headers_size,
-                self.request.config.max_status_line_len,
-            )?;
-            handle_redirects(self, response)
-        })
-    }
-
-    fn connect(&self) -> Result<TcpStream, Error> {
-        let tcp_connect = |host: &str, port: u16| -> Result<TcpStream, Error> {
-            let addrs = (host, port).to_socket_addrs().map_err(Error::IoError)?;
-            let addrs_count = addrs.len();
-
-            // Try all resolved addresses. Return the first one to which we could connect. If all
-            // failed return the last error encountered.
-            for (i, addr) in addrs.enumerate() {
-                let stream = if let Some(timeout) = self.timeout()? {
-                    TcpStream::connect_timeout(&addr, timeout)
-                } else {
-                    TcpStream::connect(addr)
-                };
-                if stream.is_ok() || i == addrs_count - 1 {
-                    return stream.map_err(Error::from);
-                }
+        let stream = if params.https {
+            #[cfg(not(feature = "rustls"))]
+            return Err(Error::HttpsFeatureNotEnabled);
+            #[cfg(feature = "rustls")]
+            {
+                let tls = rustls_stream::wrap_stream(socket, params.host)?;
+                HttpStream::Secured(Box::new(tls), timeout_at)
             }
-
-            Err(Error::AddressNotFound)
+        } else {
+            HttpStream::create_unsecured(socket, timeout_at)
         };
 
-        #[cfg(feature = "proxy")]
-        match self.request.config.proxy {
-            Some(ref proxy) => {
-                // do proxy things
-                let mut tcp = tcp_connect(&proxy.server, proxy.port)?;
+        Ok(Connection { stream })
+    }
 
-                write!(
-                    tcp,
-                    "{}",
-                    proxy.connect(&self.request.url.host, self.request.url.port.port())
-                )?;
+    fn tcp_connect(host: &str, port: u16, timeout_at: Option<Instant>) -> Result<TcpStream, Error> {
+        #[cfg(feature = "log")]
+        log::trace!("Looking up host {host}");
+
+        let addrs = (host, port).to_socket_addrs().map_err(Error::IoError)?;
+        let addrs_count = addrs.len();
+
+        // Try all resolved addresses. Return the first one to which we could connect. If all
+        // failed return the last error encountered.
+        for (i, addr) in addrs.enumerate() {
+            #[cfg(feature = "log")]
+            log::trace!("Attempting to connect to {addr} for {host}");
+
+            let stream = if let Some(timeout) = timeout_at_to_duration(timeout_at)? {
+                TcpStream::connect_timeout(&addr, timeout)
+            } else {
+                TcpStream::connect(addr)
+            };
+
+            match stream {
+                Ok(s) => {
+                    #[cfg(feature = "log")]
+                    log::trace!("Connected to {addr} for {host}");
+                    return Ok(s);
+                }
+                Err(e) =>
+                    if i == addrs_count - 1 {
+                        return Err(Error::IoError(e));
+                    },
+            }
+        }
+
+        Err(Error::AddressNotFound)
+    }
+
+    /// Connect to the server.
+    fn connect(
+        params: ConnectionParams<'_>,
+        timeout_at: Option<Instant>,
+    ) -> Result<TcpStream, Error> {
+        #[cfg(feature = "proxy")]
+        match &params.proxy {
+            Some(proxy) => {
+                // do proxy things
+                let mut tcp = Self::tcp_connect(&proxy.server, proxy.port, timeout_at)?;
+
+                write!(tcp, "{}", proxy.connect(params.host, params.port.port()))?;
                 tcp.flush()?;
 
                 let mut proxy_response = Vec::new();
@@ -417,36 +437,48 @@ impl Connection {
 
                 Ok(tcp)
             }
-            None => tcp_connect(&self.request.url.host, self.request.url.port.port()),
+            None => Self::tcp_connect(params.host, params.port.port(), timeout_at),
         }
 
         #[cfg(not(feature = "proxy"))]
-        tcp_connect(&self.request.url.host, self.request.url.port.port())
+        Self::tcp_connect(params.host, params.port.port(), timeout_at)
+    }
+
+    /// Sends the [`Request`](struct.Request.html), consumes this
+    /// connection, and returns a [`Response`](struct.Response.html).
+    pub(crate) fn send(mut self, request: ParsedRequest) -> Result<ResponseLazy, Error> {
+        enforce_timeout(request.timeout_at, move || {
+            // Send request
+            #[cfg(feature = "log")]
+            log::trace!("Writing HTTP request.");
+            self.stream.write_all(&request.as_bytes())?;
+
+            // Receive response
+            #[cfg(feature = "log")]
+            log::trace!("Reading HTTP response.");
+            let response = ResponseLazy::from_stream(
+                self.stream,
+                request.config.max_headers_size,
+                request.config.max_status_line_len,
+            )?;
+            handle_redirects(request, response)
+        })
     }
 }
 
 fn handle_redirects(
-    mut connection: Connection,
+    request: ParsedRequest,
     mut response: ResponseLazy,
 ) -> Result<ResponseLazy, Error> {
     let status_code = response.status_code;
     let url = response.headers.get("location");
-    match get_redirect(connection.request, status_code, url) {
+    match get_redirect(request, status_code, url) {
         NextHop::Redirect(request) => {
             let request = request?;
-            connection.request = request;
-            if connection.request.url.https {
-                #[cfg(not(feature = "rustls"))]
-                return Err(Error::HttpsFeatureNotEnabled);
-                #[cfg(feature = "rustls")]
-                return connection.send_https();
-            } else {
-                connection.send()
-            }
+            Connection::new(request.connection_params(), request.timeout_at)?.send(request)
         }
         NextHop::Destination(request) => {
-            connection.request = request;
-            let dst_url = connection.request.url;
+            let dst_url = request.url;
             dst_url.write_base_url_to(&mut response.url).unwrap();
             dst_url.write_resource_to(&mut response.url).unwrap();
             Ok(response)
