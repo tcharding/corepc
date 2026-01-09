@@ -6,16 +6,18 @@ use std::io::{self, Read, Write};
 use std::net::{TcpStream, ToSocketAddrs};
 #[cfg(feature = "async")]
 use std::pin::Pin;
+#[cfg(feature = "async")]
+use std::task::{Context, Poll};
 use std::time::Instant;
 
 #[cfg(all(feature = "async", feature = "proxy"))]
 use tokio::io::AsyncReadExt;
 #[cfg(feature = "async")]
-use tokio::io::{AsyncRead, AsyncWriteExt};
+use tokio::io::{AsyncRead, AsyncWrite, AsyncWriteExt};
 #[cfg(feature = "async")]
 use tokio::net::TcpStream as AsyncTcpStream;
 
-use crate::request::ParsedRequest;
+use crate::request::{ConnectionParams, ParsedRequest};
 #[cfg(feature = "async")]
 use crate::Response;
 use crate::{Error, Method, ResponseLazy};
@@ -97,42 +99,58 @@ impl Read for HttpStream {
     }
 }
 
-#[cfg(feature = "async")]
-type AsyncUnsecuredStream = AsyncTcpStream;
-
 #[cfg(feature = "async-https")]
 type AsyncSecuredStream = rustls_stream::AsyncSecuredStream;
 
 #[cfg(feature = "async")]
 pub(crate) enum AsyncHttpStream {
-    Unsecured(AsyncUnsecuredStream),
+    Unsecured(AsyncTcpStream),
     #[cfg(feature = "async-https")]
     Secured(Box<AsyncSecuredStream>),
 }
 
 #[cfg(feature = "async")]
-impl AsyncHttpStream {
-    fn create_unsecured(stream: AsyncUnsecuredStream) -> AsyncHttpStream {
-        AsyncHttpStream::Unsecured(stream)
-    }
-
-    #[cfg(feature = "async-https")]
-    fn create_secured(stream: AsyncSecuredStream) -> AsyncHttpStream {
-        AsyncHttpStream::Secured(Box::new(stream))
+impl AsyncRead for AsyncHttpStream {
+    fn poll_read(
+        mut self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut tokio::io::ReadBuf<'_>,
+    ) -> Poll<io::Result<()>> {
+        match &mut *self {
+            AsyncHttpStream::Unsecured(inner) => Pin::new(inner).poll_read(cx, buf),
+            #[cfg(feature = "async-https")]
+            AsyncHttpStream::Secured(inner) => Pin::new(inner).poll_read(cx, buf),
+        }
     }
 }
 
 #[cfg(feature = "async")]
-impl AsyncRead for AsyncHttpStream {
-    fn poll_read(
-        mut self: core::pin::Pin<&mut Self>,
-        cx: &mut core::task::Context<'_>,
-        buf: &mut tokio::io::ReadBuf<'_>,
-    ) -> core::task::Poll<io::Result<()>> {
+impl AsyncWrite for AsyncHttpStream {
+    fn poll_write(
+        mut self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &[u8],
+    ) -> Poll<io::Result<usize>> {
         match &mut *self {
-            AsyncHttpStream::Unsecured(inner) => core::pin::Pin::new(inner).poll_read(cx, buf),
+            AsyncHttpStream::Unsecured(inner) => Pin::new(inner).poll_write(cx, buf),
             #[cfg(feature = "async-https")]
-            AsyncHttpStream::Secured(inner) => core::pin::Pin::new(inner).poll_read(cx, buf),
+            AsyncHttpStream::Secured(inner) => Pin::new(inner).poll_write(cx, buf),
+        }
+    }
+
+    fn poll_flush(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        match &mut *self {
+            AsyncHttpStream::Unsecured(inner) => Pin::new(inner).poll_flush(cx),
+            #[cfg(feature = "async-https")]
+            AsyncHttpStream::Secured(inner) => Pin::new(inner).poll_flush(cx),
+        }
+    }
+
+    fn poll_shutdown(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        match &mut *self {
+            AsyncHttpStream::Unsecured(inner) => Pin::new(inner).poll_shutdown(cx),
+            #[cfg(feature = "async-https")]
+            AsyncHttpStream::Secured(inner) => Pin::new(inner).poll_shutdown(cx),
         }
     }
 }
@@ -141,56 +159,82 @@ impl AsyncRead for AsyncHttpStream {
 /// [`Request`](struct.Request.html)s.
 #[cfg(feature = "async")]
 pub struct AsyncConnection {
-    request: ParsedRequest,
-    timeout_at: Option<Instant>,
+    stream: AsyncHttpStream,
 }
 
 #[cfg(feature = "async")]
 impl AsyncConnection {
     /// Creates a new `AsyncConnection`.
-    pub(crate) fn new(request: ParsedRequest) -> AsyncConnection {
-        let timeout = request.config.timeout.or_else(|| match env::var("BITREQ_TIMEOUT") {
-            Ok(t) => t.parse::<u64>().ok(),
-            Err(_) => None,
-        });
-        let timeout_at = timeout.map(|t| Instant::now() + Duration::from_secs(t));
-        AsyncConnection { request, timeout_at }
+    pub(crate) async fn new(
+        params: ConnectionParams<'_>,
+        timeout_at: Option<Instant>,
+    ) -> Result<AsyncConnection, Error> {
+        let future = async move {
+            let socket = Self::connect(params).await?;
+
+            if params.https {
+                #[cfg(not(feature = "async-https"))]
+                return Err(Error::HttpsFeatureNotEnabled);
+                #[cfg(feature = "async-https")]
+                rustls_stream::wrap_async_stream(socket, params.host).await
+            } else {
+                Ok(AsyncHttpStream::Unsecured(socket))
+            }
+        };
+        let stream = if let Some(timeout_at) = timeout_at {
+            tokio::time::timeout_at(timeout_at.into(), future)
+                .await
+                .unwrap_or(Err(Error::IoError(timeout_err())))?
+        } else {
+            future.await?
+        };
+
+        Ok(AsyncConnection { stream })
+    }
+
+    async fn tcp_connect(host: &str, port: u16) -> Result<AsyncTcpStream, Error> {
+        #[cfg(feature = "log")]
+        log::trace!("Looking up host {host}");
+
+        let addrs = tokio::net::lookup_host((host, port)).await.map_err(Error::IoError)?;
+        let addrs: Vec<_> = addrs.collect();
+        let addrs_count = addrs.len();
+
+        if addrs.is_empty() {
+            return Err(Error::AddressNotFound);
+        }
+
+        // Try all resolved addresses. Return the first one to which we could connect. If all
+        // failed return the last error encountered.
+        for (i, addr) in addrs.iter().enumerate() {
+            #[cfg(feature = "log")]
+            log::trace!("Attempting to connect to {addr} for {host}");
+
+            match AsyncTcpStream::connect(addr).await {
+                Ok(s) => {
+                    #[cfg(feature = "log")]
+                    log::trace!("Connected to {addr} for {host}");
+                    return Ok(s);
+                }
+                Err(e) =>
+                    if i == addrs_count - 1 {
+                        return Err(Error::IoError(e));
+                    },
+            }
+        }
+
+        Err(Error::AddressNotFound)
     }
 
     /// Asynchronously connect to the server.
-    async fn connect(&self) -> Result<AsyncTcpStream, Error> {
-        let tcp_connect = |host: String, port: u16| async move {
-            let addrs =
-                tokio::net::lookup_host((host.as_str(), port)).await.map_err(Error::IoError)?;
-            let addrs: Vec<_> = addrs.collect();
-            let addrs_count = addrs.len();
-
-            if addrs.is_empty() {
-                return Err(Error::AddressNotFound);
-            }
-
-            // Try all resolved addresses. Return the first one to which we could connect. If all
-            // failed return the last error encountered.
-            for (i, addr) in addrs.iter().enumerate() {
-                match AsyncTcpStream::connect(addr).await {
-                    Ok(s) => return Ok(s),
-                    Err(e) =>
-                        if i == addrs_count - 1 {
-                            return Err(Error::IoError(e));
-                        },
-                }
-            }
-
-            Err(Error::AddressNotFound)
-        };
-
+    async fn connect(params: ConnectionParams<'_>) -> Result<AsyncTcpStream, Error> {
         #[cfg(feature = "proxy")]
-        match &self.request.config.proxy {
+        match &params.proxy {
             Some(proxy) => {
                 // do proxy things
-                let mut tcp = tcp_connect(proxy.server.clone(), proxy.port).await?;
+                let mut tcp = Self::tcp_connect(&proxy.server, proxy.port).await?;
 
-                let proxy_request = proxy.connect(&self.request).to_string();
+                let proxy_request = proxy.connect(params.host, params.port.port());
                 tcp.write_all(proxy_request.as_bytes()).await?;
                 tcp.flush().await?;
 
@@ -208,70 +252,33 @@ impl AsyncConnection {
 
                 Ok(tcp)
             }
-            None => tcp_connect(self.request.url.host.clone(), self.request.url.port.port()).await,
+            None => Self::tcp_connect(params.host, params.port.port()).await,
         }
 
         #[cfg(not(feature = "proxy"))]
-        tcp_connect(self.request.url.host.clone(), self.request.url.port.port()).await
-    }
-
-    /// Sends the [`Request`](struct.Request.html) asynchronously using HTTPS.
-    #[cfg(feature = "async-https")]
-    pub(crate) async fn send_https(self) -> Result<Response, Error> {
-        let timeout = self.timeout_at;
-        let future = async move {
-            let is_head = self.request.config.method == Method::Head;
-            let secured_stream = rustls_stream::create_async_secured_stream(&self).await?;
-
-            #[cfg(feature = "log")]
-            log::trace!("Reading HTTPS response from {}.", self.request.url.host);
-            let response = Response::create_async(
-                secured_stream,
-                is_head,
-                self.request.config.max_headers_size,
-                self.request.config.max_status_line_len,
-            )
-            .await?;
-
-            async_handle_redirects(self, response).await
-        };
-        if let Some(timeout_at) = timeout {
-            tokio::time::timeout_at(timeout_at.into(), future)
-                .await
-                .unwrap_or(Err(Error::IoError(timeout_err())))
-        } else {
-            future.await
-        }
+        Self::tcp_connect(&params.host, params.port.port()).await
     }
 
     /// Sends the [`Request`](struct.Request.html) asynchronously using HTTP.
-    pub(crate) async fn send(self) -> Result<Response, Error> {
-        let timeout = self.timeout_at;
+    pub(crate) async fn send(mut self, request: ParsedRequest) -> Result<Response, Error> {
+        let timeout = request.timeout_at;
         let future = async move {
-            let is_head = self.request.config.method == Method::Head;
-            let bytes = self.request.as_bytes();
-
-            #[cfg(feature = "log")]
-            log::trace!("Establishing TCP connection to {}.", self.request.url.host);
-            let mut tcp = self.connect().await?;
-
             // Send request
             #[cfg(feature = "log")]
             log::trace!("Writing HTTP request.");
-            tcp.write_all(&bytes).await?;
+            self.stream.write_all(&request.as_bytes()).await?;
 
             // Receive response
             #[cfg(feature = "log")]
             log::trace!("Reading HTTP response.");
-            let stream = AsyncHttpStream::create_unsecured(tcp);
             let response = Response::create_async(
-                stream,
-                is_head,
-                self.request.config.max_headers_size,
-                self.request.config.max_status_line_len,
+                self.stream,
+                request.config.method == Method::Head,
+                request.config.max_headers_size,
+                request.config.max_status_line_len,
             )
             .await?;
-            async_handle_redirects(self, response).await
+            async_handle_redirects(request, response).await
         };
         if let Some(timeout_at) = timeout {
             tokio::time::timeout_at(timeout_at.into(), future)
@@ -388,7 +395,7 @@ impl Connection {
                 // do proxy things
                 let mut tcp = tcp_connect(&proxy.server, proxy.port)?;
 
-                write!(tcp, "{}", proxy.connect(&self.request)).unwrap();
+                write!(tcp, "{}", proxy.connect(&self.request.url.host, self.request.url.port.port())).unwrap();
                 tcp.flush()?;
 
                 let mut proxy_response = Vec::new();
@@ -415,14 +422,15 @@ impl Connection {
 }
 
 fn handle_redirects(
-    connection: Connection,
+    mut connection: Connection,
     mut response: ResponseLazy,
 ) -> Result<ResponseLazy, Error> {
     let status_code = response.status_code;
     let url = response.headers.get("location");
-    match get_redirect(connection, status_code, url) {
-        NextHop::Redirect(connection) => {
-            let connection = connection?;
+    match get_redirect(connection.request, status_code, url) {
+        NextHop::Redirect(request) => {
+            let request = request?;
+            connection.request = request;
             if connection.request.url.https {
                 #[cfg(not(feature = "rustls"))]
                 return Err(Error::HttpsFeatureNotEnabled);
@@ -432,7 +440,8 @@ fn handle_redirects(
                 connection.send()
             }
         }
-        NextHop::Destination(connection) => {
+        NextHop::Destination(request) => {
+            connection.request = request;
             let dst_url = connection.request.url;
             dst_url.write_base_url_to(&mut response.url).unwrap();
             dst_url.write_resource_to(&mut response.url).unwrap();
@@ -443,26 +452,21 @@ fn handle_redirects(
 
 #[cfg(feature = "async")]
 fn async_handle_redirects(
-    connection: AsyncConnection,
+    request: ParsedRequest,
     mut response: Response,
 ) -> Pin<Box<dyn Future<Output = Result<Response, Error>> + Send>> {
     Box::pin(async move {
         let status_code = response.status_code;
         let url = response.headers.get("location");
-        match async_get_redirect(connection, status_code, url) {
-            NextHopAsync::Redirect(connection) => {
-                let connection = connection?;
-                if connection.request.url.https {
-                    #[cfg(not(feature = "async-https"))]
-                    return Err(Error::HttpsFeatureNotEnabled);
-                    #[cfg(feature = "async-https")]
-                    return connection.send_https().await;
-                } else {
-                    connection.send().await
-                }
+        match async_get_redirect(request, status_code, url) {
+            NextHopAsync::Redirect(request) => {
+                let request = request?;
+                let connection =
+                    AsyncConnection::new(request.connection_params(), request.timeout_at).await?;
+                connection.send(request).await
             }
-            NextHopAsync::Destination(connection) => {
-                let dst_url = connection.request.url;
+            NextHopAsync::Destination(request) => {
+                let dst_url = request.url;
                 dst_url.write_base_url_to(&mut response.url).unwrap();
                 dst_url.write_resource_to(&mut response.url).unwrap();
                 Ok(response)
@@ -472,14 +476,14 @@ fn async_handle_redirects(
 }
 
 macro_rules! redirect_utils {
-    ($get_redirect: ident, $NextHop: ident, $Connection: ident, $Response: ident) => {
+    ($get_redirect: ident, $NextHop: ident, $Response: ident) => {
         enum $NextHop {
-            Redirect(Result<$Connection, Error>),
-            Destination($Connection),
+            Redirect(Result<ParsedRequest, Error>),
+            Destination(ParsedRequest),
         }
 
         fn $get_redirect(
-            mut connection: $Connection,
+            mut request: ParsedRequest,
             status_code: i32,
             url: Option<&String>,
         ) -> $NextHop {
@@ -492,31 +496,31 @@ macro_rules! redirect_utils {
                     #[cfg(feature = "log")]
                     log::debug!("Redirecting ({}) to: {}", status_code, url);
 
-                    match connection.request.redirect_to(url.as_str()) {
+                    match request.redirect_to(url.as_str()) {
                         Ok(()) => {
                             if status_code == 303 {
-                                match connection.request.config.method {
+                                match request.config.method {
                                     Method::Post | Method::Put | Method::Delete => {
-                                        connection.request.config.method = Method::Get;
+                                        request.config.method = Method::Get;
                                     }
                                     _ => {}
                                 }
                             }
 
-                            $NextHop::Redirect(Ok(connection))
+                            $NextHop::Redirect(Ok(request))
                         }
                         Err(err) => $NextHop::Redirect(Err(err)),
                     }
                 }
-                _ => $NextHop::Destination(connection),
+                _ => $NextHop::Destination(request),
             }
         }
     };
 }
 
-redirect_utils!(get_redirect, NextHop, Connection, ResponseLazy);
+redirect_utils!(get_redirect, NextHop, ResponseLazy);
 #[cfg(feature = "async")]
-redirect_utils!(async_get_redirect, NextHopAsync, AsyncConnection, Response);
+redirect_utils!(async_get_redirect, NextHopAsync, Response);
 
 /// Enforce the timeout by running the function in a new thread and
 /// parking the current one with a timeout.

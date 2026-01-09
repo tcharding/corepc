@@ -5,7 +5,7 @@ use core::fmt::{self, Write};
 use crate::Error;
 
 #[cfg(feature = "std")]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
 pub(crate) enum Port {
     ImplicitHttp,
     ImplicitHttps,

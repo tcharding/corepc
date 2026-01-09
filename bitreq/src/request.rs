@@ -2,6 +2,11 @@ use alloc::collections::BTreeMap;
 use core::fmt;
 #[cfg(feature = "std")]
 use core::fmt::Write;
+use core::time::Duration;
+#[cfg(feature = "std")]
+use std::env;
+#[cfg(feature = "std")]
+use std::time::Instant;
 
 #[cfg(feature = "async")]
 use crate::connection::AsyncConnection;
@@ -311,18 +316,10 @@ impl Request {
     #[cfg(feature = "async")]
     pub async fn send_async(self) -> Result<Response, Error> {
         let parsed_request = ParsedRequest::new(self)?;
-        if parsed_request.url.https {
-            #[cfg(feature = "async-https")]
-            {
-                AsyncConnection::new(parsed_request).send_https().await
-            }
-            #[cfg(not(feature = "async-https"))]
-            {
-                Err(Error::HttpsFeatureNotEnabled)
-            }
-        } else {
-            AsyncConnection::new(parsed_request).send().await
-        }
+        AsyncConnection::new(parsed_request.connection_params(), parsed_request.timeout_at)
+            .await?
+            .send(parsed_request)
+            .await
     }
 
     /// Sends this request to the host asynchronously, "loaded lazily".
@@ -348,6 +345,7 @@ pub(crate) struct ParsedRequest {
     pub(crate) url: HttpUrl,
     pub(crate) redirects: Vec<HttpUrl>,
     pub(crate) config: Request,
+    pub(crate) timeout_at: Option<Instant>,
 }
 
 #[cfg(feature = "std")]
@@ -400,7 +398,13 @@ impl ParsedRequest {
             }
         }
 
-        Ok(ParsedRequest { url, redirects: Vec::new(), config })
+        let timeout = config.timeout.or_else(|| match env::var("BITREQ_TIMEOUT") {
+            Ok(t) => t.parse::<u64>().ok(),
+            Err(_) => None,
+        });
+        let timeout_at = timeout.map(|t| Instant::now() + Duration::from_secs(t));
+
+        Ok(ParsedRequest { url, redirects: Vec::new(), config, timeout_at })
     }
 
     fn get_http_head(&self) -> String {
@@ -506,6 +510,34 @@ impl ParsedRequest {
             Err(Error::InfiniteRedirectionLoop)
         } else {
             Ok(())
+        }
+    }
+
+    pub(crate) fn connection_params(&self) -> ConnectionParams<'_> {
+        ConnectionParams::from_request(self)
+    }
+}
+
+/// A key which determines whether an existing connection can be reused
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
+#[cfg(feature = "std")]
+pub(crate) struct ConnectionParams<'a> {
+    pub(crate) https: bool,
+    pub(crate) host: &'a str,
+    pub(crate) port: Port,
+    #[cfg(feature = "proxy")]
+    pub(crate) proxy: Option<&'a Proxy>,
+}
+
+#[cfg(feature = "std")]
+impl<'a> ConnectionParams<'a> {
+    fn from_request(request: &'a ParsedRequest) -> Self {
+        Self {
+            https: request.url.https,
+            host: &request.url.host,
+            port: request.url.port,
+            #[cfg(feature = "proxy")]
+            proxy: request.config.proxy.as_ref(),
         }
     }
 }
