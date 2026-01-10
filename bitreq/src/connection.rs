@@ -6,17 +6,23 @@ use std::net::{TcpStream, ToSocketAddrs};
 #[cfg(feature = "async")]
 use std::pin::Pin;
 #[cfg(feature = "async")]
+use std::sync::atomic::{AtomicUsize, Ordering};
+#[cfg(feature = "async")]
+use std::sync::{Arc, Mutex};
+#[cfg(feature = "async")]
 use std::task::{Context, Poll};
 use std::time::Instant;
 
 #[cfg(all(feature = "async", feature = "proxy"))]
 use tokio::io::AsyncReadExt;
 #[cfg(feature = "async")]
-use tokio::io::{AsyncRead, AsyncWrite, AsyncWriteExt};
+use tokio::io::{AsyncRead, AsyncWrite, AsyncWriteExt, ReadHalf, WriteHalf};
 #[cfg(feature = "async")]
 use tokio::net::TcpStream as AsyncTcpStream;
+#[cfg(feature = "async")]
+use tokio::sync::Mutex as AsyncMutex;
 
-use crate::request::{ConnectionParams, ParsedRequest};
+use crate::request::{ConnectionParams, OwnedConnectionParams, ParsedRequest};
 #[cfg(feature = "async")]
 use crate::Response;
 use crate::{Error, Method, ResponseLazy};
@@ -208,12 +214,27 @@ impl AsyncWrite for AsyncHttpStream {
     }
 }
 
+#[cfg(feature = "async")]
+struct AsyncConnectionState {
+    write: AsyncMutex<WriteHalf<AsyncHttpStream>>,
+    read: AsyncMutex<ReadHalf<AsyncHttpStream>>,
+    /// The ID of the next request we'll send. If this reaches [`usize::MAX`] no further requests
+    /// can be sent on this socket and a new connection must be made. Thus, in order to limit the
+    /// connection to sending N new requests, this may be set to [`usize::MAX`] - N.
+    next_request_id: AtomicUsize,
+    /// The ID of the next request which is readable from the socket.
+    readable_request_id: AtomicUsize,
+    /// The time at which we should stop sending new requests over this socket and should instead
+    /// connect again.
+    /// Defaults to 60 seconds after open to align with nginx's default timeout of 75 seconds, but
+    /// can be overridden by the `Keep-Alive` header.
+    socket_new_requests_timeout: Mutex<Instant>,
+}
+
 /// An async connection to the server for sending
 /// [`Request`](struct.Request.html)s.
 #[cfg(feature = "async")]
-pub struct AsyncConnection {
-    stream: AsyncHttpStream,
-}
+pub struct AsyncConnection(Mutex<Arc<AsyncConnectionState>>);
 
 #[cfg(feature = "async")]
 impl AsyncConnection {
@@ -241,8 +262,15 @@ impl AsyncConnection {
         } else {
             future.await?
         };
+        let (read, write) = tokio::io::split(stream);
 
-        Ok(AsyncConnection { stream })
+        Ok(AsyncConnection(Mutex::new(Arc::new(AsyncConnectionState {
+            read: AsyncMutex::new(read),
+            write: AsyncMutex::new(write),
+            next_request_id: AtomicUsize::new(0),
+            readable_request_id: AtomicUsize::new(0),
+            socket_new_requests_timeout: Mutex::new(Instant::now() + Duration::from_secs(60)),
+        }))))
     }
 
     async fn tcp_connect(host: &str, port: u16) -> Result<AsyncTcpStream, Error> {
@@ -312,34 +340,166 @@ impl AsyncConnection {
         Self::tcp_connect(&params.host, params.port.port()).await
     }
 
-    /// Sends the [`Request`](struct.Request.html) asynchronously using HTTP.
-    pub(crate) async fn send(mut self, request: ParsedRequest) -> Result<Response, Error> {
-        let timeout = request.timeout_at;
-        let future = async move {
-            // Send request
-            #[cfg(feature = "log")]
-            log::trace!("Writing HTTP request.");
-            self.stream.write_all(&request.as_bytes()).await?;
-
-            // Receive response
-            #[cfg(feature = "log")]
-            log::trace!("Reading HTTP response.");
-            let response = Response::create_async(
-                self.stream,
-                request.config.method == Method::Head,
-                request.config.max_headers_size,
-                request.config.max_status_line_len,
-            )
-            .await?;
-            async_handle_redirects(request, response).await
-        };
-        if let Some(timeout_at) = timeout {
-            tokio::time::timeout_at(timeout_at.into(), future)
-                .await
-                .unwrap_or(Err(Error::IoError(timeout_err())))
+    async fn timeout<O, F: Future<Output = O>>(timeout: Option<Instant>, f: F) -> Result<O, Error> {
+        if let Some(time) = timeout {
+            tokio::time::timeout_at(time.into(), f).await.map_err(|_| Error::IoError(timeout_err()))
         } else {
-            future.await
+            Ok(f.await)
         }
+    }
+
+    /// Sends the [`Request`](struct.Request.html) asynchronously using HTTP.
+    pub(crate) fn send<'a>(
+        &'a self,
+        request: ParsedRequest,
+    ) -> Pin<Box<dyn Future<Output = Result<Response, Error>> + Send + 'a>> {
+        Box::pin(async move {
+            let conn = Arc::clone(&*self.0.lock().unwrap());
+            debug_assert!(
+                conn.next_request_id.load(Ordering::Relaxed)
+                    >= conn.readable_request_id.load(Ordering::Relaxed),
+                "At all times, the next_request_id should be higher than the readable id"
+            );
+
+            // Note that we do not have a top-level timeout as we need to handle timeouts by
+            // resetting the socket state to ensure no other requests try to read the response to
+            // our request or reuse the socket at all if we leave it in an indeterminate state.
+            // Instead, we have to manually time out all `await`s and, after we write to the
+            // socket, handle error explicitly.
+
+            let mut read = Some(Self::timeout(request.timeout_at, conn.read.lock()).await?);
+
+            let request_id;
+            {
+                let mut write = Self::timeout(request.timeout_at, conn.write.lock()).await?;
+
+                let socket_timeout = *conn.socket_new_requests_timeout.lock().unwrap();
+                let socket_timed_out = Instant::now() > socket_timeout;
+
+                request_id = conn.next_request_id.fetch_add(1, Ordering::Relaxed);
+                if request_id == usize::MAX || socket_timed_out {
+                    // We got a `Connection: close` or the socket timed out and need to resend the
+                    // request on a new connection.
+                    // First, undo the above fetch_add to make sure any other blocked requests
+                    // don't get confused and try to use the original connection.
+                    conn.next_request_id.store(usize::MAX, Ordering::Release);
+                    // Wake up any requests waiting on the old connection by advancing readable_request_id
+                    conn.readable_request_id.store(usize::MAX, Ordering::Release);
+                    let new_connection =
+                        AsyncConnection::new(request.connection_params(), request.timeout_at)
+                            .await?;
+                    *self.0.lock().unwrap() = Arc::clone(&*new_connection.0.lock().unwrap());
+                    core::mem::drop(read);
+                    // Note that this cannot recurse infinitely as we'll always be able to send at
+                    // least one request on the new socket (though some other request may race us
+                    // and go first).
+                    return self.send(request).await;
+                }
+                #[cfg(feature = "log")]
+                log::trace!(
+                    "Writing HTTP request id {request_id} on connection to {:?}.",
+                    request.connection_params(),
+                );
+                let write_res =
+                    Self::timeout(request.timeout_at, write.write_all(&request.as_bytes())).await;
+                match write_res {
+                    Err(e) => {
+                        // If we failed to write the request, mark the socket as dead for future
+                        // requests.
+                        conn.next_request_id.store(usize::MAX, Ordering::Release);
+                        return Err(e);
+                    }
+                    Ok(Err(ioe)) => {
+                        conn.next_request_id.store(usize::MAX, Ordering::Release);
+                        return Err(Error::IoError(ioe));
+                    }
+                    Ok(Ok(())) => {}
+                }
+            }
+
+            let response = Self::timeout(request.timeout_at, async {
+                while conn.readable_request_id.load(Ordering::Acquire) < request_id {
+                    // There's a race where we can finish writing but see a context switch between
+                    // dropping the write lock and getting to the waiter that can lead to waiters being
+                    // registered out of order. Thus, if we're not actually ready to read, wake another
+                    // waiter and see if we're ready when we get the semaphore back.
+                    read.take();
+                    tokio::task::yield_now().await;
+                    read = Some(conn.read.lock().await);
+                }
+                let mut read = read.take().unwrap();
+
+                // Receive response
+                #[cfg(feature = "log")]
+                log::trace!(
+                    "Reading HTTP response for request id {request_id} on connection to {:?}.",
+                    request.connection_params(),
+                );
+
+                let response = Response::create_async(
+                    &mut *read,
+                    request.config.method == Method::Head,
+                    request.config.max_headers_size,
+                    request.config.max_status_line_len,
+                )
+                .await?;
+
+                let mut found_keep_alive = false;
+                if let Some(header) = response.headers.get("connection") {
+                    if header.eq_ignore_ascii_case("keep-alive") {
+                        found_keep_alive = true;
+                    }
+                }
+                if !found_keep_alive {
+                    conn.next_request_id.store(usize::MAX, Ordering::Release);
+                    conn.readable_request_id.store(usize::MAX, Ordering::Release);
+                } else {
+                    conn.readable_request_id.fetch_add(1, Ordering::Release);
+                }
+
+                if let Some(header) = response.headers.get("keep-alive") {
+                    for param in header.split(',') {
+                        if let Some((k, v)) = param.trim().split_once('=') {
+                            if let Ok(v) = v.parse::<usize>() {
+                                match k.trim() {
+                                    "timeout" => {
+                                        let timeout_secs = (v as u64).saturating_sub(1);
+                                        *conn.socket_new_requests_timeout.lock().unwrap() =
+                                            Instant::now()
+                                                .checked_add(Duration::from_secs(timeout_secs))
+                                                .unwrap_or(Instant::now());
+                                    }
+                                    "max" => {
+                                        conn.next_request_id.fetch_max(
+                                            usize::MAX.saturating_sub(v),
+                                            Ordering::AcqRel,
+                                        );
+                                    }
+                                    _ => {}
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Ok(response)
+            })
+            .await;
+            let response = match response {
+                Ok(Ok(response)) => response,
+                Err(e) | Ok(Err(e)) => {
+                    // If we failed to read the response after reading the request, the socket is
+                    // in an indeterminate state. Thus, we have to force every other waiting
+                    // request to retry on a new socket.
+                    conn.next_request_id.store(usize::MAX, Ordering::Release);
+                    conn.readable_request_id.store(usize::MAX, Ordering::Release);
+                    return Err(e);
+                }
+            };
+
+            core::mem::drop(read);
+            async_handle_redirects(self, request, response).await
+        })
     }
 }
 
@@ -474,7 +634,7 @@ fn handle_redirects(
     let url = response.headers.get("location");
     match get_redirect(request, status_code, url) {
         NextHop::Redirect(request) => {
-            let request = request?;
+            let (request, _) = request?;
             Connection::new(request.connection_params(), request.timeout_at)?.send(request)
         }
         NextHop::Destination(request) => {
@@ -487,34 +647,38 @@ fn handle_redirects(
 }
 
 #[cfg(feature = "async")]
-fn async_handle_redirects(
+async fn async_handle_redirects(
+    connection: &AsyncConnection,
     request: ParsedRequest,
     mut response: Response,
-) -> Pin<Box<dyn Future<Output = Result<Response, Error>> + Send>> {
-    Box::pin(async move {
-        let status_code = response.status_code;
-        let url = response.headers.get("location");
-        match async_get_redirect(request, status_code, url) {
-            NextHopAsync::Redirect(request) => {
-                let request = request?;
-                let connection =
+) -> Result<Response, Error> {
+    let status_code = response.status_code;
+    let url = response.headers.get("location");
+    match async_get_redirect(request, status_code, url) {
+        NextHopAsync::Redirect(request) => {
+            let (request, needs_new_connection) = request?;
+            let mut connection = connection;
+            let new_connection;
+            if needs_new_connection {
+                new_connection =
                     AsyncConnection::new(request.connection_params(), request.timeout_at).await?;
-                connection.send(request).await
+                connection = &new_connection;
             }
-            NextHopAsync::Destination(request) => {
-                let dst_url = request.url;
-                dst_url.write_base_url_to(&mut response.url).unwrap();
-                dst_url.write_resource_to(&mut response.url).unwrap();
-                Ok(response)
-            }
+            connection.send(request).await
         }
-    })
+        NextHopAsync::Destination(request) => {
+            let dst_url = request.url;
+            dst_url.write_base_url_to(&mut response.url).unwrap();
+            dst_url.write_resource_to(&mut response.url).unwrap();
+            Ok(response)
+        }
+    }
 }
 
 macro_rules! redirect_utils {
     ($get_redirect: ident, $NextHop: ident, $Response: ident) => {
         enum $NextHop {
-            Redirect(Result<ParsedRequest, Error>),
+            Redirect(Result<(ParsedRequest, bool), Error>),
             Destination(ParsedRequest),
         }
 
@@ -532,6 +696,9 @@ macro_rules! redirect_utils {
                     #[cfg(feature = "log")]
                     log::debug!("Redirecting ({}) to: {}", status_code, url);
 
+                    // TODO: Do this check without allocating a whole new params object
+                    let previous_params: OwnedConnectionParams = request.connection_params().into();
+
                     match request.redirect_to(url.as_str()) {
                         Ok(()) => {
                             if status_code == 303 {
@@ -543,7 +710,8 @@ macro_rules! redirect_utils {
                                 }
                             }
 
-                            $NextHop::Redirect(Ok(request))
+                            let needs_new_conn = previous_params != request.connection_params();
+                            $NextHop::Redirect(Ok((request, needs_new_conn)))
                         }
                         Err(err) => $NextHop::Redirect(Err(err)),
                     }
