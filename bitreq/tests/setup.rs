@@ -15,7 +15,7 @@ static INIT: Once = Once::new();
 pub fn setup() {
     INIT.call_once(|| {
         let server = Arc::new(Server::http("localhost:35562").unwrap());
-        for _ in 0..8 {
+        for _ in 0..16 {
             let server = server.clone();
 
             thread::spawn(move || loop {
@@ -201,8 +201,14 @@ pub fn setup() {
 
 pub fn url(req: &str) -> String { format!("http://localhost:35562{}", req) }
 
+#[cfg(feature = "async")]
+static CLIENT: std::sync::OnceLock<bitreq::Client> = std::sync::OnceLock::new();
+#[cfg(feature = "async")]
+static RUNTIME: std::sync::OnceLock<tokio::runtime::Runtime> = std::sync::OnceLock::new();
+
 pub async fn maybe_make_request(
     request: bitreq::Request,
+    _slow_request: bool,
 ) -> Result<bitreq::Response, bitreq::Error> {
     let response = request.clone().send();
     let lazy_response = request.clone().send_lazy();
@@ -227,34 +233,55 @@ pub async fn maybe_make_request(
         } else {
             // Assume its not HTTPS or async-https is set
         }
-        let (async_response, lazy_async_response) =
-            tokio::join!(request.clone().send_async(), request.send_lazy_async());
-        match (&response, &async_response) {
-            (Ok(resp), Ok(async_resp)) => {
+        let async_future = request.clone().send_async();
+        let lazy_async_future = request.clone().send_lazy_async();
+        let client_future = async move {
+            if !_slow_request {
+                // In order to ensure that clients are able to continue doing things after the tokio
+                // runtime of other tests has been shut down, we spawn them on a global runtime.
+                let client = CLIENT.get_or_init(|| bitreq::Client::new(100)).clone();
+                let client_runtime = RUNTIME.get_or_init(|| {
+                    tokio::runtime::Builder::new_multi_thread().enable_all().build().unwrap()
+                });
+                client_runtime.spawn(async move { client.send_async(request).await }).await.unwrap()
+            } else {
+                request.send_async().await
+            }
+        };
+        let (async_response, lazy_async_response, client_response) =
+            tokio::join!(async_future, lazy_async_future, client_future);
+
+        match (&response, &async_response, lazy_async_response, client_response) {
+            (Ok(resp), Ok(async_resp), Ok(mut lazy_resp), Ok(client_resp)) => {
                 assert_eq!(async_resp.status_code, resp.status_code);
                 assert_eq!(async_resp.reason_phrase, resp.reason_phrase);
                 assert_eq!(async_resp.as_bytes(), resp.as_bytes());
-            }
-            (Err(e), Err(async_e)) => assert_eq!(format!("{e:?}"), format!("{async_e:?}")),
-            (res, async_res) => panic!("{res:?} != {async_res:?}"),
-        }
-        match (&response, lazy_async_response) {
-            (Ok(resp), Ok(mut lazy_resp)) => {
+
+                assert_eq!(client_resp.status_code, resp.status_code);
+                assert_eq!(client_resp.reason_phrase, resp.reason_phrase);
+                assert_eq!(client_resp.as_bytes(), resp.as_bytes());
+
                 assert_eq!(lazy_resp.status_code, resp.status_code);
                 assert_eq!(lazy_resp.reason_phrase, resp.reason_phrase);
                 let mut lazy_bytes = Vec::new();
                 lazy_resp.read_to_end(&mut lazy_bytes).unwrap();
                 assert_eq!(lazy_bytes, resp.as_bytes());
             }
-            (Err(e), Err(lazy_e)) => assert_eq!(format!("{e:?}"), format!("{lazy_e:?}")),
-            (res, lazy_res) => panic!("{res:?} != {}", lazy_res.is_err()),
+            (Err(e), Err(async_e), Err(lazy_e), Err(client_e)) => {
+                assert_eq!(format!("{e:?}"), format!("{async_e:?}"));
+                assert_eq!(format!("{e:?}"), format!("{lazy_e:?}"));
+                assert_eq!(format!("{e:?}"), format!("{client_e:?}"));
+            }
+            (res, async_res, lazy_res, client_res) => {
+                panic!("{res:?} != {async_res:?} != {} != {client_res:?}", lazy_res.is_ok());
+            }
         }
     }
     response
 }
 
 pub async fn make_request(request: bitreq::Request) -> bitreq::Response {
-    maybe_make_request(request).await.unwrap()
+    maybe_make_request(request, false).await.unwrap()
 }
 
 pub async fn get_body(request: bitreq::Request) -> String {

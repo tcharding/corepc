@@ -330,7 +330,7 @@ pub(crate) struct ParsedRequest {
 #[cfg(feature = "std")]
 impl ParsedRequest {
     #[allow(unused_mut)]
-    fn new(mut config: Request) -> Result<ParsedRequest, Error> {
+    pub(crate) fn new(mut config: Request) -> Result<ParsedRequest, Error> {
         let mut url = HttpUrl::parse(&config.url, None)?;
 
         if !config.params.is_empty() {
