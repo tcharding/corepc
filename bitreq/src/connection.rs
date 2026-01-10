@@ -222,7 +222,10 @@ struct AsyncConnectionState {
     /// can be sent on this socket and a new connection must be made. Thus, in order to limit the
     /// connection to sending N new requests, this may be set to [`usize::MAX`] - N.
     next_request_id: AtomicUsize,
-    /// The ID of the next request which is readable from the socket.
+    /// The ID of the next request which is readable from the socket. If we're pipelining this may
+    /// be a few behind [`Self::next_request_id`]. If this is [`usize::MAX`], the socket is in an
+    /// indeterminate state and no further reading is allowed. Any pending requests must either be
+    /// retried or failed.
     readable_request_id: AtomicUsize,
     /// The time at which we should stop sending new requests over this socket and should instead
     /// connect again.
@@ -355,11 +358,15 @@ impl AsyncConnection {
     ) -> Pin<Box<dyn Future<Output = Result<Response, Error>> + Send + 'a>> {
         Box::pin(async move {
             let conn = Arc::clone(&*self.0.lock().unwrap());
-            debug_assert!(
-                conn.next_request_id.load(Ordering::Relaxed)
-                    >= conn.readable_request_id.load(Ordering::Relaxed),
-                "At all times, the next_request_id should be higher than the readable id"
-            );
+            #[cfg(debug_assertions)]
+            {
+                let next_read = conn.readable_request_id.load(Ordering::Acquire);
+                let next_request = conn.next_request_id.load(Ordering::Acquire);
+                debug_assert!(
+                    next_request >= next_read,
+                    "At all times, the next_request_id should be higher than the readable id"
+                );
+            }
 
             // Note that we do not have a top-level timeout as we need to handle timeouts by
             // resetting the socket state to ensure no other requests try to read the response to
@@ -367,24 +374,45 @@ impl AsyncConnection {
             // Instead, we have to manually time out all `await`s and, after we write to the
             // socket, handle error explicitly.
 
-            let mut read = Some(Self::timeout(request.timeout_at, conn.read.lock()).await?);
+            let mut read = None;
+            let mut write = None;
+            if !request.config.pipelining {
+                // If we're not pipelining, wait for any existing pipelined requests to complete.
+                // Specifically, wait until we have both locks and either we're going to build a
+                // new connection (because `next_request_id` is `usize::MAX`) or there are no
+                // pending readers (because `next_request_id` and `readable_request_id` are the
+                // same).
+                read = Some(Self::timeout(request.timeout_at, conn.read.lock()).await?);
+                write = Some(Self::timeout(request.timeout_at, conn.write.lock()).await?);
+                while {
+                    let next_read = conn.readable_request_id.load(Ordering::Relaxed);
+                    let next_request = conn.next_request_id.load(Ordering::Relaxed);
+                    next_request != usize::MAX && next_read < next_request
+                } {
+                    read.take();
+                    write.take();
+                    tokio::task::yield_now().await;
+                    read = Some(Self::timeout(request.timeout_at, conn.read.lock()).await?);
+                    write = Some(Self::timeout(request.timeout_at, conn.write.lock()).await?);
+                }
+            }
 
-            let request_id;
-            {
-                let mut write = Self::timeout(request.timeout_at, conn.write.lock()).await?;
-
-                let socket_timeout = *conn.socket_new_requests_timeout.lock().unwrap();
-                let socket_timed_out = Instant::now() > socket_timeout;
-
-                request_id = conn.next_request_id.fetch_add(1, Ordering::Relaxed);
-                if request_id == usize::MAX || socket_timed_out {
-                    // We got a `Connection: close` or the socket timed out and need to resend the
-                    // request on a new connection.
-                    // First, undo the above fetch_add to make sure any other blocked requests
-                    // don't get confused and try to use the original connection.
+            macro_rules! retry_new_connection {
+                (CONNECTION_STATE_UNDEFINED) => {
+                    // The connection may next return bytes for a request which timed out, thus no
+                    // more reads are allowed.
                     conn.next_request_id.store(usize::MAX, Ordering::Release);
-                    // Wake up any requests waiting on the old connection by advancing readable_request_id
                     conn.readable_request_id.store(usize::MAX, Ordering::Release);
+                    retry_new_connection!(_internal);
+                };
+                (CONNECTION_STILL_READABLE, $write_lock: ident) => {
+                    // Make sure new requests don't try to use the old connection (but allow
+                    // requests that have already been sent to continue trying to read from it).
+                    conn.next_request_id.store(usize::MAX, Ordering::Release);
+                    core::mem::drop($write_lock);
+                    retry_new_connection!(_internal);
+                };
+                (_internal) => {
                     let new_connection =
                         AsyncConnection::new(request.connection_params(), request.timeout_at)
                             .await?;
@@ -394,6 +422,25 @@ impl AsyncConnection {
                     // least one request on the new socket (though some other request may race us
                     // and go first).
                     return self.send(request).await;
+                };
+            }
+
+            let request_id;
+            {
+                let mut write = if let Some(write) = write {
+                    write
+                } else {
+                    Self::timeout(request.timeout_at, conn.write.lock()).await?
+                };
+
+                let socket_timeout = *conn.socket_new_requests_timeout.lock().unwrap();
+                let socket_timed_out = Instant::now() > socket_timeout;
+
+                request_id = conn.next_request_id.fetch_add(1, Ordering::Relaxed);
+                if request_id == usize::MAX || socket_timed_out {
+                    // We can't send additional requests on the socket or the socket timed out and
+                    // need to resend the request on a new connection.
+                    retry_new_connection!(CONNECTION_STILL_READABLE, write);
                 }
                 #[cfg(feature = "log")]
                 log::trace!(
@@ -417,12 +464,34 @@ impl AsyncConnection {
                 }
             }
 
+            let mut should_retry = false;
             let response = Self::timeout(request.timeout_at, async {
-                while conn.readable_request_id.load(Ordering::Acquire) < request_id {
+                if read.is_none() {
+                    read = Some(Self::timeout(request.timeout_at, conn.read.lock()).await?);
+                }
+
+                while {
+                    let readable = conn.readable_request_id.load(Ordering::Acquire);
+                    if readable == usize::MAX {
+                        // We got a `Connection: close` before our pipelined request could be handled
+                        // and need to retry on a new connection.
+                        debug_assert!(
+                            request.config.pipelining,
+                            "We should never need to re-send a non-pipelined request (as both locks were held and no other pending requests were in-flight)",
+                        );
+                        should_retry = true;
+                        return Err(Error::Other("Retrying pipelining failure"));
+                    }
+                    readable < request_id
+                } {
                     // There's a race where we can finish writing but see a context switch between
                     // dropping the write lock and getting to the waiter that can lead to waiters being
                     // registered out of order. Thus, if we're not actually ready to read, wake another
                     // waiter and see if we're ready when we get the semaphore back.
+                    debug_assert!(
+                        request.config.pipelining,
+                        "Non-pipelined requests should never need to wait as both locks were held and no other requests were in-filght"
+                    );
                     read.take();
                     tokio::task::yield_now().await;
                     read = Some(conn.read.lock().await);
@@ -488,12 +557,16 @@ impl AsyncConnection {
             let response = match response {
                 Ok(Ok(response)) => response,
                 Err(e) | Ok(Err(e)) => {
-                    // If we failed to read the response after reading the request, the socket is
-                    // in an indeterminate state. Thus, we have to force every other waiting
-                    // request to retry on a new socket.
-                    conn.next_request_id.store(usize::MAX, Ordering::Release);
-                    conn.readable_request_id.store(usize::MAX, Ordering::Release);
-                    return Err(e);
+                    if should_retry {
+                        retry_new_connection!(CONNECTION_STATE_UNDEFINED);
+                    } else {
+                        // If we failed to read the response after reading the request, the socket
+                        // is in an indeterminate state. Thus, we have to force every other waiting
+                        // request to retry on a new socket.
+                        conn.next_request_id.store(usize::MAX, Ordering::Release);
+                        conn.readable_request_id.store(usize::MAX, Ordering::Relaxed);
+                        return Err(e);
+                    }
                 }
             };
 

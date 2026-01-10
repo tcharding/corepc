@@ -243,6 +243,15 @@ pub async fn maybe_make_request(
                 let client_runtime = RUNTIME.get_or_init(|| {
                     tokio::runtime::Builder::new_multi_thread().enable_all().build().unwrap()
                 });
+                // Get a random value using the only std API to do so - the DefaultHasher
+                use std::hash::{BuildHasher, Hasher};
+                let rand_val =
+                    std::collections::hash_map::RandomState::new().build_hasher().finish();
+                let mut request = request;
+                if rand_val % 2 == 0 {
+                    // With some probability, pipeline the request
+                    request = request.with_pipelining();
+                }
                 client_runtime.spawn(async move { client.send_async(request).await }).await.unwrap()
             } else {
                 request.send_async().await

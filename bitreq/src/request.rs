@@ -91,6 +91,7 @@ pub struct Request {
     headers: BTreeMap<String, String>,
     body: Option<Vec<u8>>,
     timeout: Option<u64>,
+    pub(crate) pipelining: bool,
     pub(crate) max_headers_size: Option<usize>,
     pub(crate) max_status_line_len: Option<usize>,
     max_redirects: usize,
@@ -114,6 +115,7 @@ impl Request {
             headers: BTreeMap::new(),
             body: None,
             timeout: None,
+            pipelining: false,
             max_headers_size: None,
             max_status_line_len: None,
             max_redirects: 100,
@@ -249,6 +251,21 @@ impl Request {
     #[cfg(feature = "proxy")]
     pub fn with_proxy(mut self, proxy: Proxy) -> Request {
         self.proxy = Some(proxy);
+        self
+    }
+
+    /// Enables HTTP request pipelining for this request.
+    ///
+    /// Note that because pipelined requests may be replayed in case of failure, you should only
+    /// set this on idempotent requests.
+    ///
+    /// This is only used if the request is sent using a [`Client`] and an existing connection to
+    /// the same server with the same proxy exists.
+    ///
+    /// [`Client`]: crate::Client
+    #[cfg(feature = "async")]
+    pub fn with_pipelining(mut self) -> Request {
+        self.pipelining = true;
         self
     }
 
