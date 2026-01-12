@@ -576,7 +576,7 @@ macro_rules! define_read_methods {
                     return None;
                 }
                 *chunk_length = incoming_length;
-                *content_length += incoming_length;
+                *content_length = content_length.saturating_add(incoming_length);
             }
 
             if *chunk_length > 0 {
