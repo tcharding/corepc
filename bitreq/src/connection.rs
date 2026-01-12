@@ -322,12 +322,23 @@ impl AsyncConnection {
                 tcp.write_all(proxy_request.as_bytes()).await?;
                 tcp.flush().await?;
 
+                // Max proxy response size to prevent unbounded memory allocation
+                const MAX_PROXY_RESPONSE_SIZE: usize = 16 * 1024;
                 let mut proxy_response = Vec::new();
-                let mut buf = vec![0; 256];
+                let mut buf = [0; 256];
+
                 loop {
                     let n = tcp.read(&mut buf).await?;
+                    if n == 0 {
+                        // EOF reached
+                        break;
+                    }
                     proxy_response.extend_from_slice(&buf[..n]);
-                    if n < 256 {
+                    if proxy_response.len() > MAX_PROXY_RESPONSE_SIZE {
+                        return Err(Error::ProxyConnect);
+                    }
+                    if n < buf.len() {
+                        // Partial read indicates end of response
                         break;
                     }
                 }
