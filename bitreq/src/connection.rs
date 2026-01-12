@@ -544,9 +544,23 @@ impl AsyncConnection {
                                             Ordering::AcqRel,
                                         );
                                     }
-                                    _ => {}
+                                    _ => {
+                                        // If we can't parse the keep-alive header, don't send any
+                                        // new requests over this socket, but don't give up on
+                                        // reading pending responses.
+                                        conn.next_request_id.store(usize::MAX, Ordering::Release);
+                                    }
                                 }
+                            } else {
+                                // If we can't parse the keep-alive header, don't send any new
+                                // requests over this socket, but don't give up on reading pending
+                                // responses.
+                                conn.next_request_id.store(usize::MAX, Ordering::Release);
                             }
+                        } else {
+                            // If we can't parse the keep-alive header, don't send any new requests
+                            // over this socket, but don't give up on reading pending responses.
+                            conn.next_request_id.store(usize::MAX, Ordering::Release);
                         }
                     }
                 }
