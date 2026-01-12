@@ -58,12 +58,16 @@ pub enum Error {
     HttpsFeatureNotEnabled,
     /// The provided proxy information was not properly formatted. See
     /// [Proxy::new](crate::Proxy::new) for the valid format.
+    #[cfg(feature = "proxy")]
     BadProxy,
     /// The provided credentials were rejected by the proxy server.
+    #[cfg(feature = "proxy")]
     BadProxyCreds,
     /// The provided proxy credentials were malformed.
+    #[cfg(feature = "proxy")]
     ProxyConnect,
     /// The provided credentials were rejected by the proxy server.
+    #[cfg(feature = "proxy")]
     InvalidProxyCreds,
     /// The response body size surpasses
     /// [Request::with_max_body_size](crate::request::Request::with_max_body_size).
@@ -105,9 +109,13 @@ impl fmt::Display for Error {
             TooManyRedirections => write!(f, "too many redirections (over the max)"),
             InvalidUtf8InResponse => write!(f, "response contained invalid utf-8 where valid utf-8 was expected"),
             HttpsFeatureNotEnabled => write!(f, "request url contains https:// but the https feature is not enabled"),
+            #[cfg(feature = "proxy")]
             BadProxy => write!(f, "the provided proxy information is malformed"),
+            #[cfg(feature = "proxy")]
             BadProxyCreds => write!(f, "the provided proxy credentials are malformed"),
+            #[cfg(feature = "proxy")]
             ProxyConnect => write!(f, "could not connect to the proxy server"),
+            #[cfg(feature = "proxy")]
             InvalidProxyCreds => write!(f, "the provided proxy credentials are invalid"),
             BodyOverflow => write!(f, "the response body size surpassed max_body_size"),
             // TODO: Uncomment these two for 3.0
