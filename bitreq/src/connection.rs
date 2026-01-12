@@ -655,13 +655,23 @@ impl Connection {
                 write!(tcp, "{}", proxy.connect(params.host, params.port.port()))?;
                 tcp.flush()?;
 
+                // Max proxy response size to prevent unbounded memory allocation
+                const MAX_PROXY_RESPONSE_SIZE: usize = 16 * 1024;
                 let mut proxy_response = Vec::new();
+                let mut buf = [0; 256];
 
                 loop {
-                    let mut buf = vec![0; 256];
-                    let total = tcp.read(&mut buf)?;
-                    proxy_response.append(&mut buf);
-                    if total < 256 {
+                    let n = tcp.read(&mut buf)?;
+                    if n == 0 {
+                        // EOF reached
+                        break;
+                    }
+                    proxy_response.extend_from_slice(&buf[..n]);
+                    if proxy_response.len() > MAX_PROXY_RESPONSE_SIZE {
+                        return Err(Error::ProxyConnect);
+                    }
+                    if n < buf.len() {
+                        // Partial read indicates end of response
                         break;
                     }
                 }
