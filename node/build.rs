@@ -19,26 +19,32 @@ mod download {
 
     include!("src/versions.rs");
 
-    #[cfg(all(target_os = "macos", target_arch = "x86_64"))]
     fn download_filename() -> String {
-        if cfg!(not(feature = "23_2")) {
-            format!("bitcoin-{}-osx64.tar.gz", &VERSION)
-        } else {
-            format!("bitcoin-{}-x86_64-apple-darwin.tar.gz", &VERSION)
+        if cfg!(all(target_os = "macos", target_arch = "x86_64")) {
+            if cfg!(not(feature = "23_2")) {
+                return format!("bitcoin-{}-osx64.tar.gz", &VERSION);
+            }
+            return format!("bitcoin-{}-x86_64-apple-darwin.tar.gz", &VERSION);
         }
+
+        if cfg!(all(target_os = "macos", target_arch = "aarch64")) {
+            return format!("bitcoin-{}-arm64-apple-darwin.tar.gz", &VERSION);
+        }
+
+        if cfg!(all(target_os = "linux", target_arch = "x86_64")) {
+            return format!("bitcoin-{}-x86_64-linux-gnu.tar.gz", &VERSION);
+        }
+
+        if cfg!(all(target_os = "linux", target_arch = "aarch64")) {
+            return format!("bitcoin-{}-aarch64-linux-gnu.tar.gz", &VERSION);
+        }
+
+        if cfg!(all(target_os = "windows", target_arch = "x86_64")) {
+            return format!("bitcoin-{}-win64.zip", &VERSION);
+        }
+
+        panic!("No download file for this os/arch");
     }
-
-    #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
-    fn download_filename() -> String { format!("bitcoin-{}-arm64-apple-darwin.tar.gz", &VERSION) }
-
-    #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
-    fn download_filename() -> String { format!("bitcoin-{}-x86_64-linux-gnu.tar.gz", &VERSION) }
-
-    #[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-    fn download_filename() -> String { format!("bitcoin-{}-aarch64-linux-gnu.tar.gz", &VERSION) }
-
-    #[cfg(all(target_os = "windows", target_arch = "x86_64"))]
-    fn download_filename() -> String { format!("bitcoin-{}-win64.zip", &VERSION) }
 
     #[allow(clippy::lines_filter_map_ok)] // clippy doesn't like the `lines` call below and the suggested fix is incorrect.
     fn get_expected_sha256(filename: &str) -> anyhow::Result<sha256::Hash> {
@@ -72,9 +78,6 @@ mod download {
         if std::env::var_os("BITCOIND_SKIP_DOWNLOAD").is_some() {
             return Ok(());
         }
-        let download_filename = download_filename();
-        println!("download_filename: {}", download_filename);
-        let expected_hash = get_expected_sha256(&download_filename)?;
         let out_dir = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
 
         let bitcoin_exe_home = download_dir(&out_dir);
@@ -90,6 +93,10 @@ mod download {
         }
 
         if !existing_filename.exists() {
+            let download_filename = download_filename();
+            println!("download_filename: {}", download_filename);
+            let expected_hash = get_expected_sha256(&download_filename)?;
+
             println!("filename:{} version:{} hash:{}", download_filename, VERSION, expected_hash);
 
             let (file_or_url, tarball_bytes) = match std::env::var("BITCOIND_TARBALL_FILE") {
