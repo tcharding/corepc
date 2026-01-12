@@ -521,6 +521,7 @@ impl AsyncConnection {
                     request.config.method == Method::Head,
                     request.config.max_headers_size,
                     request.config.max_status_line_len,
+                    request.config.max_body_size,
                 )
                 .await?;
 

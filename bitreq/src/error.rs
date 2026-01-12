@@ -65,6 +65,9 @@ pub enum Error {
     ProxyConnect,
     /// The provided credentials were rejected by the proxy server.
     InvalidProxyCreds,
+    /// The response body size surpasses
+    /// [Request::with_max_body_size](crate::request::Request::with_max_body_size).
+    BodyOverflow,
     // TODO: Uncomment these two for 3.0
     // /// The URL does not start with http:// or https://.
     // InvalidProtocol,
@@ -106,6 +109,7 @@ impl fmt::Display for Error {
             BadProxyCreds => write!(f, "the provided proxy credentials are malformed"),
             ProxyConnect => write!(f, "could not connect to the proxy server"),
             InvalidProxyCreds => write!(f, "the provided proxy credentials are invalid"),
+            BodyOverflow => write!(f, "the response body size surpassed max_body_size"),
             // TODO: Uncomment these two for 3.0
             // InvalidProtocol => write!(f, "the url does not start with http:// or https://"),
             // InvalidProtocolInRedirect => write!(f, "got redirected to an absolute url which does not start with http:// or https://"),

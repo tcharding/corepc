@@ -52,11 +52,18 @@ pub struct Response {
 
 impl Response {
     #[cfg(feature = "std")]
-    pub(crate) fn create(mut parent: ResponseLazy, is_head: bool) -> Result<Response, Error> {
+    pub(crate) fn create(
+        mut parent: ResponseLazy,
+        is_head: bool,
+        max_body_size: Option<usize>,
+    ) -> Result<Response, Error> {
         let mut body = Vec::new();
         if !is_head && parent.status_code != 204 && parent.status_code != 304 {
             for byte in &mut parent {
                 let (byte, length) = byte?;
+                if max_body_size.is_some_and(|max| body.len().saturating_add(length) > max) {
+                    return Err(Error::BodyOverflow);
+                }
                 body.reserve(length);
                 body.push(byte);
             }
@@ -79,6 +86,7 @@ impl Response {
         is_head: bool,
         max_headers_size: Option<usize>,
         max_status_line_len: Option<usize>,
+        max_body_size: Option<usize>,
     ) -> Result<Response, Error> {
         use HttpStreamState::*;
 
@@ -98,6 +106,10 @@ impl Response {
                 EndOnClose => {
                     while let Some(byte_result) = read_until_closed_async(&mut stream).await {
                         let (byte, length) = byte_result?;
+                        if max_body_size.is_some_and(|max| body.len().saturating_add(length) > max)
+                        {
+                            return Err(Error::BodyOverflow);
+                        }
                         body.reserve(length);
                         body.push(byte);
                     }
@@ -107,6 +119,11 @@ impl Response {
                         read_with_content_length_async(&mut stream, &mut length).await
                     {
                         let (byte, expected_length) = byte_result?;
+                        if max_body_size
+                            .is_some_and(|max| body.len().saturating_add(expected_length) > max)
+                        {
+                            return Err(Error::BodyOverflow);
+                        }
                         body.reserve(expected_length);
                         body.push(byte);
                     }
@@ -123,6 +140,10 @@ impl Response {
                     .await
                     {
                         let (byte, length) = byte_result?;
+                        if max_body_size.is_some_and(|max| body.len().saturating_add(length) > max)
+                        {
+                            return Err(Error::BodyOverflow);
+                        }
                         body.reserve(length);
                         body.push(byte);
                     },
