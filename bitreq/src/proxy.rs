@@ -41,7 +41,7 @@ impl Proxy {
         }
     }
 
-    /// Creates a new Proxy configuration.
+    /// Creates a new Proxy configuration for an HTTP proxy supporting the `CONNECT` command.
     ///
     /// Supported proxy format is:
     ///
@@ -54,11 +54,11 @@ impl Proxy {
     /// # Example
     ///
     /// ```
-    /// let proxy = bitreq::Proxy::new("user:password@localhost:1080").unwrap();
+    /// let proxy = bitreq::Proxy::new_http("user:password@localhost:1080").unwrap();
     /// let request = bitreq::post("http://example.com").with_proxy(proxy);
     /// ```
     ///
-    pub fn new<S: AsRef<str>>(proxy: S) -> Result<Self, Error> {
+    pub fn new_http<S: AsRef<str>>(proxy: S) -> Result<Self, Error> {
         let proxy = proxy.as_ref();
         let authority = if let Some((proto, auth)) = split_once(proxy, "://") {
             if proto != "http" {
@@ -141,7 +141,7 @@ mod tests {
 
     #[test]
     fn parse_proxy() {
-        let proxy = Proxy::new("user:p@ssw0rd@localhost:9999").unwrap();
+        let proxy = Proxy::new_http("user:p@ssw0rd@localhost:9999").unwrap();
         assert_eq!(proxy.user, Some(String::from("user")));
         assert_eq!(proxy.password, Some(String::from("p@ssw0rd")));
         assert_eq!(proxy.server, String::from("localhost"));
@@ -150,7 +150,7 @@ mod tests {
 
     #[test]
     fn parse_regular_proxy_with_protocol() {
-        let proxy = Proxy::new("http://localhost:1080").unwrap();
+        let proxy = Proxy::new_http("http://localhost:1080").unwrap();
         assert_eq!(proxy.user, None);
         assert_eq!(proxy.password, None);
         assert_eq!(proxy.server, String::from("localhost"));

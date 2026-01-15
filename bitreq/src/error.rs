@@ -60,7 +60,7 @@ pub enum Error {
     /// and as such, a connection cannot be made.
     HttpsFeatureNotEnabled,
     /// The provided proxy information was not properly formatted. See
-    /// [Proxy::new](crate::Proxy::new) for the valid format.
+    /// [Proxy](crate::Proxy) methods for the valid format.
     #[cfg(feature = "proxy")]
     BadProxy,
     /// The provided credentials were rejected by the proxy server.
