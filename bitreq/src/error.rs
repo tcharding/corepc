@@ -4,7 +4,7 @@ use std::{error, io};
 
 /// Represents an error while sending, receiving, or parsing an HTTP response.
 #[derive(Debug)]
-// TODO: Make non-exhaustive for 3.0?
+#[non_exhaustive]
 // TODO: Maybe make a few inner error types containing groups of these, based on
 // what the user might want to handle? This error doesn't really invite graceful
 // handling.
