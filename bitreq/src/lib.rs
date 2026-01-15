@@ -83,7 +83,7 @@
 //!
 //! ## `proxy`
 //!
-//! This feature enables HTTP proxy support. See [Proxy].
+//! This feature enables HTTP proxy support.
 //!
 //! # Examples
 //!

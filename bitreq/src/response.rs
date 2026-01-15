@@ -52,11 +52,18 @@ pub struct Response {
 
 impl Response {
     #[cfg(feature = "std")]
-    pub(crate) fn create(mut parent: ResponseLazy, is_head: bool) -> Result<Response, Error> {
+    pub(crate) fn create(
+        mut parent: ResponseLazy,
+        is_head: bool,
+        max_body_size: Option<usize>,
+    ) -> Result<Response, Error> {
         let mut body = Vec::new();
         if !is_head && parent.status_code != 204 && parent.status_code != 304 {
             for byte in &mut parent {
                 let (byte, length) = byte?;
+                if max_body_size.is_some_and(|max| body.len().saturating_add(length) > max) {
+                    return Err(Error::BodyOverflow);
+                }
                 body.reserve(length);
                 body.push(byte);
             }
@@ -79,6 +86,7 @@ impl Response {
         is_head: bool,
         max_headers_size: Option<usize>,
         max_status_line_len: Option<usize>,
+        max_body_size: Option<usize>,
     ) -> Result<Response, Error> {
         use HttpStreamState::*;
 
@@ -98,6 +106,10 @@ impl Response {
                 EndOnClose => {
                     while let Some(byte_result) = read_until_closed_async(&mut stream).await {
                         let (byte, length) = byte_result?;
+                        if max_body_size.is_some_and(|max| body.len().saturating_add(length) > max)
+                        {
+                            return Err(Error::BodyOverflow);
+                        }
                         body.reserve(length);
                         body.push(byte);
                     }
@@ -107,6 +119,11 @@ impl Response {
                         read_with_content_length_async(&mut stream, &mut length).await
                     {
                         let (byte, expected_length) = byte_result?;
+                        if max_body_size
+                            .is_some_and(|max| body.len().saturating_add(expected_length) > max)
+                        {
+                            return Err(Error::BodyOverflow);
+                        }
                         body.reserve(expected_length);
                         body.push(byte);
                     }
@@ -123,6 +140,10 @@ impl Response {
                     .await
                     {
                         let (byte, length) = byte_result?;
+                        if max_body_size.is_some_and(|max| body.len().saturating_add(length) > max)
+                        {
+                            return Err(Error::BodyOverflow);
+                        }
                         body.reserve(length);
                         body.push(byte);
                     },
@@ -290,6 +311,8 @@ pub struct ResponseLazy {
     stream: HttpStreamBytes,
     state: HttpStreamState,
     max_trailing_headers_size: Option<usize>,
+    max_body_size: Option<usize>,
+    bytes_read: usize,
 }
 
 #[cfg(feature = "std")]
@@ -301,6 +324,7 @@ impl ResponseLazy {
         stream: HttpStream,
         max_headers_size: Option<usize>,
         max_status_line_len: Option<usize>,
+        max_body_size: Option<usize>,
     ) -> Result<ResponseLazy, Error> {
         let mut stream = BufReader::with_capacity(BACKING_READ_BUFFER_LENGTH, stream).bytes();
         let ResponseMetadata {
@@ -319,6 +343,8 @@ impl ResponseLazy {
             stream,
             state,
             max_trailing_headers_size,
+            max_body_size,
+            bytes_read: 0,
         })
     }
 
@@ -333,6 +359,9 @@ impl ResponseLazy {
             stream: BufReader::with_capacity(1, http_stream).bytes(),
             state: HttpStreamState::EndOnClose,
             max_trailing_headers_size: None,
+            // Body was already fully loaded and size-checked by send_async
+            max_body_size: None,
+            bytes_read: 0,
         }
     }
 }
@@ -343,7 +372,7 @@ impl Iterator for ResponseLazy {
 
     fn next(&mut self) -> Option<Self::Item> {
         use HttpStreamState::*;
-        match self.state {
+        let result = match self.state {
             EndOnClose => read_until_closed(&mut self.stream),
             ContentLength(ref mut length) => read_with_content_length(&mut self.stream, length),
             Chunked(ref mut expecting_chunks, ref mut length, ref mut content_length) =>
@@ -355,7 +384,17 @@ impl Iterator for ResponseLazy {
                     content_length,
                     self.max_trailing_headers_size,
                 ),
+        };
+
+        // Check body size limit before returning the byte
+        if let Some(Ok((_, expected_length))) = &result {
+            if self.max_body_size.is_some_and(|max| self.bytes_read + expected_length > max) {
+                return Some(Err(Error::BodyOverflow));
+            }
+            self.bytes_read += 1;
         }
+
+        result
     }
 }
 
@@ -537,7 +576,7 @@ macro_rules! define_read_methods {
                     return None;
                 }
                 *chunk_length = incoming_length;
-                *content_length += incoming_length;
+                *content_length = content_length.saturating_add(incoming_length);
             }
 
             if *chunk_length > 0 {

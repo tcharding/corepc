@@ -94,6 +94,7 @@ pub struct Request {
     pub(crate) pipelining: bool,
     pub(crate) max_headers_size: Option<usize>,
     pub(crate) max_status_line_len: Option<usize>,
+    pub(crate) max_body_size: Option<usize>,
     max_redirects: usize,
     #[cfg(feature = "proxy")]
     pub(crate) proxy: Option<Proxy>,
@@ -118,6 +119,7 @@ impl Request {
             pipelining: false,
             max_headers_size: None,
             max_status_line_len: None,
+            max_body_size: None,
             max_redirects: 100,
             #[cfg(feature = "proxy")]
             proxy: None,
@@ -247,6 +249,23 @@ impl Request {
         self
     }
 
+    /// Sets the maximum size of the response body this request will
+    /// accept.
+    ///
+    /// If this limit is passed, the request will close the connection
+    /// and return an [Error::BodyOverflow] error.
+    ///
+    /// The maximum size is counted in bytes.
+    ///
+    /// `None` disables the cap, and may cause the program to use any
+    /// amount of memory if the server responds with a large (or
+    /// infinite) body. The default is None, so setting this
+    /// manually is recommended when talking to untrusted servers.
+    pub fn with_max_body_size<S: Into<Option<usize>>>(mut self, max_body_size: S) -> Request {
+        self.max_body_size = max_body_size.into();
+        self
+    }
+
     /// Sets the proxy to use.
     #[cfg(feature = "proxy")]
     pub fn with_proxy(mut self, proxy: Proxy) -> Request {
@@ -282,10 +301,11 @@ impl Request {
     pub fn send(self) -> Result<Response, Error> {
         let parsed_request = ParsedRequest::new(self)?;
         let is_head = parsed_request.config.method == Method::Head;
+        let max_body_size = parsed_request.config.max_body_size;
         let connection =
             Connection::new(parsed_request.connection_params(), parsed_request.timeout_at)?;
         let response = connection.send(parsed_request)?;
-        Response::create(response, is_head)
+        Response::create(response, is_head, max_body_size)
     }
 
     /// Sends this request to the host, loaded lazily.
