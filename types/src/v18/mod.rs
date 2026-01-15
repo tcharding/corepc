@@ -47,7 +47,7 @@
 //! | preciousblock                      | returns nothing |                                        |
 //! | pruneblockchain                    | version         |                                        |
 //! | savemempool                        | returns nothing |                                        |
-//! | scantxoutset                       | omitted         | API marked as experimental             |
+//! | scantxoutset                       | version + model | API marked as experimental             |
 //! | verifychain                        | version         |                                        |
 //! | verifytxoutproof                   | version + model |                                        |
 //!
@@ -236,7 +236,7 @@ pub use self::{
     blockchain::{
         GetMempoolAncestors, GetMempoolAncestorsVerbose, GetMempoolDescendants,
         GetMempoolDescendantsVerbose, GetMempoolEntry, GetRawMempool, GetRawMempoolVerbose,
-        MempoolEntry,
+        MempoolEntry, ScanTxOutSetStart, ScanTxOutSetUnspent,
     },
     control::{ActiveCommand, GetRpcInfo},
     network::{GetNodeAddresses, GetPeerInfo, NodeAddress, PeerInfo},
@@ -283,8 +283,9 @@ pub use crate::v17::{
     MempoolEntryFeesError, NumericError, PartialSignatureError, PruneBlockchain, PsbtInput,
     PsbtInputError, PsbtOutput, PsbtOutputError, PsbtScript, RawFeeDetail, RawFeeRange,
     RawTransaction, RawTransactionError, RawTransactionInput, RawTransactionOutput,
-    RescanBlockchain, ScriptType, SendMany, SendRawTransaction, SendToAddress, SetNetworkActive,
-    SetTxFee, SignFail, SignFailError, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
+    RescanBlockchain, ScanTxOutSetAbort, ScanTxOutSetError, ScanTxOutSetStatus, ScriptType,
+    SendMany, SendRawTransaction, SendToAddress, SetNetworkActive, SetTxFee, SignFail,
+    SignFailError, SignMessage, SignMessageWithPrivKey, SignRawTransaction,
     SignRawTransactionError, SignRawTransactionWithKey, SignRawTransactionWithWallet, Softfork,
     SoftforkReject, TestMempoolAccept, TransactionCategory, TransactionItem, TransactionItemError,
     UploadTarget, ValidateAddress, ValidateAddressError, VerifyChain, VerifyMessage,
