@@ -56,3 +56,27 @@ macro_rules! impl_client_v17__wait_for_new_block {
         }
     };
 }
+
+/// Implements Bitcoin Core JSON-RPC API method `syncwithvalidationinterfacequeue`.
+#[macro_export]
+macro_rules! impl_client_v17__sync_with_validation_interface_queue {
+    () => {
+        impl Client {
+            pub fn sync_with_validation_interface_queue(&self) -> Result<()> {
+                self.call("syncwithvalidationinterfacequeue", &[])
+            }
+        }
+    };
+}
+
+/// Implements Bitcoin Core JSON-RPC API method `reconsiderblock`.
+#[macro_export]
+macro_rules! impl_client_v17__reconsider_block {
+    () => {
+        impl Client {
+            pub fn reconsider_block(&self, blockhash: bitcoin::BlockHash) -> Result<()> {
+                self.call("reconsiderblock", &[into_json(blockhash)?])
+            }
+        }
+    };
+}

@@ -5,6 +5,7 @@
 //! We ignore option arguments unless they effect the shape of the returned JSON data.
 
 pub mod generating;
+pub mod hidden;
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -70,6 +71,9 @@ crate::impl_client_v17__estimate_raw_fee!();
 crate::impl_client_v17__wait_for_block!();
 crate::impl_client_v17__wait_for_block_height!();
 crate::impl_client_v17__wait_for_new_block!();
+crate::impl_client_v17__sync_with_validation_interface_queue!();
+crate::impl_client_v17__reconsider_block!();
+crate::impl_client_v20__mock_scheduler!();
 
 // == Mining ==
 crate::impl_client_v17__get_block_template!();

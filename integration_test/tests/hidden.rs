@@ -173,3 +173,68 @@ fn hidden__get_orphan_txs__modelled() {
         }
     }
 }
+
+#[test]
+fn hidden__sync_with_validation_interface_queue() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    // Create activity that causes validation callbacks.
+    let (_address, _txid) = node.create_mempool_transaction();
+
+    let _: () = node
+        .client
+        .sync_with_validation_interface_queue()
+        .expect("syncwithvalidationinterfacequeue");
+}
+
+#[test]
+fn hidden__reconsider_block() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+    node.fund_wallet();
+
+    node.mine_a_block();
+    node.mine_a_block();
+
+    let tip_before = node.client.best_block_hash().expect("bestblockhash");
+    let height_before = node.client.get_block_count().expect("getblockcount").0;
+
+    node.client.invalidate_block(tip_before).expect("invalidateblock");
+
+    let tip_after_invalidate =
+        node.client.best_block_hash().expect("bestblockhash after invalidate");
+    let height_after_invalidate = node.client.get_block_count().expect("getblockcount").0;
+
+    assert_ne!(
+        tip_after_invalidate, tip_before,
+        "tip should change after invalidating the tip block"
+    );
+    assert_eq!(
+        height_after_invalidate,
+        height_before - 1,
+        "height should decrease by 1 after invalidating the tip block"
+    );
+
+    node.client.reconsider_block(tip_before).expect("reconsiderblock");
+
+    let tip_after_reconsider =
+        node.client.best_block_hash().expect("bestblockhash after reconsider");
+    let height_after_reconsider = node.client.get_block_count().expect("getblockcount").0;
+
+    assert_eq!(
+        tip_after_reconsider, tip_before,
+        "tip should return to the previously invalidated block after reconsiderblock"
+    );
+    assert_eq!(
+        height_after_reconsider, height_before,
+        "height should return to the original height after reconsiderblock"
+    );
+}
+
+#[test]
+#[cfg(not(feature = "v19_and_below"))]
+fn hidden__mock_scheduler() {
+    let node = Node::with_wallet(Wallet::Default, &[]);
+
+    let _: () = node.client.mock_scheduler(1).expect("mockscheduler");
+}
