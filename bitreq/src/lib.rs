@@ -89,21 +89,35 @@
 //!
 //! ## Get
 //!
-//! This is a simple example of sending a GET request and printing out
-//! the response's body, status code, and reason phrase. The `?` are
+//! This is a simple example of sending a GET request and checking the
+//! response's body, status code, and reason phrase. The `?` are
 //! needed because the server could return invalid UTF-8 in the body,
-//! or something could go wrong during the download.
+//! or something could go wrong while sending the request or receiving
+//! the response.
 //!
 //! ```
 //! # #[cfg(feature = "std")]
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
-//! let response = bitreq::get("http://example.com").send()?;
+//! # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+//! # use std::thread;
+//! # use tiny_http::{Response, Server};
+//! #
+//! # let server = Server::http("127.0.0.1:0")?;
+//! # let addr = server.server_addr().to_ip().expect("IP listen addr");
+//! # let server_thread = thread::spawn(move || {
+//! #     let request = server.recv().expect("server recv");
+//! #     let response = Response::from_string("<html></html>");
+//! #     let _ = request.respond(response);
+//! # });
+//! #
+//! # let url = format!("http://{addr}/");
+//! let response = bitreq::get(&url).with_timeout(10).send()?;
 //! assert!(response.as_str()?.contains("</html>"));
 //! assert_eq!(200, response.status_code);
 //! assert_eq!("OK", response.reason_phrase);
+//! # server_thread.join().expect("server thread join");
 //! # Ok(()) }
 //! # #[cfg(not(feature = "std"))]
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> { Ok(()) }
+//! # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> { Ok(()) }
 //! ```
 //!
 //! Note: you could change the `get` function to `head` or `put` or
