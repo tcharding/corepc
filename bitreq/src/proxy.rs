@@ -49,7 +49,7 @@ impl Proxy {
     /// [http://][user[:password]@]host[:port]
     /// ```
     ///
-    /// The default port is 8080, to be changed to 1080 in bitreq 3.0.
+    /// The default port is 8080.
     ///
     /// # Example
     ///
