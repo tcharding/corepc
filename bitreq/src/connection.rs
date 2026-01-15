@@ -715,6 +715,7 @@ impl Connection {
                 self.stream,
                 request.config.max_headers_size,
                 request.config.max_status_line_len,
+                request.config.max_body_size,
             )?;
             handle_redirects(request, response)
         })

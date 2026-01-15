@@ -311,6 +311,8 @@ pub struct ResponseLazy {
     stream: HttpStreamBytes,
     state: HttpStreamState,
     max_trailing_headers_size: Option<usize>,
+    max_body_size: Option<usize>,
+    bytes_read: usize,
 }
 
 #[cfg(feature = "std")]
@@ -322,6 +324,7 @@ impl ResponseLazy {
         stream: HttpStream,
         max_headers_size: Option<usize>,
         max_status_line_len: Option<usize>,
+        max_body_size: Option<usize>,
     ) -> Result<ResponseLazy, Error> {
         let mut stream = BufReader::with_capacity(BACKING_READ_BUFFER_LENGTH, stream).bytes();
         let ResponseMetadata {
@@ -340,6 +343,8 @@ impl ResponseLazy {
             stream,
             state,
             max_trailing_headers_size,
+            max_body_size,
+            bytes_read: 0,
         })
     }
 
@@ -354,6 +359,9 @@ impl ResponseLazy {
             stream: BufReader::with_capacity(1, http_stream).bytes(),
             state: HttpStreamState::EndOnClose,
             max_trailing_headers_size: None,
+            // Body was already fully loaded and size-checked by send_async
+            max_body_size: None,
+            bytes_read: 0,
         }
     }
 }
@@ -364,7 +372,7 @@ impl Iterator for ResponseLazy {
 
     fn next(&mut self) -> Option<Self::Item> {
         use HttpStreamState::*;
-        match self.state {
+        let result = match self.state {
             EndOnClose => read_until_closed(&mut self.stream),
             ContentLength(ref mut length) => read_with_content_length(&mut self.stream, length),
             Chunked(ref mut expecting_chunks, ref mut length, ref mut content_length) =>
@@ -376,7 +384,17 @@ impl Iterator for ResponseLazy {
                     content_length,
                     self.max_trailing_headers_size,
                 ),
+        };
+
+        // Check body size limit before returning the byte
+        if let Some(Ok((_, expected_length))) = &result {
+            if self.max_body_size.is_some_and(|max| self.bytes_read + expected_length > max) {
+                return Some(Err(Error::BodyOverflow));
+            }
+            self.bytes_read += 1;
         }
+
+        result
     }
 }
 
