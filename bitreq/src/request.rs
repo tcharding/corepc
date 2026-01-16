@@ -393,14 +393,14 @@ impl ParsedRequest {
                 if let Ok(proxy) =
                     std::env::var("https_proxy").map_err(|_| std::env::var("HTTPS_PROXY"))
                 {
-                    if let Ok(proxy) = Proxy::new(proxy) {
+                    if let Ok(proxy) = Proxy::new_http(proxy) {
                         config.proxy = Some(proxy);
                     }
                 }
             }
             // Set HTTP proxies if request's protocol is HTTP and they're given
             else if let Ok(proxy) = std::env::var("http_proxy") {
-                if let Ok(proxy) = Proxy::new(proxy) {
+                if let Ok(proxy) = Proxy::new_http(proxy) {
                     config.proxy = Some(proxy);
                 }
             }
@@ -408,7 +408,7 @@ impl ParsedRequest {
             else if let Ok(proxy) =
                 std::env::var("all_proxy").map_err(|_| std::env::var("ALL_PROXY"))
             {
-                if let Ok(proxy) = Proxy::new(proxy) {
+                if let Ok(proxy) = Proxy::new_http(proxy) {
                     config.proxy = Some(proxy);
                 }
             }

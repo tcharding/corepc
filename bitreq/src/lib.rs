@@ -207,7 +207,7 @@
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! #[cfg(feature = "proxy")]
 //! {
-//!     let proxy = bitreq::Proxy::new("localhost:8080")?;
+//!     let proxy = bitreq::Proxy::new_http("localhost:8080")?;
 //!     let response = bitreq::post("http://example.com")
 //!         .with_proxy(proxy)
 //!         .send()?;
