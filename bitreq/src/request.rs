@@ -117,8 +117,12 @@ impl Request {
             body: None,
             timeout: None,
             pipelining: false,
-            max_headers_size: None,
-            max_status_line_len: None,
+            // Default matches chrome as of 2022-11:
+            // https://groups.google.com/a/chromium.org/g/chromium-os-discuss/c/in-f59OKYAE/m/uVanwcXkAgAJ
+            // https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:net/http/http_stream_parser.h;l=164-168;drc=66941d1f0cfe9155b400aef887fe39a403c1f518
+            max_headers_size: Some(256 * 1024),
+            // Probably could be 128 bytes, but set conservatively for good measure.
+            max_status_line_len: Some(64 * 1024),
             max_body_size: None,
             max_redirects: 100,
             #[cfg(feature = "proxy")]
@@ -221,8 +225,7 @@ impl Request {
     ///
     /// `None` disables the cap, and may cause the program to use any
     /// amount of memory if the server responds with a lot of headers
-    /// (or an infinite amount). The default is None, so setting this
-    /// manually is recommended when talking to untrusted servers.
+    /// (or an infinite amount). The default is 256KiB.
     pub fn with_max_headers_size<S: Into<Option<usize>>>(mut self, max_headers_size: S) -> Request {
         self.max_headers_size = max_headers_size.into();
         self
@@ -239,8 +242,7 @@ impl Request {
     ///
     /// `None` disables the cap, and may cause the program to use any
     /// amount of memory if the server responds with a long (or
-    /// infinite) status line. The default is None, so setting this
-    /// manually is recommended when talking to untrusted servers.
+    /// infinite) status line. The default is 64 KiB.
     pub fn with_max_status_line_length<S: Into<Option<usize>>>(
         mut self,
         max_status_line_len: S,
