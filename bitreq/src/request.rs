@@ -123,7 +123,8 @@ impl Request {
             max_headers_size: Some(256 * 1024),
             // Probably could be 128 bytes, but set conservatively for good measure.
             max_status_line_len: Some(64 * 1024),
-            max_body_size: None,
+            // Picked somewhat randomly
+            max_body_size: Some(1024 * 1024 * 1024),
             max_redirects: 100,
             #[cfg(feature = "proxy")]
             proxy: None,
@@ -261,7 +262,10 @@ impl Request {
     ///
     /// `None` disables the cap, and may cause the program to use any
     /// amount of memory if the server responds with a large (or
-    /// infinite) body. The default is None, so setting this
+    /// infinite) body.
+    ///
+    /// The default is 1 GiB, which is likely to cause an
+    /// out-of-memory condition in many cases so setting this
     /// manually is recommended when talking to untrusted servers.
     pub fn with_max_body_size<S: Into<Option<usize>>>(mut self, max_body_size: S) -> Request {
         self.max_body_size = max_body_size.into();
