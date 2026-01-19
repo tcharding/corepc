@@ -1,3 +1,7 @@
+# 0.3.1 - 2026-01-19
+
+* Add default size limits for headers, status line, and body [#463](https://github.com/rust-bitcoin/corepc/pull/463)
+
 # 0.3.0 - 2026-01-16
 
 * Fix a denial-of-service issue due to lack of bounding in response size [#452](https://github.com/rust-bitcoin/corepc/pull/452)
