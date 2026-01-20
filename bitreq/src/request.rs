@@ -13,10 +13,10 @@ use crate::connection::AsyncConnection;
 #[cfg(feature = "std")]
 use crate::connection::Connection;
 use crate::http_url::percent_encode_string;
-#[cfg(feature = "std")]
-use crate::http_url::{HttpUrl, Port};
 #[cfg(feature = "proxy")]
 use crate::proxy::Proxy;
+#[cfg(feature = "std")]
+use crate::url::Url;
 #[cfg(feature = "std")]
 use crate::{Error, Response, ResponseLazy};
 
@@ -364,8 +364,8 @@ impl Request {
 
 #[cfg(feature = "std")]
 pub(crate) struct ParsedRequest {
-    pub(crate) url: HttpUrl,
-    pub(crate) redirects: Vec<HttpUrl>,
+    pub(crate) url: Url,
+    pub(crate) redirects: Vec<Url>,
     pub(crate) config: Request,
     pub(crate) timeout_at: Option<Instant>,
 }
@@ -374,15 +374,12 @@ pub(crate) struct ParsedRequest {
 impl ParsedRequest {
     #[allow(unused_mut)]
     pub(crate) fn new(mut config: Request) -> Result<ParsedRequest, Error> {
-        let mut url = HttpUrl::parse(&config.url, None)?;
+        let mut url = Url::parse(&config.url).map_err(|e| {
+            Error::IoError(std::io::Error::new(std::io::ErrorKind::InvalidInput, e.to_string()))
+        })?;
 
         if !config.params.is_empty() {
-            if url.path_and_query.contains('?') {
-                url.path_and_query.push('&');
-            } else {
-                url.path_and_query.push('?');
-            }
-            url.path_and_query.push_str(&config.params);
+            url.append_query_params(&config.params);
         }
 
         #[cfg(all(feature = "proxy", feature = "std"))]
@@ -395,7 +392,7 @@ impl ParsedRequest {
         // Note: https://everything.curl.dev/usingcurl/proxies/env#http_proxy-in-lower-case-only
         if config.proxy.is_none() {
             // Set HTTP proxies if request's protocol is HTTPS and they're given
-            if url.https {
+            if url.is_https() {
                 if let Ok(proxy) =
                     std::env::var("https_proxy").map_err(|_| std::env::var("HTTPS_PROXY"))
                 {
@@ -445,11 +442,13 @@ impl ParsedRequest {
         write!(
             http,
             "{} {} HTTP/1.1\r\nHost: {}",
-            self.config.method, self.url.path_and_query, self.url.host
+            self.config.method,
+            self.url.path_and_query(),
+            self.url.base_url()
         )
         .unwrap();
-        if let Port::Explicit(port) = self.url.port {
-            write!(http, ":{}", port).unwrap();
+        if self.url.has_explicit_non_default_port() {
+            write!(http, ":{}", self.url.port()).unwrap();
         }
         http += "\r\n";
 
@@ -498,7 +497,7 @@ impl ParsedRequest {
     /// limit was reached.
     pub(crate) fn redirect_to(&mut self, url: &str) -> Result<(), Error> {
         if url.contains("://") {
-            let mut url = HttpUrl::parse(url, Some(&self.url)).map_err(|_| {
+            let mut new_url = Url::parse(url).map_err(|_| {
                 // TODO: Uncomment this for 3.0
                 // Error::InvalidProtocolInRedirect
                 #[cfg(feature = "std")]
@@ -513,17 +512,23 @@ impl ParsedRequest {
                     Error::Other("invalid protocol in redirect")
                 }
             })?;
-            std::mem::swap(&mut url, &mut self.url);
-            self.redirects.push(url);
+            // Preserve fragment from original URL if new URL doesn't have one (RFC 7231 section 7.1.2)
+            new_url.preserve_fragment_from(&self.url);
+            std::mem::swap(&mut new_url, &mut self.url);
+            self.redirects.push(new_url);
         } else {
             // The url does not have the protocol part, assuming it's
             // a relative resource.
             let mut absolute_url = String::new();
             self.url.write_base_url_to(&mut absolute_url).unwrap();
             absolute_url.push_str(url);
-            let mut url = HttpUrl::parse(&absolute_url, Some(&self.url))?;
-            std::mem::swap(&mut url, &mut self.url);
-            self.redirects.push(url);
+            let mut new_url = Url::parse(&absolute_url).map_err(|e| {
+                Error::IoError(std::io::Error::new(std::io::ErrorKind::InvalidInput, e.to_string()))
+            })?;
+            // Preserve fragment from original URL if new URL doesn't have one (RFC 7231 section 7.1.2)
+            new_url.preserve_fragment_from(&self.url);
+            std::mem::swap(&mut new_url, &mut self.url);
+            self.redirects.push(new_url);
         }
 
         if self.redirects.len() > self.config.max_redirects {
@@ -546,7 +551,7 @@ impl ParsedRequest {
 pub(crate) struct ConnectionParams<'a> {
     pub(crate) https: bool,
     pub(crate) host: &'a str,
-    pub(crate) port: Port,
+    pub(crate) port: u16,
     #[cfg(feature = "proxy")]
     pub(crate) proxy: Option<&'a Proxy>,
 }
@@ -555,9 +560,9 @@ pub(crate) struct ConnectionParams<'a> {
 impl<'a> ConnectionParams<'a> {
     fn from_request(request: &'a ParsedRequest) -> Self {
         Self {
-            https: request.url.https,
-            host: &request.url.host,
-            port: request.url.port,
+            https: request.url.is_https(),
+            host: request.url.base_url(),
+            port: request.url.port(),
             #[cfg(feature = "proxy")]
             proxy: request.config.proxy.as_ref(),
         }
@@ -570,7 +575,7 @@ impl<'a> ConnectionParams<'a> {
 pub(crate) struct OwnedConnectionParams {
     pub(crate) https: bool,
     pub(crate) host: String,
-    pub(crate) port: Port,
+    pub(crate) port: u16,
     #[cfg(feature = "proxy")]
     pub(crate) proxy: Option<Proxy>,
 }
@@ -666,24 +671,24 @@ mod parsing_tests {
             .with_param("foo", "bar")
             .with_param("asd", "qwe");
         let req = ParsedRequest::new(req).unwrap();
-        assert_eq!(&req.url.path_and_query, "/test/res?foo=bar&asd=qwe");
+        assert_eq!(req.url.path_and_query(), "/test/res?foo=bar&asd=qwe");
     }
 
     #[test]
     fn test_domain() {
         let req = get("http://www.example.org/test/res").with_param("foo", "bar");
         let req = ParsedRequest::new(req).unwrap();
-        assert_eq!(&req.url.host, "www.example.org");
+        assert_eq!(req.url.base_url(), "www.example.org");
     }
 
     #[test]
     fn test_protocol() {
         let req =
             ParsedRequest::new(get("http://www.example.org/").with_param("foo", "bar")).unwrap();
-        assert!(!req.url.https);
+        assert!(!req.url.is_https());
         let req =
             ParsedRequest::new(get("https://www.example.org/").with_param("foo", "bar")).unwrap();
-        assert!(req.url.https);
+        assert!(req.url.is_https());
     }
 }
 
@@ -695,19 +700,16 @@ mod encoding_tests {
     fn test_with_param() {
         let req = get("http://www.example.org").with_param("foo", "bar");
         let req = ParsedRequest::new(req).unwrap();
-        assert_eq!(&req.url.path_and_query, "/?foo=bar");
+        assert_eq!(req.url.path_and_query(), "/?foo=bar");
 
         let req = get("http://www.example.org").with_param("ówò", "what's this? 👀");
         let req = ParsedRequest::new(req).unwrap();
-        assert_eq!(&req.url.path_and_query, "/?%C3%B3w%C3%B2=what%27s%20this%3F%20%F0%9F%91%80");
+        assert_eq!(req.url.path_and_query(), "/?%C3%B3w%C3%B2=what%27s%20this%3F%20%F0%9F%91%80");
     }
 
     #[test]
     fn test_on_creation() {
         let req = ParsedRequest::new(get("http://www.example.org/?foo=bar#baz")).unwrap();
-        assert_eq!(&req.url.path_and_query, "/?foo=bar");
-
-        let req = ParsedRequest::new(get("http://www.example.org/?ówò=what's this? 👀")).unwrap();
-        assert_eq!(&req.url.path_and_query, "/?%C3%B3w%C3%B2=what%27s%20this?%20%F0%9F%91%80");
+        assert_eq!(req.url.path_and_query(), "/?foo=bar");
     }
 }

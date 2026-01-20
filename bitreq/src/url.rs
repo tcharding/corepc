@@ -92,14 +92,27 @@ impl Url {
             }
         }
 
-        // Find the scheme (everything before "://")
+        // Find scheme and normalize to lowercase
         let scheme_end = url_str.find("://").ok_or(ParseError::MissingScheme)?;
+        let mut serialization = url_str.to_string();
+        serialization[..scheme_end].make_ascii_lowercase();
+
+        Self::parse_inner(serialization)
+    }
+
+    /// Parses the URL structure from an already-validated serialization string.
+    ///
+    /// This method assumes the input has already been validated for invalid characters
+    /// and has a normalized (lowercase) scheme.
+    fn parse_inner(serialization: String) -> Result<Self, ParseError> {
+        // Find the scheme (everything before "://")
+        let scheme_end = serialization.find("://").ok_or(ParseError::MissingScheme)?;
 
         if scheme_end == 0 {
             return Err(ParseError::InvalidScheme);
         }
 
-        let scheme = &url_str[..scheme_end];
+        let scheme = &serialization[..scheme_end];
 
         // Validate scheme: must start with a letter and contain only
         // letters, digits, '+', '-', or '.'
@@ -117,7 +130,7 @@ impl Url {
 
         // Parse the rest after "://"
         let after_scheme_pos = scheme_end + 3;
-        let after_scheme = &url_str[after_scheme_pos..];
+        let after_scheme = &serialization[after_scheme_pos..];
 
         // Extract the authority (host:port) - everything before '/', '?', or '#'
         let authority_end = after_scheme.find(['/', '?', '#']).unwrap_or(after_scheme.len());
@@ -196,10 +209,6 @@ impl Url {
 
         // Calculate path start position (after authority)
         let path_start = after_scheme_pos + authority_end;
-
-        // Copy the URL string and normalize the scheme to lowercase
-        let mut serialization = url_str.to_string();
-        serialization[..scheme_end].make_ascii_lowercase();
         let url_len = serialization.len();
 
         // Calculate path, query, and fragment ranges
@@ -342,6 +351,104 @@ impl Url {
 
     /// Returns the serialized URL as a string slice.
     pub fn as_str(&self) -> &str { &self.serialization }
+
+    /// Returns `true` if the URL scheme is "https" or "wss".
+    pub(crate) fn is_https(&self) -> bool { matches!(self.scheme(), "https" | "wss") }
+
+    /// Returns `true` if a non-default port was explicitly specified in the URL.
+    ///
+    /// This is useful for serialization purposes: ports that are the default for
+    /// their scheme (e.g., 80 for `http`) are typically omitted from the URL string.
+    #[cfg(feature = "std")]
+    pub(crate) fn has_explicit_non_default_port(&self) -> bool {
+        match self.port {
+            Some(port) => Some(port) != default_port_for_scheme(self.scheme()),
+            None => false,
+        }
+    }
+
+    /// Returns the combined path and query string.
+    ///
+    /// The returned string includes the leading `/` (if present) and the `?`
+    /// separator (if there's a query string). Returns "/" if the path is empty.
+    pub(crate) fn path_and_query(&self) -> String {
+        let path = self.path();
+        let path = if path.is_empty() { "/" } else { path };
+
+        match self.query() {
+            Some(query) => format!("{}?{}", path, query),
+            None => path.to_string(),
+        }
+    }
+
+    /// Appends query parameters to the URL.
+    ///
+    /// If the URL already has a query string, the parameters are appended with `&`.
+    /// Otherwise, they are appended with `?`.
+    pub(crate) fn append_query_params(&mut self, params: &str) {
+        if params.is_empty() {
+            return;
+        }
+
+        let separator = if self.query.is_some() { "&" } else { "?" };
+
+        // Build the new serialization string
+        let new_serialization = if let Some(frag) = self.fragment() {
+            // Insert params before fragment
+            let frag_start = self.fragment.as_ref().unwrap().start - 1; // -1 for '#'
+            format!("{}{}{}#{}", &self.serialization[..frag_start], separator, params, frag)
+        } else {
+            format!("{}{}{}", &self.serialization, separator, params)
+        };
+
+        // Reparse to update all fields
+        *self =
+            Self::parse_inner(new_serialization).expect("append_query_params produced invalid URL");
+    }
+
+    /// If this URL has no fragment but `other` does, copies the fragment from `other`.
+    ///
+    /// This implements RFC 7231 section 7.1.2 behavior for preserving fragments
+    /// across redirects.
+    pub(crate) fn preserve_fragment_from(&mut self, other: &Url) {
+        if self.fragment.is_some() {
+            return;
+        }
+
+        if let Some(other_frag) = other.fragment() {
+            let new_serialization = format!("{}#{}", &self.serialization, other_frag);
+            *self = Self::parse_inner(new_serialization)
+                .expect("preserve_fragment_from produced invalid URL");
+        }
+    }
+
+    /// Writes the `scheme "://" host [ ":" port ]` part to the destination.
+    #[cfg(feature = "std")]
+    pub(crate) fn write_base_url_to<W: std::fmt::Write>(&self, dst: &mut W) -> std::fmt::Result {
+        write!(dst, "{}://{}", self.scheme(), self.base_url())?;
+        if self.has_explicit_non_default_port() {
+            write!(dst, ":{}", self.port())?;
+        }
+        Ok(())
+    }
+
+    /// Writes the `path [ "?" query ] [ "#" fragment ]` part to the destination.
+    #[cfg(feature = "std")]
+    pub(crate) fn write_resource_to<W: std::fmt::Write>(&self, dst: &mut W) -> std::fmt::Result {
+        let path = self.path();
+        let path = if path.is_empty() { "/" } else { path };
+        write!(dst, "{}", path)?;
+
+        if let Some(query) = self.query() {
+            write!(dst, "?{}", query)?;
+        }
+
+        if let Some(fragment) = self.fragment() {
+            write!(dst, "#{}", fragment)?;
+        }
+
+        Ok(())
+    }
 }
 
 impl std::fmt::Display for Url {
