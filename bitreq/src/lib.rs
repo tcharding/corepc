@@ -259,6 +259,7 @@ mod http_url;
 mod proxy;
 mod request;
 mod response;
+mod url;
 
 #[cfg(feature = "async")]
 pub use client::{Client, RequestExt};
@@ -269,3 +270,4 @@ pub use request::*;
 pub use response::Response;
 #[cfg(feature = "std")]
 pub use response::ResponseLazy;
+pub use url::{ParseError as UrlParseError, Url};
