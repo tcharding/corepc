@@ -254,7 +254,6 @@ mod client;
 #[cfg(feature = "std")]
 mod connection;
 mod error;
-mod http_url;
 #[cfg(feature = "proxy")]
 mod proxy;
 mod request;

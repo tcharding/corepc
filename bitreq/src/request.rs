@@ -12,7 +12,6 @@ use std::time::Instant;
 use crate::connection::AsyncConnection;
 #[cfg(feature = "std")]
 use crate::connection::Connection;
-use crate::http_url::percent_encode_string;
 #[cfg(feature = "proxy")]
 use crate::proxy::Proxy;
 #[cfg(feature = "std")]
@@ -87,7 +86,7 @@ impl fmt::Display for Method {
 pub struct Request {
     pub(crate) method: Method,
     url: URL,
-    params: String,
+    params: Vec<(String, String)>,
     headers: BTreeMap<String, String>,
     body: Option<Vec<u8>>,
     timeout: Option<u64>,
@@ -112,7 +111,7 @@ impl Request {
         Request {
             method,
             url: url.into(),
-            params: String::new(),
+            params: Vec::new(),
             headers: BTreeMap::new(),
             body: None,
             timeout: None,
@@ -162,19 +161,9 @@ impl Request {
     /// Adds given key and value as query parameter to request url
     /// (resource).
     ///
-    /// The key and value are both encoded.
+    /// The key and value are percent-encoded when the request is sent.
     pub fn with_param<T: Into<String>, U: Into<String>>(mut self, key: T, value: U) -> Request {
-        let key = key.into();
-        let key = percent_encode_string(&key);
-        let value = value.into();
-        let value = percent_encode_string(&value);
-
-        if !self.params.is_empty() {
-            self.params.push('&');
-        }
-        self.params.push_str(&key);
-        self.params.push('=');
-        self.params.push_str(&value);
+        self.params.push((key.into(), value.into()));
         self
     }
 
@@ -378,8 +367,8 @@ impl ParsedRequest {
             Error::IoError(std::io::Error::new(std::io::ErrorKind::InvalidInput, e.to_string()))
         })?;
 
-        if !config.params.is_empty() {
-            url.append_query_params(&config.params);
+        for (key, value) in &config.params {
+            url.append_query_param(key, value);
         }
 
         #[cfg(all(feature = "proxy", feature = "std"))]

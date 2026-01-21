@@ -381,29 +381,30 @@ impl Url {
         }
     }
 
-    /// Appends query parameters to the URL.
+    /// Appends a single query parameter to the URL.
     ///
-    /// If the URL already has a query string, the parameters are appended with `&`.
-    /// Otherwise, they are appended with `?`.
-    pub(crate) fn append_query_params(&mut self, params: &str) {
-        if params.is_empty() {
-            return;
-        }
+    /// The key and value are percent-encoded before being appended.
+    /// If the URL already has a query string, the parameter is appended with `&`.
+    /// Otherwise, it is appended with `?`.
+    pub(crate) fn append_query_param(&mut self, key: &str, value: &str) {
+        let encoded_key = percent_encode_string(key);
+        let encoded_value = percent_encode_string(value);
+        let param = format!("{}={}", encoded_key, encoded_value);
 
         let separator = if self.query.is_some() { "&" } else { "?" };
 
         // Build the new serialization string
         let new_serialization = if let Some(frag) = self.fragment() {
-            // Insert params before fragment
+            // Insert param before fragment
             let frag_start = self.fragment.as_ref().unwrap().start - 1; // -1 for '#'
-            format!("{}{}{}#{}", &self.serialization[..frag_start], separator, params, frag)
+            format!("{}{}{}#{}", &self.serialization[..frag_start], separator, param, frag)
         } else {
-            format!("{}{}{}", &self.serialization, separator, params)
+            format!("{}{}{}", &self.serialization, separator, param)
         };
 
         // Reparse to update all fields
         *self =
-            Self::parse_inner(new_serialization).expect("append_query_params produced invalid URL");
+            Self::parse_inner(new_serialization).expect("append_query_param produced invalid URL");
     }
 
     /// If this URL has no fragment but `other` does, copies the fragment from `other`.
@@ -455,6 +456,41 @@ impl std::fmt::Display for Url {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(self.as_str())
     }
+}
+
+/// Returns the `%HH` triplet representing `byte` for percent encoding.
+fn percent_encoded_triplet(byte: u8) -> [char; 3] {
+    const HEX: &[u8; 16] = b"0123456789ABCDEF";
+    ['%', HEX[(byte >> 4) as usize] as char, HEX[(byte & 0x0F) as usize] as char]
+}
+
+/// Percent-encodes a char and appends it to `result`.
+/// Unreserved characters (0-9, A-Z, a-z, -, ., _, ~) are not encoded.
+fn percent_encode_char(c: char, result: &mut String) {
+    match c {
+        // All URL-'safe' characters are not encoded
+        '0'..='9' | 'A'..='Z' | 'a'..='z' | '-' | '.' | '_' | '~' => {
+            result.push(c);
+        }
+        _ => {
+            // Any UTF-8 character can fit in 4 bytes
+            let mut utf8_buf = [0u8; 4];
+            c.encode_utf8(&mut utf8_buf).as_bytes().iter().for_each(|byte| {
+                for ch in percent_encoded_triplet(*byte) {
+                    result.push(ch);
+                }
+            });
+        }
+    }
+}
+
+/// Percent-encodes the entire input string and returns the encoded version.
+fn percent_encode_string(input: &str) -> String {
+    let mut encoded = String::with_capacity(input.len());
+    for ch in input.chars() {
+        percent_encode_char(ch, &mut encoded);
+    }
+    encoded
 }
 
 #[cfg(test)]
@@ -764,5 +800,154 @@ mod tests {
     fn parse_error_is_std_error() {
         fn assert_error<E: std::error::Error>(_: &E) {}
         assert_error(&ParseError::EmptyInput);
+    }
+
+    #[test]
+    fn percent_encode_unreserved_chars_unchanged() {
+        // RFC 3986 unreserved characters should not be encoded
+        assert_eq!(percent_encode_string("abc"), "abc");
+        assert_eq!(percent_encode_string("ABC"), "ABC");
+        assert_eq!(percent_encode_string("0123456789"), "0123456789");
+        assert_eq!(percent_encode_string("-._~"), "-._~");
+    }
+
+    #[test]
+    fn percent_encode_reserved_chars() {
+        // Reserved characters should be encoded
+        assert_eq!(percent_encode_string(" "), "%20");
+        assert_eq!(percent_encode_string("!"), "%21");
+        assert_eq!(percent_encode_string("#"), "%23");
+        assert_eq!(percent_encode_string("$"), "%24");
+        assert_eq!(percent_encode_string("&"), "%26");
+        assert_eq!(percent_encode_string("'"), "%27");
+        assert_eq!(percent_encode_string("("), "%28");
+        assert_eq!(percent_encode_string(")"), "%29");
+        assert_eq!(percent_encode_string("*"), "%2A");
+        assert_eq!(percent_encode_string("+"), "%2B");
+        assert_eq!(percent_encode_string(","), "%2C");
+        assert_eq!(percent_encode_string("/"), "%2F");
+        assert_eq!(percent_encode_string(":"), "%3A");
+        assert_eq!(percent_encode_string(";"), "%3B");
+        assert_eq!(percent_encode_string("="), "%3D");
+        assert_eq!(percent_encode_string("?"), "%3F");
+        assert_eq!(percent_encode_string("@"), "%40");
+        assert_eq!(percent_encode_string("["), "%5B");
+        assert_eq!(percent_encode_string("]"), "%5D");
+    }
+
+    #[test]
+    fn percent_encode_unicode() {
+        // Unicode characters should be encoded as UTF-8 bytes
+        assert_eq!(percent_encode_string("ó"), "%C3%B3");
+        assert_eq!(percent_encode_string("ò"), "%C3%B2");
+        assert_eq!(percent_encode_string("👀"), "%F0%9F%91%80");
+        assert_eq!(percent_encode_string("日本語"), "%E6%97%A5%E6%9C%AC%E8%AA%9E");
+    }
+
+    #[test]
+    fn percent_encode_mixed_string() {
+        assert_eq!(percent_encode_string("hello world"), "hello%20world");
+        assert_eq!(percent_encode_string("foo=bar"), "foo%3Dbar");
+        assert_eq!(percent_encode_string("what's this? 👀"), "what%27s%20this%3F%20%F0%9F%91%80");
+    }
+
+    #[test]
+    fn percent_encode_percent_sign() {
+        // The percent sign itself must be encoded
+        assert_eq!(percent_encode_string("%"), "%25");
+        assert_eq!(percent_encode_string("%7B"), "%257B");
+    }
+
+    #[test]
+    fn append_query_param_to_url_without_query() {
+        let mut url = Url::parse("http://example.com/path").unwrap();
+        url.append_query_param("foo", "bar");
+        assert_eq!(url.query(), Some("foo=bar"));
+        assert_eq!(url.as_str(), "http://example.com/path?foo=bar");
+    }
+
+    #[test]
+    fn append_query_param_to_url_with_existing_query() {
+        let mut url = Url::parse("http://example.com/path?existing=value").unwrap();
+        url.append_query_param("foo", "bar");
+        assert_eq!(url.query(), Some("existing=value&foo=bar"));
+        assert_eq!(url.as_str(), "http://example.com/path?existing=value&foo=bar");
+    }
+
+    #[test]
+    fn append_query_param_encodes_special_chars() {
+        let mut url = Url::parse("http://example.com").unwrap();
+        url.append_query_param("key with spaces", "value&special=chars");
+        assert_eq!(url.query(), Some("key%20with%20spaces=value%26special%3Dchars"));
+    }
+
+    #[test]
+    fn append_query_param_encodes_unicode() {
+        let mut url = Url::parse("http://example.com").unwrap();
+        url.append_query_param("ówò", "what's this? 👀");
+        assert_eq!(url.query(), Some("%C3%B3w%C3%B2=what%27s%20this%3F%20%F0%9F%91%80"));
+    }
+
+    #[test]
+    fn append_query_param_preserves_fragment() {
+        let mut url = Url::parse("http://example.com/path#section").unwrap();
+        url.append_query_param("foo", "bar");
+        assert_eq!(url.query(), Some("foo=bar"));
+        assert_eq!(url.fragment(), Some("section"));
+        assert_eq!(url.as_str(), "http://example.com/path?foo=bar#section");
+    }
+
+    #[test]
+    fn append_query_param_to_url_with_query_and_fragment() {
+        let mut url = Url::parse("http://example.com/path?existing=value#section").unwrap();
+        url.append_query_param("foo", "bar");
+        assert_eq!(url.query(), Some("existing=value&foo=bar"));
+        assert_eq!(url.fragment(), Some("section"));
+        assert_eq!(url.as_str(), "http://example.com/path?existing=value&foo=bar#section");
+    }
+
+    #[test]
+    fn append_query_param_multiple_params() {
+        let mut url = Url::parse("http://example.com").unwrap();
+        url.append_query_param("a", "1");
+        url.append_query_param("b", "2");
+        url.append_query_param("c", "3");
+        assert_eq!(url.query(), Some("a=1&b=2&c=3"));
+    }
+
+    #[test]
+    fn no_double_encoding_existing_query_params() {
+        // When a URL already has percent-encoded query params,
+        // they should NOT be re-encoded when new params are appended.
+        // This is the fix for issue #468.
+        let mut url = Url::parse("http://example.com/test?query=%7B%22id%22%7D").unwrap();
+
+        // Verify the existing encoded query is preserved as-is
+        assert_eq!(url.query(), Some("query=%7B%22id%22%7D"));
+
+        // Add a new param
+        url.append_query_param("foo", "bar");
+
+        // The existing encoded query should still be preserved, not double-encoded
+        // i.e., %7B should NOT become %257B
+        assert_eq!(url.query(), Some("query=%7B%22id%22%7D&foo=bar"));
+        assert_eq!(url.as_str(), "http://example.com/test?query=%7B%22id%22%7D&foo=bar");
+    }
+
+    #[test]
+    fn no_double_encoding_complex_encoded_url() {
+        // Test with a more complex encoded URL
+        let mut url =
+            Url::parse("http://example.com/api?filter=%7B%22name%22%3A%22test%22%7D").unwrap();
+
+        // Original query should be preserved
+        assert_eq!(url.query(), Some("filter=%7B%22name%22%3A%22test%22%7D"));
+
+        // Add multiple new params
+        url.append_query_param("page", "1");
+        url.append_query_param("sort", "name");
+
+        // Verify no double encoding occurred
+        assert_eq!(url.query(), Some("filter=%7B%22name%22%3A%22test%22%7D&page=1&sort=name"));
     }
 }
