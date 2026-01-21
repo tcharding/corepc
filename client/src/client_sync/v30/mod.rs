@@ -23,7 +23,7 @@ pub use crate::client_sync::{
 };
 
 crate::define_jsonrpc_bitreq_client!("v30");
-crate::impl_client_check_expected_server_version!({ [300000] });
+crate::impl_client_check_expected_server_version!({ [300000, 300100, 300200] });
 
 // == Blockchain ==
 crate::impl_client_v29__dump_tx_out_set!();
