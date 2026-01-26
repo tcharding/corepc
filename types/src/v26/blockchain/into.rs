@@ -15,13 +15,13 @@ impl GetChainStates {
         use GetChainStatesError as E;
 
         Ok(model::GetChainStates {
-            headers: crate::to_u32(self.headers, "headers").map_err(E::Numeric)?,
+            headers: crate::to_u32(self.headers, "headers")?,
             chain_states: self
                 .chain_states
                 .into_iter()
                 .map(|s| {
                     Ok(model::ChainState {
-                        blocks: crate::to_u32(s.blocks, "blocks").map_err(E::Numeric)?,
+                        blocks: crate::to_u32(s.blocks, "blocks")?,
                         best_block_hash: s.best_block_hash.parse().map_err(E::BestBlockHash)?,
                         bits: None,   // v29 and later only.
                         target: None, // v29 and later only.
