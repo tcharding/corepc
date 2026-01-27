@@ -288,3 +288,16 @@ impl ScriptSig {
         ScriptBuf::from_hex(&self.hex)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn convert_btc_per_kb() {
+        // per kB = per kvB because this is a conversion of legacy transaction weights.
+        let f: f64 = 0.000001;
+        let got = btc_per_kb(f).unwrap();
+        assert_eq!(got, Some(FeeRate::from_sat_per_kwu(25)))
+    }
+}
