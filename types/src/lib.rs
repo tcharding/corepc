@@ -90,13 +90,9 @@ impl std::error::Error for NumericError {}
 
 /// Converts `fee_rate` in BTC/kB to `FeeRate`.
 fn btc_per_kb(btc_per_kb: f64) -> Result<Option<FeeRate>, ParseAmountError> {
-    let sats_per_kb = Amount::from_btc(btc_per_kb)?;
-    let sats_per_byte = sats_per_kb.to_sat() / 1000;
-
-    // Virtual bytes equal bytes before segwit.
-    let rate = FeeRate::from_sat_per_vb(sats_per_byte);
-
-    Ok(rate)
+    // TODO: After upgrade to bitcoin `v0.33` use `FeeRate::from_sat_per_kvb()`.
+    let per_kb = Amount::from_btc(btc_per_kb)?;
+    Ok(FeeRate::from_sat_per_vb(per_kb.to_sat()).and_then(|fee_rate| fee_rate.checked_div(1000)))
 }
 
 // TODO: Remove this function if a new `Witness` constructor gets added.
