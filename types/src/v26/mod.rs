@@ -260,7 +260,8 @@ mod wallet;
 pub use self::{
     blockchain::{
         ChainState, DumpTxOutSet, DumpTxOutSetError, GetChainStates, GetChainStatesError,
-        GetTxOutSetInfo, GetTxOutSetInfoError, LoadTxOutSet, LoadTxOutSetError,
+        GetTxOutSetInfo, GetTxOutSetInfoBlockInfo, GetTxOutSetInfoError,
+        GetTxOutSetInfoUnspendables, LoadTxOutSet, LoadTxOutSetError,
     },
     control::Logging,
     hidden::{GetRawAddrMan, RawAddrManEntry},
