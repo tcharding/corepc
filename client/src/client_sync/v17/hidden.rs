@@ -14,7 +14,15 @@
 macro_rules! impl_client_v17__estimate_raw_fee {
     () => {
         impl Client {
+            /// # Panics
+            ///
+            /// * Panics if `conf_target` is outside the range [1, 1008].
             pub fn estimate_raw_fee(&self, conf_target: u32) -> Result<EstimateRawFee> {
+                assert!(
+                    (1..=1008).contains(&conf_target),
+                    "invalid conf_target, must be between 1 and 1008 inclusive"
+                );
+
                 self.call("estimaterawfee", &[conf_target.into()])
             }
         }

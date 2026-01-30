@@ -74,6 +74,29 @@ fn hidden__estimate_raw_fee__modelled() {
     let estimate = model.unwrap();
 
     assert!(estimate.long.scale > 0);
+
+    // Boundary checks enforced by the client:
+    // conf_target must be between 1 and 1008 inclusive.
+    // 0 is invalid and should panic
+    assert!(
+        std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            node.client.estimate_raw_fee(0)
+        }))
+        .is_err(),
+        "conf_target 0 must panic"
+    );
+    // 1009 is invalid and should panic
+    assert!(
+        std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            node.client.estimate_raw_fee(1009)
+        }))
+        .is_err(),
+        "conf_target > 1008 must panic"
+    );
+
+    // Check inclusive bounds are accepted by the client
+    let _ = node.client.estimate_raw_fee(1).expect("conf_target 1 must be valid");
+    let _ = node.client.estimate_raw_fee(1008).expect("conf_target 1008 must be valid");
 }
 
 #[test]
