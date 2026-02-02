@@ -511,11 +511,18 @@ fn blockchain__scan_blocks_modelled() {
     let json: ScanBlocksStart =
         node.client.scan_blocks_start(&[scan_desc]).expect("scanblocks start");
     let model: Result<mtype::ScanBlocksStart, ScanBlocksStartError> = json.into_model();
-    model.unwrap();
+    let model = model.unwrap();
 
     let _: Option<ScanBlocksStatus> = node.client.scan_blocks_status().expect("scanblocks status");
 
     let _: ScanBlocksAbort = node.client.scan_blocks_abort().expect("scanblocks abort");
+
+    assert!(model.from_height <= model.to_height);
+
+    #[cfg(not(feature = "v25_and_below"))]
+    {
+        assert!(model.completed.is_some());
+    }
 }
 
 #[test]
