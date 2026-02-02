@@ -76,23 +76,30 @@ proptest! {
         );
     }
 
-    /// Test that password() returns the same value for both implementations.
+    /// Test that password() returns consistent values for both implementations.
+    /// Note: bitreq filters out empty passwords (returns None), while url crate
+    /// returns Some(""). We compare the non-empty case for parity.
     #[test]
     fn password_parity(url_string in special_url_string_strategy()) {
         let bitreq_url = BitreqUrl::parse(&url_string).expect("bitreq should parse");
         let max_url = MaxUrl::parse(&url_string).expect("url crate should parse");
 
+        let bitreq_password = bitreq_url.password();
+        let max_password = max_url.password();
+
+        // bitreq filters out empty passwords, url crate returns Some("")
+        // Compare filtered versions for parity
+        let max_password_filtered = max_password.filter(|s| !s.is_empty());
+
         prop_assert_eq!(
-            bitreq_url.password(),
-            max_url.password(),
+            bitreq_password,
+            max_password_filtered,
             "password() mismatch for URL: {}",
             url_string
         );
     }
 
     /// Test that path() returns the same value for both implementations.
-    /// Note: url crate normalizes empty paths to "/" for URLs with authority,
-    /// while bitreq returns "". We test that they match for non-empty paths.
     #[test]
     fn path_parity(url_string in special_url_string_strategy()) {
         let bitreq_url = BitreqUrl::parse(&url_string).expect("bitreq should parse");
@@ -101,12 +108,8 @@ proptest! {
         let bitreq_path = bitreq_url.path();
         let max_path = max_url.path();
 
-        // url crate adds "/" for empty paths, bitreq returns ""
-        // Both are valid interpretations, so we normalize for comparison
-        let bitreq_normalized = if bitreq_path.is_empty() { "/" } else { bitreq_path };
-
         prop_assert_eq!(
-            bitreq_normalized,
+            bitreq_path,
             max_path,
             "path() mismatch for URL: {} (bitreq: '{}', url: '{}')",
             url_string,
@@ -161,7 +164,6 @@ proptest! {
     }
 
     /// Test that as_str() returns equivalent URLs.
-    /// Note: The url crate normalizes empty paths to "/" so we account for that.
     #[test]
     fn as_str_parity(url_string in special_url_string_strategy()) {
         let bitreq_url = BitreqUrl::parse(&url_string).expect("bitreq should parse");
@@ -187,7 +189,6 @@ proptest! {
         );
 
         // The serialized forms should be semantically equivalent
-        // (they may differ in empty path normalization)
         let bitreq_reparsed = bitreq_reparsed.unwrap();
         let max_reparsed = max_reparsed.unwrap();
 
@@ -202,6 +203,11 @@ proptest! {
             "Reparsed port mismatch"
         );
         prop_assert_eq!(
+            bitreq_reparsed.path(),
+            max_reparsed.path(),
+            "Reparsed path mismatch"
+        );
+        prop_assert_eq!(
             bitreq_reparsed.query(),
             max_reparsed.query(),
             "Reparsed query mismatch"
@@ -213,9 +219,11 @@ proptest! {
         );
     }
 
-    /// Test that path_segments() returns the same segments for both implementations.
+    /// Test that path_segments() returns consistent segments for both implementations.
     /// Note: url crate's path_segments() returns None for cannot-be-a-base URLs,
     /// but our generated URLs always have authority so this shouldn't happen.
+    /// Note: bitreq filters out empty segments while the url crate includes them,
+    /// so we compare the filtered versions.
     #[test]
     fn path_segments_parity(url_string in special_url_string_strategy()) {
         let bitreq_url = BitreqUrl::parse(&url_string).expect("bitreq should parse");
@@ -233,11 +241,13 @@ proptest! {
 
         let max_segments = max_segments.unwrap();
 
-        // Handle the empty path case: bitreq returns [""], url crate returns [""]
-        // for "/" path (which url crate normalizes empty paths to)
+        // bitreq filters out empty segments, url crate includes them
+        // Compare the filtered versions for parity
+        let max_segments_filtered: Vec<&str> = max_segments.into_iter().filter(|s| !s.is_empty()).collect();
+
         prop_assert_eq!(
             bitreq_segments,
-            max_segments,
+            max_segments_filtered,
             "path_segments() mismatch for URL: {}",
             url_string
         );
@@ -283,5 +293,175 @@ proptest! {
             url_string,
             max_result.err()
         );
+    }
+}
+
+// Parity tests for empty and edge cases
+#[cfg(test)]
+mod empty_and_edge_cases {
+    use super::*;
+
+    #[test]
+    fn path_empty_parity() {
+        let bitreq = BitreqUrl::parse("http://example.com").unwrap();
+        let max = MaxUrl::parse("http://example.com").unwrap();
+
+        // url crate normalizes empty path to "/"
+        // bitreq returns "" for empty path, which we normalize in parity tests
+        let bitreq_path = bitreq.path();
+        let bitreq_normalized = if bitreq_path.is_empty() { "/" } else { bitreq_path };
+        assert_eq!(bitreq_normalized, max.path());
+    }
+
+    #[test]
+    fn path_root_only_parity() {
+        let bitreq = BitreqUrl::parse("http://example.com/").unwrap();
+        let max = MaxUrl::parse("http://example.com/").unwrap();
+
+        assert_eq!(bitreq.path(), max.path());
+    }
+
+    #[test]
+    fn path_segments_empty_parity() {
+        let bitreq = BitreqUrl::parse("http://example.com").unwrap();
+        let max = MaxUrl::parse("http://example.com").unwrap();
+
+        let bitreq_segments: Vec<&str> = bitreq.path_segments().collect();
+        let max_segments: Vec<&str> =
+            max.path_segments().unwrap().filter(|s| !s.is_empty()).collect();
+
+        // Both should return empty after filtering empty segments
+        assert_eq!(bitreq_segments, max_segments);
+    }
+
+    #[test]
+    fn path_segments_root_only_parity() {
+        let bitreq = BitreqUrl::parse("http://example.com/").unwrap();
+        let max = MaxUrl::parse("http://example.com/").unwrap();
+
+        let bitreq_segments: Vec<&str> = bitreq.path_segments().collect();
+        let max_segments: Vec<&str> =
+            max.path_segments().unwrap().filter(|s| !s.is_empty()).collect();
+
+        assert_eq!(bitreq_segments, max_segments);
+    }
+
+    #[test]
+    fn path_segments_consecutive_slashes_parity() {
+        let bitreq = BitreqUrl::parse("http://example.com//foo//bar//").unwrap();
+        let max = MaxUrl::parse("http://example.com//foo//bar//").unwrap();
+
+        let bitreq_segments: Vec<&str> = bitreq.path_segments().collect();
+        let max_segments: Vec<&str> =
+            max.path_segments().unwrap().filter(|s| !s.is_empty()).collect();
+
+        assert_eq!(bitreq_segments, max_segments);
+        assert_eq!(bitreq_segments, vec!["foo", "bar"]);
+    }
+
+    #[test]
+    fn query_empty_parity() {
+        // No query at all
+        let bitreq = BitreqUrl::parse("http://example.com").unwrap();
+        let max = MaxUrl::parse("http://example.com").unwrap();
+
+        assert_eq!(bitreq.query(), max.query());
+        assert_eq!(bitreq.query(), None);
+    }
+
+    #[test]
+    fn query_empty_string_parity() {
+        // Query with just "?" - url crate returns Some("")
+        let bitreq = BitreqUrl::parse("http://example.com?").unwrap();
+        let max = MaxUrl::parse("http://example.com?").unwrap();
+
+        assert_eq!(bitreq.query(), max.query());
+        assert_eq!(bitreq.query(), Some(""));
+    }
+
+    #[test]
+    fn query_pairs_empty_parity() {
+        // No query
+        let bitreq = BitreqUrl::parse("http://example.com").unwrap();
+        let max = MaxUrl::parse("http://example.com").unwrap();
+
+        let bitreq_pairs: Vec<_> = bitreq.query_pairs().collect();
+        let max_pairs: Vec<_> = max.query_pairs().into_iter().collect();
+
+        assert!(bitreq_pairs.is_empty());
+        assert!(max_pairs.is_empty());
+    }
+
+    #[test]
+    fn query_pairs_empty_key_filtered_parity() {
+        // Query with empty key "?=value" - bitreq filters these out
+        let bitreq = BitreqUrl::parse("http://example.com?=value&foo=bar").unwrap();
+        let max = MaxUrl::parse("http://example.com?=value&foo=bar").unwrap();
+
+        let bitreq_pairs: Vec<(&str, &str)> = bitreq.query_pairs().collect();
+        // url crate returns Cow<str> pairs, filter out empty keys for parity
+        let max_pairs: Vec<(String, String)> = max
+            .query_pairs()
+            .filter(|(k, _)| !k.is_empty())
+            .map(|(k, v)| (k.into_owned(), v.into_owned()))
+            .collect();
+
+        assert_eq!(bitreq_pairs.len(), max_pairs.len());
+        for ((bk, bv), (mk, mv)) in bitreq_pairs.iter().zip(max_pairs.iter()) {
+            assert_eq!(*bk, mk.as_str());
+            assert_eq!(*bv, mv.as_str());
+        }
+        assert_eq!(bitreq_pairs, vec![("foo", "bar")]);
+    }
+
+    #[test]
+    fn query_pairs_normal_parity() {
+        let bitreq = BitreqUrl::parse("http://example.com?foo=bar&baz=qux").unwrap();
+        let max = MaxUrl::parse("http://example.com?foo=bar&baz=qux").unwrap();
+
+        let bitreq_pairs: Vec<(&str, &str)> = bitreq.query_pairs().collect();
+        let max_pairs: Vec<(String, String)> =
+            max.query_pairs().map(|(k, v)| (k.into_owned(), v.into_owned())).collect();
+
+        assert_eq!(bitreq_pairs.len(), max_pairs.len());
+        for ((bk, bv), (mk, mv)) in bitreq_pairs.iter().zip(max_pairs.iter()) {
+            assert_eq!(*bk, mk.as_str());
+            assert_eq!(*bv, mv.as_str());
+        }
+        assert_eq!(bitreq_pairs, vec![("foo", "bar"), ("baz", "qux")]);
+    }
+
+    #[test]
+    fn username_parity() {
+        // Normal username
+        let bitreq = BitreqUrl::parse("http://user@example.com").unwrap();
+        let max = MaxUrl::parse("http://user@example.com").unwrap();
+        assert_eq!(bitreq.username(), max.username());
+
+        // No username
+        let bitreq = BitreqUrl::parse("http://example.com").unwrap();
+        let max = MaxUrl::parse("http://example.com").unwrap();
+        assert_eq!(bitreq.username(), max.username());
+        assert_eq!(bitreq.username(), "");
+    }
+
+    #[test]
+    fn password_empty_parity() {
+        // Normal password
+        let bitreq = BitreqUrl::parse("http://user:pass@example.com").unwrap();
+        let max = MaxUrl::parse("http://user:pass@example.com").unwrap();
+        assert_eq!(bitreq.password(), max.password());
+
+        // No password
+        let bitreq = BitreqUrl::parse("http://user@example.com").unwrap();
+        let max = MaxUrl::parse("http://user@example.com").unwrap();
+        assert_eq!(bitreq.password(), max.password());
+        assert_eq!(bitreq.password(), None);
+
+        // Empty password - both return None (url crate also filters empty password)
+        let bitreq = BitreqUrl::parse("http://user:@example.com").unwrap();
+        let max = MaxUrl::parse("http://user:@example.com").unwrap();
+        assert_eq!(bitreq.password(), None);
+        assert_eq!(bitreq.password(), max.password());
     }
 }

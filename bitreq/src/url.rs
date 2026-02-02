@@ -283,11 +283,18 @@ impl Url {
     /// Returns the username from the URL, if present.
     ///
     /// Returns an empty string if no username was specified.
-    pub fn username(&self) -> &str { &self.serialization[self.username.clone()] }
+    /// The returned value is trimmed of leading and trailing whitespace.
+    pub fn username(&self) -> &str { self.serialization[self.username.clone()].trim() }
 
     /// Returns the password from the URL, if present.
+    ///
+    /// Returns `None` if no password was specified or if the password is empty
+    /// after trimming whitespace.
     pub fn password(&self) -> Option<&str> {
-        self.password.as_ref().map(|r| &self.serialization[r.clone()])
+        self.password
+            .as_ref()
+            .map(|r| self.serialization[r.clone()].trim())
+            .filter(|s| !s.is_empty())
     }
 
     /// Returns the base URL (host portion).
@@ -308,16 +315,23 @@ impl Url {
     ///
     /// The path includes the leading `/` if present. Returns an empty string
     /// if no path was specified.
-    pub fn path(&self) -> &str { &self.serialization[self.path.clone()] }
+    pub fn path(&self) -> &str {
+        let res = &self.serialization[self.path.clone()];
+        if res.is_empty() {
+            "/"
+        } else {
+            res
+        }
+    }
 
     /// Returns an iterator over the path segments.
     ///
     /// Path segments are the portions between `/` characters. Empty segments
-    /// (from leading or consecutive slashes) are included.
+    /// (from leading, trailing, or consecutive slashes) are filtered out.
     pub fn path_segments(&self) -> impl Iterator<Item = &str> {
         let path = self.path();
         let path = if let Some(stripped) = path.strip_prefix('/') { stripped } else { path };
-        path.split('/')
+        path.split('/').map(|s| s.trim()).filter(|s| !s.is_empty())
     }
 
     /// Returns the query string of the URL, if present.
@@ -331,15 +345,19 @@ impl Url {
     ///
     /// Pairs are separated by `&` and keys are separated from values by `=`.
     /// If a pair has no `=`, the value will be an empty string.
+    /// Pairs with empty keys (after trimming) are filtered out.
     pub fn query_pairs(&self) -> impl Iterator<Item = (&str, &str)> {
         self.query().into_iter().flat_map(|q| {
-            q.split('&').map(|pair| {
-                if let Some(eq_pos) = pair.find('=') {
-                    (&pair[..eq_pos], &pair[eq_pos + 1..])
-                } else {
-                    (pair, "")
-                }
-            })
+            q.split('&')
+                .map(|pair| {
+                    let pair = pair.trim();
+                    if let Some(eq_pos) = pair.find('=') {
+                        (pair[..eq_pos].trim(), pair[eq_pos + 1..].trim())
+                    } else {
+                        (pair.trim(), "")
+                    }
+                })
+                .filter(|(k, _)| !k.is_empty())
         })
     }
 
@@ -559,7 +577,7 @@ mod tests {
     #[test]
     fn path_is_empty_when_not_specified() {
         let url = Url::parse("http://example.com").unwrap();
-        assert_eq!(url.path(), "");
+        assert_eq!(url.path(), "/");
     }
 
     #[test]
@@ -573,7 +591,7 @@ mod tests {
     fn path_segments_handles_empty_path() {
         let url = Url::parse("http://example.com").unwrap();
         let segments: Vec<&str> = url.path_segments().collect();
-        assert_eq!(segments, vec![""]);
+        assert!(segments.is_empty());
     }
 
     #[test]
@@ -649,7 +667,7 @@ mod tests {
     #[test]
     fn fragment_without_path_or_query() {
         let url = Url::parse("http://example.com#section").unwrap();
-        assert_eq!(url.path(), "");
+        assert_eq!(url.path(), "/");
         assert_eq!(url.query(), None);
         assert_eq!(url.fragment(), Some("section"));
     }
@@ -764,9 +782,10 @@ mod tests {
 
     #[test]
     fn userinfo_with_empty_password() {
+        // Empty password after trimming returns None
         let url = Url::parse("http://user:@example.com").unwrap();
         assert_eq!(url.username(), "user");
-        assert_eq!(url.password(), Some(""));
+        assert_eq!(url.password(), None);
         assert_eq!(url.base_url(), "example.com");
     }
 
@@ -981,5 +1000,74 @@ mod tests {
         // Only whitespace should return EmptyInput error
         assert_eq!(Url::parse("   "), Err(ParseError::EmptyInput));
         assert_eq!(Url::parse("\t\n"), Err(ParseError::EmptyInput));
+    }
+
+    #[test]
+    fn path_segments_filters_empty_segments() {
+        // Consecutive slashes should not produce empty segments
+        let url = Url::parse("http://example.com//foo//bar//").unwrap();
+        let segments: Vec<&str> = url.path_segments().collect();
+        assert_eq!(segments, vec!["foo", "bar"]);
+
+        // Root path only
+        let url = Url::parse("http://example.com/").unwrap();
+        let segments: Vec<&str> = url.path_segments().collect();
+        assert!(segments.is_empty());
+
+        // Multiple slashes only
+        let url = Url::parse("http://example.com///").unwrap();
+        let segments: Vec<&str> = url.path_segments().collect();
+        assert!(segments.is_empty());
+    }
+
+    #[test]
+    fn query_pairs_filters_empty_keys() {
+        // Empty key should be filtered
+        let url = Url::parse("http://example.com?=value&foo=bar").unwrap();
+        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
+        assert_eq!(pairs, vec![("foo", "bar")]);
+
+        // Multiple empty keys
+        let url = Url::parse("http://example.com?=&=&foo=bar&=").unwrap();
+        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
+        assert_eq!(pairs, vec![("foo", "bar")]);
+
+        // All empty keys results in empty iterator
+        let url = Url::parse("http://example.com?=value&=").unwrap();
+        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
+        assert!(pairs.is_empty());
+    }
+
+    #[test]
+    fn query_pairs_trims_keys_and_values() {
+        // Note: In practice, whitespace in URLs should be percent-encoded,
+        // but this tests the trimming behavior if somehow present
+        let url = Url::parse("http://example.com?foo=bar&baz=qux").unwrap();
+        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
+        assert_eq!(pairs, vec![("foo", "bar"), ("baz", "qux")]);
+    }
+
+    #[test]
+    fn username_is_trimmed() {
+        let url = Url::parse("http://user@example.com").unwrap();
+        assert_eq!(url.username(), "user");
+
+        // Empty username returns empty string
+        let url = Url::parse("http://example.com").unwrap();
+        assert_eq!(url.username(), "");
+    }
+
+    #[test]
+    fn password_is_trimmed_and_empty_returns_none() {
+        let url = Url::parse("http://user:pass@example.com").unwrap();
+        assert_eq!(url.password(), Some("pass"));
+
+        // No password returns None
+        let url = Url::parse("http://user@example.com").unwrap();
+        assert_eq!(url.password(), None);
+
+        // Empty password returns None (filtered out)
+        let url = Url::parse("http://user:@example.com").unwrap();
+        assert_eq!(url.password(), None);
     }
 }

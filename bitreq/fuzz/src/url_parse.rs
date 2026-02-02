@@ -48,10 +48,7 @@ pub fn do_test(data: &[u8]) {
                 assert_eq!(bitreq_url.port(), ref_port, "Port mismatch for input: {input:?}",);
             }
 
-            // Path comparison: url crate returns "/" for empty paths, ours returns ""
-            // Both are valid - normalize for comparison
-            let bitreq_path = if bitreq_url.path().is_empty() { "/" } else { bitreq_url.path() };
-            assert_eq!(bitreq_path, ref_url.path(), "Path mismatch for input: {input:?}",);
+            assert_eq!(bitreq_url.path(), ref_url.path(), "Path mismatch for input: {input:?}",);
 
             assert_eq!(
                 bitreq_url.query(),

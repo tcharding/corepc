@@ -85,9 +85,10 @@ proptest! {
     #[test]
     fn path_returns_expected_value(valid_url in valid_url_strategy()) {
         let parsed = Url::parse(&valid_url.url_string).expect("should parse");
+        let expected_path = if valid_url.path.is_empty() { "/" } else { &valid_url.path};
         prop_assert_eq!(
             parsed.path(),
-            &valid_url.path,
+            expected_path,
             "Path mismatch"
         );
     }
@@ -114,18 +115,18 @@ proptest! {
         );
     }
 
-    /// Test that path_segments() correctly splits the path.
+    /// Test that path_segments() correctly splits the path, filtering empty segments.
     #[test]
     fn path_segments_splits_correctly(valid_url in valid_url_strategy()) {
         let parsed = Url::parse(&valid_url.url_string).expect("should parse");
 
         let path = &valid_url.path;
         let expected_segments: Vec<&str> = if path.is_empty() {
-            vec![""]
+            vec![]
         } else if let Some(stripped) = path.strip_prefix('/') {
-            stripped.split('/').collect()
+            stripped.split('/').filter(|s| !s.is_empty()).collect()
         } else {
-            path.split('/').collect()
+            path.split('/').filter(|s| !s.is_empty()).collect()
         };
 
         let actual_segments: Vec<&str> = parsed.path_segments().collect();
@@ -155,7 +156,7 @@ proptest! {
         prop_assert_eq!(parsed1, parsed2, "Parsing is not deterministic");
     }
 
-    /// Test query_pairs() correctly parses query parameters.
+    /// Test query_pairs() correctly parses query parameters, filtering empty keys.
     #[test]
     fn query_pairs_parses_correctly(
         valid_url in valid_url_strategy()
@@ -167,12 +168,14 @@ proptest! {
         let expected_pairs: Vec<(&str, &str)> = query
             .split('&')
             .map(|pair| {
+                let pair = pair.trim();
                 if let Some(eq_pos) = pair.find('=') {
-                    (&pair[..eq_pos], &pair[eq_pos + 1..])
+                    (pair[..eq_pos].trim(), pair[eq_pos + 1..].trim())
                 } else {
-                    (pair, "")
+                    (pair.trim(), "")
                 }
             })
+            .filter(|(k, _)| !k.is_empty())
             .collect();
 
         let actual_pairs: Vec<(&str, &str)> = parsed.query_pairs().collect();
@@ -181,6 +184,39 @@ proptest! {
             expected_pairs,
             "Query pairs mismatch"
         );
+    }
+}
+
+// Property tests for empty segment and empty key filtering behavior
+proptest! {
+    /// Test that path_segments never returns empty string segments.
+    #[test]
+    fn path_segments_never_returns_empty(valid_url in valid_url_strategy()) {
+        let parsed = Url::parse(&valid_url.url_string).expect("should parse");
+        let segments: Vec<&str> = parsed.path_segments().collect();
+
+        for segment in &segments {
+            prop_assert!(
+                !segment.is_empty(),
+                "path_segments() returned empty segment for URL: {}",
+                valid_url.url_string
+            );
+        }
+    }
+
+    /// Test that query_pairs never returns pairs with empty keys.
+    #[test]
+    fn query_pairs_never_returns_empty_keys(valid_url in valid_url_strategy()) {
+        let parsed = Url::parse(&valid_url.url_string).expect("should parse");
+        let pairs: Vec<(&str, &str)> = parsed.query_pairs().collect();
+
+        for (key, _) in &pairs {
+            prop_assert!(
+                !key.is_empty(),
+                "query_pairs() returned empty key for URL: {}",
+                valid_url.url_string
+            );
+        }
     }
 }
 
