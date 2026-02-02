@@ -81,6 +81,7 @@ impl Url {
     ///
     /// Validates that the input contains only valid non-control ASCII characters.
     pub fn parse(url_str: &str) -> Result<Self, ParseError> {
+        let url_str = url_str.trim();
         if url_str.is_empty() {
             return Err(ParseError::EmptyInput);
         }
@@ -949,5 +950,36 @@ mod tests {
 
         // Verify no double encoding occurred
         assert_eq!(url.query(), Some("filter=%7B%22name%22%3A%22test%22%7D&page=1&sort=name"));
+    }
+
+    #[test]
+    fn parse_trims_leading_and_trailing_whitespace() {
+        // Leading whitespace
+        let url = Url::parse("  http://example.com").unwrap();
+        assert_eq!(url.scheme(), "http");
+        assert_eq!(url.base_url(), "example.com");
+        assert_eq!(url.as_str(), "http://example.com");
+
+        // Trailing whitespace
+        let url = Url::parse("http://example.com  ").unwrap();
+        assert_eq!(url.scheme(), "http");
+        assert_eq!(url.base_url(), "example.com");
+        assert_eq!(url.as_str(), "http://example.com");
+
+        // Both leading and trailing whitespace
+        let url = Url::parse("  http://example.com/path?query=value  ").unwrap();
+        assert_eq!(url.scheme(), "http");
+        assert_eq!(url.base_url(), "example.com");
+        assert_eq!(url.path(), "/path");
+        assert_eq!(url.query(), Some("query=value"));
+        assert_eq!(url.as_str(), "http://example.com/path?query=value");
+
+        // Tabs and newlines
+        let url = Url::parse("\t\nhttp://example.com\n\t").unwrap();
+        assert_eq!(url.as_str(), "http://example.com");
+
+        // Only whitespace should return EmptyInput error
+        assert_eq!(Url::parse("   "), Err(ParseError::EmptyInput));
+        assert_eq!(Url::parse("\t\n"), Err(ParseError::EmptyInput));
     }
 }
