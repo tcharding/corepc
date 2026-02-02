@@ -157,6 +157,8 @@ proptest! {
     }
 
     /// Test query_pairs() correctly parses query parameters, filtering empty keys.
+    /// Note: query_pairs() now decodes percent-encoded values, but our test URLs
+    /// don't contain percent-encoded characters, so decoded output matches input.
     #[test]
     fn query_pairs_parses_correctly(
         valid_url in valid_url_strategy()
@@ -165,20 +167,20 @@ proptest! {
         let parsed = Url::parse(&valid_url.url_string).expect("should parse");
         let query = valid_url.query.as_ref().unwrap();
 
-        let expected_pairs: Vec<(&str, &str)> = query
+        let expected_pairs: Vec<(String, String)> = query
             .split('&')
             .map(|pair| {
                 let pair = pair.trim();
                 if let Some(eq_pos) = pair.find('=') {
-                    (pair[..eq_pos].trim(), pair[eq_pos + 1..].trim())
+                    (pair[..eq_pos].trim().to_string(), pair[eq_pos + 1..].trim().to_string())
                 } else {
-                    (pair.trim(), "")
+                    (pair.trim().to_string(), String::new())
                 }
             })
             .filter(|(k, _)| !k.is_empty())
             .collect();
 
-        let actual_pairs: Vec<(&str, &str)> = parsed.query_pairs().collect();
+        let actual_pairs: Vec<(String, String)> = parsed.query_pairs().collect();
         prop_assert_eq!(
             actual_pairs,
             expected_pairs,
@@ -208,7 +210,7 @@ proptest! {
     #[test]
     fn query_pairs_never_returns_empty_keys(valid_url in valid_url_strategy()) {
         let parsed = Url::parse(&valid_url.url_string).expect("should parse");
-        let pairs: Vec<(&str, &str)> = parsed.query_pairs().collect();
+        let pairs: Vec<(String, String)> = parsed.query_pairs().collect();
 
         for (key, _) in &pairs {
             prop_assert!(

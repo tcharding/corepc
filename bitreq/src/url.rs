@@ -345,16 +345,22 @@ impl Url {
     ///
     /// Pairs are separated by `&` and keys are separated from values by `=`.
     /// If a pair has no `=`, the value will be an empty string.
-    /// Pairs with empty keys (after trimming) are filtered out.
-    pub fn query_pairs(&self) -> impl Iterator<Item = (&str, &str)> {
+    /// Pairs with empty keys (after decoding and trimming) are filtered out.
+    ///
+    /// Keys and values are percent-decoded according to form-urlencoded rules:
+    /// - `%XX` sequences are decoded to the corresponding byte
+    /// - `+` is decoded as a space
+    pub fn query_pairs(&self) -> impl Iterator<Item = (String, String)> + '_ {
         self.query().into_iter().flat_map(|q| {
             q.split('&')
                 .map(|pair| {
                     let pair = pair.trim();
                     if let Some(eq_pos) = pair.find('=') {
-                        (pair[..eq_pos].trim(), pair[eq_pos + 1..].trim())
+                        let key = percent_decode_string(pair[..eq_pos].trim());
+                        let value = percent_decode_string(pair[eq_pos + 1..].trim());
+                        (key, value)
                     } else {
-                        (pair.trim(), "")
+                        (percent_decode_string(pair.trim()), String::new())
                     }
                 })
                 .filter(|(k, _)| !k.is_empty())
@@ -512,6 +518,63 @@ fn percent_encode_string(input: &str) -> String {
     encoded
 }
 
+/// Decodes a percent-encoded string according to form-urlencoded rules.
+///
+/// - `%XX` sequences are decoded to the corresponding byte
+/// - `+` is decoded as a space (form-urlencoded convention)
+/// - Invalid percent sequences (e.g., `%ZZ`, `%4`) are preserved as-is
+/// - UTF-8 sequences are properly decoded
+fn percent_decode_string(input: &str) -> String {
+    let mut result = Vec::with_capacity(input.len());
+    let bytes = input.as_bytes();
+    let mut i = 0;
+
+    while i < bytes.len() {
+        match bytes[i] {
+            b'+' => {
+                // In form-urlencoded, '+' represents space
+                result.push(b' ');
+                i += 1;
+            }
+            b'%' if i + 2 < bytes.len() => {
+                // Try to decode %XX
+                let hex1 = bytes[i + 1];
+                let hex2 = bytes[i + 2];
+                if let (Some(d1), Some(d2)) = (hex_digit_value(hex1), hex_digit_value(hex2)) {
+                    result.push((d1 << 4) | d2);
+                    i += 3;
+                } else {
+                    // Invalid hex digits, preserve '%' as-is
+                    result.push(b'%');
+                    i += 1;
+                }
+            }
+            b'%' => {
+                // Incomplete sequence at end of string, preserve as-is
+                result.push(b'%');
+                i += 1;
+            }
+            byte => {
+                result.push(byte);
+                i += 1;
+            }
+        }
+    }
+
+    // Convert to String, replacing invalid UTF-8 with replacement character
+    String::from_utf8_lossy(&result).into_owned()
+}
+
+/// Returns the numeric value of a hex digit (0-15), or None if not a valid hex digit.
+fn hex_digit_value(byte: u8) -> Option<u8> {
+    match byte {
+        b'0'..=b'9' => Some(byte - b'0'),
+        b'A'..=b'F' => Some(byte - b'A' + 10),
+        b'a'..=b'f' => Some(byte - b'a' + 10),
+        _ => None,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -627,21 +690,27 @@ mod tests {
     #[test]
     fn query_pairs_parses_key_value_pairs() {
         let url = Url::parse("http://example.com?foo=bar&baz=qux").unwrap();
-        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
-        assert_eq!(pairs, vec![("foo", "bar"), ("baz", "qux")]);
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
+        assert_eq!(
+            pairs,
+            vec![("foo".to_string(), "bar".to_string()), ("baz".to_string(), "qux".to_string())]
+        );
     }
 
     #[test]
     fn query_pairs_handles_missing_value() {
         let url = Url::parse("http://example.com?foo&bar=baz").unwrap();
-        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
-        assert_eq!(pairs, vec![("foo", ""), ("bar", "baz")]);
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
+        assert_eq!(
+            pairs,
+            vec![("foo".to_string(), "".to_string()), ("bar".to_string(), "baz".to_string())]
+        );
     }
 
     #[test]
     fn query_pairs_is_empty_when_no_query() {
         let url = Url::parse("http://example.com").unwrap();
-        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
         assert!(pairs.is_empty());
     }
 
@@ -1024,17 +1093,17 @@ mod tests {
     fn query_pairs_filters_empty_keys() {
         // Empty key should be filtered
         let url = Url::parse("http://example.com?=value&foo=bar").unwrap();
-        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
-        assert_eq!(pairs, vec![("foo", "bar")]);
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
+        assert_eq!(pairs, vec![("foo".to_string(), "bar".to_string())]);
 
         // Multiple empty keys
         let url = Url::parse("http://example.com?=&=&foo=bar&=").unwrap();
-        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
-        assert_eq!(pairs, vec![("foo", "bar")]);
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
+        assert_eq!(pairs, vec![("foo".to_string(), "bar".to_string())]);
 
         // All empty keys results in empty iterator
         let url = Url::parse("http://example.com?=value&=").unwrap();
-        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
         assert!(pairs.is_empty());
     }
 
@@ -1043,8 +1112,11 @@ mod tests {
         // Note: In practice, whitespace in URLs should be percent-encoded,
         // but this tests the trimming behavior if somehow present
         let url = Url::parse("http://example.com?foo=bar&baz=qux").unwrap();
-        let pairs: Vec<(&str, &str)> = url.query_pairs().collect();
-        assert_eq!(pairs, vec![("foo", "bar"), ("baz", "qux")]);
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
+        assert_eq!(
+            pairs,
+            vec![("foo".to_string(), "bar".to_string()), ("baz".to_string(), "qux".to_string())]
+        );
     }
 
     #[test]
@@ -1069,5 +1141,96 @@ mod tests {
         // Empty password returns None (filtered out)
         let url = Url::parse("http://user:@example.com").unwrap();
         assert_eq!(url.password(), None);
+    }
+
+    #[test]
+    fn percent_decode_basic() {
+        // Basic percent decoding
+        assert_eq!(percent_decode_string("%40"), "@");
+        assert_eq!(percent_decode_string("%3D"), "=");
+        assert_eq!(percent_decode_string("%26"), "&");
+        assert_eq!(percent_decode_string("%20"), " ");
+    }
+
+    #[test]
+    fn percent_decode_utf8() {
+        // UTF-8 sequences
+        assert_eq!(percent_decode_string("%C3%B3"), "ó");
+        assert_eq!(percent_decode_string("%C3%B2"), "ò");
+        assert_eq!(percent_decode_string("%E6%97%A5%E6%9C%AC%E8%AA%9E"), "日本語");
+    }
+
+    #[test]
+    fn percent_decode_invalid_hex() {
+        // Invalid hex digits are preserved as-is
+        assert_eq!(percent_decode_string("%ZZ"), "%ZZ");
+        assert_eq!(percent_decode_string("%GH"), "%GH");
+        assert_eq!(percent_decode_string("foo%ZZbar"), "foo%ZZbar");
+    }
+
+    #[test]
+    fn percent_decode_incomplete() {
+        // Incomplete sequences at end of string are preserved
+        assert_eq!(percent_decode_string("%4"), "%4");
+        assert_eq!(percent_decode_string("foo%"), "foo%");
+        assert_eq!(percent_decode_string("foo%2"), "foo%2");
+    }
+
+    #[test]
+    fn percent_decode_plus_as_space() {
+        // In form-urlencoded, '+' represents space
+        assert_eq!(percent_decode_string("hello+world"), "hello world");
+        assert_eq!(percent_decode_string("foo+bar+baz"), "foo bar baz");
+    }
+
+    #[test]
+    fn percent_decode_mixed() {
+        // Mix of encoded and plain chars
+        assert_eq!(percent_decode_string("hello%20world"), "hello world");
+        assert_eq!(percent_decode_string("key%3Dvalue"), "key=value");
+        assert_eq!(percent_decode_string("foo%26bar%3Dbaz"), "foo&bar=baz");
+    }
+
+    #[test]
+    fn percent_decode_lowercase_hex() {
+        // Lowercase hex digits should work
+        assert_eq!(percent_decode_string("%c3%b3"), "ó");
+        assert_eq!(percent_decode_string("%2f"), "/");
+    }
+
+    #[test]
+    fn percent_decode_empty_string() {
+        assert_eq!(percent_decode_string(""), "");
+    }
+
+    #[test]
+    fn percent_decode_no_encoding() {
+        // Plain string without encoding
+        assert_eq!(percent_decode_string("hello"), "hello");
+        assert_eq!(percent_decode_string("foo123bar"), "foo123bar");
+    }
+
+    #[test]
+    fn query_pairs_decodes_percent_encoded() {
+        // Test that query_pairs decodes percent-encoded values
+        let url = Url::parse("http://example.com?key%3D1=value%26more").unwrap();
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
+        assert_eq!(pairs, vec![("key=1".to_string(), "value&more".to_string())]);
+    }
+
+    #[test]
+    fn query_pairs_decodes_plus_as_space() {
+        // Test that query_pairs decodes '+' as space
+        let url = Url::parse("http://example.com?hello+world=foo+bar").unwrap();
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
+        assert_eq!(pairs, vec![("hello world".to_string(), "foo bar".to_string())]);
+    }
+
+    #[test]
+    fn query_pairs_decodes_utf8() {
+        // Test UTF-8 decoding in query pairs
+        let url = Url::parse("http://example.com?name=%C3%B3").unwrap();
+        let pairs: Vec<(String, String)> = url.query_pairs().collect();
+        assert_eq!(pairs, vec![("name".to_string(), "ó".to_string())]);
     }
 }

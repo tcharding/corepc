@@ -398,7 +398,7 @@ mod empty_and_edge_cases {
         let bitreq = BitreqUrl::parse("http://example.com?=value&foo=bar").unwrap();
         let max = MaxUrl::parse("http://example.com?=value&foo=bar").unwrap();
 
-        let bitreq_pairs: Vec<(&str, &str)> = bitreq.query_pairs().collect();
+        let bitreq_pairs: Vec<(String, String)> = bitreq.query_pairs().collect();
         // url crate returns Cow<str> pairs, filter out empty keys for parity
         let max_pairs: Vec<(String, String)> = max
             .query_pairs()
@@ -406,12 +406,8 @@ mod empty_and_edge_cases {
             .map(|(k, v)| (k.into_owned(), v.into_owned()))
             .collect();
 
-        assert_eq!(bitreq_pairs.len(), max_pairs.len());
-        for ((bk, bv), (mk, mv)) in bitreq_pairs.iter().zip(max_pairs.iter()) {
-            assert_eq!(*bk, mk.as_str());
-            assert_eq!(*bv, mv.as_str());
-        }
-        assert_eq!(bitreq_pairs, vec![("foo", "bar")]);
+        assert_eq!(bitreq_pairs, max_pairs);
+        assert_eq!(bitreq_pairs, vec![("foo".to_string(), "bar".to_string())]);
     }
 
     #[test]
@@ -419,16 +415,15 @@ mod empty_and_edge_cases {
         let bitreq = BitreqUrl::parse("http://example.com?foo=bar&baz=qux").unwrap();
         let max = MaxUrl::parse("http://example.com?foo=bar&baz=qux").unwrap();
 
-        let bitreq_pairs: Vec<(&str, &str)> = bitreq.query_pairs().collect();
+        let bitreq_pairs: Vec<(String, String)> = bitreq.query_pairs().collect();
         let max_pairs: Vec<(String, String)> =
             max.query_pairs().map(|(k, v)| (k.into_owned(), v.into_owned())).collect();
 
-        assert_eq!(bitreq_pairs.len(), max_pairs.len());
-        for ((bk, bv), (mk, mv)) in bitreq_pairs.iter().zip(max_pairs.iter()) {
-            assert_eq!(*bk, mk.as_str());
-            assert_eq!(*bv, mv.as_str());
-        }
-        assert_eq!(bitreq_pairs, vec![("foo", "bar"), ("baz", "qux")]);
+        assert_eq!(bitreq_pairs, max_pairs);
+        assert_eq!(
+            bitreq_pairs,
+            vec![("foo".to_string(), "bar".to_string()), ("baz".to_string(), "qux".to_string())]
+        );
     }
 
     #[test]
@@ -463,5 +458,139 @@ mod empty_and_edge_cases {
         let max = MaxUrl::parse("http://user:@example.com").unwrap();
         assert_eq!(bitreq.password(), None);
         assert_eq!(bitreq.password(), max.password());
+    }
+}
+
+// Parity tests for percent-encoded URLs
+#[cfg(test)]
+mod percent_encoding_parity {
+    use super::*;
+
+    #[test]
+    fn username_with_percent_encoded_chars() {
+        // %40 encodes '@'
+        let bitreq = BitreqUrl::parse("http://user%40name@example.com").unwrap();
+        let max = MaxUrl::parse("http://user%40name@example.com").unwrap();
+
+        // Both should return raw percent-encoded username
+        assert_eq!(bitreq.username(), max.username());
+        assert_eq!(bitreq.username(), "user%40name");
+    }
+
+    #[test]
+    fn password_with_percent_encoded_chars() {
+        // %40 encodes '@', %3A encodes ':'
+        let bitreq = BitreqUrl::parse("http://user:pass%40word@example.com").unwrap();
+        let max = MaxUrl::parse("http://user:pass%40word@example.com").unwrap();
+
+        // Both should return raw percent-encoded password
+        assert_eq!(bitreq.password(), max.password());
+        assert_eq!(bitreq.password(), Some("pass%40word"));
+    }
+
+    #[test]
+    fn path_with_percent_encoded_chars() {
+        // %2F encodes '/', %20 encodes space
+        let bitreq = BitreqUrl::parse("http://example.com/path%2Fwith%20spaces").unwrap();
+        let max = MaxUrl::parse("http://example.com/path%2Fwith%20spaces").unwrap();
+
+        // Both should return raw percent-encoded path
+        assert_eq!(bitreq.path(), max.path());
+        assert_eq!(bitreq.path(), "/path%2Fwith%20spaces");
+    }
+
+    #[test]
+    fn path_segments_with_percent_encoded_chars() {
+        // Segments should be raw (percent-encoded)
+        let bitreq = BitreqUrl::parse("http://example.com/seg%2F1/seg%202").unwrap();
+        let max = MaxUrl::parse("http://example.com/seg%2F1/seg%202").unwrap();
+
+        let bitreq_segments: Vec<&str> = bitreq.path_segments().collect();
+        let max_segments: Vec<&str> =
+            max.path_segments().unwrap().filter(|s| !s.is_empty()).collect();
+
+        // Both return raw segments
+        assert_eq!(bitreq_segments, max_segments);
+        assert_eq!(bitreq_segments, vec!["seg%2F1", "seg%202"]);
+    }
+
+    #[test]
+    fn query_with_percent_encoded_chars() {
+        // Query string should be raw
+        let bitreq = BitreqUrl::parse("http://example.com?key%3D1=value%26more").unwrap();
+        let max = MaxUrl::parse("http://example.com?key%3D1=value%26more").unwrap();
+
+        // Both should return raw query string
+        assert_eq!(bitreq.query(), max.query());
+        assert_eq!(bitreq.query(), Some("key%3D1=value%26more"));
+    }
+
+    #[test]
+    fn query_pairs_with_percent_encoded_chars() {
+        // url::Url::query_pairs() decodes percent-encoded chars
+        // bitreq::Url::query_pairs() should match this behavior
+        let bitreq = BitreqUrl::parse("http://example.com?key%3D1=value%26more").unwrap();
+        let max = MaxUrl::parse("http://example.com?key%3D1=value%26more").unwrap();
+
+        let bitreq_pairs: Vec<(String, String)> = bitreq.query_pairs().collect();
+        let max_pairs: Vec<(String, String)> =
+            max.query_pairs().map(|(k, v)| (k.into_owned(), v.into_owned())).collect();
+
+        // Both should decode percent-encoded chars
+        assert_eq!(bitreq_pairs, max_pairs);
+        // key%3D1 -> "key=1", value%26more -> "value&more"
+        assert_eq!(bitreq_pairs, vec![("key=1".to_string(), "value&more".to_string())]);
+    }
+
+    #[test]
+    fn query_pairs_with_plus_as_space() {
+        // In form-urlencoded (query strings), '+' represents space
+        let bitreq = BitreqUrl::parse("http://example.com?hello+world=foo+bar").unwrap();
+        let max = MaxUrl::parse("http://example.com?hello+world=foo+bar").unwrap();
+
+        let bitreq_pairs: Vec<(String, String)> = bitreq.query_pairs().collect();
+        let max_pairs: Vec<(String, String)> =
+            max.query_pairs().map(|(k, v)| (k.into_owned(), v.into_owned())).collect();
+
+        // Both should decode '+' as space
+        assert_eq!(bitreq_pairs, max_pairs);
+        assert_eq!(bitreq_pairs, vec![("hello world".to_string(), "foo bar".to_string())]);
+    }
+
+    #[test]
+    fn query_pairs_with_utf8_percent_encoded() {
+        // UTF-8 encoded character: ó = %C3%B3
+        let bitreq = BitreqUrl::parse("http://example.com?name=%C3%B3").unwrap();
+        let max = MaxUrl::parse("http://example.com?name=%C3%B3").unwrap();
+
+        let bitreq_pairs: Vec<(String, String)> = bitreq.query_pairs().collect();
+        let max_pairs: Vec<(String, String)> =
+            max.query_pairs().map(|(k, v)| (k.into_owned(), v.into_owned())).collect();
+
+        // Both should decode UTF-8 sequences
+        assert_eq!(bitreq_pairs, max_pairs);
+        assert_eq!(bitreq_pairs, vec![("name".to_string(), "ó".to_string())]);
+    }
+
+    #[test]
+    fn query_pairs_mixed_encoding() {
+        // Mix of encoded and unencoded characters
+        let bitreq = BitreqUrl::parse("http://example.com?a=1&b=%32&c=three").unwrap();
+        let max = MaxUrl::parse("http://example.com?a=1&b=%32&c=three").unwrap();
+
+        let bitreq_pairs: Vec<(String, String)> = bitreq.query_pairs().collect();
+        let max_pairs: Vec<(String, String)> =
+            max.query_pairs().map(|(k, v)| (k.into_owned(), v.into_owned())).collect();
+
+        assert_eq!(bitreq_pairs, max_pairs);
+        // %32 decodes to '2'
+        assert_eq!(
+            bitreq_pairs,
+            vec![
+                ("a".to_string(), "1".to_string()),
+                ("b".to_string(), "2".to_string()),
+                ("c".to_string(), "three".to_string()),
+            ]
+        );
     }
 }

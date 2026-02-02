@@ -76,18 +76,16 @@ pub fn do_test(data: &[u8]) {
                 input
             );
 
-            let bitreq_pairs: Vec<(&str, &str)> = bitreq_url.query_pairs().collect();
+            let bitreq_pairs: Vec<(String, String)> = bitreq_url.query_pairs().collect();
             let ref_pairs: Vec<(String, String)> =
                 ref_url.query_pairs().map(|(k, v)| (k.into_owned(), v.into_owned())).collect();
-            let ref_pairs_str: Vec<(&str, &str)> =
-                ref_pairs.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
-            assert_eq!(bitreq_pairs, ref_pairs_str, "Query pairs mismatch for input: {:?}", input);
+            assert_eq!(bitreq_pairs, ref_pairs, "Query pairs mismatch for input: {:?}", input);
         }
         (Ok(v), Err(e)) => {
             panic!("bitreq parsed, URL did not. Input {input:?}. Err {e:?}");
         }
         (Err(e), Ok(v)) => match e {
-            bitreq::UrlParseError::InvalidCharacter(_) => { 
+            bitreq::UrlParseError::InvalidCharacter(_) => {
                 // InvalidCharacter errors are currently expected as bitreq::Url only handles ASCII
                 // characters.
             }
