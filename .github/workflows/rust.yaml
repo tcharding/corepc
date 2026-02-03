@@ -10,7 +10,7 @@ name: Continuous integration
 
 jobs:
   Prepare:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     outputs:
       nightly_version: ${{ steps.read_toolchain.outputs.nightly_version }}
     steps:
