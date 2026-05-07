@@ -573,10 +573,13 @@ impl BitcoinD {
 
 impl Drop for BitcoinD {
     fn drop(&mut self) {
+        // Frist attempt graceful shutdown for persistent directories,
+        // always fallback to force kill and wait for process to be reaped.
         if let DataDir::Persistent(_) = self.work_dir {
             let _ = self.stop();
         }
         let _ = self.process.kill();
+        let _ = self.process.wait();
     }
 }
 
