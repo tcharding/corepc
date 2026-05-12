@@ -1,3 +1,8 @@
+# 0.39.0 - 2026-05-12
+
+- Update to use latest `bitcoind v0.39.0` and `corepc-client v0.14.0`.
+- Fix the `bitcoind_23_2` feature to select the matching `bitcoind` feature [#573](https://github.com/rust-bitcoin/corepc/pull/573)
+
 # 0.38.1 - 2026-05-01
 
 - Fix typo in manifest `documentation` field.

@@ -1,3 +1,10 @@
+# 0.39.0 - 2026-05-12
+
+- Update to use latest `corepc-client v0.14.0`.
+- Reap the `bitcoind` process in `Drop` by calling `wait` after shutdown [#585](https://github.com/rust-bitcoin/corepc/pull/585)
+- Extract `libexec/bitcoin-node` and `bin/bitcoin-cli` alongside `bitcoind` [#572](https://github.com/rust-bitcoin/corepc/pull/572)
+- Fix stale `corepc-node` references in the crate documentation [#574](https://github.com/rust-bitcoin/corepc/pull/574)
+
 # 0.38.0 - 2026-04-20
 
 - Update to use latest `bitreq v0.3.5`.
