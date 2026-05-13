@@ -27,6 +27,8 @@ use log::{debug, error, warn};
 #[rustfmt::skip] // Keep public re-exports separate.
 pub use error::Error;
 
+const IS_ALL_FEATURES_BUILD: bool = cfg!(feature = "all_features");
+
 /// Electrs configuration parameters, implements a convenient [Default] for most common use.
 ///
 /// Default values:
@@ -80,15 +82,14 @@ pub struct Conf<'a> {
 
 impl Default for Conf<'_> {
     fn default() -> Self {
-        let args = if cfg!(feature = "electrs_0_9_1")
-            || cfg!(feature = "electrs_0_8_10")
-            || cfg!(feature = "esplora_a33e97e1")
-            || cfg!(feature = "legacy")
-        {
-            vec!["-vvv"]
-        } else {
-            vec![]
-        };
+        #[allow(unused_mut)]
+        let mut args = vec![];
+
+        let should_version_use_verbose_flag =
+            cfg!(any(feature = "electrs_0_9_1", feature = "electrs_0_8_10", feature = "legacy"));
+        if !IS_ALL_FEATURES_BUILD && should_version_use_verbose_flag {
+            args.push("-vvv");
+        }
 
         Conf {
             args,
@@ -177,43 +178,33 @@ impl ElectrsD {
         args.push("--network");
         args.push(conf.network);
 
-        #[cfg(not(feature = "legacy"))]
-        let cookie_file;
-        #[cfg(not(feature = "legacy"))]
-        {
-            args.push("--cookie-file");
-            cookie_file = format!("{}", bitcoind.params.cookie_file.display());
-            args.push(&cookie_file);
-        }
-
-        #[cfg(feature = "legacy")]
-        let mut cookie_value;
-        #[cfg(feature = "legacy")]
-        {
-            use std::io::Read;
-            args.push("--cookie");
-            let mut cookie = std::fs::File::open(&bitcoind.params.cookie_file)?;
-            cookie_value = String::new();
-            cookie.read_to_string(&mut cookie_value)?;
-            args.push(&cookie_value);
-        }
+        let cookie_flag;
+        let cookie_val = if !IS_ALL_FEATURES_BUILD && cfg!(feature = "legacy") {
+            cookie_flag = "--cookie";
+            std::fs::read_to_string(&bitcoind.params.cookie_file)?
+        } else {
+            cookie_flag = "--cookie-file";
+            bitcoind.params.cookie_file.display().to_string()
+        };
+        args.push(cookie_flag);
+        args.push(&cookie_val);
 
         args.push("--daemon-rpc-addr");
         let rpc_socket = bitcoind.params.rpc_socket.to_string();
         args.push(&rpc_socket);
 
         let p2p_socket;
-        if cfg!(feature = "electrs_0_8_10")
-            || cfg!(feature = "esplora_a33e97e1")
-            || cfg!(feature = "legacy")
-        {
+
+        let should_version_use_jsonrpc_import =
+            cfg!(any(feature = "electrs_0_8_10", feature = "esplora_a33e97e1", feature = "legacy"));
+        if !IS_ALL_FEATURES_BUILD && should_version_use_jsonrpc_import {
             args.push("--jsonrpc-import");
         } else {
             args.push("--daemon-p2p-addr");
             p2p_socket = bitcoind
                 .params
                 .p2p_socket
-                .expect("electrs_0_9_1 requires bitcoind with p2p port open")
+                .expect("electrs needs bitcoind with p2p port open")
                 .to_string();
             args.push(&p2p_socket);
         }
@@ -392,7 +383,7 @@ mod test {
     use electrum_client::ElectrumApi;
     use log::{debug, log_enabled, Level};
 
-    use crate::{exe_path, ElectrsD};
+    use crate::{exe_path, ElectrsD, IS_ALL_FEATURES_BUILD};
 
     #[test]
     #[ignore] // launch singularly since env are globals
@@ -446,7 +437,9 @@ mod test {
         debug!("electrs: {}", &electrs_exe);
         let mut conf = bitcoind::Conf::default();
         conf.view_stdout = log_enabled!(Level::Debug);
-        if !cfg!(feature = "electrs_0_8_10") && !cfg!(feature = "esplora_a33e97e1") {
+        let should_version_use_p2p =
+            !cfg!(any(feature = "electrs_0_8_10", feature = "esplora_a33e97e1"));
+        if IS_ALL_FEATURES_BUILD || should_version_use_p2p {
             conf.p2p = P2P::Yes;
         }
         let bitcoind = bitcoind::BitcoinD::with_conf(&bitcoind_exe, &conf).unwrap();
