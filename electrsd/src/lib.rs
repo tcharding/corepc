@@ -83,10 +83,11 @@ pub struct Conf<'a> {
 
 impl Default for Conf<'_> {
     fn default() -> Self {
-        let args = if cfg!(feature = "electrs_0_9_1")
-            || cfg!(feature = "electrs_0_8_10")
-            || cfg!(feature = "esplora_a33e97e1")
-            || cfg!(feature = "legacy")
+        let args = if !cfg!(feature = "all_features_test")
+            && (cfg!(feature = "electrs_0_9_1")
+                || cfg!(feature = "electrs_0_8_10")
+                || cfg!(feature = "esplora_a33e97e1")
+                || cfg!(feature = "legacy"))
         {
             vec!["-vvv"]
         } else {
@@ -180,35 +181,28 @@ impl ElectrsD {
         args.push("--network");
         args.push(conf.network);
 
-        #[cfg(not(feature = "legacy"))]
-        let cookie_file;
-        #[cfg(not(feature = "legacy"))]
-        {
-            args.push("--cookie-file");
-            cookie_file = format!("{}", bitcoind.params.cookie_file.display());
-            args.push(&cookie_file);
-        }
-
-        #[cfg(feature = "legacy")]
-        let mut cookie_value;
-        #[cfg(feature = "legacy")]
-        {
-            use std::io::Read;
-            args.push("--cookie");
-            let mut cookie = std::fs::File::open(&bitcoind.params.cookie_file)?;
-            cookie_value = String::new();
-            cookie.read_to_string(&mut cookie_value)?;
-            args.push(&cookie_value);
-        }
+        let cookie_flag;
+        let cookie_val = if cfg!(all(feature = "legacy", not(feature = "all_features_test"))) {
+            cookie_flag = "--cookie";
+            std::fs::read_to_string(&bitcoind.params.cookie_file)?
+        } else {
+            cookie_flag = "--cookie-file";
+            bitcoind.params.cookie_file.display().to_string()
+        };
+        args.push(cookie_flag);
+        args.push(&cookie_val);
 
         args.push("--daemon-rpc-addr");
         let rpc_socket = bitcoind.params.rpc_socket.to_string();
         args.push(&rpc_socket);
 
         let p2p_socket;
-        if cfg!(feature = "electrs_0_8_10")
-            || cfg!(feature = "esplora_a33e97e1")
-            || cfg!(feature = "legacy")
+        if !cfg!(feature = "all_features_test")
+            && cfg!(any(
+                feature = "electrs_0_8_10",
+                feature = "esplora_a33e97e1",
+                feature = "legacy",
+            ))
         {
             args.push("--jsonrpc-import");
         } else {
@@ -216,7 +210,7 @@ impl ElectrsD {
             p2p_socket = bitcoind
                 .params
                 .p2p_socket
-                .expect("electrs_0_9_1 requires bitcoind with p2p port open")
+                .expect("electrs needs bitcoind with p2p port open")
                 .to_string();
             args.push(&p2p_socket);
         }
@@ -449,7 +443,9 @@ mod test {
         debug!("electrs: {}", &electrs_exe);
         let mut conf = bitcoind::Conf::default();
         conf.view_stdout = log_enabled!(Level::Debug);
-        if !cfg!(feature = "electrs_0_8_10") && !cfg!(feature = "esplora_a33e97e1") {
+        if cfg!(feature = "all_features_test")
+            || !cfg!(any(feature = "electrs_0_8_10", feature = "esplora_a33e97e1"))
+        {
             conf.p2p = P2P::Yes;
         }
         let bitcoind = bitcoind::BitcoinD::with_conf(&bitcoind_exe, &conf).unwrap();
