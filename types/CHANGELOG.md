@@ -1,3 +1,7 @@
+# 0.13.0 - 2026-05-12
+
+- Change `model::GetBlockchainInfo::prune_target_size` from `u32` to `u64` [#547](https://github.com/rust-bitcoin/corepc/pull/547)
+
 # 0.12.0 - 2026-04-13
 
 - Update `GetBlockStats` fields to be optional [#534](https://github.com/rust-bitcoin/corepc/pull/534)
