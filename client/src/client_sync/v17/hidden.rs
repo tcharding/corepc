@@ -82,8 +82,8 @@ macro_rules! impl_client_v17__sync_with_validation_interface_queue {
 macro_rules! impl_client_v17__reconsider_block {
     () => {
         impl Client {
-            pub fn reconsider_block(&self, blockhash: bitcoin::BlockHash) -> Result<()> {
-                self.call("reconsiderblock", &[into_json(blockhash)?])
+            pub fn reconsider_block(&self, block_hash: bitcoin::BlockHash) -> Result<()> {
+                self.call("reconsiderblock", &[into_json(block_hash)?])
             }
         }
     };
