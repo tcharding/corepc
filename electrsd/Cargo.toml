@@ -24,14 +24,13 @@ nix = { version = "0.25.0" }
 env_logger = { version = "0.10" }
 
 [build-dependencies]
+anyhow = { version = "1.0.66", default-features = false, features = ["std"] }
 bitcoin_hashes = { version = "0.14", optional = true }
 zip = { version = "0.6", default-features = false, optional = true, features = [
   "bzip2",
   "deflate",
 ] }
-bitreq = { version = "0.3.5", path = "../bitreq", default-features = false, optional = true, features = [
-  "https",
-] }
+bitreq = { version = "0.3.5", path = "../bitreq", features = ["https"], optional = true }
 
 [features]
 legacy = []
@@ -62,9 +61,8 @@ bitcoind_0_19_1 = ["bitcoind/0_19_1"]
 bitcoind_0_18_1 = ["bitcoind/0_18_1"]
 bitcoind_0_17_2 = ["bitcoind/0_17_2"]
 
-# This flag should not be used, it provides a compiler
-# sanity check for running all-features tests.
-all_features_test = []
+# This flag should never be manually set. Used to handle `--all-features` was used.
+all_features = []
 
 [package.metadata.rbmt.lint]
 # The electrsd crate requires a version feature to compile

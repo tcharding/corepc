@@ -83,16 +83,11 @@ pub struct Conf<'a> {
 
 impl Default for Conf<'_> {
     fn default() -> Self {
-        let args = if !cfg!(feature = "all_features_test")
-            && (cfg!(feature = "electrs_0_9_1")
-                || cfg!(feature = "electrs_0_8_10")
-                || cfg!(feature = "esplora_a33e97e1")
-                || cfg!(feature = "legacy"))
-        {
-            vec!["-vvv"]
-        } else {
-            vec![]
-        };
+        #[allow(unused_mut)]
+        let mut args = vec![];
+
+        #[cfg(all(not(feature = "all_features"), any(feature = "electrs_0_9_1", feature = "electrs_0_8_10", feature = "esplora_a33e97e1", feature = "legacy")))]
+        args.push("-vvv");
 
         Conf {
             args,
@@ -182,7 +177,7 @@ impl ElectrsD {
         args.push(conf.network);
 
         let cookie_flag;
-        let cookie_val = if cfg!(all(feature = "legacy", not(feature = "all_features_test"))) {
+        let cookie_val = if cfg!(all(feature = "legacy", not(feature = "all_features"))) {
             cookie_flag = "--cookie";
             std::fs::read_to_string(&bitcoind.params.cookie_file)?
         } else {
@@ -197,7 +192,7 @@ impl ElectrsD {
         args.push(&rpc_socket);
 
         let p2p_socket;
-        if !cfg!(feature = "all_features_test")
+        if !cfg!(feature = "all_features")
             && cfg!(any(
                 feature = "electrs_0_8_10",
                 feature = "esplora_a33e97e1",
@@ -315,7 +310,7 @@ impl Drop for ElectrsD {
 
 /// Provide the electrs executable path if a version feature has been specified and `ELECTRSD_SKIP_DOWNLOAD` is not set.
 pub fn downloaded_exe_path() -> Option<String> {
-    if versions::HAS_FEATURE && std::env::var_os("ELECTRSD_SKIP_DOWNLOAD").is_none() {
+    if std::env::var_os("ELECTRSD_SKIP_DOWNLOAD").is_none() {
         Some(format!("{}/electrs/{}/electrs", env!("OUT_DIR"), versions::electrs_name(),))
     } else {
         None
@@ -443,7 +438,7 @@ mod test {
         debug!("electrs: {}", &electrs_exe);
         let mut conf = bitcoind::Conf::default();
         conf.view_stdout = log_enabled!(Level::Debug);
-        if cfg!(feature = "all_features_test")
+        if cfg!(feature = "all_features")
             || !cfg!(any(feature = "electrs_0_8_10", feature = "esplora_a33e97e1"))
         {
             conf.p2p = P2P::Yes;

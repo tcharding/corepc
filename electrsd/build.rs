@@ -1,8 +1,9 @@
-#[cfg(not(feature = "download"))]
-fn main() {}
+fn main() { download::start().unwrap(); }
 
-#[cfg(feature = "download")]
-fn main() { download::download() }
+#[cfg(any(docsrs, not(feature = "download")))]
+mod download {
+    pub(crate) fn start() -> Result<(), ()> { Ok(()) }
+}
 
 #[cfg(feature = "download")]
 mod download {
@@ -30,14 +31,11 @@ mod download {
         Err(())
     }
 
-    pub fn download() {
+    pub(crate) fn start() -> anyhow::Result<()> {
         if std::env::var_os("ELECTRSD_SKIP_DOWNLOAD").is_some() {
-            return;
+            return Ok(());
         }
 
-        if !HAS_FEATURE {
-            return;
-        }
         let download_filename_without_extension = electrs_name();
         let download_filename = format!("{}.zip", download_filename_without_extension);
         dbg!(&download_filename);
@@ -62,14 +60,14 @@ mod download {
             assert_eq!(expected_hash, downloaded_hash);
             let cursor = Cursor::new(downloaded_bytes);
 
-            let mut archive = zip::ZipArchive::new(cursor).unwrap();
-            let mut file = archive.by_index(0).unwrap();
-            std::fs::create_dir_all(destination_filename.parent().unwrap()).unwrap();
-            let mut outfile = std::fs::File::create(&destination_filename).unwrap();
+            let mut archive = zip::ZipArchive::new(cursor)?;
+            let mut file = archive.by_index(0)?;
+            std::fs::create_dir_all(destination_filename.parent().unwrap())?;
+            let mut outfile = std::fs::File::create(&destination_filename)?;
 
             std::io::copy(&mut file, &mut outfile).unwrap();
-            std::fs::set_permissions(&destination_filename, std::fs::Permissions::from_mode(0o755))
-                .unwrap();
+            std::fs::set_permissions(&destination_filename, std::fs::Permissions::from_mode(0o755))?;
         }
+        Ok(())
     }
 }
