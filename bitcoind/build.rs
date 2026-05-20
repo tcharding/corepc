@@ -95,7 +95,7 @@ mod download {
         #[cfg(not(target_os = "windows"))]
         let cache_complete = existing_filename.exists()
             && version_dir.join("bin").join("bitcoin-cli").exists()
-            && (!cfg!(feature = "30_0")
+            && (!cfg!(feature = "30_2")
                 || version_dir.join("libexec").join("bitcoin-node").exists());
         #[cfg(target_os = "windows")]
         let cache_complete = existing_filename.exists();

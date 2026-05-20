@@ -18,8 +18,7 @@ latest = ["30_2"]
 # Enable the same feature in `bitcoind` and the version feature here.
 # All minor releases of the latest three versions.
 30_2 = ["v30_and_below", "bitcoind/30_2"]
-# Skip v30.1 due to wallet migration bug.
-30_0 = ["v30_and_below", "bitcoind/30_0"]
+# No `30_0` or `30_1` because of wallet migration bug.
 29_0 = ["v29_and_below", "bitcoind/29_0"]
 # Only the latest minor version for older versions.
 28_2 = ["v28_and_below", "bitcoind/28_2"]

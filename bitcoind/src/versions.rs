@@ -7,10 +7,7 @@ compile_error!("enable a feature in order to select the version of Bitcoin Core 
 #[allow(dead_code)] // Triggers in --all-features builds.
 pub const VERSION: &str = "30.2";
 
-#[cfg(all(feature = "30_0", not(feature = "30_2")))]
-pub const VERSION: &str = "30.0";
-
-#[cfg(all(feature = "29_0", not(feature = "30_0")))]
+#[cfg(all(feature = "29_0", not(feature = "30_2")))]
 pub const VERSION: &str = "29.0";
 
 #[cfg(all(feature = "28_2", not(feature = "29_0")))]

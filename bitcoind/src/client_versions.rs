@@ -9,10 +9,7 @@
 #[cfg(feature = "30_2")]
 pub use corepc_client::{client_sync::v30::*, types::v30 as vtype};
 
-#[cfg(all(feature = "30_0", not(feature = "30_2")))]
-pub use corepc_client::{client_sync::v30::*, types::v30 as vtype};
-
-#[cfg(all(feature = "29_0", not(feature = "30_0")))]
+#[cfg(all(feature = "29_0", not(feature = "30_2")))]
 pub use corepc_client::{client_sync::v29::*, types::v29 as vtype};
 
 #[cfg(all(feature = "28_2", not(feature = "29_0")))]
