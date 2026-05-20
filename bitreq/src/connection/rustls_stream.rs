@@ -17,7 +17,7 @@ use rustls::{self, ClientConfig, ClientConnection, RootCertStore, StreamOwned};
 use tokio_native_tls::TlsConnector as AsyncTlsConnector;
 #[cfg(any(feature = "async-https-rustls", feature = "async-https-rustls-probe"))]
 use tokio_rustls::{client::TlsStream, TlsConnector};
-#[cfg(feature = "rustls-webpki")]
+#[cfg(feature = "webpki-roots")]
 use webpki_roots::TLS_SERVER_ROOTS;
 
 #[cfg(any(feature = "async-https-rustls", feature = "async-https-rustls-probe"))]
@@ -41,7 +41,7 @@ fn build_client_config() -> Arc<ClientConfig> {
         let _ = root_certificates.add(cert);
     }
 
-    #[cfg(feature = "rustls-webpki")]
+    #[cfg(feature = "webpki-roots")]
     root_certificates.extend(TLS_SERVER_ROOTS.iter().cloned());
 
     let config =
