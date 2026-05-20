@@ -18,22 +18,10 @@ pub use corepc_client::{client_sync::v29::*, types::v29 as vtype};
 #[cfg(all(feature = "28_2", not(feature = "29_0")))]
 pub use corepc_client::{client_sync::v28::*, types::v28 as vtype};
 
-#[cfg(all(feature = "28_1", not(feature = "28_2")))]
-pub use corepc_client::{client_sync::v28::*, types::v28 as vtype};
-
-#[cfg(all(feature = "28_0", not(feature = "28_1")))]
-pub use corepc_client::{client_sync::v28::*, types::v28 as vtype};
-
-#[cfg(all(feature = "27_2", not(feature = "28_0")))]
+#[cfg(all(feature = "27_2", not(feature = "28_2")))]
 pub use corepc_client::{client_sync::v27::*, types::v27 as vtype};
 
-#[cfg(all(feature = "27_1", not(feature = "27_2")))]
-pub use corepc_client::{client_sync::v27::*, types::v27 as vtype};
-
-#[cfg(all(feature = "27_0", not(feature = "27_1")))]
-pub use corepc_client::{client_sync::v27::*, types::v27 as vtype};
-
-#[cfg(all(feature = "26_2", not(feature = "27_0")))]
+#[cfg(all(feature = "26_2", not(feature = "27_2")))]
 pub use corepc_client::{client_sync::v26::*, types::v26 as vtype};
 
 #[cfg(all(feature = "25_2", not(feature = "26_2")))]

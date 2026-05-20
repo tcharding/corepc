@@ -46,19 +46,15 @@ latest = ["30_2"]
 
 download = ["anyhow", "bitcoin_hashes", "flate2", "tar", "bitreq", "zip"]
 
-# We support all minor releases of the latest four versions.
+# We support all minor releases of the latest three versions.
 30_2 = ["30_0"]
 # Skip v30.1 due to wallet migration bug.
 30_0 = ["29_0"]
 29_0 = ["28_2"]
-28_2 = ["28_1"]
-28_1 = ["28_0"]
-28_0 = ["27_2"]
-27_2 = ["27_1"]
-27_1 = ["27_0"]
-27_0 = ["26_2"]
 
 # We only support the latest minor version for older versions.
+28_2 = ["27_2"]
+27_2 = ["26_2"]
 26_2 = ["25_2"]
 25_2 = ["24_2"]
 24_2 = ["23_2"]

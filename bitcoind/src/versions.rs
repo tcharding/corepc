@@ -16,22 +16,10 @@ pub const VERSION: &str = "29.0";
 #[cfg(all(feature = "28_2", not(feature = "29_0")))]
 pub const VERSION: &str = "28.2";
 
-#[cfg(all(feature = "28_1", not(feature = "28_2")))]
-pub const VERSION: &str = "28.1";
-
-#[cfg(all(feature = "28_0", not(feature = "28_1")))]
-pub const VERSION: &str = "28.0";
-
-#[cfg(all(feature = "27_2", not(feature = "28_0")))]
+#[cfg(all(feature = "27_2", not(feature = "28_2")))]
 pub const VERSION: &str = "27.2";
 
-#[cfg(all(feature = "27_1", not(feature = "27_2")))]
-pub const VERSION: &str = "27.1";
-
-#[cfg(all(feature = "27_0", not(feature = "27_1")))]
-pub const VERSION: &str = "27.0";
-
-#[cfg(all(feature = "26_2", not(feature = "27_0")))]
+#[cfg(all(feature = "26_2", not(feature = "27_2")))]
 pub const VERSION: &str = "26.2";
 
 #[cfg(all(feature = "25_2", not(feature = "26_2")))]
