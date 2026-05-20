@@ -1013,7 +1013,6 @@ fn wallet__send_to_address__modelled() {
 }
 
 #[test]
-#[cfg(feature = "v30_and_below")]
 fn wallet__set_tx_fee() {
     #[cfg(feature = "v29_and_below")]
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
