@@ -333,7 +333,7 @@ proptest! {
         ctrl_char in 0u8..32u8,
         suffix in "[a-z]{0,10}"
     ) {
-        if ctrl_char.is_ascii_whitespace() && suffix.is_empty() {
+        if char::from(ctrl_char).is_whitespace() && suffix.is_empty() {
             return Ok(());
         }
         let invalid_url = format!("{}{}{}", prefix, ctrl_char as char, suffix);
