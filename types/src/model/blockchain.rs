@@ -666,6 +666,28 @@ pub struct GetDifficulty(pub f64);
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolAncestors(pub Vec<Txid>);
 
+/// Models the result of JSON-RPC method `getmempoolcluster`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetMempoolCluster {
+    /// Total sigops-adjusted weight (as defined in BIP 141 and modified by `-bytespersigop`).
+    ///
+    pub cluster_weight: u64,
+    /// Number of transactions.
+    pub tx_count: u64,
+    /// Chunks in this cluster (in mining order).
+    pub chunks: Vec<Chunk>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct Chunk {
+    /// Fees of the transactions in this chunk.
+    pub chunk_fee: Amount,
+    /// Sigops-adjusted weight of all transactions in this chunk.
+    pub chunk_weight: u64,
+    /// Transactions in this chunk in mining order (txids).
+    pub txs: Vec<Txid>,
+}
+
 /// Models the result of JSON-RPC method `getmempoolancestors` with verbose set to true.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct GetMempoolAncestorsVerbose(pub BTreeMap<Txid, MempoolEntry>);
