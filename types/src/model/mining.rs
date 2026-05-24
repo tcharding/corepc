@@ -8,8 +8,8 @@
 use std::collections::BTreeMap;
 
 use bitcoin::{
-    block, Amount, BlockHash, CompactTarget, FeeRate, SignedAmount, Target, Transaction, Txid,
-    Weight, Wtxid,
+    block, BlockHash, CompactTarget, FeeRate, SignedAmount, Target, Transaction, Txid, Weight,
+    Wtxid,
 };
 use serde::{Deserialize, Serialize};
 
@@ -151,9 +151,11 @@ pub struct GetPrioritisedTransactions(pub BTreeMap<Txid, PrioritisedTransaction>
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct PrioritisedTransaction {
     /// Transaction fee delta in satoshis.
-    pub fee_delta: Amount,
+    #[serde(with = "bitcoin::amount::serde::as_sat")]
+    pub fee_delta: SignedAmount,
     /// Whether this transaction is currently in mempool.
     pub in_mempool: bool,
     /// Modified fee in satoshis. Only returned if in_mempool=true.
-    pub modified_fee: Option<Amount>,
+    #[serde(with = "bitcoin::amount::serde::as_sat::opt")]
+    pub modified_fee: Option<SignedAmount>,
 }

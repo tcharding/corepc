@@ -68,8 +68,28 @@ fn mining__get_network_hash_ps() {
 fn mining__get_prioritised_transactions() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
+    let (_address, txid) = node.create_mempool_transaction();
 
-    let _ = node.client.get_prioritised_transactions().expect("getprioritisedtransactions");
+    let fee_delta = SignedAmount::from_sat(-10_000);
+    node.client.prioritise_transaction(&txid, fee_delta).expect("prioritisetransaction");
+
+    let json: GetPrioritisedTransactions =
+        node.client.get_prioritised_transactions().expect("getprioritisedtransactions");
+    let model: Result<mtype::GetPrioritisedTransactions, bitcoin::hex::HexToArrayError> =
+        json.into_model();
+    let model = model.unwrap();
+
+    let prioritised_tx = model.0.get(&txid).expect("prioritised transaction should be present");
+    assert_eq!(prioritised_tx.fee_delta, fee_delta);
+
+    // modified_fee is only returned in v27 and above
+    #[cfg(not(feature = "v26_and_below"))]
+    {
+        let transaction = node.client.get_transaction(txid).expect("gettransaction");
+        let transaction = transaction.into_model().unwrap();
+        let base_fee = -transaction.fee.expect("transaction fee should be present");
+        assert_eq!(prioritised_tx.modified_fee, Some(base_fee + fee_delta));
+    }
 }
 
 #[test]
