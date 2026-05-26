@@ -1,3 +1,7 @@
+# 0.20.1 - 2026-05-26
+
+* Set host header to URL hostname instead of resolved IP [#578](https://github.com/rust-bitcoin/corepc/pull/578)
+
 # 0.20.0 - 2026-04-20
 
 * Add async support [#558](https://github.com/rust-bitcoin/corepc/pull/558)

@@ -1,6 +1,6 @@
 [package]
 name = "jsonrpc"
-version = "0.20.0"
+version = "0.20.1"
 authors = ["Andrew Poelstra <apoelstra@wpsoftware.net>"]
 license = "CC0-1.0"
 repository = "https://github.com/rust-bitcoin/corepc/"
