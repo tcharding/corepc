@@ -1,3 +1,7 @@
+# 0.3.6 - 2026-05-26
+
+* Gate `webpki_roots` import on `webpki-roots` [#597](https://github.com/rust-bitcoin/corepc/pull/597)
+
 # 0.3.5 - 2026-04-20
 
 * Fix `tokio-rustls` feature gating for async rustls support [#563](https://github.com/rust-bitcoin/corepc/pull/563)
