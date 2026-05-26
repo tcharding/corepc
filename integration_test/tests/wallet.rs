@@ -411,6 +411,7 @@ fn wallet__get_unconfirmed_balance__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 fn wallet__get_wallet_info__modelled() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
     node.mine_a_block();

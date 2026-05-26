@@ -4,6 +4,7 @@
 
 #![allow(non_snake_case)] // Test names intentionally use double underscore.
 
+#[cfg(feature = "v30_and_below")]
 use bitcoin::consensus::encode;
 use bitcoin::hex;
 use bitcoind::vtype::*; // All the version specific types.
@@ -140,6 +141,7 @@ fn blockchain__get_best_block_hash__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 fn blockchain__get_block__modelled() {
     let node = BitcoinD::with_wallet(Wallet::None, &[]);
     let block_hash = node.client.best_block_hash().expect("best_block_hash failed");
@@ -234,6 +236,7 @@ fn blockchain__get_block_filter__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 #[cfg(not(feature = "v22_and_below"))]
 fn blockchain__get_block_from_peer() {
     use bitcoin::hashes::Hash;
@@ -379,6 +382,7 @@ fn blockchain__get_chain_tx_stats__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 #[cfg(not(feature = "v22_and_below"))]
 fn blockchain__get_deployment_info__modelled() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
@@ -460,6 +464,7 @@ fn blockchain__get_mempool_ancestors__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 fn blockchain__get_mempool_ancestors_verbose__modelled() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -490,6 +495,7 @@ fn blockchain__get_mempool_descendants__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 fn blockchain__get_mempool_descendants_verbose__modelled() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -508,6 +514,7 @@ fn blockchain__get_mempool_descendants_verbose__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 fn blockchain__get_mempool_entry__modelled() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -519,6 +526,7 @@ fn blockchain__get_mempool_entry__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 fn blockchain__get_mempool_info__modelled() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -533,6 +541,7 @@ fn blockchain__get_mempool_info__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 fn blockchain__get_raw_mempool__modelled() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
@@ -788,6 +797,7 @@ fn blockchain__wait_for_block_height__modelled() {
 }
 
 #[test]
+#[cfg(feature = "v30_and_below")]
 fn blockchain__wait_for_new_block__modelled() {
     let (node1, node2, _node3) = integration_test::three_node_network();
     node1.fund_wallet();

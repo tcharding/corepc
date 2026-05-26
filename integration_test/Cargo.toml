@@ -16,18 +16,14 @@ download = ["bitcoind/download"]
 latest = ["30_2"]
 
 # Enable the same feature in `bitcoind` and the version feature here.
-# All minor releases of the latest four versions.
+# All minor releases of the latest three versions.
+31_0 = ["v31_and_below", "bitcoind/31_0"]
 30_2 = ["v30_and_below", "bitcoind/30_2"]
-# Skip v30.1 due to wallet migration bug.
-30_0 = ["v30_and_below", "bitcoind/30_0"]
+# No `30_0` or `30_1` because of wallet migration bug.
 29_0 = ["v29_and_below", "bitcoind/29_0"]
-28_2 = ["v28_and_below", "bitcoind/28_2"]
-28_1 = ["v28_and_below", "bitcoind/28_1"]
-28_0 = ["v28_and_below", "bitcoind/28_0"]
-27_2 = ["v27_and_below", "bitcoind/27_2"]
-27_1 = ["v27_and_below", "bitcoind/27_1"]
-27_0 = ["v27_and_below", "bitcoind/27_0"]
 # Only the latest minor version for older versions.
+28_2 = ["v28_and_below", "bitcoind/28_2"]
+27_2 = ["v27_and_below", "bitcoind/27_2"]
 26_2 = ["v26_and_below", "bitcoind/26_2"]
 25_2 = ["v25_and_below", "bitcoind/25_2"]
 24_2 = ["v24_and_below", "bitcoind/24_2"]
@@ -43,7 +39,8 @@ latest = ["30_2"]
 # Each major version is tested with the same client.
 # A specific range of versions can be specified e.g. for 24-26:
 # #[cfg(all(feature = "v26_and_below", not(feature = "v23_and_below")))]
-v30_and_below = []
+v31_and_below = []
+v30_and_below = ["v31_and_below"]
 v29_and_below = ["v30_and_below"]
 v28_and_below = ["v29_and_below"]
 v27_and_below = ["v28_and_below"]

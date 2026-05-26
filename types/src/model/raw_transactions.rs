@@ -12,6 +12,13 @@ use bitcoin::hashes::{hash160, sha256};
 use bitcoin::{Amount, BlockHash, FeeRate, Psbt, ScriptBuf, Sequence, Transaction, Txid, Wtxid};
 use serde::{Deserialize, Serialize};
 
+/// Models the result of JSON-RPC method `abortprivatebroadcast`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct AbortPrivateBroadcast {
+    /// The removed transactions.
+    pub removed_transactions: Vec<Transaction>,
+}
+
 /// Models the result of JSON-RPC method `analyzepsbt`.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct AnalyzePsbt {
@@ -140,6 +147,14 @@ pub struct FundRawTransaction {
     pub fee: Amount,
     /// The position of the added change output, or -1.
     pub change_position: i64,
+}
+
+/// Models the result of JSON-RPC method `getprivatebroadcastinfo`.
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct GetPrivateBroadcastInfo {
+    /// The transactions currently being broadcast.
+    pub transactions: Vec<Transaction>,
+    // Don't bother modelling the per-peer info.
 }
 
 /// Models the result of JSON-RPC method `getrawtransaction` with verbose set to `false`.

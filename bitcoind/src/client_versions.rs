@@ -6,31 +6,22 @@
 
 #![allow(unused_imports)] // Not all users need the json types.
 
-#[cfg(feature = "30_0")]
+#[cfg(feature = "31_0")]
+pub use corepc_client::{client_sync::v31::*, types::v31 as vtype};
+
+#[cfg(all(feature = "30_2", not(feature = "31_0")))]
 pub use corepc_client::{client_sync::v30::*, types::v30 as vtype};
 
-#[cfg(all(feature = "29_0", not(feature = "30_0")))]
+#[cfg(all(feature = "29_0", not(feature = "30_2")))]
 pub use corepc_client::{client_sync::v29::*, types::v29 as vtype};
 
 #[cfg(all(feature = "28_2", not(feature = "29_0")))]
 pub use corepc_client::{client_sync::v28::*, types::v28 as vtype};
 
-#[cfg(all(feature = "28_1", not(feature = "28_2")))]
-pub use corepc_client::{client_sync::v28::*, types::v28 as vtype};
-
-#[cfg(all(feature = "28_0", not(feature = "28_1")))]
-pub use corepc_client::{client_sync::v28::*, types::v28 as vtype};
-
-#[cfg(all(feature = "27_2", not(feature = "28_0")))]
+#[cfg(all(feature = "27_2", not(feature = "28_2")))]
 pub use corepc_client::{client_sync::v27::*, types::v27 as vtype};
 
-#[cfg(all(feature = "27_1", not(feature = "27_2")))]
-pub use corepc_client::{client_sync::v27::*, types::v27 as vtype};
-
-#[cfg(all(feature = "27_0", not(feature = "27_1")))]
-pub use corepc_client::{client_sync::v27::*, types::v27 as vtype};
-
-#[cfg(all(feature = "26_2", not(feature = "27_0")))]
+#[cfg(all(feature = "26_2", not(feature = "27_2")))]
 pub use corepc_client::{client_sync::v26::*, types::v26 as vtype};
 
 #[cfg(all(feature = "25_2", not(feature = "26_2")))]
@@ -62,24 +53,5 @@ pub use corepc_client::{client_sync::v17::*, types::v17 as vtype};
 
 /// This is meaningless but we need it otherwise we can't get far enough into
 /// the build process to trigger the `compile_error!` in `./versions.rs`.
-#[cfg(all(
-    not(feature = "30_0"),
-    not(feature = "29_0"),
-    not(feature = "28_2"),
-    not(feature = "28_1"),
-    not(feature = "28_0"),
-    not(feature = "27_2"),
-    not(feature = "27_1"),
-    not(feature = "27_0"),
-    not(feature = "26_2"),
-    not(feature = "25_2"),
-    not(feature = "24_2"),
-    not(feature = "23_2"),
-    not(feature = "22_1"),
-    not(feature = "0_21_2"),
-    not(feature = "0_20_2"),
-    not(feature = "0_19_1"),
-    not(feature = "0_18_1"),
-    not(feature = "0_17_2"),
-))]
+#[cfg(not(feature = "0_17_2"))] // Remember: later version features enable earlier ones.
 pub use corepc_client::{client_sync::v28::*, types::v28 as vtype};
