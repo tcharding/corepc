@@ -34,3 +34,8 @@ alias test29='BITCOIND_EXE=/opt/bitcoin-29.0/bin/bitcoind cargo test --features=
 alias test30='BITCOIND_EXE=/opt/bitcoin-30.2/bin/bitcoind cargo test --features=30_2'
 alias test31='BITCOIND_EXE=/opt/bitcoin-31.0/bin/bitcoind cargo test --features=31_0'
 ```
+
+## Bitcoin Core Tests
+
+Tests derived from Bitcoin Core's `test/functional/` folder live in
+`tests/` alongside the modelled tests, with a `_core` filename suffix.
