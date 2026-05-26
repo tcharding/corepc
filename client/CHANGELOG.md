@@ -1,3 +1,9 @@
+# 0.15.0 - 2026-05-26
+
+- Add initial support for Bitcoin Core v31 [#598](https://github.com/rust-bitcoin/corepc/pull/598)
+- Upgrade to latest `corepc-types` version
+- Change `fee_delta` to `SignedAmount` [#605](https://github.com/rust-bitcoin/corepc/pull/605)
+
 # 0.14.0 - 2026-05-12
 
 - Update to use latest `corepc-types v0.13.0`.
