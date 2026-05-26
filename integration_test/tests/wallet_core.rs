@@ -31,6 +31,7 @@ fn get_transaction_block_fields_present_after_mining() {
 
 #[test]
 #[cfg(not(feature = "v25_and_below"))]
+#[cfg(feature = "v30_and_below")]
 fn get_wallet_info_has_birthtime() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
 
@@ -169,6 +170,7 @@ fn bump_fee_original_fee_rename_and_cross_field() {
 
 #[test]
 #[cfg(not(feature = "v25_and_below"))]
+#[cfg(feature = "v30_and_below")]
 fn get_wallet_info_has_last_processed_block() {
     let node = BitcoinD::with_wallet(Wallet::Default, &[]);
     node.fund_wallet();
