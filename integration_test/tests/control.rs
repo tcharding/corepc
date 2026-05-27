@@ -23,7 +23,7 @@ fn control__get_rpc_info() {
 #[test]
 fn control__help() {
     let node = BitcoinD::with_wallet(Wallet::None, &[]);
-    let _ = node.client.help().unwrap();
+    let _: String = node.client.help().unwrap();
 }
 
 #[test]
@@ -36,11 +36,11 @@ fn control__logging() {
 #[test]
 fn control__stop() {
     let node = BitcoinD::with_wallet(Wallet::None, &[]);
-    let _ = node.client.stop().unwrap();
+    let _: String = node.client.stop().unwrap();
 }
 
 #[test]
 fn control__uptime() {
     let node = BitcoinD::with_wallet(Wallet::None, &[]);
-    let _ = node.client.uptime().unwrap();
+    let _: u32 = node.client.uptime().unwrap();
 }

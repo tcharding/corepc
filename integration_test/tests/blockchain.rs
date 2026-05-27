@@ -594,7 +594,7 @@ fn blockchain__get_tx_out_proof() {
     let (_address, tx) = node.create_mined_transaction();
     let txid = tx.compute_txid();
 
-    let _ = node.client.get_tx_out_proof(&[txid]).expect("gettxoutproof");
+    let _: String = node.client.get_tx_out_proof(&[txid]).expect("gettxoutproof");
 }
 
 #[test]
