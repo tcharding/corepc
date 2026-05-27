@@ -1,3 +1,8 @@
+# 0.14.0 - 2026-05-26
+
+- Add initial support for Bitcoin Core v31 [#598](https://github.com/rust-bitcoin/corepc/pull/598)
+- Change `fee_delta` to `SignedAmount` [#605](https://github.com/rust-bitcoin/corepc/pull/605)
+
 # 0.13.0 - 2026-05-12
 
 - Change `model::GetBlockchainInfo::prune_target_size` from `u32` to `u64` [#547](https://github.com/rust-bitcoin/corepc/pull/547)

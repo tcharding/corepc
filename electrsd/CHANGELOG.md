@@ -1,3 +1,10 @@
+# 0.40.0 - 2026-05-26
+
+With this release we now set the default feature to `electrs_0_10_6`.
+
+- Include in workspace and CI [#570](https://github.com/rust-bitcoin/corepc/pull/570)
+- Upgrade to latest version of `corepc-types`, `corepc-client`, and `bitcoind`
+
 # 0.39.0 - 2026-05-12
 
 - Update to use latest `bitcoind v0.39.0` and `corepc-client v0.14.0`.

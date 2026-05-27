@@ -1,3 +1,12 @@
+# 0.40.0 - 2026-05-26
+
+- Add initial support for Bitcoin Core v31 [#598](https://github.com/rust-bitcoin/corepc/pull/598)
+- Upgrade to latest version of `corepc-types` and `corepc-client`
+
+In this release we remove support for Bitcoin Core `v27.0`, `v27.1`,
+`v28.0`, and `v28.1`. We still support the latest point release of
+these two versions: `v27.2` and `v28.2`.
+
 # 0.39.0 - 2026-05-12
 
 - Update to use latest `corepc-client v0.14.0`.
